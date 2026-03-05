@@ -1,4 +1,4 @@
-package com.biblioteca.biblioteca.entity;
+package com.biblioteca.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -19,18 +19,34 @@ public class Editorial {
     @JsonIgnore
     private List<Libro> libros;
 
-    public Editorial() {}
+    public Editorial() {
+    }
 
     public Editorial(String nombre) {
         this.nombre = nombre;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public List<Libro> getLibros() { return libros; }
-    public void setLibros(List<Libro> libros) { this.libros = libros; }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<Libro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
+    }
 }

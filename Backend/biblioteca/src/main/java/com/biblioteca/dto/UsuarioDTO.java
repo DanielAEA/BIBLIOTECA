@@ -1,4 +1,4 @@
-package com.biblioteca.biblioteca.dto;
+package com.biblioteca.dto;
 
 public class UsuarioDTO {
     private Long id;

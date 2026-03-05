@@ -1,6 +1,6 @@
-package com.biblioteca.biblioteca.repository;
+package com.biblioteca.repository;
 
-import com.biblioteca.biblioteca.entity.PrecioMulta;
+import com.biblioteca.entity.PrecioMulta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

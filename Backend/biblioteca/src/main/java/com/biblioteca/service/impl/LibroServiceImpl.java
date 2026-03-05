@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Libro;
-import com.biblioteca.biblioteca.repository.LibroRepository;
-import com.biblioteca.biblioteca.service.LibroService;
+import com.biblioteca.entity.Libro;
+import com.biblioteca.repository.LibroRepository;
+import com.biblioteca.service.LibroService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

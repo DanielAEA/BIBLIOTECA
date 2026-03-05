@@ -5,6 +5,8 @@ import { finalize } from 'rxjs';
 import { LoanService, Prestamo, PrestamoPayload } from '../../services/loan.service';
 import { UserService, Usuario } from '../../services/user.service';
 import { EjemplarService, Ejemplar } from '../../services/ejemplar.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bibliotecario-dashboard',
@@ -29,8 +31,14 @@ export class BibliotecarioDashboardComponent implements OnInit {
   constructor(
     private loanService: LoanService,
     private userService: UserService,
-    private ejemplarService: EjemplarService
-  ) {}
+    private ejemplarService: EjemplarService,
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+  logout() {
+    this.authService.logout();
+  }
 
   ngOnInit() {
     this.loadUsers();
@@ -112,12 +120,12 @@ export class BibliotecarioDashboardComponent implements OnInit {
     // Validar que los IDs sean números válidos
     const userId = Number(this.selectedUserId);
     const ejemplarId = Number(this.selectedEjemplarId);
-    
+
     if (isNaN(userId) || userId <= 0) {
       alert('El ID del usuario no es válido. Por favor, selecciona un usuario.');
       return;
     }
-    
+
     if (isNaN(ejemplarId) || ejemplarId <= 0) {
       alert('El ID del ejemplar no es válido. Por favor, selecciona un ejemplar.');
       return;
@@ -125,7 +133,7 @@ export class BibliotecarioDashboardComponent implements OnInit {
 
     const today = this.formatDate(new Date());
     const dueDate = this.formatDate(this.addDays(new Date(), this.loanDays));
-    
+
     const payload: PrestamoPayload = {
       usuario: { id: userId },
       ejemplar: { id: ejemplarId },
@@ -133,62 +141,62 @@ export class BibliotecarioDashboardComponent implements OnInit {
       fechaDevolucion: dueDate,
       devuelto: false
     };
-    
+
     console.log('📤 Creando préstamo con payload:', payload);
     console.log('📤 Usuario ID:', userId, 'Ejemplar ID:', ejemplarId);
-    
+
     this.creatingLoan = true;
     this.loanService
       .create(payload)
       .pipe(finalize(() => (this.creatingLoan = false)))
       .subscribe({
-      next: () => {
-        this.updateEjemplarAvailability(this.selectedEjemplarId!, false);
-        this.selectedUserId = null;
-        this.selectedEjemplarId = null;
-        this.loadEjemplares();
-        this.loadPrestamos();
-        alert('Préstamo registrado correctamente');
-      },
-      error: (err) => {
-        console.error('❌ Error al crear préstamo:', err);
-        console.error('❌ Error completo:', JSON.stringify(err, null, 2));
-        console.error('❌ Status:', err?.status);
-        console.error('❌ Error body:', err?.error);
-        
-        // Recargar ejemplares para actualizar disponibilidad
-        this.loadEjemplares();
-        
-        // Determinar el mensaje de error más específico
-        let errorMsg = 'No se pudo registrar el préstamo';
-        
-        if (err?.status === 0 || err?.status === 500) {
-          errorMsg = 'Error de conexión con el servidor. Verifica que el backend esté disponible.';
-        } else if (err?.status === 400) {
-          // Error de validación - mostrar mensaje detallado del backend
-          if (err?.error?.message) {
+        next: () => {
+          this.updateEjemplarAvailability(this.selectedEjemplarId!, false);
+          this.selectedUserId = null;
+          this.selectedEjemplarId = null;
+          this.loadEjemplares();
+          this.loadPrestamos();
+          alert('Préstamo registrado correctamente');
+        },
+        error: (err) => {
+          console.error('❌ Error al crear préstamo:', err);
+          console.error('❌ Error completo:', JSON.stringify(err, null, 2));
+          console.error('❌ Status:', err?.status);
+          console.error('❌ Error body:', err?.error);
+
+          // Recargar ejemplares para actualizar disponibilidad
+          this.loadEjemplares();
+
+          // Determinar el mensaje de error más específico
+          let errorMsg = 'No se pudo registrar el préstamo';
+
+          if (err?.status === 0 || err?.status === 500) {
+            errorMsg = 'Error de conexión con el servidor. Verifica que el backend esté disponible.';
+          } else if (err?.status === 400) {
+            // Error de validación - mostrar mensaje detallado del backend
+            if (err?.error?.message) {
+              errorMsg = err.error.message;
+            } else if (err?.error?.error) {
+              errorMsg = err.error.error;
+            } else if (Array.isArray(err?.error?.errors)) {
+              // Si hay múltiples errores de validación
+              errorMsg = err.error.errors.map((e: any) => e.message || e.defaultMessage).join(', ');
+            } else {
+              errorMsg = 'Datos inválidos. Verifica que el usuario y ejemplar sean válidos y que el ejemplar esté disponible.';
+            }
+          } else if (err?.status === 404) {
+            errorMsg = 'El usuario o ejemplar no existe. Por favor, recarga la página.';
+          } else if (err?.status === 409) {
+            errorMsg = err?.error?.message || 'El ejemplar ya está prestado. Por favor, selecciona otro ejemplar.';
+          } else if (err?.error?.message) {
             errorMsg = err.error.message;
           } else if (err?.error?.error) {
             errorMsg = err.error.error;
-          } else if (Array.isArray(err?.error?.errors)) {
-            // Si hay múltiples errores de validación
-            errorMsg = err.error.errors.map((e: any) => e.message || e.defaultMessage).join(', ');
-          } else {
-            errorMsg = 'Datos inválidos. Verifica que el usuario y ejemplar sean válidos y que el ejemplar esté disponible.';
+          } else if (err?.message) {
+            errorMsg = err.message;
           }
-        } else if (err?.status === 404) {
-          errorMsg = 'El usuario o ejemplar no existe. Por favor, recarga la página.';
-        } else if (err?.status === 409) {
-          errorMsg = err?.error?.message || 'El ejemplar ya está prestado. Por favor, selecciona otro ejemplar.';
-        } else if (err?.error?.message) {
-          errorMsg = err.error.message;
-        } else if (err?.error?.error) {
-          errorMsg = err.error.error;
-        } else if (err?.message) {
-          errorMsg = err.message;
-        }
-        
-        alert(`Error: ${errorMsg}`);
+
+          alert(`Error: ${errorMsg}`);
         }
       });
   }

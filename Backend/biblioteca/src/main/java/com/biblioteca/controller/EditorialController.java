@@ -1,7 +1,7 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.entity.Editorial;
-import com.biblioteca.biblioteca.service.EditorialService;
+import com.biblioteca.entity.Editorial;
+import com.biblioteca.service.EditorialService;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 

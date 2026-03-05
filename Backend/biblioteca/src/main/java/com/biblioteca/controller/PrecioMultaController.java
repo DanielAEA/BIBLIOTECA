@@ -1,7 +1,7 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.entity.PrecioMulta;
-import com.biblioteca.biblioteca.service.PrecioMultaService;
+import com.biblioteca.entity.PrecioMulta;
+import com.biblioteca.service.PrecioMultaService;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 

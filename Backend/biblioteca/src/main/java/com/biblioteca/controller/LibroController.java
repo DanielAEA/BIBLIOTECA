@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.dto.LibroDTO;
-import com.biblioteca.biblioteca.entity.Libro;
-import com.biblioteca.biblioteca.service.LibroService;
+import com.biblioteca.dto.LibroDTO;
+import com.biblioteca.entity.Libro;
+import com.biblioteca.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;

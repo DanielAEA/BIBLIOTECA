@@ -17,8 +17,10 @@ export interface Prestamo {
 }
 
 export interface PrestamoPayload {
-  usuario: { id: number };
-  ejemplar: { id: number };
+  usuarioId?: number;
+  ejemplarId?: number;
+  usuario?: { id: number };
+  ejemplar?: { id: number };
   fechaPrestamo: string;
   fechaDevolucion: string;
   devuelto: boolean;
@@ -31,7 +33,7 @@ export class LoanService {
   private loansSubject = new BehaviorSubject<Prestamo[] | null>(null);
   public loans$ = this.loansSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Prestamo[]> {
     return this.http.get<Prestamo[]>(`${this.baseUrl}/api/prestamos`);

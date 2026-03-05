@@ -1,46 +1,48 @@
-<div class="editorials-container">
-  <div class="header">
+<div class="premium-container">
+  <div class="premium-header">
     <h2>Gestión de Editoriales</h2>
-    <button class="btn-create" (click)="createEditorial()">+ Nueva Editorial</button>
+    <button class="premium-button" (click)="createEditorial()">+ Nueva Editorial</button>
   </div>
 
-  <div *ngIf="showForm && editingEditorial !== undefined" class="edit-form">
+  <div *ngIf="showForm && editingEditorial !== undefined" class="premium-card premium-form">
     <h3>{{ editingEditorial ? 'Editar' : 'Crear' }} Editorial</h3>
     <form (ngSubmit)="saveEditorial()">
-      <div>
+      <div class="form-group">
         <label>Nombre:</label>
-        <input type="text" [(ngModel)]="editorialNombre" name="nombre" required>
+        <input type="text" [(ngModel)]="editorialNombre" name="nombre" required placeholder="Ej. Editorial Alfaguara">
       </div>
       <div class="form-actions">
-        <button type="submit" class="action-btn action-save" [disabled]="submitting">
+        <button type="submit" class="premium-button" [disabled]="submitting">
           {{ submitting ? 'Guardando...' : 'Guardar' }}
         </button>
-        <button type="button" (click)="cancelForm()" class="action-btn action-cancel">Cancelar</button>
+        <button type="button" (click)="cancelForm()" class="premium-button premium-button-danger">Cancelar</button>
       </div>
     </form>
   </div>
 
   <div *ngIf="loading" class="loading">Cargando editoriales...</div>
 
-  <table *ngIf="!loading && editoriales.length > 0" class="data-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let e of editoriales">
-        <td>{{ e.id }}</td>
-        <td>{{ e.nombre }}</td>
-        <td>
-          <button class="action-btn action-edit" (click)="editEditorial(e)">Editar</button>
-          <button class="action-btn action-delete" (click)="deleteEditorial(e)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="premium-card" *ngIf="!loading && editoriales.length > 0">
+    <table class="premium-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of editoriales">
+          <td>{{ e.id }}</td>
+          <td>{{ e.nombre }}</td>
+          <td>
+            <button class="premium-button premium-button-alt" (click)="editEditorial(e)">Editar</button>
+            <button class="premium-button premium-button-danger" (click)="deleteEditorial(e)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="!loading && editoriales.length === 0" class="no-data">
     No hay editoriales registradas.

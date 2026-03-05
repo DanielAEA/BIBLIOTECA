@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Editorial;
-import com.biblioteca.biblioteca.repository.EditorialRepository;
-import com.biblioteca.biblioteca.service.EditorialService;
+import com.biblioteca.entity.Editorial;
+import com.biblioteca.repository.EditorialRepository;
+import com.biblioteca.service.EditorialService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

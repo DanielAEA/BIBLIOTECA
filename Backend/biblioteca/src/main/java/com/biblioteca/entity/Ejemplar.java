@@ -1,4 +1,4 @@
-package com.biblioteca.biblioteca.entity;
+package com.biblioteca.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

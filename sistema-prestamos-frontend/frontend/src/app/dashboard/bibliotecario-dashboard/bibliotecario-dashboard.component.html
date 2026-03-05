@@ -1,87 +1,142 @@
-<div class="bibliotecario-dashboard">
-  <h1>Gestión de Préstamos</h1>
-  <p class="subtitle">Crear préstamos para clientes</p>
-
-  <div *ngIf="error" class="error-message">{{ error }}</div>
-
-  <!-- Formulario de creación de préstamo -->
-  <div class="loan-form-section">
-    <h2>Registrar Nuevo Préstamo</h2>
-    <form class="loan-form" (ngSubmit)="createLoan()">
-      <div class="form-group">
-        <label>Cliente:</label>
-        <select [(ngModel)]="selectedUserId" name="usuario" required [disabled]="loadingUsers">
-          <option [ngValue]="null" disabled>Selecciona un cliente</option>
-          <option *ngFor="let u of users" [ngValue]="u.id">
-            {{ u.nombre }} ({{ u.correo }})
-          </option>
-        </select>
-        <div *ngIf="loadingUsers" class="loading-small">Cargando clientes...</div>
-      </div>
-
-      <div class="form-group">
-        <label>Ejemplar:</label>
-        <select [(ngModel)]="selectedEjemplarId" name="ejemplar" required [disabled]="loadingEjemplares">
-          <option [ngValue]="null" disabled>Selecciona un ejemplar disponible</option>
-          <option *ngFor="let e of availableEjemplares" [ngValue]="e.id">
-            {{ e.libro.titulo }} - {{ e.codigo }}
-          </option>
-        </select>
-        <small class="help-text" *ngIf="availableEjemplares.length === 0 && !loadingEjemplares">
-          No hay ejemplares disponibles. Espera devoluciones o registra nuevos libros.
-        </small>
-        <div *ngIf="loadingEjemplares" class="loading-small">Cargando ejemplares...</div>
-      </div>
-
-      <div class="form-group">
-        <label>Días de préstamo:</label>
-        <input type="number" min="1" max="30" [(ngModel)]="loanDays" name="diasPrestamo" required>
-        <small class="help-text">Por defecto: 15 días</small>
-      </div>
-
-      <button 
-        type="submit" 
-        class="btn-create-loan"
-        [disabled]="creatingLoan || availableEjemplares.length === 0 || loadingUsers || loadingEjemplares">
-        {{ creatingLoan ? 'Registrando...' : 'Registrar Préstamo' }}
-      </button>
-    </form>
-  </div>
-
-  <!-- Lista de préstamos recientes -->
-  <div class="recent-loans-section">
-    <h2>Préstamos Recientes</h2>
-    <div *ngIf="loadingLoans" class="loading">Cargando préstamos...</div>
-    
-    <div *ngIf="!loadingLoans && prestamos.length === 0" class="no-data">
-      No hay préstamos registrados.
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="SIBU Logo" class="sidebar-logo">
     </div>
 
-    <table *ngIf="!loadingLoans && prestamos.length > 0" class="loans-table">
-      <thead>
-        <tr>
-          <th>Cliente</th>
-          <th>Libro</th>
-          <th>Ejemplar</th>
-          <th>Fecha préstamo</th>
-          <th>Fecha devolución</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of prestamos.slice(0, 10)">
-          <td>{{ p.usuario.nombre }}</td>
-          <td>{{ p.ejemplar.libro.titulo }}</td>
-          <td>{{ p.ejemplar.codigo }}</td>
-          <td>{{ p.fechaPrestamo }}</td>
-          <td>{{ p.fechaDevolucion }}</td>
-          <td>
-            <span class="status" [class.status-returned]="p.devuelto" [class.status-pending]="!p.devuelto">
-              {{ p.devuelto ? 'Devuelto' : 'Pendiente' }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+    <nav class="menu">
+      <p class="menu-label">MENU PRINCIPAL</p>
+      <button class="menu-item active">
+        <span class="menu-text">Gestión de Préstamos</span>
+        <div class="active-indicator"></div>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-badge">
+        <div class="avatar">B</div>
+        <div class="admin-info">
+          <span class="name">Bibliotecario</span>
+          <span class="role">Gestión operativa</span>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()" title="Cerrar Sesión">
+        <i class="logout-icon">↩</i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-content">
+        <div class="page-info">
+          <h1>Panel de Préstamos</h1>
+          <p>Gestiona eficientemente los préstamos de la biblioteca.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+
+      <!-- Formulario de creación de préstamo -->
+      <div class="premium-card mb-4">
+        <div class="card-header border-bottom mb-3 pb-2">
+          <h2 class="h5 m-0">Registrar Nuevo Préstamo</h2>
+        </div>
+        <form class="premium-form" (ngSubmit)="createLoan()">
+          <div class="grid-form">
+            <div class="form-group">
+              <label>Cliente</label>
+              <select [(ngModel)]="selectedUserId" name="usuario" required [disabled]="loadingUsers">
+                <option [ngValue]="null" disabled>Selecciona un cliente</option>
+                <option *ngFor="let u of users" [ngValue]="u.id">
+                  {{ u.nombre }} ({{ u.correo }})
+                </option>
+              </select>
+              <div *ngIf="loadingUsers" class="loading-small">Cargando clientes...</div>
+            </div>
+
+            <div class="form-group">
+              <label>Ejemplar disponible</label>
+              <select [(ngModel)]="selectedEjemplarId" name="ejemplar" required [disabled]="loadingEjemplares">
+                <option [ngValue]="null" disabled>Selecciona un ejemplar</option>
+                <option *ngFor="let e of availableEjemplares" [ngValue]="e.id">
+                  {{ e.libro.titulo }} - {{ e.codigo }}
+                </option>
+              </select>
+              <small class="text-danger" *ngIf="availableEjemplares.length === 0 && !loadingEjemplares">
+                No hay ejemplares disponibles hoy.
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label>Días</label>
+              <input type="number" min="1" max="30" [(ngModel)]="loanDays" name="diasPrestamo" required>
+            </div>
+
+            <div class="form-actions d-flex align-items-end">
+              <button type="submit" class="premium-button w-100"
+                [disabled]="creatingLoan || availableEjemplares.length === 0 || loadingUsers || loadingEjemplares">
+                {{ creatingLoan ? 'Registrando...' : 'Registrar Préstamo' }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de préstamos recientes -->
+      <div class="premium-card">
+        <div class="card-header border-bottom mb-3 pb-2 d-flex justify-content-between align-items-center">
+          <h2 class="h5 m-0">Préstamos Recientes</h2>
+          <span *ngIf="loadingLoans" class="badge bg-soft-primary text-primary">Cargando...</span>
+        </div>
+
+        <div *ngIf="!loadingLoans && prestamos.length === 0" class="no-data py-5 text-center">
+          <p class="text-muted">No hay préstamos registrados en el sistema.</p>
+        </div>
+
+        <div class="table-responsive" *ngIf="!loadingLoans && prestamos.length > 0">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Libro / Código</th>
+                <th>Fecha Préstamo</th>
+                <th>Fecha Devolución</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of prestamos.slice(0, 10)">
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="fw-bold">{{ p.usuario.nombre }}</span>
+                    <small class="text-muted">{{ p.usuario.correo }}</small>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex flex-column">
+                    <span>{{ p.ejemplar.libro.titulo }}</span>
+                    <small class="text-muted">{{ p.ejemplar.codigo }}</small>
+                  </div>
+                </td>
+                <td>{{ p.fechaPrestamo }}</td>
+                <td>{{ p.fechaDevolucion }}</td>
+                <td>
+                  <span class="premium-badge transition" [ngClass]="p.devuelto ? 'badge-success' : 'badge-warning'">
+                    {{ p.devuelto ? 'Devuelto' : 'Pendiente' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.maven.enabled": true,
+    "spring-boot.ls.project-scanner.source-folders": [
+        "src/main/java",
+        "src/main/resources",
+        "src/test/java"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
+}

@@ -1,46 +1,48 @@
-<div class="authors-container">
-  <div class="header">
+<div class="premium-container">
+  <div class="premium-header">
     <h2>Gestión de Autores</h2>
-    <button class="btn-create" (click)="createAutor()">+ Nuevo Autor</button>
+    <button class="premium-button" (click)="createAutor()">+ Nuevo Autor</button>
   </div>
 
-  <div *ngIf="showForm && editingAutor !== undefined" class="edit-form">
+  <div *ngIf="showForm && editingAutor !== undefined" class="premium-card premium-form">
     <h3>{{ editingAutor ? 'Editar' : 'Crear' }} Autor</h3>
     <form (ngSubmit)="saveAutor()">
-      <div>
+      <div class="form-group">
         <label>Nombre:</label>
-        <input type="text" [(ngModel)]="autorNombre" name="nombre" required>
+        <input type="text" [(ngModel)]="autorNombre" name="nombre" required placeholder="Ej. Gabriel García Márquez">
       </div>
       <div class="form-actions">
-        <button type="submit" class="action-btn action-save" [disabled]="submitting">
+        <button type="submit" class="premium-button" [disabled]="submitting">
           {{ submitting ? 'Guardando...' : 'Guardar' }}
         </button>
-        <button type="button" (click)="cancelForm()" class="action-btn action-cancel">Cancelar</button>
+        <button type="button" (click)="cancelForm()" class="premium-button premium-button-danger">Cancelar</button>
       </div>
     </form>
   </div>
 
   <div *ngIf="loading" class="loading">Cargando autores...</div>
 
-  <table *ngIf="!loading && autores.length > 0" class="data-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let a of autores">
-        <td>{{ a.id }}</td>
-        <td>{{ a.nombre }}</td>
-        <td>
-          <button class="action-btn action-edit" (click)="editAutor(a)">Editar</button>
-          <button class="action-btn action-delete" (click)="deleteAutor(a)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="premium-card" *ngIf="!loading && autores.length > 0">
+    <table class="premium-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of autores">
+          <td>{{ a.id }}</td>
+          <td>{{ a.nombre }}</td>
+          <td>
+            <button class="premium-button premium-button-alt" (click)="editAutor(a)">Editar</button>
+            <button class="premium-button premium-button-danger" (click)="deleteAutor(a)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="!loading && autores.length === 0" class="no-data">
     No hay autores registrados.

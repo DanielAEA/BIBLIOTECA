@@ -1,10 +1,10 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.RolUsuario;
-import com.biblioteca.biblioteca.entity.Usuario;
-import com.biblioteca.biblioteca.repository.RolUsuarioRepository;
-import com.biblioteca.biblioteca.repository.UsuarioRepository;
-import com.biblioteca.biblioteca.service.UsuarioService;
+import com.biblioteca.entity.RolUsuario;
+import com.biblioteca.entity.Usuario;
+import com.biblioteca.repository.RolUsuarioRepository;
+import com.biblioteca.repository.UsuarioRepository;
+import com.biblioteca.service.UsuarioService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

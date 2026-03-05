@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -20,7 +21,15 @@ export class AdminDashboardComponent {
     { name: 'Ejemplares', path: '/admin/ejemplares' }
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) { }
+
+  isActive(path: string): boolean {
+    return this.router.url.includes(path);
+  }
+
+  logout() {
+    this.authService.logout();
+  }
 
   navigateTo(path: string) {
     this.router.navigateByUrl(path);

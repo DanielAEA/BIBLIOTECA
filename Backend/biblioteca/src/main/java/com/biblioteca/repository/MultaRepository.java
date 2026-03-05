@@ -1,6 +1,6 @@
-package com.biblioteca.biblioteca.repository;
+package com.biblioteca.repository;
 
-import com.biblioteca.biblioteca.entity.Multa;
+import com.biblioteca.entity.Multa;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MultaRepository extends JpaRepository<Multa, Long> {

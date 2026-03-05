@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.dto.UsuarioDTO;
-import com.biblioteca.biblioteca.entity.Usuario;
-import com.biblioteca.biblioteca.service.UsuarioService;
+import com.biblioteca.dto.UsuarioDTO;
+import com.biblioteca.entity.Usuario;
+import com.biblioteca.service.UsuarioService;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 

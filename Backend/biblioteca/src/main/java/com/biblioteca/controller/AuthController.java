@@ -1,7 +1,7 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.entity.Usuario;
-import com.biblioteca.biblioteca.repository.UsuarioRepository;
+import com.biblioteca.entity.Usuario;
+import com.biblioteca.repository.UsuarioRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.http.HttpStatus;

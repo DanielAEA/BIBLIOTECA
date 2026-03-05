@@ -1,6 +1,6 @@
-package com.biblioteca.biblioteca.repository;
+package com.biblioteca.repository;
 
-import com.biblioteca.biblioteca.entity.Prestamo;
+import com.biblioteca.entity.Prestamo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

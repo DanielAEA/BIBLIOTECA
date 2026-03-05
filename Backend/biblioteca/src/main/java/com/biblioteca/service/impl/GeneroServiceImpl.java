@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Genero;
-import com.biblioteca.biblioteca.repository.GeneroRepository;
-import com.biblioteca.biblioteca.service.GeneroService;
+import com.biblioteca.entity.Genero;
+import com.biblioteca.repository.GeneroRepository;
+import com.biblioteca.service.GeneroService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

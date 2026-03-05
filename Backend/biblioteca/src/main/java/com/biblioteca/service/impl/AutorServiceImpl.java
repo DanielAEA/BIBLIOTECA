@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Autor;
-import com.biblioteca.biblioteca.repository.AutorRepository;
-import com.biblioteca.biblioteca.service.AutorService;
+import com.biblioteca.entity.Autor;
+import com.biblioteca.repository.AutorRepository;
+import com.biblioteca.service.AutorService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import java.util.List;

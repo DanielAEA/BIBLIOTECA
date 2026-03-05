@@ -1,6 +1,6 @@
-package com.biblioteca.biblioteca.service;
+package com.biblioteca.service;
 
-import com.biblioteca.biblioteca.entity.Prestamo;
+import com.biblioteca.entity.Prestamo;
 import org.springframework.lang.NonNull;
 import java.util.List;
 

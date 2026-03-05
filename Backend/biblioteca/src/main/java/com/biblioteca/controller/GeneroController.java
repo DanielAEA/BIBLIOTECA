@@ -1,7 +1,7 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.entity.Genero;
-import com.biblioteca.biblioteca.service.GeneroService;
+import com.biblioteca.entity.Genero;
+import com.biblioteca.service.GeneroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;

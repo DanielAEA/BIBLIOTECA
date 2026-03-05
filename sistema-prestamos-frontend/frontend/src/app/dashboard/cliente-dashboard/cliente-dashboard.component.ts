@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoanService, Prestamo } from '../../services/loan.service';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -13,7 +14,7 @@ import { AuthService } from '../../services/auth.service';
 export class ClienteDashboardComponent implements OnInit {
   // Exponer Math para uso en templates
   Math = Math;
-  
+
   prestamos: Prestamo[] = [];
   loading = false;
   error: string | null = null;
@@ -21,13 +22,18 @@ export class ClienteDashboardComponent implements OnInit {
 
   constructor(
     private loanService: LoanService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
+  logout() {
+    this.authService.logout();
+  }
 
   ngOnInit() {
     // Cargar todos los préstamos en el servicio (BehaviorSubject compartido)
     this.loanService.loadAll();
-    
+
     // Suscribirse al feed reactivo de préstamos y filtrar para el usuario actual
     this.loadMyLoans();
     this.loanService.loans$.subscribe(() => this.loadMyLoans());
@@ -44,7 +50,7 @@ export class ClienteDashboardComponent implements OnInit {
     const userId = payload.sub || payload.id;
     const userIdNumber = Number(userId);
     console.log('Cargando préstamos para usuario ID:', userId, '(número:', userIdNumber, ')');
-    
+
     this.loading = true;
     this.error = null;
 
@@ -84,7 +90,7 @@ export class ClienteDashboardComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar préstamos:', err);
-        
+
         // Determinar el mensaje de error más específico
         if (err?.status === 0 || err?.status === 500) {
           this.error = 'Error de conexión con el servidor. Verifica que el backend esté disponible en http://localhost:8080';
@@ -99,7 +105,7 @@ export class ClienteDashboardComponent implements OnInit {
         } else {
           this.error = 'No se pudieron cargar tus préstamos. Verifica tu conexión a internet y que el servidor esté disponible.';
         }
-        
+
         this.loading = false;
       }
     });
@@ -107,7 +113,7 @@ export class ClienteDashboardComponent implements OnInit {
 
   private processPrestamos(prestamos: Prestamo[]) {
     console.log('📋 Procesando préstamos:', prestamos);
-    
+
     // Validar y loggear cada préstamo
     prestamos.forEach(p => {
       if (!p.ejemplar) {
@@ -122,7 +128,7 @@ export class ClienteDashboardComponent implements OnInit {
         });
       }
     });
-    
+
     this.prestamos = prestamos;
     this.totalMulta = this.prestamos
       .filter(p => !p.devuelto)
@@ -179,12 +185,12 @@ export class ClienteDashboardComponent implements OnInit {
       console.warn('Préstamo sin ejemplar:', prestamo);
       return 'Libro no disponible';
     }
-    
+
     if (!prestamo.ejemplar.libro) {
       console.warn('Ejemplar sin libro:', prestamo.ejemplar);
       return 'Libro no disponible';
     }
-    
+
     return prestamo.ejemplar.libro.titulo || 'Sin título';
   }
 

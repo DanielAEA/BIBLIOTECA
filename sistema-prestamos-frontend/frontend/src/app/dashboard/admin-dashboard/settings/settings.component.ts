@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
   creatingLoan = false;
   returningLoanId: number | null = null;
 
-  
+
   autores: Autor[] = [];
   editingAutor: Autor | null = null;
   showAutorForm = false;
@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit {
   loadingAutores = false;
   submittingAutor = false;
 
-  
+
   editoriales: Editorial[] = [];
   editingEditorial: Editorial | null = null;
   showEditorialForm = false;
@@ -103,7 +103,7 @@ export class SettingsComponent implements OnInit {
     private editorialService: EditorialService,
     private generoService: GeneroService,
     private bookService: BookService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadUsers();
@@ -196,12 +196,12 @@ export class SettingsComponent implements OnInit {
     // Validar que los IDs sean números válidos
     const userId = Number(this.selectedUserId);
     const ejemplarId = Number(this.selectedEjemplarId);
-    
+
     if (isNaN(userId) || userId <= 0) {
       alert('El ID del usuario no es válido. Por favor, selecciona un usuario.');
       return;
     }
-    
+
     if (isNaN(ejemplarId) || ejemplarId <= 0) {
       alert('El ID del ejemplar no es válido. Por favor, selecciona un ejemplar.');
       return;
@@ -209,18 +209,19 @@ export class SettingsComponent implements OnInit {
 
     const today = this.formatDate(new Date());
     const dueDate = this.formatDate(this.addDays(new Date(), this.loanDays));
-    
     const payload: PrestamoPayload = {
+      usuarioId: userId,
+      ejemplarId: ejemplarId,
       usuario: { id: userId },
       ejemplar: { id: ejemplarId },
       fechaPrestamo: today,
       fechaDevolucion: dueDate,
       devuelto: false
     };
-    
+
     console.log('📤 Creando préstamo con payload:', payload);
     console.log('📤 Usuario ID:', userId, 'Ejemplar ID:', ejemplarId);
-    
+
     this.creatingLoan = true;
     this.loanService
       .create(payload)
@@ -239,13 +240,13 @@ export class SettingsComponent implements OnInit {
           console.error('❌ Error completo:', JSON.stringify(err, null, 2));
           console.error('❌ Status:', err?.status);
           console.error('❌ Error body:', err?.error);
-          
+
           // Recargar ejemplares para actualizar disponibilidad
           this.loadEjemplares();
-          
+
           // Determinar el mensaje de error más específico
           let errorMsg = 'No se pudo registrar el préstamo';
-          
+
           if (err?.status === 0 || err?.status === 500) {
             errorMsg = 'Error de conexión con el servidor. Verifica que el backend esté disponible.';
           } else if (err?.status === 400) {
@@ -271,7 +272,7 @@ export class SettingsComponent implements OnInit {
           } else if (err?.message) {
             errorMsg = err.message;
           }
-          
+
           alert(`Error: ${errorMsg}`);
         }
       });
@@ -333,6 +334,8 @@ export class SettingsComponent implements OnInit {
   markAsReturned(prestamo: Prestamo) {
     this.returningLoanId = prestamo.id;
     const payload: PrestamoPayload = {
+      usuarioId: prestamo.usuario.id,
+      ejemplarId: prestamo.ejemplar.id,
       usuario: { id: prestamo.usuario.id },
       ejemplar: { id: prestamo.ejemplar.id },
       fechaPrestamo: prestamo.fechaPrestamo,
@@ -343,14 +346,14 @@ export class SettingsComponent implements OnInit {
       .update(prestamo.id, payload)
       .pipe(finalize(() => (this.returningLoanId = null)))
       .subscribe({
-      next: () => {
-        this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
-        this.loadPrestamos();
-        alert('Préstamo marcado como devuelto');
-      },
-      error: (err) => {
-        console.error('Error al actualizar préstamo:', err);
-        alert('No se pudo actualizar el préstamo');
+        next: () => {
+          this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
+          this.loadPrestamos();
+          alert('Préstamo marcado como devuelto');
+        },
+        error: (err) => {
+          console.error('Error al actualizar préstamo:', err);
+          alert('No se pudo actualizar el préstamo');
         }
       });
   }
@@ -368,7 +371,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  
+
   loadAutores() {
     this.loadingAutores = true;
     this.authorService.getAll().subscribe({
@@ -458,7 +461,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  
+
   loadEditoriales() {
     this.loadingEditoriales = true;
     this.editorialService.getAll().subscribe({
@@ -638,7 +641,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  
+
   loadLibros() {
     this.bookService.getAllBooks().subscribe({
       next: (libros) => (this.libros = libros),
@@ -793,7 +796,7 @@ export class SettingsComponent implements OnInit {
     }
 
     this.submittingUser = true;
-    
+
     if (this.editingUser.id === 0) {
       // Crear nuevo usuario - NO incluir el ID en el payload
       if (!this.editingUser.password?.trim()) {
@@ -801,21 +804,21 @@ export class SettingsComponent implements OnInit {
         this.submittingUser = false;
         return;
       }
-      
+
       // Crear payload sin ID (el backend lo asignará)
       const createPayload: UsuarioCreatePayload = {
         nombre: this.editingUser.nombre.trim(),
         correo: this.editingUser.correo.trim(),
         password: this.editingUser.password.trim()
       };
-      
+
       // Solo incluir rol si está definido y tiene ID
       if (this.editingUser.rol?.id) {
         createPayload.rol = { id: this.editingUser.rol.id };
       }
-      
+
       console.log('📤 Creando usuario con payload:', createPayload);
-      
+
       this.userService
         .createUser(createPayload)
         .pipe(finalize(() => (this.submittingUser = false)))
@@ -828,7 +831,7 @@ export class SettingsComponent implements OnInit {
           error: (err) => {
             console.error('❌ Error al crear usuario:', err);
             console.error('❌ Error completo:', JSON.stringify(err, null, 2));
-            
+
             let errorMsg = 'Error al crear el usuario';
             if (err?.error?.message) {
               errorMsg = err.error.message;
@@ -837,7 +840,7 @@ export class SettingsComponent implements OnInit {
             } else if (err?.message) {
               errorMsg = err.message;
             }
-            
+
             alert(`Error: ${errorMsg}`);
           }
         });
@@ -847,19 +850,19 @@ export class SettingsComponent implements OnInit {
         nombre: this.editingUser.nombre.trim(),
         correo: this.editingUser.correo.trim()
       };
-      
+
       // Solo incluir password si se proporcionó uno nuevo
       if (this.editingUser.password?.trim()) {
         updatePayload.password = this.editingUser.password.trim();
       }
-      
+
       // Incluir rol si está definido
       if (this.editingUser.rol?.id) {
         updatePayload.rol = { id: this.editingUser.rol.id };
       }
-      
+
       console.log('📤 Actualizando usuario ID:', this.editingUser.id, 'con payload:', updatePayload);
-      
+
       this.userService
         .updateUser(this.editingUser.id, updatePayload)
         .pipe(finalize(() => (this.submittingUser = false)))
@@ -974,7 +977,7 @@ export class SettingsComponent implements OnInit {
     }
 
     this.submittingBook = true;
-    
+
     const payload: LibroPayload = {
       titulo: this.bookTitulo.trim(),
       autores: this.selectedBookAuthorIds.map((id) => ({ id })),
@@ -989,7 +992,7 @@ export class SettingsComponent implements OnInit {
         .subscribe({
           next: () => {
             this.loadBooks();
-            this.loadLibros(); 
+            this.loadLibros();
             this.cancelBookForm();
             alert('Libro actualizado correctamente');
           },
@@ -1006,7 +1009,7 @@ export class SettingsComponent implements OnInit {
         .subscribe({
           next: () => {
             this.loadBooks();
-            this.loadLibros(); 
+            this.loadLibros();
             this.cancelBookForm();
             alert('Libro creado correctamente');
           },
@@ -1027,7 +1030,7 @@ export class SettingsComponent implements OnInit {
     this.bookService.deleteBook(book.id).subscribe({
       next: () => {
         this.loadBooks();
-        this.loadLibros(); 
+        this.loadLibros();
         alert('Libro eliminado correctamente');
       },
       error: (err) => {

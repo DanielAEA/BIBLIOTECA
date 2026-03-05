@@ -1,81 +1,137 @@
-<div class="cliente-dashboard">
-  <div class="header">
-    <h1>Mis Préstamos</h1>
-    <div class="total-multa" *ngIf="totalMulta > 0">
-      <strong>Multa Total: ${{ totalMulta.toLocaleString() }}</strong>
+<div class="dashboard-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <img src="logo.png" alt="SIBU Logo" class="sidebar-logo">
     </div>
-  </div>
 
-  <div *ngIf="loading" class="loading">Cargando tus préstamos...</div>
-  <div *ngIf="error" class="error-message">{{ error }}</div>
+    <nav class="menu">
+      <p class="menu-label">MI CUENTA</p>
+      <button class="menu-item active">
+        <span class="menu-text">Mis Préstamos</span>
+        <div class="active-indicator"></div>
+      </button>
+    </nav>
 
-  <!-- Préstamos Activos -->
-  <div *ngIf="!loading && !error" class="loans-section">
-    <h2>Préstamos Activos</h2>
-    <div *ngIf="getActiveLoans().length === 0" class="no-data">
-      No tienes préstamos activos.
+    <div class="sidebar-footer">
+      <div class="admin-badge">
+        <div class="avatar">C</div>
+        <div class="admin-info">
+          <span class="name">Cliente</span>
+          <span class="role">Usuario Lector</span>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()" title="Cerrar Sesión">
+        <i class="logout-icon">↩</i>
+      </button>
     </div>
-    <table *ngIf="getActiveLoans().length > 0" class="loans-table">
-      <thead>
-        <tr>
-          <th>Libro</th>
-          <th>Ejemplar</th>
-          <th>Fecha préstamo</th>
-          <th>Fecha devolución</th>
-          <th>Días restantes</th>
-          <th>Multa</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of getActiveLoans()" [class.overdue]="hasOverdue(p)">
-          <td>{{ getLibroTitulo(p) }}</td>
-          <td>{{ getEjemplarCodigo(p) }}</td>
-          <td>{{ p.fechaPrestamo }}</td>
-          <td>{{ p.fechaDevolucion }}</td>
-          <td>
-            <span [class.days-warning]="getDaysRemaining(p) <= 3 && getDaysRemaining(p) >= 0" [class.days-overdue]="hasOverdue(p)">
-              {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' días' : hasOverdue(p) ? Math.abs(getDaysRemaining(p)) + ' días vencido' : 'Vence hoy' }}
-            </span>
-          </td>
-          <td>
-            <span *ngIf="getFine(p) > 0" class="fine-amount">
-              ${{ getFine(p).toLocaleString() }}
-            </span>
-            <span *ngIf="getFine(p) === 0">$0</span>
-          </td>
-          <td>
-            <span class="status status-pending">Pendiente</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  </aside>
 
-  <!-- Préstamos Devueltos -->
-  <div *ngIf="!loading && !error && getReturnedLoans().length > 0" class="loans-section">
-    <h2>Historial de Préstamos</h2>
-    <table class="loans-table">
-      <thead>
-        <tr>
-          <th>Libro</th>
-          <th>Ejemplar</th>
-          <th>Fecha préstamo</th>
-          <th>Fecha devolución</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let p of getReturnedLoans()">
-          <td>{{ getLibroTitulo(p) }}</td>
-          <td>{{ getEjemplarCodigo(p) }}</td>
-          <td>{{ p.fechaPrestamo }}</td>
-          <td>{{ p.fechaDevolucion }}</td>
-          <td>
-            <span class="status status-returned">Devuelto</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <!-- Main Content Area -->
+  <main class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-content">
+        <div class="page-info">
+          <h1>Mis Préstamos</h1>
+          <p>Consulta el estado de tus libros y fechas de devolución.</p>
+        </div>
+        <div class="total-multa-badge" *ngIf="totalMulta > 0">
+          <span class="premium-badge badge-danger">Multa Pendiente: ${{ totalMulta.toLocaleString() }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      <div *ngIf="loading" class="loading py-5 text-center">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3 text-muted">Cargando tus préstamos...</p>
+      </div>
+
+      <div *ngIf="error" class="error-message">{{ error }}</div>
+
+      <!-- Préstamos Activos -->
+      <div *ngIf="!loading && !error" class="premium-card mb-4">
+        <div class="card-header border-bottom mb-3 pb-2">
+          <h2 class="h5 m-0 text-primary">Préstamos Activos</h2>
+        </div>
+        <div *ngIf="getActiveLoans().length === 0" class="no-data py-4 text-center">
+          <p class="text-muted">No tienes libros pendientes de devolución.</p>
+        </div>
+        <div class="table-responsive" *ngIf="getActiveLoans().length > 0">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th>Libro / Código</th>
+                <th>Fecha Préstamo</th>
+                <th>Vencimiento</th>
+                <th>Días Restantes</th>
+                <th>Multa</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of getActiveLoans()" [class.overdue-row]="hasOverdue(p)">
+                <td>
+                  <div class="d-flex flex-column">
+                    <span class="fw-bold">{{ getLibroTitulo(p) }}</span>
+                    <small class="text-muted">{{ getEjemplarCodigo(p) }}</small>
+                  </div>
+                </td>
+                <td>{{ p.fechaPrestamo }}</td>
+                <td>{{ p.fechaDevolucion }}</td>
+                <td>
+                  <span class="premium-badge transition"
+                    [ngClass]="getDaysRemaining(p) <= 3 ? 'badge-danger' : 'badge-warning'">
+                    {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' días' : hasOverdue(p) ? 'Vencido' : 'Vence hoy'
+                    }}
+                  </span>
+                </td>
+                <td>
+                  <span class="fw-bold" [class.text-danger]="getFine(p) > 0">
+                    ${{ getFine(p).toLocaleString() }}
+                  </span>
+                </td>
+                <td>
+                  <span class="premium-badge badge-primary">Activo</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Historial de Préstamos -->
+      <div *ngIf="!loading && !error && getReturnedLoans().length > 0" class="premium-card">
+        <div class="card-header border-bottom mb-3 pb-2">
+          <h2 class="h5 m-0 text-muted">Historial de Lectura</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th>Libro</th>
+                <th>Ejemplar</th>
+                <th>Fecha Préstamo</th>
+                <th>Devuelto el</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of getReturnedLoans()">
+                <td>{{ getLibroTitulo(p) }}</td>
+                <td>{{ getEjemplarCodigo(p) }}</td>
+                <td>{{ p.fechaPrestamo }}</td>
+                <td>{{ p.fechaDevolucion }}</td>
+                <td>
+                  <span class="premium-badge badge-success">Devuelto</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

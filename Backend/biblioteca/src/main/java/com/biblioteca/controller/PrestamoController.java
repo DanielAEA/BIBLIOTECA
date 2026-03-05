@@ -1,10 +1,10 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.dto.PrestamoDTO;
-import com.biblioteca.biblioteca.entity.Ejemplar;
-import com.biblioteca.biblioteca.entity.Prestamo;
-import com.biblioteca.biblioteca.entity.Usuario;
-import com.biblioteca.biblioteca.service.PrestamoService;
+import com.biblioteca.dto.PrestamoDTO;
+import com.biblioteca.entity.Ejemplar;
+import com.biblioteca.entity.Prestamo;
+import com.biblioteca.entity.Usuario;
+import com.biblioteca.service.PrestamoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +62,10 @@ public class PrestamoController {
             ejemplar.setId(request.getEjemplarId());
             prestamo.setEjemplar(ejemplar);
 
+            // Setear fechas si vienen en el request
+            prestamo.setFechaPrestamo(request.getFechaPrestamo());
+            prestamo.setFechaDevolucion(request.getFechaDevolucion());
+
             // El Service buscará las entidades reales y las reemplazará
             Prestamo creado = prestamoService.crear(prestamo);
 
@@ -73,7 +77,7 @@ public class PrestamoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable @NonNull Long id,
-                                        @RequestBody @NonNull Prestamo prestamo) {
+            @RequestBody @NonNull Prestamo prestamo) {
         try {
             Prestamo actualizado = prestamoService.actualizar(id, prestamo);
             return ResponseEntity.ok(actualizado);

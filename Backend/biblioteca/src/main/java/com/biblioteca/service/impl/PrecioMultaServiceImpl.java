@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.PrecioMulta;
-import com.biblioteca.biblioteca.repository.PrecioMultaRepository;
-import com.biblioteca.biblioteca.service.PrecioMultaService;
+import com.biblioteca.entity.PrecioMulta;
+import com.biblioteca.repository.PrecioMultaRepository;
+import com.biblioteca.service.PrecioMultaService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

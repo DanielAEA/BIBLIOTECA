@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Multa;
-import com.biblioteca.biblioteca.repository.MultaRepository;
-import com.biblioteca.biblioteca.service.MultaService;
+import com.biblioteca.entity.Multa;
+import com.biblioteca.repository.MultaRepository;
+import com.biblioteca.service.MultaService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

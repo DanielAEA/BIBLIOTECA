@@ -1,8 +1,8 @@
-package com.biblioteca.biblioteca.service.impl;
+package com.biblioteca.service.impl;
 
-import com.biblioteca.biblioteca.entity.Permisos;
-import com.biblioteca.biblioteca.repository.PermisoRepository;
-import com.biblioteca.biblioteca.service.PermisoService;
+import com.biblioteca.entity.Permisos;
+import com.biblioteca.repository.PermisoRepository;
+import com.biblioteca.service.PermisoService;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 

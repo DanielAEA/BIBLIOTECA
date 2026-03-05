@@ -1,7 +1,7 @@
-package com.biblioteca.biblioteca.controller;
+package com.biblioteca.controller;
 
-import com.biblioteca.biblioteca.entity.RolUsuario;
-import com.biblioteca.biblioteca.service.RolUsuarioService;
+import com.biblioteca.entity.RolUsuario;
+import com.biblioteca.service.RolUsuarioService;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 

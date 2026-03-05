@@ -1,6 +1,6 @@
-package com.biblioteca.biblioteca.service;
+package com.biblioteca.service;
 
-import com.biblioteca.biblioteca.entity.Usuario;
+import com.biblioteca.entity.Usuario;
 import org.springframework.lang.NonNull;
 import java.util.List;
 
