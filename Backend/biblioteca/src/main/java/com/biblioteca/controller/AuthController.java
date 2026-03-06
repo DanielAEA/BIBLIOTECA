@@ -2,6 +2,7 @@ package com.biblioteca.controller;
 
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.repository.UsuarioRepository;
+import com.biblioteca.repository.RolUsuarioRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.http.HttpStatus;
@@ -18,25 +19,66 @@ import java.util.*;
 public class AuthController {
 
     private final UsuarioRepository usuarioRepository;
-    private static final String SECRET_KEY = "miClaveSecretaParaJWT123456789012345678901234567890"; // En producción usar variable de entorno
+    private final RolUsuarioRepository rolUsuarioRepository;
+    private static final String SECRET_KEY = "miClaveSecretaParaJWT123456789012345678901234567890"; // En producción
+                                                                                                    // usar variable de
+                                                                                                    // entorno
 
-    public AuthController(UsuarioRepository usuarioRepository) {
+    public AuthController(UsuarioRepository usuarioRepository, RolUsuarioRepository rolUsuarioRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.rolUsuarioRepository = rolUsuarioRepository;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Usuario usuario) {
+        try {
+            if (usuarioRepository.findByCorreo(usuario.getCorreo()) != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "El correo ya está registrado"));
+            }
+
+            // Asignar rol CLIENTE por defecto
+            com.biblioteca.entity.RolUsuario rolCliente = rolUsuarioRepository.findByNombre("CLIENTE")
+                    .orElseGet(() -> {
+                        // Si no existe, intentar buscar "USER" o simplemente el primero disponible
+                        return rolUsuarioRepository.findAll().stream()
+                                .filter(r -> r.getNombre().equalsIgnoreCase("CLIENTE")
+                                        || r.getNombre().equalsIgnoreCase("USER"))
+                                .findFirst()
+                                .orElse(null);
+                    });
+
+            if (rolCliente == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("error", "No se pudo asignar un rol al usuario. Contacte al administrador."));
+            }
+
+            usuario.setRol(rolCliente);
+            Usuario guardado = usuarioRepository.save(usuario);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
+                    "message", "Usuario registrado exitosamente",
+                    "userId", guardado.getId()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al registrar usuario: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            Usuario usuario = usuarioRepository.findByCorreo(request.getCorreo() != null ? request.getCorreo() : request.getUsername());
-            
+            Usuario usuario = usuarioRepository
+                    .findByCorreo(request.getCorreo() != null ? request.getCorreo() : request.getUsername());
+
             if (usuario == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales incorrectas"));
+                        .body(Map.of("error", "Credenciales incorrectas"));
             }
 
             if (!usuario.getPassword().equals(request.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales incorrectas"));
+                        .body(Map.of("error", "Credenciales incorrectas"));
             }
 
             String token = generarToken(usuario);
@@ -44,28 +86,28 @@ public class AuthController {
             return ResponseEntity.ok(Map.of("token", token));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Error al procesar la autenticación: " + e.getMessage()));
+                    .body(Map.of("error", "Error al procesar la autenticación: " + e.getMessage()));
         }
     }
 
     private String generarToken(Usuario usuario) {
         SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
-        
+
         String rolNombre = usuario.getRol() != null ? usuario.getRol().getNombre() : "CLIENTE";
-        
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("sub", usuario.getCorreo());
         claims.put("id", usuario.getId());
         claims.put("nombre", usuario.getNombre());
         claims.put("roles", Arrays.asList(rolNombre));
         claims.put("authorities", Arrays.asList(rolNombre));
-        
+
         return Jwts.builder()
-            .claims(claims)
-            .issuedAt(new Date())
-            .expiration(new Date(System.currentTimeMillis() + 86400000)) // 24 horas
-            .signWith(key)
-            .compact();
+                .claims(claims)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 86400000)) // 24 horas
+                .signWith(key)
+                .compact();
     }
 
     public static class LoginRequest {
@@ -98,4 +140,3 @@ public class AuthController {
         }
     }
 }
-

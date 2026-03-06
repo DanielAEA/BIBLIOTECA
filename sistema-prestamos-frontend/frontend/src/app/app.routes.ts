@@ -4,6 +4,7 @@ import { roleGuard } from './guards/role.guard';
 
 // Login
 import { LoginComponent } from './auth/login/login.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 // Dashboards
 import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
@@ -22,6 +23,7 @@ import { NotAuthorizedComponent } from './not-authorized/not-authorized.componen
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 
   {
     path: 'admin',

@@ -1,22 +1,52 @@
-<div class="login-container">
+<div class="auth-wrapper">
+  <div class="auth-background">
+    <div class="glass-circle circle-1"></div>
+    <div class="glass-circle circle-2"></div>
+  </div>
 
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo-side">
+        <img src="logo.png" alt="SIBU Logo" class="big-logo">
+      </div>
 
-    <h2>Iniciar Sesión</h2>
+      <div class="auth-form-side">
+        <div class="auth-header">
+          <h1>Bienvenido</h1>
+          <p>Inicia sesión para acceder a la biblioteca</p>
+        </div>
 
-    <label>Usuario</label>
-    <input formControlName="username" type="text">
-    <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="error">
-      El usuario es obligatorio.
+        <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form">
+          <div class="form-group">
+            <label>Correo Electrónico</label>
+            <div class="input-wrapper">
+              <input formControlName="username" type="email" placeholder="ejemplo@correo.com">
+            </div>
+            <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="form-error">
+              El correo es obligatorio.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Contraseña</label>
+            <div class="input-wrapper">
+              <input formControlName="password" type="password" placeholder="••••••••">
+            </div>
+            <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="form-error">
+              La contraseña es obligatoria.
+            </div>
+          </div>
+
+          <button type="submit" class="auth-button" [disabled]="loginForm.invalid">
+            <span>Ingresar</span>
+            <i class="arrow">→</i>
+          </button>
+
+          <div class="auth-footer">
+            <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+          </div>
+        </form>
+      </div>
     </div>
-
-    <label>Contraseña</label>
-    <input formControlName="password" type="password">
-    <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="error">
-      La contraseña es obligatoria.
-    </div>
-
-    <button type="submit">Ingresar</button>
-
-  </form>
+  </div>
 </div>

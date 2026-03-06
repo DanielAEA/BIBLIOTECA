@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -76,7 +76,7 @@ export class LoginComponent {
         console.error("Status:", err.status);
         console.error("Message:", err.message);
         console.error("Error body:", err.error);
-        
+
         let mensaje = 'Credenciales incorrectas';
         if (err.status === 0) {
           mensaje = 'No se pudo conectar al servidor. ¿Está corriendo el backend en http://localhost:8080?';

@@ -16,13 +16,13 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(correo: string, password: string): Observable<void> {
     const body = { correo, password };
     console.log('📤 Enviando petición de login a:', `${this.baseUrl}/auth/login`);
     console.log('📤 Body enviado:', body);
-    
+
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/auth/login`, body)
       .pipe(
@@ -32,6 +32,11 @@ export class AuthService {
           this.userSubject.next(this.getPayload());
         })
       );
+  }
+
+  register(userData: any): Observable<any> {
+    console.log('📤 Enviando petición de registro a:', `${this.baseUrl}/auth/register`);
+    return this.http.post(`${this.baseUrl}/auth/register`, userData);
   }
 
   logout() {
