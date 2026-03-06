@@ -6,10 +6,16 @@ import java.util.List;
 
 public interface PrestamoService {
     Prestamo crear(@NonNull Prestamo prestamo);
+
     Prestamo obtenerPorId(@NonNull Long id);
+
     List<Prestamo> listar();
+
     Prestamo actualizar(@NonNull Long id, @NonNull Prestamo prestamo);
+
     void eliminar(@NonNull Long id);
+
+    List<Prestamo> listarPorUsuario(@NonNull Long usuarioId);
 
     Prestamo devolverLibro(@NonNull Long idPrestamo);
 }

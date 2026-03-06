@@ -105,4 +105,9 @@ public class PrestamoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<List<Prestamo>> listarPorUsuario(@PathVariable @NonNull Long userId) {
+        return ResponseEntity.ok(prestamoService.listarPorUsuario(userId));
+    }
 }

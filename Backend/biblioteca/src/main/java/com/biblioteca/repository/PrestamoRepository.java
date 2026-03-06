@@ -10,4 +10,7 @@ public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
 
     // Buscar préstamos NO devueltos cuya fecha de devolución ya pasó
     List<Prestamo> findByDevueltoFalseAndFechaDevolucionBefore(LocalDate fecha);
+
+    // Buscar préstamos por ID de usuario
+    List<Prestamo> findByUsuarioId(Long usuarioId);
 }

@@ -109,6 +109,11 @@ public class PrestamoServiceImpl implements PrestamoService {
     }
 
     @Override
+    public List<Prestamo> listarPorUsuario(@NonNull Long usuarioId) {
+        return prestamoRepository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
     @Transactional
     public Prestamo devolverLibro(@NonNull Long idPrestamo) {
         Prestamo p = prestamoRepository.findById(idPrestamo)

@@ -47,7 +47,7 @@ export class ClienteDashboardComponent implements OnInit {
       return;
     }
 
-    const userId = payload.sub || payload.id;
+    const userId = payload.id || payload.sub;
     const userIdNumber = Number(userId);
     console.log('Cargando préstamos para usuario ID:', userId, '(número:', userIdNumber, ')');
 
