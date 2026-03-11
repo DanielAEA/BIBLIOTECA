@@ -6,6 +6,7 @@ import { BookService, Libro, LibroPayload } from '../../../services/book.service
 import { AuthorService, Autor } from '../../../services/author.service';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
 import { GeneroService, Genero } from '../../../services/genero.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-books',
@@ -43,7 +44,7 @@ export class BooksComponent implements OnInit {
     private authorService: AuthorService,
     private editorialService: EditorialService,
     private generoService: GeneroService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadBooks();
@@ -79,7 +80,7 @@ export class BooksComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar editoriales:', err);
-        alert('Error al cargar editoriales. Verifica la consola para más detalles.');
+        Swal.fire('Error', 'No se pudieron cargar las editoriales.', 'error');
       }
     });
 
@@ -134,15 +135,15 @@ export class BooksComponent implements OnInit {
   saveBook() {
     if (!this.editingBook) return;
     if (!this.selectedEditorialId) {
-      alert('Selecciona una editorial.');
+      Swal.fire('Atención', 'Selecciona una editorial.', 'warning');
       return;
     }
     if (!this.selectedGeneroId) {
-      alert('Selecciona un género.');
+      Swal.fire('Atención', 'Selecciona un género.', 'warning');
       return;
     }
     if (this.selectedAuthorIds.length === 0) {
-      alert('Selecciona al menos un autor.');
+      Swal.fire('Atención', 'Selecciona al menos un autor.', 'warning');
       return;
     }
 
@@ -159,16 +160,21 @@ export class BooksComponent implements OnInit {
         .createBook(payload)
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
-        next: () => {
-          this.loadBooks();
-          this.cancelEdit();
-          alert('Libro creado correctamente');
-        },
-        error: (err) => {
-          console.error('Error al crear libro:', err);
-          const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
-          const errorDetails = err?.error?.error || '';
-          alert(`Error al crear el libro: ${errorMessage}${errorDetails ? '\n' + errorDetails : ''}`);
+          next: () => {
+            this.loadBooks();
+            this.cancelEdit();
+            Swal.fire({
+              title: '¡Éxito!',
+              text: 'Libro creado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error('Error al crear libro:', err);
+            const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
+            Swal.fire('Error', `No se pudo crear el libro: ${errorMessage}`, 'error');
           }
         });
     } else {
@@ -176,32 +182,47 @@ export class BooksComponent implements OnInit {
         .updateBook(this.editingBook.id, payload)
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
-        next: () => {
-          this.loadBooks();
-          this.cancelEdit();
-          alert('Libro actualizado correctamente');
-        },
-        error: (err) => {
-          console.error('Error al actualizar libro:', err);
-          alert('Error al actualizar el libro');
+          next: () => {
+            this.loadBooks();
+            this.cancelEdit();
+            Swal.fire({
+              title: '¡Actualizado!',
+              text: 'Libro actualizado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error('Error al actualizar libro:', err);
+            Swal.fire('Error', 'No se pudo actualizar el libro', 'error');
           }
         });
     }
   }
 
   deleteBook(book: Libro) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el libro "${book.titulo}"?`)) {
-      return;
-    }
-
-    this.bookService.deleteBook(book.id).subscribe({
-      next: () => {
-        this.loadBooks();
-        alert('Libro eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar libro:', err);
-        alert('Error al eliminar el libro');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el libro "${book.titulo}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.bookService.deleteBook(book.id).subscribe({
+          next: () => {
+            this.loadBooks();
+            Swal.fire('¡Eliminado!', 'El libro ha sido eliminado.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar libro:', err);
+            Swal.fire('Error', 'No se pudo eliminar el libro', 'error');
+          }
+        });
       }
     });
   }
@@ -246,7 +267,7 @@ export class BooksComponent implements OnInit {
   addNewAuthor() {
     const nombre = this.newAuthorName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre del autor.');
+      Swal.fire('Atención', 'Ingresa el nombre del autor.', 'warning');
       return;
     }
     this.addingAuthor = true;
@@ -259,7 +280,7 @@ export class BooksComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear autor:', err);
-        alert('No se pudo crear el autor.');
+        Swal.fire('Error', 'No se pudo crear el autor.', 'error');
       },
       complete: () => (this.addingAuthor = false)
     });
@@ -268,7 +289,7 @@ export class BooksComponent implements OnInit {
   addNewEditorial() {
     const nombre = this.newEditorialName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre de la editorial.');
+      Swal.fire('Atención', 'Ingresa el nombre de la editorial.', 'warning');
       return;
     }
     this.addingEditorial = true;
@@ -280,7 +301,7 @@ export class BooksComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear editorial:', err);
-        alert('No se pudo crear la editorial.');
+        Swal.fire('Error', 'No se pudo crear la editorial.', 'error');
       },
       complete: () => (this.addingEditorial = false)
     });
@@ -289,7 +310,7 @@ export class BooksComponent implements OnInit {
   addNewGenero() {
     const nombre = this.newGeneroName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre del género.');
+      Swal.fire('Atención', 'Ingresa el nombre del género.', 'warning');
       return;
     }
     this.addingGenero = true;
@@ -301,7 +322,7 @@ export class BooksComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear género:', err);
-        alert('No se pudo crear el género.');
+        Swal.fire('Error', 'No se pudo crear el género.', 'error');
       },
       complete: () => (this.addingGenero = false)
     });

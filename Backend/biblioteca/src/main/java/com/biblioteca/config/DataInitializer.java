@@ -29,7 +29,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         initializeRoles();
-        initializeAdminUser();
+        initializeUsers();
     }
 
     private void initializeRoles() {
@@ -43,19 +43,31 @@ public class DataInitializer implements CommandLineRunner {
         }
     }
 
-    private void initializeAdminUser() {
+    private void initializeUsers() {
         if (usuarioRepository.count() == 0) {
             RolUsuario rolAdmin = rolUsuarioRepository.findByNombre("ADMIN")
                     .orElseThrow(() -> new RuntimeException("Error: Rol ADMIN no encontrado"));
 
+            RolUsuario rolCliente = rolUsuarioRepository.findByNombre("CLIENTE")
+                    .orElseThrow(() -> new RuntimeException("Error: Rol CLIENTE no encontrado"));
+
+            // Usuario ADMIN
             Usuario admin = new Usuario();
             admin.setNombre("Administrador");
             admin.setCorreo("admin@bib.com");
-            admin.setPassword(passwordEncoder.encode("admin123")); // Password por defecto
+            admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRol(rolAdmin);
-
             usuarioRepository.save(admin);
-            System.out.println(">>> Usuario ADMIN creado por defecto: admin@bib.com / admin123");
+            System.out.println(">>> Usuario ADMIN creado: admin@bib.com / admin123");
+
+            // Usuario PRUEBA
+            Usuario prueba = new Usuario();
+            prueba.setNombre("Usuario Prueba");
+            prueba.setCorreo("prueba@bib.com");
+            prueba.setPassword(passwordEncoder.encode("prueba123"));
+            prueba.setRol(rolCliente);
+            usuarioRepository.save(prueba);
+            System.out.println(">>> Usuario PRUEBA creado: prueba@bib.com / prueba123");
         }
     }
 }

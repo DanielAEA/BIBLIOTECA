@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { EjemplarService, Ejemplar, EjemplarPayload } from '../../../services/ejemplar.service';
 import { BookService, Libro } from '../../../services/book.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ejemplares',
@@ -26,7 +27,7 @@ export class EjemplaresComponent implements OnInit {
   constructor(
     private ejemplarService: EjemplarService,
     private bookService: BookService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadEjemplares();
@@ -80,11 +81,11 @@ export class EjemplaresComponent implements OnInit {
 
   saveEjemplar() {
     if (!this.ejemplarCodigo.trim()) {
-      alert('Ingresa el código del ejemplar.');
+      Swal.fire('Atención', 'Ingresa el código del ejemplar.', 'warning');
       return;
     }
     if (!this.selectedLibroId) {
-      alert('Selecciona un libro.');
+      Swal.fire('Atención', 'Selecciona un libro.', 'warning');
       return;
     }
 
@@ -109,11 +110,17 @@ export class EjemplaresComponent implements OnInit {
           next: () => {
             this.loadEjemplares();
             this.cancelForm();
-            alert('Ejemplar actualizado correctamente');
+            Swal.fire({
+              title: '¡Guardado!',
+              text: 'Ejemplar procesado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
-            console.error('Error al actualizar ejemplar:', err);
-            alert('Error al actualizar el ejemplar');
+            console.error('Error al procesar ejemplar:', err);
+            Swal.fire('Error', 'No se pudo completar la operación', 'error');
           }
         });
     } else {
@@ -124,29 +131,44 @@ export class EjemplaresComponent implements OnInit {
           next: () => {
             this.loadEjemplares();
             this.cancelForm();
-            alert('Ejemplar creado correctamente');
+            Swal.fire({
+              title: '¡Creado!',
+              text: 'Ejemplar creado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al crear ejemplar:', err);
-            alert('Error al crear el ejemplar');
+            Swal.fire('Error', 'No se pudo crear el ejemplar', 'error');
           }
         });
     }
   }
 
   deleteEjemplar(ejemplar: Ejemplar) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el ejemplar "${ejemplar.codigo}"?`)) {
-      return;
-    }
-
-    this.ejemplarService.delete(ejemplar.id).subscribe({
-      next: () => {
-        this.loadEjemplares();
-        alert('Ejemplar eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar ejemplar:', err);
-        alert('Error al eliminar el ejemplar');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el ejemplar "${ejemplar.codigo}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ejemplarService.delete(ejemplar.id).subscribe({
+          next: () => {
+            this.loadEjemplares();
+            Swal.fire('¡Eliminado!', 'El ejemplar ha sido eliminado.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar ejemplar:', err);
+            Swal.fire('Error', 'No se pudo eliminar el ejemplar', 'error');
+          }
+        });
       }
     });
   }

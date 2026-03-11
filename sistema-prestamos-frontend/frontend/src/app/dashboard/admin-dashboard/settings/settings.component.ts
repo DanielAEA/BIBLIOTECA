@@ -9,6 +9,7 @@ import { AuthorService, Autor } from '../../../services/author.service';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
 import { GeneroService, Genero } from '../../../services/genero.service';
 import { BookService, Libro, LibroPayload } from '../../../services/book.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-settings',
@@ -175,19 +176,19 @@ export class SettingsComponent implements OnInit {
 
   createLoan() {
     if (!this.selectedUserId || !this.selectedEjemplarId) {
-      alert('Selecciona usuario y ejemplar.');
+      Swal.fire('Atención', 'Selecciona usuario y ejemplar.', 'warning');
       return;
     }
 
     // Validar que el ejemplar siga disponible
     const ejemplar = this.ejemplares.find(e => e.id === this.selectedEjemplarId);
     if (!ejemplar) {
-      alert('El ejemplar seleccionado no existe. Por favor, recarga la página.');
+      Swal.fire('Error', 'El ejemplar seleccionado no existe. Por favor, recarga la página.', 'error');
       this.loadEjemplares();
       return;
     }
     if (!ejemplar.disponible) {
-      alert('El ejemplar seleccionado ya no está disponible. Por favor, selecciona otro ejemplar.');
+      Swal.fire('No disponible', 'El ejemplar seleccionado ya no está disponible. Por favor, selecciona otro ejemplar.', 'info');
       this.loadEjemplares();
       this.selectedEjemplarId = null;
       return;
@@ -198,12 +199,12 @@ export class SettingsComponent implements OnInit {
     const ejemplarId = Number(this.selectedEjemplarId);
 
     if (isNaN(userId) || userId <= 0) {
-      alert('El ID del usuario no es válido. Por favor, selecciona un usuario.');
+      Swal.fire('Error', 'El ID del usuario no es válido. Por favor, selecciona un usuario.', 'error');
       return;
     }
 
     if (isNaN(ejemplarId) || ejemplarId <= 0) {
-      alert('El ID del ejemplar no es válido. Por favor, selecciona un ejemplar.');
+      Swal.fire('Error', 'El ID del ejemplar no es válido. Por favor, selecciona un ejemplar.', 'error');
       return;
     }
 
@@ -232,8 +233,14 @@ export class SettingsComponent implements OnInit {
           this.selectedUserId = null;
           this.selectedEjemplarId = null;
           this.updateEjemplarAvailability(created.ejemplar.id, false);
-          this.loadEjemplares(); // Recargar ejemplares para actualizar disponibilidad
-          alert('Préstamo registrado correctamente');
+          this.loadEjemplares();
+          Swal.fire({
+            title: '¡Registrado!',
+            text: 'Préstamo registrado correctamente',
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false
+          });
         },
         error: (err) => {
           console.error('❌ Error al crear préstamo:', err);
@@ -279,21 +286,31 @@ export class SettingsComponent implements OnInit {
   }
 
   deleteLoan(prestamo: Prestamo) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el préstamo del libro "${prestamo.ejemplar.libro.titulo}"?`)) {
-      return;
-    }
-    this.loanService.delete(prestamo.id).subscribe({
-      next: () => {
-        if (!prestamo.devuelto) {
-          this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
-        }
-        this.loadPrestamos();
-        this.loadEjemplares();
-        alert('Préstamo eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar préstamo:', err);
-        alert('Error al eliminar el préstamo');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el préstamo del libro "${prestamo.ejemplar.libro.titulo}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loanService.delete(prestamo.id).subscribe({
+          next: () => {
+            if (!prestamo.devuelto) {
+              this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
+            }
+            this.loadPrestamos();
+            this.loadEjemplares();
+            Swal.fire('Eliminado', 'Préstamo eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar préstamo:', err);
+            Swal.fire('Error', 'No se pudo eliminar el préstamo', 'error');
+          }
+        });
       }
     });
   }
@@ -406,7 +423,7 @@ export class SettingsComponent implements OnInit {
 
   saveAutor() {
     if (!this.autorNombre.trim()) {
-      alert('Ingresa el nombre del autor.');
+      Swal.fire('Atención', 'Ingresa el nombre del autor.', 'warning');
       return;
     }
 
@@ -434,29 +451,44 @@ export class SettingsComponent implements OnInit {
           next: () => {
             this.loadAutores();
             this.cancelAutorForm();
-            alert('Autor creado correctamente');
+            Swal.fire({
+              title: '¡Guardado!',
+              text: 'Cambios realizados correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
-            console.error('Error al crear autor:', err);
-            alert('Error al crear el autor');
+            console.error('Error al guardar autor:', err);
+            Swal.fire('Error', 'No se pudo procesar la solicitud', 'error');
           }
         });
     }
   }
 
   deleteAutor(autor: Autor) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el autor "${autor.nombre}"?`)) {
-      return;
-    }
-
-    this.authorService.delete(autor.id).subscribe({
-      next: () => {
-        this.loadAutores();
-        alert('Autor eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar autor:', err);
-        alert('Error al eliminar el autor');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el autor "${autor.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authorService.delete(autor.id).subscribe({
+          next: () => {
+            this.loadAutores();
+            Swal.fire('Eliminado', 'Autor eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar autor:', err);
+            Swal.fire('Error', 'No se pudo eliminar el autor', 'error');
+          }
+        });
       }
     });
   }
@@ -496,7 +528,7 @@ export class SettingsComponent implements OnInit {
 
   saveEditorial() {
     if (!this.editorialNombre.trim()) {
-      alert('Ingresa el nombre de la editorial.');
+      Swal.fire('Atención', 'Ingresa el nombre de la editorial.', 'warning');
       return;
     }
 
@@ -524,29 +556,44 @@ export class SettingsComponent implements OnInit {
           next: () => {
             this.loadEditoriales();
             this.cancelEditorialForm();
-            alert('Editorial creada correctamente');
+            Swal.fire({
+              title: '¡Completado!',
+              text: 'Editorial procesada correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
-            console.error('Error al crear editorial:', err);
-            alert('Error al crear la editorial');
+            console.error('Error al procesar editorial:', err);
+            Swal.fire('Error', 'No se pudo completar la operación', 'error');
           }
         });
     }
   }
 
   deleteEditorial(editorial: Editorial) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar la editorial "${editorial.nombre}"?`)) {
-      return;
-    }
-
-    this.editorialService.delete(editorial.id).subscribe({
-      next: () => {
-        this.loadEditoriales();
-        alert('Editorial eliminada correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar editorial:', err);
-        alert('Error al eliminar la editorial');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar la editorial "${editorial.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.editorialService.delete(editorial.id).subscribe({
+          next: () => {
+            this.loadEditoriales();
+            Swal.fire('Eliminado', 'Editorial eliminada correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar editorial:', err);
+            Swal.fire('Error', 'No se pudo eliminar la editorial', 'error');
+          }
+        });
       }
     });
   }
@@ -586,7 +633,7 @@ export class SettingsComponent implements OnInit {
 
   saveGenero() {
     if (!this.generoNombre.trim()) {
-      alert('Ingresa el nombre del género.');
+      Swal.fire('Atención', 'Ingresa el nombre del género.', 'warning');
       return;
     }
 
@@ -625,18 +672,27 @@ export class SettingsComponent implements OnInit {
   }
 
   deleteGenero(genero: Genero) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el género "${genero.nombre}"?`)) {
-      return;
-    }
-
-    this.generoService.delete(genero.id).subscribe({
-      next: () => {
-        this.loadGeneros();
-        alert('Género eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar género:', err);
-        alert('Error al eliminar el género');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el género "${genero.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.generoService.delete(genero.id).subscribe({
+          next: () => {
+            this.loadGeneros();
+            Swal.fire('Eliminado', 'Género eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar género:', err);
+            Swal.fire('Error', 'No se pudo eliminar el género', 'error');
+          }
+        });
       }
     });
   }
@@ -689,11 +745,11 @@ export class SettingsComponent implements OnInit {
 
   saveEjemplar() {
     if (!this.ejemplarCodigo.trim()) {
-      alert('Ingresa el código del ejemplar.');
+      Swal.fire('Atención', 'Ingresa el código del ejemplar.', 'warning');
       return;
     }
     if (!this.selectedLibroId) {
-      alert('Selecciona un libro.');
+      Swal.fire('Atención', 'Selecciona un libro.', 'warning');
       return;
     }
 
@@ -735,30 +791,45 @@ export class SettingsComponent implements OnInit {
             this.loadEjemplaresList();
             this.loadEjemplares();
             this.cancelEjemplarForm();
-            alert('Ejemplar creado correctamente');
+            Swal.fire({
+              title: '¡Éxito!',
+              text: 'Ejemplar procesado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
-            console.error('Error al crear ejemplar:', err);
-            alert('Error al crear el ejemplar');
+            console.error('Error al procesar ejemplar:', err);
+            Swal.fire('Error', 'No se pudo completar la operación', 'error');
           }
         });
     }
   }
 
   deleteEjemplar(ejemplar: Ejemplar) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el ejemplar "${ejemplar.codigo}"?`)) {
-      return;
-    }
-
-    this.ejemplarService.delete(ejemplar.id).subscribe({
-      next: () => {
-        this.loadEjemplaresList();
-        this.loadEjemplares();
-        alert('Ejemplar eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar ejemplar:', err);
-        alert('Error al eliminar el ejemplar');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el ejemplar "${ejemplar.codigo}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.ejemplarService.delete(ejemplar.id).subscribe({
+          next: () => {
+            this.loadEjemplaresList();
+            this.loadEjemplares();
+            Swal.fire('Eliminado', 'Ejemplar eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar ejemplar:', err);
+            Swal.fire('Error', 'No se pudo eliminar el ejemplar', 'error');
+          }
+        });
       }
     });
   }
@@ -791,7 +862,7 @@ export class SettingsComponent implements OnInit {
     }
 
     if (!this.editingUser.nombre?.trim() || !this.editingUser.correo?.trim()) {
-      alert('Nombre y correo son obligatorios.');
+      Swal.fire('Atención', 'Nombre y correo son obligatorios.', 'warning');
       return;
     }
 
@@ -800,7 +871,7 @@ export class SettingsComponent implements OnInit {
     if (this.editingUser.id === 0) {
       // Crear nuevo usuario - NO incluir el ID en el payload
       if (!this.editingUser.password?.trim()) {
-        alert('La contraseña es obligatoria para crear un nuevo usuario.');
+        Swal.fire('Atención', 'La contraseña es obligatoria para crear un nuevo usuario.', 'warning');
         this.submittingUser = false;
         return;
       }
@@ -826,22 +897,12 @@ export class SettingsComponent implements OnInit {
           next: () => {
             this.loadUsers();
             this.cancelUserForm();
-            alert('Usuario creado correctamente');
+            Swal.fire('¡Creado!', 'Usuario creado correctamente', 'success');
           },
           error: (err) => {
             console.error('❌ Error al crear usuario:', err);
-            console.error('❌ Error completo:', JSON.stringify(err, null, 2));
-
-            let errorMsg = 'Error al crear el usuario';
-            if (err?.error?.message) {
-              errorMsg = err.error.message;
-            } else if (err?.error?.error) {
-              errorMsg = err.error.error;
-            } else if (err?.message) {
-              errorMsg = err.message;
-            }
-
-            alert(`Error: ${errorMsg}`);
+            let errorMsg = err?.error?.message || err?.error?.error || err?.message || 'Error al crear el usuario';
+            Swal.fire('Error', errorMsg, 'error');
           }
         });
     } else {
@@ -870,30 +931,39 @@ export class SettingsComponent implements OnInit {
           next: () => {
             this.loadUsers();
             this.cancelUserForm();
-            alert('Usuario actualizado correctamente');
+            Swal.fire('¡Actualizado!', 'Usuario actualizado correctamente', 'success');
           },
           error: (err) => {
             console.error('❌ Error al actualizar usuario:', err);
             const errorMsg = err?.error?.message || err?.error?.error || 'Error al actualizar el usuario';
-            alert(`Error: ${errorMsg}`);
+            Swal.fire('Error', errorMsg, 'error');
           }
         });
     }
   }
 
   deleteUser(user: Usuario) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar al usuario ${user.nombre}?`)) {
-      return;
-    }
-
-    this.userService.deleteUser(user.id).subscribe({
-      next: () => {
-        this.loadUsers();
-        alert('Usuario eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar usuario:', err);
-        alert('Error al eliminar el usuario');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar al usuario "${user.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.loadUsers();
+            Swal.fire('Eliminado', 'Usuario eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar usuario:', err);
+            Swal.fire('Error', 'No se pudo eliminar el usuario', 'error');
+          }
+        });
       }
     });
   }
@@ -960,19 +1030,19 @@ export class SettingsComponent implements OnInit {
 
   saveBook() {
     if (!this.bookTitulo.trim()) {
-      alert('Ingresa el título del libro.');
+      Swal.fire('Atención', 'Ingresa el título del libro.', 'warning');
       return;
     }
     if (!this.selectedBookEditorialId) {
-      alert('Selecciona una editorial.');
+      Swal.fire('Atención', 'Selecciona una editorial.', 'warning');
       return;
     }
     if (!this.selectedBookGeneroId) {
-      alert('Selecciona un género.');
+      Swal.fire('Atención', 'Selecciona un género.', 'warning');
       return;
     }
     if (this.selectedBookAuthorIds.length === 0) {
-      alert('Selecciona al menos un autor.');
+      Swal.fire('Atención', 'Selecciona al menos un autor.', 'warning');
       return;
     }
 
@@ -994,48 +1064,40 @@ export class SettingsComponent implements OnInit {
             this.loadBooks();
             this.loadLibros();
             this.cancelBookForm();
-            alert('Libro actualizado correctamente');
+            Swal.fire('¡Éxito!', 'Libro guardado correctamente', 'success');
           },
           error: (err) => {
-            console.error('Error al actualizar libro:', err);
-            const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
-            alert(`Error al actualizar el libro: ${errorMessage}`);
-          }
-        });
-    } else {
-      this.bookService
-        .createBook(payload)
-        .pipe(finalize(() => (this.submittingBook = false)))
-        .subscribe({
-          next: () => {
-            this.loadBooks();
-            this.loadLibros();
-            this.cancelBookForm();
-            alert('Libro creado correctamente');
-          },
-          error: (err) => {
-            console.error('Error al crear libro:', err);
+            console.error('Error al guardar libro:', err);
             const errorMessage = err?.error?.message || err?.error?.error || err?.message || 'Error desconocido';
-            alert(`Error al crear el libro: ${errorMessage}`);
+            Swal.fire('Error', `No se pudo guardar el libro: ${errorMessage}`, 'error');
           }
         });
     }
   }
 
   deleteBook(book: Libro) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el libro "${book.titulo}"?`)) {
-      return;
-    }
-
-    this.bookService.deleteBook(book.id).subscribe({
-      next: () => {
-        this.loadBooks();
-        this.loadLibros();
-        alert('Libro eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar libro:', err);
-        alert('Error al eliminar el libro');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el libro "${book.titulo}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.bookService.deleteBook(book.id).subscribe({
+          next: () => {
+            this.loadBooks();
+            this.loadLibros();
+            Swal.fire('Eliminado', 'Libro eliminado correctamente', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar libro:', err);
+            Swal.fire('Error', 'No se pudo eliminar el libro', 'error');
+          }
+        });
       }
     });
   }
@@ -1043,7 +1105,7 @@ export class SettingsComponent implements OnInit {
   addNewBookAuthor() {
     const nombre = this.newBookAuthorName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre del autor.');
+      Swal.fire('Atención', 'Ingresa el nombre del autor.', 'warning');
       return;
     }
     this.addingBookAuthor = true;
@@ -1055,7 +1117,7 @@ export class SettingsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear autor:', err);
-        alert('No se pudo crear el autor.');
+        Swal.fire('Error', 'No se pudo crear el autor.', 'error');
       },
       complete: () => (this.addingBookAuthor = false)
     });
@@ -1064,7 +1126,7 @@ export class SettingsComponent implements OnInit {
   addNewBookEditorial() {
     const nombre = this.newBookEditorialName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre de la editorial.');
+      Swal.fire('Atención', 'Ingresa el nombre de la editorial.', 'warning');
       return;
     }
     this.addingBookEditorial = true;
@@ -1076,7 +1138,7 @@ export class SettingsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear editorial:', err);
-        alert('No se pudo crear la editorial.');
+        Swal.fire('Error', 'No se pudo crear la editorial.', 'error');
       },
       complete: () => (this.addingBookEditorial = false)
     });
@@ -1085,7 +1147,7 @@ export class SettingsComponent implements OnInit {
   addNewBookGenero() {
     const nombre = this.newBookGeneroName.trim();
     if (!nombre) {
-      alert('Ingresa el nombre del género.');
+      Swal.fire('Atención', 'Ingresa el nombre del género.', 'warning');
       return;
     }
     this.addingBookGenero = true;
@@ -1097,7 +1159,7 @@ export class SettingsComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al crear género:', err);
-        alert('No se pudo crear el género.');
+        Swal.fire('Error', 'No se pudo crear el género.', 'error');
       },
       complete: () => (this.addingBookGenero = false)
     });

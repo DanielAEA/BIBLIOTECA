@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService, Usuario } from '../../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -18,7 +19,7 @@ export class UsersComponent implements OnInit {
   editingUser: Usuario | null = null;
   showEditForm = false;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
     this.loadUsers();
@@ -57,28 +58,43 @@ export class UsersComponent implements OnInit {
       next: () => {
         this.loadUsers();
         this.cancelEdit();
-        alert('Usuario actualizado correctamente');
+        Swal.fire({
+          title: '¡Actualizado!',
+          text: 'Usuario actualizado correctamente',
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
       },
       error: (err) => {
         console.error('Error al actualizar usuario:', err);
-        alert('Error al actualizar el usuario');
+        Swal.fire('Error', 'No se pudo actualizar el usuario', 'error');
       }
     });
   }
 
   deleteUser(user: Usuario) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar al usuario ${user.nombre}?`)) {
-      return;
-    }
-
-    this.userService.deleteUser(user.id).subscribe({
-      next: () => {
-        this.loadUsers();
-        alert('Usuario eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar usuario:', err);
-        alert('Error al eliminar el usuario');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar al usuario ${user.nombre}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.loadUsers();
+            Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar usuario:', err);
+            Swal.fire('Error', 'No se pudo eliminar el usuario', 'error');
+          }
+        });
       }
     });
   }

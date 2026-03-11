@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editorials',
@@ -19,7 +20,7 @@ export class EditorialsComponent implements OnInit {
   loading = false;
   submitting = false;
 
-  constructor(private editorialService: EditorialService) {}
+  constructor(private editorialService: EditorialService) { }
 
   ngOnInit() {
     this.loadEditoriales();
@@ -59,7 +60,13 @@ export class EditorialsComponent implements OnInit {
 
   saveEditorial() {
     if (!this.editorialNombre.trim()) {
-      alert('Ingresa el nombre de la editorial.');
+      Swal.fire({
+        title: 'Atención',
+        text: 'Ingresa el nombre de la editorial.',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
       return;
     }
 
@@ -72,11 +79,17 @@ export class EditorialsComponent implements OnInit {
           next: () => {
             this.loadEditoriales();
             this.cancelForm();
-            alert('Editorial actualizada correctamente');
+            Swal.fire({
+              title: '¡Actualizado!',
+              text: 'Editorial actualizada correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al actualizar editorial:', err);
-            alert('Error al actualizar la editorial');
+            Swal.fire('Error', 'No se pudo actualizar la editorial', 'error');
           }
         });
     } else {
@@ -87,28 +100,50 @@ export class EditorialsComponent implements OnInit {
           next: () => {
             this.loadEditoriales();
             this.cancelForm();
-            alert('Editorial creada correctamente');
+            Swal.fire({
+              title: '¡Creado!',
+              text: 'Editorial creada correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al crear editorial:', err);
-            alert('Error al crear la editorial');
+            Swal.fire('Error', 'No se pudo crear la editorial', 'error');
           }
         });
     }
   }
 
   deleteEditorial(editorial: Editorial) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar la editorial "${editorial.nombre}"?`)) {
-      return;
-    }
-    this.editorialService.delete(editorial.id).subscribe({
-      next: () => {
-        this.loadEditoriales();
-        alert('Editorial eliminada correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar editorial:', err);
-        alert('Error al eliminar la editorial');
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar la editorial "${editorial.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.editorialService.delete(editorial.id).subscribe({
+          next: () => {
+            this.loadEditoriales();
+            Swal.fire({
+              title: '¡Eliminado!',
+              text: 'La editorial ha sido eliminada.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar editorial:', err);
+            Swal.fire('Error', 'No se pudo eliminar la editorial', 'error');
+          }
+        });
       }
     });
   }
