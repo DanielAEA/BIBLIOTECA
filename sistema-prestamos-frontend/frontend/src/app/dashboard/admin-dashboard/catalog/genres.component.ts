@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { GeneroService, Genero } from '../../../services/genero.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-genres',
@@ -12,6 +13,7 @@ import { GeneroService, Genero } from '../../../services/genero.service';
   styleUrls: ['./genres.component.scss']
 })
 export class GenresComponent implements OnInit {
+
   generos: Genero[] = [];
   editingGenero: Genero | null = null;
   showForm = false;
@@ -19,7 +21,7 @@ export class GenresComponent implements OnInit {
   loading = false;
   submitting = false;
 
-  constructor(private generoService: GeneroService) {}
+  constructor(private generoService: GeneroService) { }
 
   ngOnInit() {
     this.loadGeneros();
@@ -58,13 +60,22 @@ export class GenresComponent implements OnInit {
   }
 
   saveGenero() {
+
     if (!this.generoNombre.trim()) {
-      alert('Ingresa el nombre del género.');
+      Swal.fire({
+        title: 'Atención',
+        text: 'Ingresa el nombre del género.',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
       return;
     }
 
     this.submitting = true;
+
     if (this.editingGenero) {
+
       this.generoService
         .update(this.editingGenero.id, this.generoNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
@@ -72,14 +83,23 @@ export class GenresComponent implements OnInit {
           next: () => {
             this.loadGeneros();
             this.cancelForm();
-            alert('Género actualizado correctamente');
+
+            Swal.fire({
+              title: '¡Actualizado!',
+              text: 'Género actualizado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al actualizar género:', err);
-            alert('Error al actualizar el género');
+            Swal.fire('Error', 'No se pudo actualizar el género', 'error');
           }
         });
+
     } else {
+
       this.generoService
         .create(this.generoNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
@@ -87,29 +107,60 @@ export class GenresComponent implements OnInit {
           next: () => {
             this.loadGeneros();
             this.cancelForm();
-            alert('Género creado correctamente');
+
+            Swal.fire({
+              title: '¡Creado!',
+              text: 'Género creado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al crear género:', err);
-            alert('Error al crear el género');
+            Swal.fire('Error', 'No se pudo crear el género', 'error');
           }
         });
+
     }
   }
 
   deleteGenero(genero: Genero) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el género "${genero.nombre}"?`)) {
-      return;
-    }
-    this.generoService.delete(genero.id).subscribe({
-      next: () => {
-        this.loadGeneros();
-        alert('Género eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar género:', err);
-        alert('Error al eliminar el género');
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el género "${genero.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        this.generoService.delete(genero.id).subscribe({
+          next: () => {
+            this.loadGeneros();
+
+            Swal.fire({
+              title: '¡Eliminado!',
+              text: 'El género ha sido eliminado.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar género:', err);
+            Swal.fire('Error', 'No se pudo eliminar el género', 'error');
+          }
+        });
+
       }
+
     });
   }
+
 }

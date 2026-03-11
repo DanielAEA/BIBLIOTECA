@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { AuthorService, Autor } from '../../../services/author.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-authors',
@@ -12,6 +13,7 @@ import { AuthorService, Autor } from '../../../services/author.service';
   styleUrls: ['./authors.component.scss']
 })
 export class AuthorsComponent implements OnInit {
+
   autores: Autor[] = [];
   editingAutor: Autor | null = null;
   showForm = false;
@@ -19,7 +21,7 @@ export class AuthorsComponent implements OnInit {
   loading = false;
   submitting = false;
 
-  constructor(private authorService: AuthorService) {}
+  constructor(private authorService: AuthorService) { }
 
   ngOnInit() {
     this.loadAutores();
@@ -58,13 +60,22 @@ export class AuthorsComponent implements OnInit {
   }
 
   saveAutor() {
+
     if (!this.autorNombre.trim()) {
-      alert('Ingresa el nombre del autor.');
+      Swal.fire({
+        title: 'Atención',
+        text: 'Ingresa el nombre del autor.',
+        icon: 'warning',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Entendido'
+      });
       return;
     }
 
     this.submitting = true;
+
     if (this.editingAutor) {
+
       this.authorService
         .update(this.editingAutor.id, this.autorNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
@@ -72,14 +83,23 @@ export class AuthorsComponent implements OnInit {
           next: () => {
             this.loadAutores();
             this.cancelForm();
-            alert('Autor actualizado correctamente');
+
+            Swal.fire({
+              title: '¡Actualizado!',
+              text: 'Autor actualizado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al actualizar autor:', err);
-            alert('Error al actualizar el autor');
+            Swal.fire('Error', 'No se pudo actualizar el autor', 'error');
           }
         });
+
     } else {
+
       this.authorService
         .create(this.autorNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
@@ -87,29 +107,60 @@ export class AuthorsComponent implements OnInit {
           next: () => {
             this.loadAutores();
             this.cancelForm();
-            alert('Autor creado correctamente');
+
+            Swal.fire({
+              title: '¡Creado!',
+              text: 'Autor creado correctamente',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
           },
           error: (err) => {
             console.error('Error al crear autor:', err);
-            alert('Error al crear el autor');
+            Swal.fire('Error', 'No se pudo crear el autor', 'error');
           }
         });
+
     }
   }
 
   deleteAutor(autor: Autor) {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el autor "${autor.nombre}"?`)) {
-      return;
-    }
-    this.authorService.delete(autor.id).subscribe({
-      next: () => {
-        this.loadAutores();
-        alert('Autor eliminado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al eliminar autor:', err);
-        alert('Error al eliminar el autor');
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `Deseas eliminar el autor "${autor.nombre}"`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        this.authorService.delete(autor.id).subscribe({
+          next: () => {
+            this.loadAutores();
+
+            Swal.fire({
+              title: '¡Eliminado!',
+              text: 'El autor ha sido eliminado.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          },
+          error: (err) => {
+            console.error('Error al eliminar autor:', err);
+            Swal.fire('Error', 'No se pudo eliminar el autor', 'error');
+          }
+        });
+
       }
+
     });
   }
+
 }
