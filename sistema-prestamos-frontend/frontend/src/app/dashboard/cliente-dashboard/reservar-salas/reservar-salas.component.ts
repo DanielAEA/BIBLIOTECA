@@ -18,7 +18,6 @@ export class ReservarSalasComponent implements OnInit {
     misReservas: ReservaSala[] = [];
     loading = false;
 
-    // Form
     showForm = false;
     selectedSalaId: number | null = null;
     reservaFecha = '';
@@ -83,7 +82,7 @@ export class ReservarSalasComponent implements OnInit {
         this.reservaHoraInicio = '';
         this.reservaHoraFin = '';
         this.horasFinDisponibles = [];
-        this.generarHorarios(); // Reset a todos disponibles inicialmente
+        this.generarHorarios();
         
         if (!this.selectedSalaId || !this.reservaFecha) return;
         
@@ -102,8 +101,6 @@ export class ReservarSalasComponent implements OnInit {
     }
 
     filtrarHorariosOcupados() {
-        // Remove times from horasDisponibles if they fall strictly within an active reservation block
-        // Un horario "H" es invalido si existe una reserva R donde R.horaInicio <= H < R.horaFin
         this.horasDisponibles = this.horasDisponibles.filter(hora => {
             for (const r of this.reservasActivas) {
                 const exInicio = r.horaInicio.substring(0, 5);
@@ -118,7 +115,6 @@ export class ReservarSalasComponent implements OnInit {
 
     generarHorarios() {
         this.horasDisponibles = [];
-        // Generar horas de 08:00 a 18:30 para inicio (la última reserva inicia 18:30 y termina 19:00)
         for (let h = 8; h <= 18; h++) {
             const hora = h < 10 ? `0${h}` : `${h}`;
             this.horasDisponibles.push(`${hora}:00`);
@@ -135,14 +131,13 @@ export class ReservarSalasComponent implements OnInit {
         let h = parseInt(hStr, 10);
         let m = parseInt(mStr, 10);
         
-        // Empezar a agregar desde los siguientes 30 min
         m += 30;
         if (m === 60) {
             h++;
             m = 0;
         }
 
-        let maxOpciones = 2; // Máximo 1 hora (2 incrementos de 30 minutos)
+        let maxOpciones = 2;
         let opcionesAgregadas = 0;
 
         while ((h < 19 || (h === 19 && m === 0)) && opcionesAgregadas < maxOpciones) {
@@ -150,8 +145,6 @@ export class ReservarSalasComponent implements OnInit {
             const minuto = m === 0 ? '00' : '30';
             const horaCandidata = `${hora}:${minuto}`;
 
-            // Check if this end time crosses into a new reservation block
-            // An end time E is invalid if there is an active reservation R where R.horaInicio > horaInicio AND R.horaInicio < E
             let cruzaReserva = false;
             for (const r of this.reservasActivas) {
                 const exInicio = r.horaInicio.substring(0, 5);
@@ -162,7 +155,7 @@ export class ReservarSalasComponent implements OnInit {
             }
 
             if (cruzaReserva) {
-                break; // Stop offering longer durations if it hits the next reservation
+                break;
             }
 
             this.horasFinDisponibles.push(horaCandidata);
@@ -195,11 +188,8 @@ export class ReservarSalasComponent implements OnInit {
             return;
         }
 
-        // Validate conflicts with active reservations
         for (const existente of this.reservasActivas) {
-            // Un solapamiento ocurre si: Inicio nuevo < Fin existente Y Fin nuevo > Inicio existente
-            // Formato 'HH:mm' se puede comparar como string al azar length: '08:00' < '09:00'
-            const exInicio = existente.horaInicio.substring(0, 5); // Tomamos HH:mm por si trae segundos
+            const exInicio = existente.horaInicio.substring(0, 5); 
             const exFin = existente.horaFin.substring(0, 5);
 
             if (this.reservaHoraInicio < exFin && this.reservaHoraFin > exInicio) {

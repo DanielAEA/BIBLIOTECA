@@ -176,7 +176,6 @@ export class BooksComponent implements OnInit {
     };
 
     const handleUpload = (bookId: number, isNew: boolean) => {
-      // Solo subir si hay archivo y el formato no es estrictamente FISICO
       if (this.selectedFile && this.editingBook?.formato !== 'FISICO') {
         this.bookService.uploadPdf(bookId, this.selectedFile).subscribe({
           next: () => this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} y PDF subido correctamente.`),

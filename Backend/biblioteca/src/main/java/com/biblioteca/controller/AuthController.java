@@ -13,17 +13,16 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final AuthService authService; // Changed to AuthService
+    private final AuthService authService;
 
-    public AuthController(AuthService authService) { // Updated constructor
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Usuario usuario) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(usuario)); // Delegated to
-                                                                                                  // AuthService
+            return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(usuario));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", e.getMessage()));
@@ -34,7 +33,7 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             String email = request.getCorreo() != null ? request.getCorreo() : request.getUsername();
-            return ResponseEntity.ok(authService.login(email, request.getPassword())); // Delegated to AuthService
+            return ResponseEntity.ok(authService.login(email, request.getPassword()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Credenciales incorrectas"));

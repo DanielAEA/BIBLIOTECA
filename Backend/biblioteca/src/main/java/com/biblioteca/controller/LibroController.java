@@ -65,7 +65,6 @@ public class LibroController {
         }
 
         try {
-            // Verificar que sea un PDF
             String contentType = file.getContentType();
             if (contentType == null || !contentType.equals("application/pdf")) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Solo se permiten archivos PDF"));
@@ -76,20 +75,17 @@ public class LibroController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Libro no encontrado"));
             }
 
-            // Crear el directorio si no existe
             Path uploadDir = Paths.get("uploads/libros");
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
             }
 
-            // Generar un nombre único para el archivo
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
             Path filePath = uploadDir.resolve(fileName);
 
-            // Guardar el archivo
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            // Actualizar el libro
+
             libro.setArchivoDigital("/uploads/libros/" + fileName);
             libro.setTieneDigital(true);
             Libro actualizado = libroService.actualizar(id, libro);
@@ -103,7 +99,6 @@ public class LibroController {
     }
 
     private LibroDTO convertToDTO(Libro libro) {
-        // Convertir autores
         List<LibroDTO.AutorDTO> autoresDTO = null;
         if (libro.getAutores() != null) {
             autoresDTO = libro.getAutores().stream()
@@ -111,7 +106,6 @@ public class LibroController {
                 .collect(Collectors.toList());
         }
 
-        // Convertir editorial
         LibroDTO.EditorialDTO editorialDTO = null;
         if (libro.getEditorial() != null) {
             editorialDTO = new LibroDTO.EditorialDTO(
@@ -120,7 +114,6 @@ public class LibroController {
             );
         }
 
-        // Convertir género
         LibroDTO.GeneroDTO generoDTO = null;
         if (libro.getGenero() != null) {
             generoDTO = new LibroDTO.GeneroDTO(
@@ -129,7 +122,6 @@ public class LibroController {
             );
         }
 
-        // Calcular stock disponible (ejemplares disponibles)
         int stockDisponible = 0;
         if (libro.getEjemplares() != null) {
             stockDisponible = (int) libro.getEjemplares().stream()

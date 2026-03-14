@@ -5,7 +5,6 @@
 
     <div *ngIf="loading" class="loading">Cargando salas...</div>
 
-    <!-- Grid de salas disponibles -->
     <div class="salas-grid" *ngIf="!loading">
         <div class="sala-card" *ngFor="let sala of salas">
             <div class="sala-icon">🏛️</div>
@@ -21,7 +20,6 @@
 
     <div *ngIf="!loading && salas.length === 0" class="no-data">No hay salas disponibles para reservar.</div>
 
-    <!-- Formulario de reserva -->
     <div class="resena-overlay" *ngIf="showForm" (click)="cancelForm()">
         <div class="resena-modal" (click)="$event.stopPropagation()">
             <div class="resena-modal-header">
@@ -65,7 +63,6 @@
         </div>
     </div>
 
-    <!-- Mis reservas -->
     <div class="premium-card" style="margin-top: 1.5rem" *ngIf="misReservas.length > 0">
         <h3>Mis Reservas</h3>
         <table class="premium-table">

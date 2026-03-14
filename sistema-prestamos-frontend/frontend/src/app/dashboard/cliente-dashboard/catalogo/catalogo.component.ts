@@ -21,7 +21,6 @@ export class CatalogoClienteComponent implements OnInit {
     loading = false;
     searchTerm = '';
 
-    // Resena inline
     showResenaForm = false;
     resenaLibroId: number | null = null;
     resenaLibroTitulo = '';
@@ -126,7 +125,6 @@ export class CatalogoClienteComponent implements OnInit {
         }
     }
 
-    // --- RESENAS ---
     openResenaForm(libro: any) {
         this.resenaLibroId = libro.id;
         this.resenaLibroTitulo = libro.titulo;

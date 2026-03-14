@@ -3,7 +3,6 @@
         <h2>Catálogo de Libros</h2>
     </div>
 
-    <!-- Buscador -->
     <div class="premium-card search-bar">
         <input type="text" [(ngModel)]="searchTerm" (input)="filterLibros()"
             placeholder="🔍 Buscar por título, autor o género..." class="search-input">
@@ -11,7 +10,6 @@
 
     <div *ngIf="loading" class="loading">Cargando catálogo...</div>
 
-    <!-- Grid de libros -->
     <div class="books-grid" *ngIf="!loading">
         <div class="book-card" *ngFor="let libro of filteredLibros">
             <div class="book-info">
@@ -51,7 +49,6 @@
         No se encontraron libros{{ searchTerm ? ' con ese criterio' : '' }}.
     </div>
 
-    <!-- Modal de Reseña -->
     <div class="resena-overlay" *ngIf="showResenaForm" (click)="closeResenaForm()">
         <div class="resena-modal" (click)="$event.stopPropagation()">
             <div class="resena-modal-header">
@@ -67,7 +64,6 @@
                 <span class="promedio-text">{{ promedioLibro.toFixed(1) }}/5 ({{ resenasLibro.length }} reseñas)</span>
             </div>
 
-            <!-- Formulario -->
             <div class="resena-form">
                 <label>Tu calificación:</label>
                 <div class="star-selector">
@@ -82,7 +78,6 @@
                 </button>
             </div>
 
-            <!-- Reseñas existentes -->
             <div class="resenas-list" *ngIf="resenasLibro.length > 0">
                 <h4>Reseñas de otros lectores</h4>
                 <div class="resena-item" *ngFor="let r of resenasLibro">
