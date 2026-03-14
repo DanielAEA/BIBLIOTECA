@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-cliente-dashboard',
@@ -18,7 +19,15 @@ export class ClienteDashboardComponent {
     { name: 'Reservar Sala', path: '/cliente/salas' }
   ];
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private authService: AuthService,
+    public themeService: ThemeService
+  ) { }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
 
   isActive(path: string): boolean {
     return this.router.url.includes(path);

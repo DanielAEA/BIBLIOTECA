@@ -6,6 +6,7 @@ import com.biblioteca.repository.RolUsuarioRepository;
 import com.biblioteca.repository.UsuarioRepository;
 import com.biblioteca.service.UsuarioService;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final RolUsuarioRepository rolUsuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
-                              RolUsuarioRepository rolUsuarioRepository) {
+                              RolUsuarioRepository rolUsuarioRepository,
+                              PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.rolUsuarioRepository = rolUsuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,6 +35,10 @@ public class UsuarioServiceImpl implements UsuarioService {
             RolUsuario rolReal = rolUsuarioRepository.findById(usuario.getRol().getId())
                     .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID: " + usuario.getRol().getId()));
             usuario.setRol(rolReal);
+        }
+
+        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
 
         return usuarioRepository.save(usuario);
@@ -55,7 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         existente.setNombre(usuario.getNombre());
         existente.setCorreo(usuario.getCorreo());
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
-            existente.setPassword(usuario.getPassword());
+            existente.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
 
         // ✅ Obtener el rol managed si cambió

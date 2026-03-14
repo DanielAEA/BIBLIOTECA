@@ -175,9 +175,10 @@ body {
     }
 }
 
-/* Aggressive Dark Theme Overrides for Admin Panel */
+/* Aggressive Dark Theme Overrides for All Dashboards */
 .dark-theme {
-    .settings-card, .crud-section, .loans-card, .tabs, .settings-container, .edit-form {
+    .settings-card, .crud-section, .loans-card, .tabs, .settings-container, .edit-form, 
+    .book-card, .resena-modal, .search-bar, .premium-card {
         background-color: var(--bg-card) !important;
         background: var(--bg-card) !important;
         border-color: var(--border-color) !important;
@@ -185,16 +186,20 @@ body {
         box-shadow: var(--card-shadow) !important;
     }
 
-    .tab-btn:not(.active) {
+    .tab-btn:not(.active), .close-btn {
         color: var(--text-muted) !important;
         &:hover { background: var(--bg-alt) !important; }
     }
 
-    h2, h3, h4, label, strong {
+    h1, h2, h3, h4, label, strong, .book-title, .modal-title {
         color: var(--text-dark) !important;
     }
 
-    .data-table {
+    .book-author, .resena-comment, .promedio-text {
+        color: var(--text-muted) !important;
+    }
+
+    .premium-table, .data-table {
         thead th { background: var(--bg-alt) !important; color: var(--text-muted) !important; }
         tbody td { border-bottom-color: var(--border-color) !important; color: var(--text-main) !important; }
         tbody tr:hover td { background: var(--bg-alt) !important; }
