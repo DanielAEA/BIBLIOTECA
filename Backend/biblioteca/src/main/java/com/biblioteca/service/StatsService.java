@@ -35,10 +35,13 @@ public class StatsService {
         Double multasPendientes = multaRepository.sumPendingFines();
         summary.put("totalMultasPendientes", multasPendientes != null ? multasPendientes : 0.0);
 
+        // Obtener cantidad de préstamos vencidos
         summary.put("prestamosVencidos", prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now()).size());
 
+        // Contar ejemplares disponibles
         summary.put("ejemplaresDisponibles", ejemplarRepository.findAll().stream().filter(e -> Boolean.TRUE.equals(e.getDisponible())).count());
 
+        // Calcular nuevos usuarios del último mes
         LocalDateTime mesAtras = LocalDateTime.now().minusMonths(1);
         summary.put("nuevosUsuariosMes", usuarioRepository.countByFechaRegistroBetween(mesAtras, LocalDateTime.now()));
 
@@ -46,6 +49,7 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getMostBorrowedBooks() {
+        // Obtener los libros más prestados del repositorio
         List<Object[]> results = prestamoRepository.findMostBorrowedBooks();
         return results.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
@@ -56,6 +60,7 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getLoansByMonth() {
+        // Agrupar préstamos por mes
         List<Object[]> results = prestamoRepository.findLoansByMonth();
         return results.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
@@ -66,6 +71,7 @@ public class StatsService {
     }
 
     public Map<String, Long> getInventoryDistribution() {
+        // Distribución del inventario por formato
         Map<String, Long> dist = new HashMap<>();
         dist.put("FISICO", libroRepository.countByFormato("FISICO"));
         dist.put("DIGITAL", libroRepository.countByFormato("DIGITAL"));
@@ -86,12 +92,13 @@ public class StatsService {
     }
 
     public Map<String, Object> getPunctualityRate() {
+        // Calcular tasa de puntualidad en devoluciones
         long onTime = prestamoRepository.countOnTimeReturns();
         long total = prestamoRepository.countTotalReturns();
         Map<String, Object> res = new HashMap<>();
-        res.put("onTime", onTime);
+        res.put("aTiempo", onTime);
         res.put("total", total);
-        res.put("rate", total > 0 ? (double) onTime / total * 100 : 100.0);
+        res.put("tasa", total > 0 ? (double) onTime / total * 100 : 100.0);
         return res;
     }
 
@@ -100,6 +107,7 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getFinesStats() {
+        // Estadísticas de multas por estado
         List<Object[]> results = multaRepository.findFinesStats();
         return results.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
@@ -110,6 +118,7 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getUpcomingExpirations() {
+        // Préstamos próximos a vencer (en los siguientes 3 días)
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime in3Days = now.plusDays(3);
         return prestamoRepository.findByDevueltoFalseAndFechaDevolucionBetween(now, in3Days).stream().map(p -> {
@@ -122,6 +131,7 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getInactiveBooks() {
+        // Libros sin movimiento en los últimos 6 meses
         LocalDateTime sixMonthsAgo = LocalDateTime.now().minusMonths(6);
         return libroRepository.findInactiveBooks(sixMonthsAgo).stream().limit(5).map(l -> {
             Map<String, Object> map = new HashMap<>();
@@ -132,6 +142,7 @@ public class StatsService {
     }
 
     private List<Map<String, Object>> mapResults(List<Object[]> results, String keyName, String valueName) {
+        // Utilidad para mapear resultados genéricos de consultas nativas
         return results.stream().map(row -> {
             Map<String, Object> map = new HashMap<>();
             map.put(keyName, row[0]);
