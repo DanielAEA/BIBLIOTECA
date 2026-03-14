@@ -45,6 +45,11 @@ public class StatsService {
         LocalDateTime mesAtras = LocalDateTime.now().minusMonths(1);
         summary.put("nuevosUsuariosMes", usuarioRepository.countByFechaRegistroBetween(mesAtras, LocalDateTime.now()));
 
+        // Tasa de puntualidad para el resumen
+        long aTiempo = prestamoRepository.countOnTimeReturns();
+        long total = prestamoRepository.countTotalReturns();
+        summary.put("tasaPuntualidad", total > 0 ? (double) aTiempo / total * 100 : 100.0);
+
         return summary;
     }
 
