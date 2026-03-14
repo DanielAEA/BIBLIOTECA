@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoanService, Prestamo } from '../../../services/loan.service';
 import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-mis-prestamos',
@@ -102,5 +103,14 @@ export class MisPrestamosComponent implements OnInit {
 
     getEjemplarCodigo(p: Prestamo): string {
         return p?.ejemplar?.codigo || 'N/A';
+    }
+
+    leerOnline(p: Prestamo) {
+        const libro = p?.ejemplar?.libro;
+        if (libro && libro.archivoDigital) {
+            window.open('http://localhost:8080' + libro.archivoDigital, '_blank');
+        } else {
+            Swal.fire('Error', 'La versión digitalizada de este libro no está disponible.', 'error');
+        }
     }
 }

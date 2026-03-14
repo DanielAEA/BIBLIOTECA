@@ -250,6 +250,14 @@ export class LibrosComponent implements OnInit {
     });
   }
 
+  leerOnline(libro: Libro) {
+    if (libro.archivoDigital) {
+      window.open('http://localhost:8080' + libro.archivoDigital, '_blank');
+    } else {
+      Swal.fire('Error', 'El archivo de este libro no se encuentra disponible.', 'error');
+    }
+  }
+
   getAuthorsString(book: Libro): string {
     if (!book.autores || book.autores.length === 0) {
       return 'Sin autor';

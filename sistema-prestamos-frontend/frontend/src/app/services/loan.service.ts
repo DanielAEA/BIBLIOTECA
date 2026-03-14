@@ -11,6 +11,7 @@ export interface Prestamo {
   ejemplar: Ejemplar;
   fechaPrestamo: string;
   fechaDevolucion: string;
+  fechaDevolucionReal?: string;
   devuelto: boolean;
   multa?: number;
   diasRetraso?: number;
@@ -50,6 +51,15 @@ export class LoanService {
 
   update(id: number, prestamo: PrestamoPayload): Observable<Prestamo> {
     return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}`, prestamo).pipe(
+      tap((updated) => {
+        const cur = this.loansSubject.value ?? [];
+        this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
+      })
+    );
+  }
+
+  returnLoan(id: number): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}/devolver`, {}).pipe(
       tap((updated) => {
         const cur = this.loansSubject.value ?? [];
         this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));

@@ -361,27 +361,20 @@ export class ConfiguracionComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.returningLoanId = prestamo.id;
-        const payload: PrestamoPayload = {
-          usuarioId: prestamo.usuario.id,
-          ejemplarId: prestamo.ejemplar.id,
-          usuario: { id: prestamo.usuario.id },
-          ejemplar: { id: prestamo.ejemplar.id },
-          fechaPrestamo: prestamo.fechaPrestamo,
-          fechaDevolucion: this.formatDate(new Date()),
-          devuelto: true
-        };
         this.loanService
-          .update(prestamo.id, payload)
+          .returnLoan(prestamo.id)
           .pipe(finalize(() => (this.returningLoanId = null)))
           .subscribe({
             next: () => {
-              this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
-              this.loadPrestamos();
-              Swal.fire('¡Devuelto!', 'Préstamo marcado como devuelto', 'success');
+              // El backend ya actualiza la disponibilidad del ejemplar y crea multas si aplica
+              this.loadPrestamos(); 
+              this.loadEjemplares(); // Para refrescar la lista de disponibles en el dropdown
+              Swal.fire('¡Devuelto!', 'Préstamo marcado como devuelto correctamente', 'success');
             },
             error: (err) => {
-              console.error('Error al actualizar préstamo:', err);
-              Swal.fire('Error', 'No se pudo actualizar el préstamo', 'error');
+              console.error('Error al devolver préstamo:', err);
+              const msg = err.error || 'No se pudo procesar la devolución';
+              Swal.fire('Error', msg, 'error');
             }
           });
       }

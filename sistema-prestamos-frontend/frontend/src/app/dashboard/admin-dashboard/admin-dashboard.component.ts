@@ -16,7 +16,6 @@ export class AdminDashboardComponent {
   menu = [
     { name: 'Panel de Administración', path: '/admin/configuracion' },
     { name: 'Estadísticas', path: '/admin/estadisticas' },
-    { name: 'Usuarios', path: '/admin/usuarios' },
     { name: 'Libros', path: '/admin/libros' },
     { name: 'Autores', path: '/admin/autores' },
     { name: 'Editoriales', path: '/admin/editoriales' },

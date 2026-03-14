@@ -21,6 +21,7 @@
                     <th>Vencimiento</th>
                     <th>Días Restantes</th>
                     <th>Multa</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +43,14 @@
                         <span [class.text-danger]="getFine(p) > 0" style="font-weight:600">${{
                             getFine(p).toLocaleString() }}</span>
                     </td>
+                    <td>
+                        <button *ngIf="p.ejemplar?.libro?.tieneDigital" 
+                                (click)="leerOnline(p)" 
+                                class="premium-badge badge-format-digital" 
+                                style="cursor: pointer; border: none; font-family: inherit;">
+                            📄 Leer Online
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -58,6 +67,7 @@
                     <th>Fecha Préstamo</th>
                     <th>Devuelto el</th>
                     <th>Estado</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +77,14 @@
                     <td>{{ p.fechaPrestamo }}</td>
                     <td>{{ p.fechaDevolucion }}</td>
                     <td><span class="premium-badge badge-success">Devuelto</span></td>
+                    <td>
+                        <button *ngIf="p.ejemplar?.libro?.tieneDigital" 
+                                (click)="leerOnline(p)" 
+                                class="premium-badge badge-format-digital" 
+                                style="cursor: pointer; border: none; font-family: inherit;">
+                            📄 Leer Online
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
