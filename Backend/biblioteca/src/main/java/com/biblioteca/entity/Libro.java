@@ -37,13 +37,13 @@ public class Libro {
     private String publicacion;
 
     @Column(name = "archivo_digital", length = 500)
-    private String archivoDigital; // Ruta al archivo PDF
+    private String archivoDigital; // Ruta al archivo PDF o recurso digital
 
     @Column(name = "tiene_digital")
-    private Boolean tieneDigital = false;
+    private Boolean tieneDigital = false; // Indica si el libro tiene una versión digital disponible
 
     @Column(name = "formato", length = 20)
-    private String formato = "FISICO";
+    private String formato = "FISICO"; // Formato del libro: FISICO, DIGITAL, o AMBOS
 
     @OneToMany(mappedBy = "libro")
     @JsonIgnoreProperties("libro")
