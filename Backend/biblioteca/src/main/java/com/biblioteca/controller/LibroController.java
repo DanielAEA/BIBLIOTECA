@@ -59,7 +59,7 @@ public class LibroController {
     }
 
     @PostMapping("/{id}/upload-pdf")
-    public ResponseEntity<?> uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadPdf(@PathVariable @NonNull Long id, @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "El archivo está vacío"));
         }
