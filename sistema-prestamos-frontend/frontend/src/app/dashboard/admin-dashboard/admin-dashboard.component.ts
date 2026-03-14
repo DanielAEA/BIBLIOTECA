@@ -18,7 +18,9 @@ export class AdminDashboardComponent {
     { name: 'Autores', path: '/admin/authors' },
     { name: 'Editoriales', path: '/admin/editorials' },
     { name: 'Géneros', path: '/admin/genres' },
-    { name: 'Ejemplares', path: '/admin/ejemplares' }
+    { name: 'Ejemplares', path: '/admin/ejemplares' },
+    { name: 'Reseñas', path: '/admin/resenas' },
+    { name: 'Salas', path: '/admin/salas' }
   ];
 
   constructor(private router: Router, private authService: AuthService) { }

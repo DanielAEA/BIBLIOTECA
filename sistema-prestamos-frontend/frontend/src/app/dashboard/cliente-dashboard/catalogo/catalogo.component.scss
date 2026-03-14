@@ -1,0 +1,258 @@
+:host {
+    display: block;
+    padding: 1rem;
+}
+
+.search-bar {
+    margin-bottom: 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+
+    &:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.book-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.book-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    color: #1f2937;
+}
+
+.book-author {
+    margin: 0 0 0.75rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.book-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.badge-format-fisico {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.badge-format-digital {
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+}
+
+.badge-format-ambos {
+    background: #f3e8ff;
+    color: #7e22ce;
+    border: 1px solid #e9d5ff;
+}
+
+.book-actions {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+        flex: 1;
+        font-size: 0.85rem;
+    }
+}
+
+.loading,
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+/* Modal de reseña */
+.resena-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resena-modal {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 550px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.resena-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+
+    &:hover {
+        color: #1f2937;
+    }
+}
+
+.resena-promedio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.promedio-text {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.star-selector {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.star-btn {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #d1d5db;
+    transition: color 0.15s;
+
+    &.active {
+        color: #f59e0b;
+    }
+
+    &:hover {
+        color: #f59e0b;
+    }
+}
+
+.star {
+    color: #d1d5db;
+}
+
+.star.filled {
+    color: #f59e0b;
+}
+
+.stars-display,
+.stars-small {
+    font-size: 1.1rem;
+}
+
+.resena-form {
+    margin-bottom: 1.5rem;
+
+    label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-family: inherit;
+        resize: vertical;
+        margin-bottom: 0.75rem;
+
+        &:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+    }
+}
+
+.resenas-list {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+
+    h4 {
+        margin: 0 0 1rem;
+        color: #374151;
+    }
+}
+
+.resena-item {
+    padding: 0.75rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.resena-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.resena-comment {
+    margin: 0.25rem 0;
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+.resena-date {
+    color: #9ca3af;
+}

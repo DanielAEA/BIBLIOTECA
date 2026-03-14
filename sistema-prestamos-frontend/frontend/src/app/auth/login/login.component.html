@@ -11,6 +11,12 @@
       </div>
 
       <div class="auth-form-side">
+        <!-- Error toast notification -->
+        <div class="error-toast" *ngIf="errorMessage" [class.show]="showError" [class.hide]="!showError">
+          <span class="error-toast-text">{{ errorMessage }}</span>
+          <button class="error-toast-close" (click)="showError = false">✕</button>
+        </div>
+
         <div class="auth-header">
           <h1>Bienvenido</h1>
           <p>Inicia sesión para acceder a la biblioteca</p>

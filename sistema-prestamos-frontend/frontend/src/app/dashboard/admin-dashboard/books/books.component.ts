@@ -38,6 +38,7 @@ export class BooksComponent implements OnInit {
   submitting = false;
   authorsExpanded = false;
   selectedAuthorDropdown: number | null = null;
+  selectedFile: File | null = null;
 
   constructor(
     private bookService: BookService,
@@ -97,6 +98,7 @@ export class BooksComponent implements OnInit {
     this.selectedGeneroId = book.genero?.id ?? null;
     this.showEditForm = true;
     this.showCreateForm = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   createBook() {
@@ -106,13 +108,16 @@ export class BooksComponent implements OnInit {
       stockDisponible: 0,
       autores: [],
       editorial: undefined,
-      genero: undefined
+      genero: undefined,
+      formato: 'FISICO'
     };
     this.selectedAuthorIds = [];
     this.selectedEditorialId = null;
     this.selectedGeneroId = null;
+    this.selectedFile = null;
     this.showCreateForm = true;
     this.showEditForm = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   cancelEdit() {
@@ -122,10 +127,24 @@ export class BooksComponent implements OnInit {
     this.selectedAuthorIds = [];
     this.selectedEditorialId = null;
     this.selectedGeneroId = null;
+    this.selectedFile = null;
     this.newAuthorName = '';
     this.newEditorialName = '';
     this.newGeneroName = '';
     this.authorsExpanded = false;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        Swal.fire('Error', 'Solo se permiten archivos PDF', 'error');
+        event.target.value = '';
+        this.selectedFile = null;
+        return;
+      }
+      this.selectedFile = file;
+    }
   }
 
   toggleAuthors() {
@@ -152,53 +171,58 @@ export class BooksComponent implements OnInit {
       titulo: this.editingBook.titulo,
       autores: this.selectedAuthorIds.map((id) => ({ id })),
       editorial: this.selectedEditorialId ? { id: this.selectedEditorialId } : null,
-      genero: this.selectedGeneroId ? { id: this.selectedGeneroId } : null
+      genero: this.selectedGeneroId ? { id: this.selectedGeneroId } : null,
+      formato: this.editingBook.formato || 'FISICO'
+    };
+
+    const handleUpload = (bookId: number, isNew: boolean) => {
+      // Solo subir si hay archivo y el formato no es estrictamente FISICO
+      if (this.selectedFile && this.editingBook?.formato !== 'FISICO') {
+        this.bookService.uploadPdf(bookId, this.selectedFile).subscribe({
+          next: () => this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} y PDF subido correctamente.`),
+          error: (err) => {
+            console.error('Error al subir PDF:', err);
+            this.finishSave('¡Advertencia!', `Libro guardado, pero falló la subida del PDF: ${err.error?.error || err.message}`);
+          }
+        });
+      } else {
+        this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} correctamente.`);
+      }
     };
 
     if (this.showCreateForm) {
-      this.bookService
-        .createBook(payload)
-        .pipe(finalize(() => (this.submitting = false)))
-        .subscribe({
-          next: () => {
-            this.loadBooks();
-            this.cancelEdit();
-            Swal.fire({
-              title: '¡Éxito!',
-              text: 'Libro creado correctamente',
-              icon: 'success',
-              timer: 2000,
-              showConfirmButton: false
-            });
-          },
-          error: (err) => {
-            console.error('Error al crear libro:', err);
-            const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
-            Swal.fire('Error', `No se pudo crear el libro: ${errorMessage}`, 'error');
-          }
-        });
+      this.bookService.createBook(payload).subscribe({
+        next: (res) => handleUpload(res.id, true),
+        error: (err) => {
+          this.submitting = false;
+          console.error('Error al crear libro:', err);
+          const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
+          Swal.fire('Error', `No se pudo crear el libro: ${errorMessage}`, 'error');
+        }
+      });
     } else {
-      this.bookService
-        .updateBook(this.editingBook.id, payload)
-        .pipe(finalize(() => (this.submitting = false)))
-        .subscribe({
-          next: () => {
-            this.loadBooks();
-            this.cancelEdit();
-            Swal.fire({
-              title: '¡Actualizado!',
-              text: 'Libro actualizado correctamente',
-              icon: 'success',
-              timer: 2000,
-              showConfirmButton: false
-            });
-          },
-          error: (err) => {
-            console.error('Error al actualizar libro:', err);
-            Swal.fire('Error', 'No se pudo actualizar el libro', 'error');
-          }
-        });
+      this.bookService.updateBook(this.editingBook.id, payload).subscribe({
+        next: (res) => handleUpload(res.id, false),
+        error: (err) => {
+          this.submitting = false;
+          console.error('Error al actualizar libro:', err);
+          Swal.fire('Error', 'No se pudo actualizar el libro', 'error');
+        }
+      });
     }
+  }
+
+  private finishSave(title: string, text: string) {
+    this.submitting = false;
+    this.loadBooks();
+    this.cancelEdit();
+    Swal.fire({
+      title,
+      text,
+      icon: title === '¡Éxito!' ? 'success' : 'warning',
+      timer: 2000,
+      showConfirmButton: false
+    });
   }
 
   deleteBook(book: Libro) {

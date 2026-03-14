@@ -30,6 +30,60 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         initializeRoles();
         initializeUsers();
+        fixPlainTextPasswords();
+        ensureAdminUser();
+    }
+
+    /**
+     * Asegura que el usuario admin exista con la contraseña correcta (admin123).
+     * Si ya existe pero la contraseña no coincide, la resetea.
+     */
+    private void ensureAdminUser() {
+        String adminEmail = "admin@bib.com";
+        String adminPassword = "admin123";
+
+        Usuario admin = usuarioRepository.findByCorreo(adminEmail);
+        if (admin == null) {
+            // El admin no existe, crearlo
+            RolUsuario rolAdmin = rolUsuarioRepository.findByNombre("ADMIN")
+                    .orElseThrow(() -> new RuntimeException("Error: Rol ADMIN no encontrado"));
+            admin = new Usuario();
+            admin.setNombre("Administrador");
+            admin.setCorreo(adminEmail);
+            admin.setPassword(passwordEncoder.encode(adminPassword));
+            admin.setRol(rolAdmin);
+            usuarioRepository.save(admin);
+            System.out.println(">>> Usuario ADMIN creado: " + adminEmail + " / " + adminPassword);
+        } else if (!passwordEncoder.matches(adminPassword, admin.getPassword())) {
+            // La contraseña no coincide, resetearla
+            admin.setPassword(passwordEncoder.encode(adminPassword));
+            usuarioRepository.save(admin);
+            System.out.println("🔐 Contraseña del ADMIN reseteada a: " + adminPassword);
+        } else {
+            System.out.println("✅ Usuario ADMIN verificado correctamente.");
+        }
+    }
+
+    /**
+     * Detecta contraseñas en texto plano y las encripta con BCrypt.
+     * Esto corrige usuarios que fueron insertados directamente en la BD con SQL.
+     */
+    private void fixPlainTextPasswords() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        int fixed = 0;
+        for (Usuario u : usuarios) {
+            if (u.getPassword() != null && !u.getPassword().startsWith("$2a$")) {
+                System.out.println("🔐 Encriptando contraseña para: " + u.getCorreo());
+                u.setPassword(passwordEncoder.encode(u.getPassword()));
+                usuarioRepository.save(u);
+                fixed++;
+            }
+        }
+        if (fixed > 0) {
+            System.out.println("✅ Se encriptaron " + fixed + " contraseñas en texto plano.");
+        } else {
+            System.out.println("✅ Todas las contraseñas ya están encriptadas.");
+        }
     }
 
     private void initializeRoles() {

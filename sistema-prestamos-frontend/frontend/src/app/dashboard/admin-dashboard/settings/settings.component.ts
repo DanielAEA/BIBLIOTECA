@@ -349,30 +349,43 @@ export class SettingsComponent implements OnInit {
   }
 
   markAsReturned(prestamo: Prestamo) {
-    this.returningLoanId = prestamo.id;
-    const payload: PrestamoPayload = {
-      usuarioId: prestamo.usuario.id,
-      ejemplarId: prestamo.ejemplar.id,
-      usuario: { id: prestamo.usuario.id },
-      ejemplar: { id: prestamo.ejemplar.id },
-      fechaPrestamo: prestamo.fechaPrestamo,
-      fechaDevolucion: this.formatDate(new Date()),
-      devuelto: true
-    };
-    this.loanService
-      .update(prestamo.id, payload)
-      .pipe(finalize(() => (this.returningLoanId = null)))
-      .subscribe({
-        next: () => {
-          this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
-          this.loadPrestamos();
-          alert('Préstamo marcado como devuelto');
-        },
-        error: (err) => {
-          console.error('Error al actualizar préstamo:', err);
-          alert('No se pudo actualizar el préstamo');
-        }
-      });
+    Swal.fire({
+      title: '¿Marcar como devuelto?',
+      text: `¿Deseas marcar el préstamo del libro "${prestamo.ejemplar.libro.titulo}" como devuelto?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, marcar como devuelto',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.returningLoanId = prestamo.id;
+        const payload: PrestamoPayload = {
+          usuarioId: prestamo.usuario.id,
+          ejemplarId: prestamo.ejemplar.id,
+          usuario: { id: prestamo.usuario.id },
+          ejemplar: { id: prestamo.ejemplar.id },
+          fechaPrestamo: prestamo.fechaPrestamo,
+          fechaDevolucion: this.formatDate(new Date()),
+          devuelto: true
+        };
+        this.loanService
+          .update(prestamo.id, payload)
+          .pipe(finalize(() => (this.returningLoanId = null)))
+          .subscribe({
+            next: () => {
+              this.updateEjemplarAvailability(prestamo.ejemplar.id, true);
+              this.loadPrestamos();
+              Swal.fire('¡Devuelto!', 'Préstamo marcado como devuelto', 'success');
+            },
+            error: (err) => {
+              console.error('Error al actualizar préstamo:', err);
+              Swal.fire('Error', 'No se pudo actualizar el préstamo', 'error');
+            }
+          });
+      }
+    });
   }
 
   private updateEjemplarAvailability(ejemplarId: number, disponible: boolean) {
@@ -1052,7 +1065,8 @@ export class SettingsComponent implements OnInit {
       titulo: this.bookTitulo.trim(),
       autores: this.selectedBookAuthorIds.map((id) => ({ id })),
       editorial: this.selectedBookEditorialId ? { id: this.selectedBookEditorialId } : null,
-      genero: this.selectedBookGeneroId ? { id: this.selectedBookGeneroId } : null
+      genero: this.selectedBookGeneroId ? { id: this.selectedBookGeneroId } : null,
+      formato: 'FISICO' // Default to FISICO for settings duplicate CRUD
     };
 
     if (this.editingBook) {

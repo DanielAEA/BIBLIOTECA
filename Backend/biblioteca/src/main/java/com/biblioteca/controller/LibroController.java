@@ -6,8 +6,18 @@ import com.biblioteca.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,6 +56,50 @@ public class LibroController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable @NonNull Long id) {
         libroService.eliminar(id);
+    }
+
+    @PostMapping("/{id}/upload-pdf")
+    public ResponseEntity<?> uploadPdf(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "El archivo está vacío"));
+        }
+
+        try {
+            // Verificar que sea un PDF
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.equals("application/pdf")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Solo se permiten archivos PDF"));
+            }
+
+            Libro libro = libroService.obtenerPorId(id);
+            if (libro == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Libro no encontrado"));
+            }
+
+            // Crear el directorio si no existe
+            Path uploadDir = Paths.get("uploads/libros");
+            if (!Files.exists(uploadDir)) {
+                Files.createDirectories(uploadDir);
+            }
+
+            // Generar un nombre único para el archivo
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = uploadDir.resolve(fileName);
+
+            // Guardar el archivo
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            // Actualizar el libro
+            libro.setArchivoDigital("/uploads/libros/" + fileName);
+            libro.setTieneDigital(true);
+            Libro actualizado = libroService.actualizar(id, libro);
+
+            return ResponseEntity.ok(convertToDTO(actualizado));
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al guardar el archivo: " + e.getMessage()));
+        }
     }
 
     private LibroDTO convertToDTO(Libro libro) {
@@ -89,7 +143,10 @@ public class LibroController {
             autoresDTO,
             editorialDTO,
             generoDTO,
-            stockDisponible
+            stockDisponible,
+            libro.getArchivoDigital(),
+            libro.getTieneDigital(),
+            libro.getFormato()
         );
     }
 }

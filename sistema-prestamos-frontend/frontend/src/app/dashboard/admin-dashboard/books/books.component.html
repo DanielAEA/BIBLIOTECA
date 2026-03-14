@@ -70,6 +70,26 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label>Formato:</label>
+        <select [(ngModel)]="editingBook.formato" name="formato" required>
+          <option value="FISICO">Solo Físico</option>
+          <option value="DIGITAL">Solo Digital</option>
+          <option value="AMBOS">Ambos (Físico y Digital)</option>
+        </select>
+      </div>
+
+      <div class="form-group" *ngIf="editingBook.formato === 'DIGITAL' || editingBook.formato === 'AMBOS'">
+        <label>Libro Digital (PDF):</label>
+        <div class="file-upload-container">
+          <input type="file" (change)="onFileSelected($event)" accept=".pdf" #fileInput>
+          <div *ngIf="editingBook.tieneDigital && !selectedFile" style="margin-top: 0.5rem; font-size: 0.9em; color: green; font-weight: bold;">
+            ✓ Este libro ya tiene una versión digital cargada.
+            <a [href]="'http://localhost:8080' + editingBook.archivoDigital" target="_blank" style="margin-left: 0.5rem; text-decoration: underline;">Ver PDF actual</a>
+          </div>
+        </div>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="premium-button" [disabled]="submitting">
           {{ submitting ? 'Guardando...' : 'Guardar' }}
@@ -97,6 +117,20 @@
         <span class="premium-badge"
           [ngClass]="{'badge-danger': b.stockDisponible === 0, 'badge-warning': b.stockDisponible > 0 && b.stockDisponible < 3, 'badge-success': b.stockDisponible >= 3}">
           {{ b.stockDisponible }}
+        </span>
+      </div>
+      <div class="book-info" style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+        <strong style="color: var(--text-dark);">Formato:</strong>
+        <span class="premium-badge" style="margin-right: 0.5rem"
+          [ngClass]="{
+            'badge-format-fisico': b.formato === 'FISICO',
+            'badge-format-digital': b.formato === 'DIGITAL',
+            'badge-format-ambos': b.formato === 'AMBOS'
+          }">
+          {{ b.formato === 'FISICO' ? '📘 Físico' : b.formato === 'DIGITAL' ? '💻 Digital' : '📚 Ambos' }}
+        </span>
+        <span class="premium-badge badge-success" *ngIf="b.tieneDigital">
+          ✓ PDF
         </span>
       </div>
       <div class="book-actions"

@@ -1,0 +1,102 @@
+<div class="premium-container">
+    <div class="premium-header">
+        <h2>Catálogo de Libros</h2>
+    </div>
+
+    <!-- Buscador -->
+    <div class="premium-card search-bar">
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterLibros()"
+            placeholder="🔍 Buscar por título, autor o género..." class="search-input">
+    </div>
+
+    <div *ngIf="loading" class="loading">Cargando catálogo...</div>
+
+    <!-- Grid de libros -->
+    <div class="books-grid" *ngIf="!loading">
+        <div class="book-card" *ngFor="let libro of filteredLibros">
+            <div class="book-info">
+                <h3 class="book-title">{{ libro.titulo }}</h3>
+                <p class="book-author">{{ getAutoresStr(libro) }}</p>
+                <div class="book-meta">
+                    <span class="premium-badge badge-primary" *ngIf="libro.genero">{{ libro.genero.nombre }}</span>
+                    <span class="premium-badge"
+                        [ngClass]="{
+                            'badge-format-fisico': libro.formato === 'FISICO',
+                            'badge-format-digital': libro.formato === 'DIGITAL',
+                            'badge-format-ambos': libro.formato === 'AMBOS'
+                        }">
+                        {{ libro.formato === 'FISICO' ? '📘 Físico' : libro.formato === 'DIGITAL' ? '💻 Digital' : '📚 Físico y Digital' }}
+                    </span>
+                    <span class="premium-badge"
+                        [ngClass]="getEjemplaresDisponibles(libro) > 0 ? 'badge-success' : 'badge-danger'"
+                        *ngIf="libro.formato !== 'DIGITAL'">
+                        {{ getEjemplaresDisponibles(libro) }} disponible(s)
+                    </span>
+                </div>
+            </div>
+            <div class="book-actions">
+                <button *ngIf="libro.formato !== 'DIGITAL'" class="premium-button" (click)="reservarLibro(libro)"
+                    [disabled]="getEjemplaresDisponibles(libro) === 0">
+                    {{ getEjemplaresDisponibles(libro) > 0 ? '📖 Reservar' : 'No disponible' }}
+                </button>
+                <button class="premium-button premium-button-alt" (click)="openResenaForm(libro)">⭐ Reseñar</button>
+                <button *ngIf="libro.tieneDigital && (libro.formato === 'DIGITAL' || libro.formato === 'AMBOS')" class="premium-button" style="background: #10b981; color: white;" (click)="leerOnline(libro)">
+                    📄 Leer Online
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && filteredLibros.length === 0" class="no-data">
+        No se encontraron libros{{ searchTerm ? ' con ese criterio' : '' }}.
+    </div>
+
+    <!-- Modal de Reseña -->
+    <div class="resena-overlay" *ngIf="showResenaForm" (click)="closeResenaForm()">
+        <div class="resena-modal" (click)="$event.stopPropagation()">
+            <div class="resena-modal-header">
+                <h3>Reseña — {{ resenaLibroTitulo }}</h3>
+                <button class="close-btn" (click)="closeResenaForm()">✕</button>
+            </div>
+
+            <div class="resena-promedio" *ngIf="promedioLibro > 0">
+                <span class="stars-display">
+                    <span *ngFor="let s of getStars(Math.round(promedioLibro))" class="star filled">★</span>
+                    <span *ngFor="let s of getEmptyStars(Math.round(promedioLibro))" class="star">☆</span>
+                </span>
+                <span class="promedio-text">{{ promedioLibro.toFixed(1) }}/5 ({{ resenasLibro.length }} reseñas)</span>
+            </div>
+
+            <!-- Formulario -->
+            <div class="resena-form">
+                <label>Tu calificación:</label>
+                <div class="star-selector">
+                    <span *ngFor="let i of [1,2,3,4,5]" class="star-btn" [class.active]="i <= resenaCalificacion"
+                        (click)="setCalificacion(i)">★</span>
+                </div>
+                <label>Comentario:</label>
+                <textarea [(ngModel)]="resenaComentario" rows="3"
+                    placeholder="Escribe tu opinión sobre este libro..."></textarea>
+                <button class="premium-button" (click)="submitResena()" [disabled]="submittingResena">
+                    {{ submittingResena ? 'Enviando...' : 'Publicar Reseña' }}
+                </button>
+            </div>
+
+            <!-- Reseñas existentes -->
+            <div class="resenas-list" *ngIf="resenasLibro.length > 0">
+                <h4>Reseñas de otros lectores</h4>
+                <div class="resena-item" *ngFor="let r of resenasLibro">
+                    <div class="resena-header">
+                        <strong>{{ r.usuario.nombre || 'Anónimo' }}</strong>
+                        <span class="stars-small">
+                            <span *ngFor="let s of getStars(r.calificacion)" class="star filled">★</span>
+                            <span *ngFor="let s of getEmptyStars(r.calificacion)" class="star">☆</span>
+                        </span>
+                    </div>
+                    <p class="resena-comment">{{ r.comentario || 'Sin comentario' }}</p>
+                    <small class="resena-date">{{ r.fechaCreacion | date:'dd/MM/yyyy' }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

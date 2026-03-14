@@ -18,9 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "miClaveSecretaParaJWT123456789012345678901234567890"; // In production use
-                                                                                                    // environment
-                                                                                                    // variable
+    private static final String SECRET_KEY = "miClaveSecretaParaJWT123456789012345678901234567890";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -42,6 +40,11 @@ public class JwtService {
         extraClaims.put("roles", roles);
         extraClaims.put("authorities", roles);
 
+        // Incluir el ID numérico del usuario si es una instancia de Usuario
+        if (userDetails instanceof com.biblioteca.entity.Usuario) {
+            extraClaims.put("id", ((com.biblioteca.entity.Usuario) userDetails).getId());
+        }
+
         return generateToken(extraClaims, userDetails);
     }
 
@@ -51,7 +54,7 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey())
                 .compact();
     }

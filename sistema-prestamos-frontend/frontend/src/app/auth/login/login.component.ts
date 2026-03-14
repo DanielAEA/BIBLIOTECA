@@ -14,6 +14,8 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
 
   loginForm: FormGroup;
+  errorMessage: string = '';
+  showError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -79,15 +81,21 @@ export class LoginComponent {
 
         let mensaje = 'Credenciales incorrectas';
         if (err.status === 0) {
-          mensaje = 'No se pudo conectar al servidor. ¿Está corriendo el backend en http://localhost:8080?';
+          mensaje = 'No se pudo conectar al servidor';
         } else if (err.status === 401) {
-          mensaje = 'Credenciales incorrectas';
+          mensaje = 'Usuario o contraseña incorrectos';
         } else if (err.status === 404) {
-          mensaje = 'Endpoint no encontrado. Verifica la URL del backend.';
+          mensaje = 'Servicio no disponible';
         } else if (err.status >= 500) {
-          mensaje = 'Error del servidor. Intenta más tarde.';
+          mensaje = 'Error del servidor. Intenta más tarde';
         }
-        alert(mensaje);
+        this.errorMessage = mensaje;
+        this.showError = true;
+
+        setTimeout(() => {
+          this.showError = false;
+          setTimeout(() => this.errorMessage = '', 400);
+        }, 5000);
       }
     });
   }

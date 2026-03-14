@@ -1,0 +1,27 @@
+:host {
+    display: block;
+    padding: 1rem;
+}
+
+.loading,
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.error-message {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.overdue-row {
+    background: #fef2f2 !important;
+}
+
+.text-danger {
+    color: #dc2626;
+}

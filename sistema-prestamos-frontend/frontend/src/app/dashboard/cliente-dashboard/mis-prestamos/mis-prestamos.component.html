@@ -1,0 +1,74 @@
+<div class="premium-container">
+    <div class="premium-header">
+        <h2>Mis Préstamos</h2>
+        <span class="premium-badge badge-danger" *ngIf="totalMulta > 0">
+            Multa Pendiente: ${{ totalMulta.toLocaleString() }}
+        </span>
+    </div>
+
+    <div *ngIf="loading" class="loading">Cargando tus préstamos...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+
+    <!-- Préstamos Activos -->
+    <div *ngIf="!loading && !error" class="premium-card">
+        <h3>Préstamos Activos</h3>
+        <div *ngIf="getActiveLoans().length === 0" class="no-data">No tienes libros pendientes de devolución.</div>
+        <table class="premium-table" *ngIf="getActiveLoans().length > 0">
+            <thead>
+                <tr>
+                    <th>Libro / Código</th>
+                    <th>Fecha Préstamo</th>
+                    <th>Vencimiento</th>
+                    <th>Días Restantes</th>
+                    <th>Multa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of getActiveLoans()" [class.overdue-row]="hasOverdue(p)">
+                    <td>
+                        <strong>{{ getLibroTitulo(p) }}</strong><br>
+                        <small style="color:#6b7280">{{ getEjemplarCodigo(p) }}</small>
+                    </td>
+                    <td>{{ p.fechaPrestamo }}</td>
+                    <td>{{ p.fechaDevolucion }}</td>
+                    <td>
+                        <span class="premium-badge"
+                            [ngClass]="getDaysRemaining(p) <= 3 ? 'badge-danger' : 'badge-warning'">
+                            {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' días' : hasOverdue(p) ? 'Vencido' :
+                            'Vence hoy' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span [class.text-danger]="getFine(p) > 0" style="font-weight:600">${{
+                            getFine(p).toLocaleString() }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Historial -->
+    <div *ngIf="!loading && !error && getReturnedLoans().length > 0" class="premium-card" style="margin-top:1rem">
+        <h3>Historial de Lectura</h3>
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Libro</th>
+                    <th>Ejemplar</th>
+                    <th>Fecha Préstamo</th>
+                    <th>Devuelto el</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of getReturnedLoans()">
+                    <td>{{ getLibroTitulo(p) }}</td>
+                    <td>{{ getEjemplarCodigo(p) }}</td>
+                    <td>{{ p.fechaPrestamo }}</td>
+                    <td>{{ p.fechaDevolucion }}</td>
+                    <td><span class="premium-badge badge-success">Devuelto</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

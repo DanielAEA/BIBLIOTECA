@@ -9,6 +9,9 @@ export interface Libro {
   editorial?: { id: number; nombre: string };
   genero?: { id: number; nombre: string };
   stockDisponible: number;
+  archivoDigital?: string;
+  tieneDigital?: boolean;
+  formato?: string;
 }
 
 export interface LibroPayload {
@@ -16,6 +19,7 @@ export interface LibroPayload {
   autores: Array<{ id: number }>;
   editorial: { id: number } | null;
   genero: { id: number } | null;
+  formato: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -43,6 +47,36 @@ export class BookService {
 
   deleteBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/libros/${id}`);
+  }
+
+  uploadPdf(id: number, file: File): Observable<Libro> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const token = localStorage.getItem('sp_token');
+
+    return new Observable<Libro>(observer => {
+      fetch(`${this.baseUrl}/api/libros/${id}/upload-pdf`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Upload failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        observer.next(data);
+        observer.complete();
+      })
+      .catch(error => {
+        observer.error(error);
+      });
+    });
   }
 }
 

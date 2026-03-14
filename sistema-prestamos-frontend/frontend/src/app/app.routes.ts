@@ -17,6 +17,8 @@ import { AuthorsComponent } from './dashboard/admin-dashboard/catalog/authors.co
 import { EditorialsComponent } from './dashboard/admin-dashboard/catalog/editorials.component';
 import { GenresComponent } from './dashboard/admin-dashboard/catalog/genres.component';
 import { EjemplaresComponent } from './dashboard/admin-dashboard/ejemplares/ejemplares.component';
+import { ResenasComponent } from './dashboard/admin-dashboard/resenas/resenas.component';
+import { SalasComponent } from './dashboard/admin-dashboard/salas/salas.component';
 
 // Not Authorized
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
@@ -37,6 +39,8 @@ export const routes: Routes = [
       { path: 'editorials', component: EditorialsComponent },
       { path: 'genres', component: GenresComponent },
       { path: 'ejemplares', component: EjemplaresComponent },
+      { path: 'resenas', component: ResenasComponent },
+      { path: 'salas', component: SalasComponent },
       { path: '', redirectTo: 'settings', pathMatch: 'full' }
     ]
   },
@@ -52,7 +56,13 @@ export const routes: Routes = [
     path: 'cliente',
     component: ClienteDashboardComponent,
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['CLIENTE'] }
+    data: { roles: ['CLIENTE'] },
+    children: [
+      { path: 'prestamos', loadComponent: () => import('./dashboard/cliente-dashboard/mis-prestamos/mis-prestamos.component').then(m => m.MisPrestamosComponent) },
+      { path: 'catalogo', loadComponent: () => import('./dashboard/cliente-dashboard/catalogo/catalogo.component').then(m => m.CatalogoClienteComponent) },
+      { path: 'salas', loadComponent: () => import('./dashboard/cliente-dashboard/reservar-salas/reservar-salas.component').then(m => m.ReservarSalasComponent) },
+      { path: '', redirectTo: 'prestamos', pathMatch: 'full' }
+    ]
   },
 
   { path: 'not-authorized', component: NotAuthorizedComponent },

@@ -23,20 +23,61 @@ public class Ejemplar {
 
     private Boolean disponible = true;
 
+    @Column(length = 20)
+    private String estado = "DISPONIBLE"; // DISPONIBLE, DAÑADO, PERDIDO
+
     @OneToMany(mappedBy = "ejemplar", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Prestamo> prestamos;
 
-    public Ejemplar() {}
+    public Ejemplar() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-    public Libro getLibro() { return libro; }
-    public void setLibro(Libro libro) { this.libro = libro; }
-    public Boolean getDisponible() { return disponible; }
-    public void setDisponible(Boolean disponible) { this.disponible = disponible; }
-    public List<Prestamo> getPrestamos() { return prestamos; }
-    public void setPrestamos(List<Prestamo> prestamos) { this.prestamos = prestamos; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
+
+    public Boolean getDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(Boolean disponible) {
+        this.disponible = disponible;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public List<Prestamo> getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(List<Prestamo> prestamos) {
+        this.prestamos = prestamos;
+    }
 }

@@ -1,0 +1,60 @@
+:host {
+    display: block;
+    padding: 1rem;
+}
+
+.filter-section {
+    margin-bottom: 1rem;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    label {
+        font-weight: 500;
+        color: #374151;
+        white-space: nowrap;
+    }
+
+    select {
+        flex: 1;
+        max-width: 400px;
+        padding: 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+}
+
+.stars {
+    color: #f59e0b;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.rating-number {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin-left: 0.25rem;
+}
+
+.comment-cell {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}

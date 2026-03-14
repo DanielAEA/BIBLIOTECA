@@ -9,16 +9,22 @@ public class LibroDTO {
     private EditorialDTO editorial;
     private GeneroDTO genero;
     private Integer stockDisponible;
+    private String archivoDigital;
+    private Boolean tieneDigital;
+    private String formato;
 
     public LibroDTO() {}
 
-    public LibroDTO(Long id, String titulo, List<AutorDTO> autores, EditorialDTO editorial, GeneroDTO genero, Integer stockDisponible) {
+    public LibroDTO(Long id, String titulo, List<AutorDTO> autores, EditorialDTO editorial, GeneroDTO genero, Integer stockDisponible, String archivoDigital, Boolean tieneDigital, String formato) {
         this.id = id;
         this.titulo = titulo;
         this.autores = autores;
         this.editorial = editorial;
         this.genero = genero;
-        this.stockDisponible = stockDisponible;
+        this.stockDisponible = stockDisponible; 
+        this.archivoDigital = archivoDigital; 
+        this.tieneDigital = tieneDigital != null ? tieneDigital : false;
+        this.formato = formato;
     }
 
     public Long getId() {
@@ -67,6 +73,30 @@ public class LibroDTO {
 
     public void setGenero(GeneroDTO genero) {
         this.genero = genero;
+    }
+
+    public String getArchivoDigital() {
+        return archivoDigital;
+    }
+
+    public void setArchivoDigital(String archivoDigital) {
+        this.archivoDigital = archivoDigital;
+    }
+
+    public Boolean getTieneDigital() {
+        return tieneDigital;
+    }
+
+    public void setTieneDigital(Boolean tieneDigital) {
+        this.tieneDigital = tieneDigital;
+    }
+
+    public String getFormato() {
+        return formato;
+    }
+
+    public void setFormato(String formato) {
+        this.formato = formato;
     }
 
     public static class AutorDTO {
@@ -153,4 +183,3 @@ public class LibroDTO {
         }
     }
 }
-

@@ -1,0 +1,54 @@
+<div class="premium-container">
+    <div class="premium-header">
+        <h2>Reseñas y Calificaciones</h2>
+    </div>
+
+    <!-- Filtro por libro -->
+    <div class="premium-card filter-section">
+        <div class="filter-row">
+            <label>Filtrar por libro:</label>
+            <select [(ngModel)]="selectedLibroFilter" (change)="filterByLibro()">
+                <option [ngValue]="null">Todos los libros</option>
+                <option *ngFor="let libro of libros" [ngValue]="libro.id">{{ libro.titulo }}</option>
+            </select>
+            <button *ngIf="selectedLibroFilter" class="premium-button premium-button-alt"
+                (click)="clearFilter()">Limpiar</button>
+        </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Cargando reseñas...</div>
+
+    <div class="premium-card" *ngIf="!loading && resenas.length > 0">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Libro</th>
+                    <th>Usuario</th>
+                    <th>Calificación</th>
+                    <th>Comentario</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of resenas">
+                    <td>{{ r.libro.titulo || 'N/A' }}</td>
+                    <td>{{ r.usuario.nombre || r.usuario.correo || 'N/A' }}</td>
+                    <td>
+                        <span class="stars">{{ getStars(r.calificacion) }}</span>
+                        <span class="rating-number">({{ r.calificacion }}/5)</span>
+                    </td>
+                    <td class="comment-cell">{{ r.comentario || '—' }}</td>
+                    <td>{{ r.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                        <button class="premium-button premium-button-danger" (click)="deleteResena(r)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="!loading && resenas.length === 0" class="no-data">
+        No hay reseñas registradas{{ selectedLibroFilter ? ' para este libro' : '' }}.
+    </div>
+</div>
