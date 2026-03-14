@@ -8,7 +8,6 @@ import { RegisterComponent } from './auth/register/register.component';
 
 // Dashboards
 import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashboard.component';
-import { BibliotecarioDashboardComponent } from './dashboard/bibliotecario-dashboard/bibliotecario-dashboard.component';
 import { ClienteDashboardComponent } from './dashboard/cliente-dashboard/cliente-dashboard.component';
 
 import { ConfiguracionComponent } from './dashboard/admin-dashboard/configuracion/configuracion.component';
@@ -47,13 +46,6 @@ export const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent },
       { path: '', redirectTo: 'estadisticas', pathMatch: 'full' }
     ]
-  },
-
-  {
-    path: 'bibliotecario',
-    component: BibliotecarioDashboardComponent,
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['BIBLIOTECARIO'] }
   },
 
   {

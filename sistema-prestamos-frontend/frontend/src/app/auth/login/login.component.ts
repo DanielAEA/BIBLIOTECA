@@ -62,10 +62,6 @@ export class LoginComponent {
           console.log("Redirigiendo → /admin");
           this.router.navigateByUrl('/admin');
         }
-        else if (role === 'BIBLIOTECARIO') {
-          console.log("Redirigiendo → /bibliotecario");
-          this.router.navigateByUrl('/bibliotecario');
-        }
         else {
           console.log("Redirigiendo → /cliente");
           this.router.navigateByUrl('/cliente');

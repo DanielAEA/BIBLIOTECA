@@ -169,7 +169,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       type: 'doughnut',
       data: {
         labels: ['A tiempo', 'Con retraso'],
-        datasets: [{ data: [data.onTime, data.total - data.onTime], backgroundColor: ['#10b981', '#f59e0b'] }]
+        datasets: [{ data: [data.aTiempo, data.total - data.aTiempo], backgroundColor: ['#10b981', '#f59e0b'] }]
       },
       options: this.getChartOptions({ cutout: '70%', scales: { x: { display: false }, y: { display: false } } })
     });

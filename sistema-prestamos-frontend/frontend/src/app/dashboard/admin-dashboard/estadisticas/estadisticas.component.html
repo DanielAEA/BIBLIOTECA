@@ -110,8 +110,8 @@
             <h3>🎯 Tasa de Puntualidad</h3>
             <div class="canvas-wrapper relative">
                 <canvas #punctualityChart></canvas>
-                <div class="chart-overlay" *ngIf="summary.onTimeRate">
-                    <span class="percentage">{{ Math.round(summary.onTimeRate) }}%</span>
+                <div class="chart-overlay" *ngIf="summary.tasaPuntualidad !== undefined">
+                    <span class="percentage">{{ Math.round(summary.tasaPuntualidad) }}%</span>
                 </div>
             </div>
         </div>

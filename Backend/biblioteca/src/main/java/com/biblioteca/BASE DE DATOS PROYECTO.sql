@@ -2,8 +2,7 @@ USE biblioteca;
 
 INSERT INTO rol_usuarios (nombre) VALUES 
 ('ADMIN'),
-('CLIENTE'),
-('BIBLIOTECARIO');
+('CLIENTE');
 
 INSERT INTO permisos (nombre) VALUES 
 ('GESTIONAR_LIBROS'),
