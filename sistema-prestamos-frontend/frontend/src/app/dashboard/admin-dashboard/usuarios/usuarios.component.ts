@@ -5,13 +5,13 @@ import { UserService, Usuario } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-usuarios',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  templateUrl: './usuarios.component.html',
+  styleUrls: ['./usuarios.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsuariosComponent implements OnInit {
 
   users: Usuario[] = [];
   loading = true;

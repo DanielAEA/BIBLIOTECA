@@ -2,67 +2,69 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { EditorialService, Editorial } from '../../../services/editorial.service';
+import { GeneroService, Genero } from '../../../services/genero.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-editorials',
+  selector: 'app-generos',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './editorials.component.html',
-  styleUrls: ['./editorials.component.scss']
+  templateUrl: './generos.component.html',
+  styleUrls: ['./generos.component.scss']
 })
-export class EditorialsComponent implements OnInit {
-  editoriales: Editorial[] = [];
-  editingEditorial: Editorial | null = null;
+export class GenerosComponent implements OnInit {
+
+  generos: Genero[] = [];
+  editingGenero: Genero | null = null;
   showForm = false;
-  editorialNombre = '';
+  generoNombre = '';
   loading = false;
   submitting = false;
 
-  constructor(private editorialService: EditorialService) { }
+  constructor(private generoService: GeneroService) { }
 
   ngOnInit() {
-    this.loadEditoriales();
+    this.loadGeneros();
   }
 
-  loadEditoriales() {
+  loadGeneros() {
     this.loading = true;
-    this.editorialService.getAll().subscribe({
-      next: (editoriales) => {
-        this.editoriales = editoriales;
+    this.generoService.getAll().subscribe({
+      next: (generos) => {
+        this.generos = generos;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar editoriales:', err);
+        console.error('Error al cargar géneros:', err);
         this.loading = false;
       }
     });
   }
 
-  createEditorial() {
-    this.editingEditorial = null;
-    this.editorialNombre = '';
+  createGenero() {
+    this.editingGenero = null;
+    this.generoNombre = '';
     this.showForm = true;
   }
 
-  editEditorial(editorial: Editorial) {
-    this.editingEditorial = editorial;
-    this.editorialNombre = editorial.nombre;
+  editGenero(genero: Genero) {
+    this.editingGenero = genero;
+    this.generoNombre = genero.nombre;
     this.showForm = true;
   }
 
   cancelForm() {
     this.showForm = false;
-    this.editingEditorial = null;
-    this.editorialNombre = '';
+    this.editingGenero = null;
+    this.generoNombre = '';
   }
 
-  saveEditorial() {
-    if (!this.editorialNombre.trim()) {
+  saveGenero() {
+
+    if (!this.generoNombre.trim()) {
       Swal.fire({
         title: 'Atención',
-        text: 'Ingresa el nombre de la editorial.',
+        text: 'Ingresa el nombre del género.',
         icon: 'warning',
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Entendido'
@@ -71,55 +73,63 @@ export class EditorialsComponent implements OnInit {
     }
 
     this.submitting = true;
-    if (this.editingEditorial) {
-      this.editorialService
-        .update(this.editingEditorial.id, this.editorialNombre.trim())
+
+    if (this.editingGenero) {
+
+      this.generoService
+        .update(this.editingGenero.id, this.generoNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
           next: () => {
-            this.loadEditoriales();
+            this.loadGeneros();
             this.cancelForm();
+
             Swal.fire({
               title: '¡Actualizado!',
-              text: 'Editorial actualizada correctamente',
+              text: 'Género actualizado correctamente',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al actualizar editorial:', err);
-            Swal.fire('Error', 'No se pudo actualizar la editorial', 'error');
+            console.error('Error al actualizar género:', err);
+            Swal.fire('Error', 'No se pudo actualizar el género', 'error');
           }
         });
+
     } else {
-      this.editorialService
-        .create(this.editorialNombre.trim())
+
+      this.generoService
+        .create(this.generoNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
           next: () => {
-            this.loadEditoriales();
+            this.loadGeneros();
             this.cancelForm();
+
             Swal.fire({
               title: '¡Creado!',
-              text: 'Editorial creada correctamente',
+              text: 'Género creado correctamente',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al crear editorial:', err);
-            Swal.fire('Error', 'No se pudo crear la editorial', 'error');
+            console.error('Error al crear género:', err);
+            Swal.fire('Error', 'No se pudo crear el género', 'error');
           }
         });
+
     }
   }
 
-  deleteEditorial(editorial: Editorial) {
+  deleteGenero(genero: Genero) {
+
     Swal.fire({
       title: '¿Estás seguro?',
-      text: `Deseas eliminar la editorial "${editorial.nombre}"`,
+      text: `Deseas eliminar el género "${genero.nombre}"`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -127,24 +137,30 @@ export class EditorialsComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
+
       if (result.isConfirmed) {
-        this.editorialService.delete(editorial.id).subscribe({
+
+        this.generoService.delete(genero.id).subscribe({
           next: () => {
-            this.loadEditoriales();
+            this.loadGeneros();
+
             Swal.fire({
               title: '¡Eliminado!',
-              text: 'La editorial ha sido eliminada.',
+              text: 'El género ha sido eliminado.',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al eliminar editorial:', err);
-            Swal.fire('Error', 'No se pudo eliminar la editorial', 'error');
+            console.error('Error al eliminar género:', err);
+            Swal.fire('Error', 'No se pudo eliminar el género', 'error');
           }
         });
+
       }
+
     });
   }
+
 }

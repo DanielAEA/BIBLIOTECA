@@ -12,13 +12,13 @@ import { BookService, Libro, LibroPayload } from '../../../services/book.service
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-settings',
+  selector: 'app-configuracion',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  templateUrl: './configuracion.component.html',
+  styleUrls: ['./configuracion.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class ConfiguracionComponent implements OnInit {
   // Exponer Math para uso en templates
   Math = Math;
 

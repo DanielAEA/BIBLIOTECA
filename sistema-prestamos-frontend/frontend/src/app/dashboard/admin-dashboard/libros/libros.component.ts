@@ -9,13 +9,13 @@ import { GeneroService, Genero } from '../../../services/genero.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-books',
+  selector: 'app-libros',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss']
+  templateUrl: './libros.component.html',
+  styleUrls: ['./libros.component.scss']
 })
-export class BooksComponent implements OnInit {
+export class LibrosComponent implements OnInit {
 
   books: Libro[] = [];
   authors: Autor[] = [];

@@ -14,12 +14,13 @@ import { ThemeService } from '../../services/theme.service';
 export class AdminDashboardComponent {
 
   menu = [
-    { name: 'Panel de Administración', path: '/admin/settings' },
-    { name: 'Estadísticas', path: '/admin/statistics' },
-    { name: 'Libros', path: '/admin/books' },
-    { name: 'Autores', path: '/admin/authors' },
-    { name: 'Editoriales', path: '/admin/editorials' },
-    { name: 'Géneros', path: '/admin/genres' },
+    { name: 'Panel de Administración', path: '/admin/configuracion' },
+    { name: 'Estadísticas', path: '/admin/estadisticas' },
+    { name: 'Usuarios', path: '/admin/usuarios' },
+    { name: 'Libros', path: '/admin/libros' },
+    { name: 'Autores', path: '/admin/autores' },
+    { name: 'Editoriales', path: '/admin/editoriales' },
+    { name: 'Géneros', path: '/admin/generos' },
     { name: 'Ejemplares', path: '/admin/ejemplares' },
     { name: 'Reseñas', path: '/admin/resenas' },
     { name: 'Salas', path: '/admin/salas' }

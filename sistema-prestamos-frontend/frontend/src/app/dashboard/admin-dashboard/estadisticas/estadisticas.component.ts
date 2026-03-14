@@ -7,13 +7,13 @@ import { ThemeService } from '../../../services/theme.service';
 Chart.register(...registerables);
 
 @Component({
-  selector: 'app-statistics',
+  selector: 'app-estadisticas',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss']
+  templateUrl: './estadisticas.component.html',
+  styleUrls: ['./estadisticas.component.scss']
 })
-export class StatisticsComponent implements OnInit, AfterViewInit {
+export class EstadisticasComponent implements OnInit, AfterViewInit {
   @ViewChild('popChart') popChartRef!: ElementRef;
   @ViewChild('genreChart') genreChartRef!: ElementRef;
   @ViewChild('userTypeChart') userTypeChartRef!: ElementRef;

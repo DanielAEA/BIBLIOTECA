@@ -2,69 +2,67 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
-import { AuthorService, Autor } from '../../../services/author.service';
+import { EditorialService, Editorial } from '../../../services/editorial.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-authors',
+  selector: 'app-editoriales',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './authors.component.html',
-  styleUrls: ['./authors.component.scss']
+  templateUrl: './editoriales.component.html',
+  styleUrls: ['./editoriales.component.scss']
 })
-export class AuthorsComponent implements OnInit {
-
-  autores: Autor[] = [];
-  editingAutor: Autor | null = null;
+export class EditorialesComponent implements OnInit {
+  editoriales: Editorial[] = [];
+  editingEditorial: Editorial | null = null;
   showForm = false;
-  autorNombre = '';
+  editorialNombre = '';
   loading = false;
   submitting = false;
 
-  constructor(private authorService: AuthorService) { }
+  constructor(private editorialService: EditorialService) { }
 
   ngOnInit() {
-    this.loadAutores();
+    this.loadEditoriales();
   }
 
-  loadAutores() {
+  loadEditoriales() {
     this.loading = true;
-    this.authorService.getAll().subscribe({
-      next: (autores) => {
-        this.autores = autores;
+    this.editorialService.getAll().subscribe({
+      next: (editoriales) => {
+        this.editoriales = editoriales;
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar autores:', err);
+        console.error('Error al cargar editoriales:', err);
         this.loading = false;
       }
     });
   }
 
-  createAutor() {
-    this.editingAutor = null;
-    this.autorNombre = '';
+  createEditorial() {
+    this.editingEditorial = null;
+    this.editorialNombre = '';
     this.showForm = true;
   }
 
-  editAutor(autor: Autor) {
-    this.editingAutor = autor;
-    this.autorNombre = autor.nombre;
+  editEditorial(editorial: Editorial) {
+    this.editingEditorial = editorial;
+    this.editorialNombre = editorial.nombre;
     this.showForm = true;
   }
 
   cancelForm() {
     this.showForm = false;
-    this.editingAutor = null;
-    this.autorNombre = '';
+    this.editingEditorial = null;
+    this.editorialNombre = '';
   }
 
-  saveAutor() {
-
-    if (!this.autorNombre.trim()) {
+  saveEditorial() {
+    if (!this.editorialNombre.trim()) {
       Swal.fire({
         title: 'Atención',
-        text: 'Ingresa el nombre del autor.',
+        text: 'Ingresa el nombre de la editorial.',
         icon: 'warning',
         confirmButtonColor: '#3085d6',
         confirmButtonText: 'Entendido'
@@ -73,63 +71,55 @@ export class AuthorsComponent implements OnInit {
     }
 
     this.submitting = true;
-
-    if (this.editingAutor) {
-
-      this.authorService
-        .update(this.editingAutor.id, this.autorNombre.trim())
+    if (this.editingEditorial) {
+      this.editorialService
+        .update(this.editingEditorial.id, this.editorialNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
           next: () => {
-            this.loadAutores();
+            this.loadEditoriales();
             this.cancelForm();
-
             Swal.fire({
               title: '¡Actualizado!',
-              text: 'Autor actualizado correctamente',
+              text: 'Editorial actualizada correctamente',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al actualizar autor:', err);
-            Swal.fire('Error', 'No se pudo actualizar el autor', 'error');
+            console.error('Error al actualizar editorial:', err);
+            Swal.fire('Error', 'No se pudo actualizar la editorial', 'error');
           }
         });
-
     } else {
-
-      this.authorService
-        .create(this.autorNombre.trim())
+      this.editorialService
+        .create(this.editorialNombre.trim())
         .pipe(finalize(() => (this.submitting = false)))
         .subscribe({
           next: () => {
-            this.loadAutores();
+            this.loadEditoriales();
             this.cancelForm();
-
             Swal.fire({
               title: '¡Creado!',
-              text: 'Autor creado correctamente',
+              text: 'Editorial creada correctamente',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al crear autor:', err);
-            Swal.fire('Error', 'No se pudo crear el autor', 'error');
+            console.error('Error al crear editorial:', err);
+            Swal.fire('Error', 'No se pudo crear la editorial', 'error');
           }
         });
-
     }
   }
 
-  deleteAutor(autor: Autor) {
-
+  deleteEditorial(editorial: Editorial) {
     Swal.fire({
       title: '¿Estás seguro?',
-      text: `Deseas eliminar el autor "${autor.nombre}"`,
+      text: `Deseas eliminar la editorial "${editorial.nombre}"`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
@@ -137,30 +127,24 @@ export class AuthorsComponent implements OnInit {
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
-
       if (result.isConfirmed) {
-
-        this.authorService.delete(autor.id).subscribe({
+        this.editorialService.delete(editorial.id).subscribe({
           next: () => {
-            this.loadAutores();
-
+            this.loadEditoriales();
             Swal.fire({
               title: '¡Eliminado!',
-              text: 'El autor ha sido eliminado.',
+              text: 'La editorial ha sido eliminada.',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
             });
           },
           error: (err) => {
-            console.error('Error al eliminar autor:', err);
-            Swal.fire('Error', 'No se pudo eliminar el autor', 'error');
+            console.error('Error al eliminar editorial:', err);
+            Swal.fire('Error', 'No se pudo eliminar la editorial', 'error');
           }
         });
-
       }
-
     });
   }
-
 }

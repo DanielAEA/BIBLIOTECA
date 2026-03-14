@@ -11,15 +11,16 @@ import { AdminDashboardComponent } from './dashboard/admin-dashboard/admin-dashb
 import { BibliotecarioDashboardComponent } from './dashboard/bibliotecario-dashboard/bibliotecario-dashboard.component';
 import { ClienteDashboardComponent } from './dashboard/cliente-dashboard/cliente-dashboard.component';
 
-import { SettingsComponent } from './dashboard/admin-dashboard/settings/settings.component';
-import { BooksComponent } from './dashboard/admin-dashboard/books/books.component';
-import { AuthorsComponent } from './dashboard/admin-dashboard/catalog/authors.component';
-import { EditorialsComponent } from './dashboard/admin-dashboard/catalog/editorials.component';
-import { GenresComponent } from './dashboard/admin-dashboard/catalog/genres.component';
+import { ConfiguracionComponent } from './dashboard/admin-dashboard/configuracion/configuracion.component';
+import { LibrosComponent } from './dashboard/admin-dashboard/libros/libros.component';
+import { AutoresComponent } from './dashboard/admin-dashboard/catalogo/autores.component';
+import { EditorialesComponent } from './dashboard/admin-dashboard/catalogo/editoriales.component';
+import { GenerosComponent } from './dashboard/admin-dashboard/catalogo/generos.component';
 import { EjemplaresComponent } from './dashboard/admin-dashboard/ejemplares/ejemplares.component';
 import { ResenasComponent } from './dashboard/admin-dashboard/resenas/resenas.component';
 import { SalasComponent } from './dashboard/admin-dashboard/salas/salas.component';
-import { StatisticsComponent } from './dashboard/admin-dashboard/statistics/statistics.component';
+import { EstadisticasComponent } from './dashboard/admin-dashboard/estadisticas/estadisticas.component';
+import { UsuariosComponent } from './dashboard/admin-dashboard/usuarios/usuarios.component';
 
 // Not Authorized
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
@@ -34,16 +35,17 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard],
     data: { roles: ['ADMIN'] },
     children: [
-      { path: 'settings', component: SettingsComponent },
-      { path: 'books', component: BooksComponent },
-      { path: 'authors', component: AuthorsComponent },
-      { path: 'editorials', component: EditorialsComponent },
-      { path: 'genres', component: GenresComponent },
+      { path: 'configuracion', component: ConfiguracionComponent },
+      { path: 'libros', component: LibrosComponent },
+      { path: 'autores', component: AutoresComponent },
+      { path: 'editoriales', component: EditorialesComponent },
+      { path: 'generos', component: GenerosComponent },
       { path: 'ejemplares', component: EjemplaresComponent },
       { path: 'resenas', component: ResenasComponent },
       { path: 'salas', component: SalasComponent },
-      { path: 'statistics', component: StatisticsComponent },
-      { path: '', redirectTo: 'statistics', pathMatch: 'full' }
+      { path: 'estadisticas', component: EstadisticasComponent },
+      { path: 'usuarios', component: UsuariosComponent },
+      { path: '', redirectTo: 'estadisticas', pathMatch: 'full' }
     ]
   },
 
