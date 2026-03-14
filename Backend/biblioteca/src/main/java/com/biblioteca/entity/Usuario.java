@@ -29,6 +29,9 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "rol_id")
     private RolUsuario rol;
 
+    @Column(name = "fecha_registro")
+    private java.time.LocalDateTime fechaRegistro = java.time.LocalDateTime.now();
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Prestamo> prestamos;
@@ -82,6 +85,14 @@ public class Usuario implements UserDetails {
 
     public void setPrestamos(List<Prestamo> prestamos) {
         this.prestamos = prestamos;
+    }
+
+    public java.time.LocalDateTime getFechaRegistro() {
+        return fechaRegistro;
+    }
+
+    public void setFechaRegistro(java.time.LocalDateTime fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
     }
 
     @Override

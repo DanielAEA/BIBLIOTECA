@@ -7,7 +7,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -63,10 +63,9 @@ public class PrestamoServiceImpl implements PrestamoService {
         Prestamo prestamoNuevo = new Prestamo();
         prestamoNuevo.setUsuario(usuarioReal);
         prestamoNuevo.setEjemplar(ejemplarReal);
-        prestamoNuevo
-                .setFechaPrestamo(prestamo.getFechaPrestamo() != null ? prestamo.getFechaPrestamo() : LocalDate.now());
+        prestamoNuevo.setFechaPrestamo(prestamo.getFechaPrestamo() != null ? prestamo.getFechaPrestamo() : LocalDateTime.now());
         prestamoNuevo.setFechaDevolucion(
-                prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : LocalDate.now().plusDays(15));
+                prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : LocalDateTime.now().plusDays(15));
         prestamoNuevo.setDevuelto(false);
 
         // Guardar el préstamo
@@ -123,17 +122,17 @@ public class PrestamoServiceImpl implements PrestamoService {
             throw new RuntimeException("Ya fue devuelto");
         }
 
-        LocalDate fechaDevolucionOriginal = p.getFechaDevolucion();
+        LocalDateTime fechaDevolucionOriginal = p.getFechaDevolucion();
 
         p.setDevuelto(true);
-        p.setFechaDevolucion(LocalDate.now());
+        p.setFechaDevolucionReal(LocalDateTime.now());
 
         Ejemplar e = p.getEjemplar();
         e.setDisponible(true);
         ejemplarRepository.save(e);
 
-        LocalDate esperado = fechaDevolucionOriginal;
-        LocalDate real = LocalDate.now();
+        LocalDateTime esperado = fechaDevolucionOriginal;
+        LocalDateTime real = LocalDateTime.now();
 
         if (real.isAfter(esperado)) {
             long dias = ChronoUnit.DAYS.between(esperado, real);
@@ -160,11 +159,11 @@ public class PrestamoServiceImpl implements PrestamoService {
 
     @Transactional
     public void procesarVencidos() {
-        List<Prestamo> list = prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDate.now());
+        List<Prestamo> list = prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now());
 
         for (Prestamo p : list) {
             if (p.getMulta() == null) {
-                long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion(), LocalDate.now());
+                long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion(), LocalDateTime.now());
 
                 PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
                 if (precio == null) {

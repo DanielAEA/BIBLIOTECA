@@ -24,6 +24,9 @@ public class Multa {
     @Column(nullable = false)
     private Double total;
 
+    @Column(nullable = false)
+    private Boolean pagada = false;
+
     // Constructores
     public Multa() {}
 
@@ -32,6 +35,7 @@ public class Multa {
         this.precioMulta = precioMulta;
         this.diasAtraso = diasAtraso;
         this.total = total;
+        this.pagada = false;
     }
 
     // Getters y Setters
@@ -73,6 +77,14 @@ public class Multa {
 
     public void setTotal(Double total) {
         this.total = total;
+    }
+
+    public Boolean getPagada() {
+        return pagada;
+    }
+
+    public void setPagada(Boolean pagada) {
+        this.pagada = pagada;
     }
 
     @Override

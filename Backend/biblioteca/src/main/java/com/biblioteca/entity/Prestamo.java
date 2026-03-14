@@ -2,7 +2,7 @@ package com.biblioteca.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "prestamos")
@@ -23,10 +23,13 @@ public class Prestamo {
     private Ejemplar ejemplar;
 
     @Column(name = "fecha_prestamo", nullable = false)
-    private LocalDate fechaPrestamo;
+    private LocalDateTime fechaPrestamo;
 
     @Column(name = "fecha_devolucion", nullable = false)
-    private LocalDate fechaDevolucion;
+    private LocalDateTime fechaDevolucion;
+
+    @Column(name = "fecha_devolucion_real")
+    private LocalDateTime fechaDevolucionReal;
 
     private Boolean devuelto = false;
 
@@ -42,10 +45,12 @@ public class Prestamo {
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
     public Ejemplar getEjemplar() { return ejemplar; }
     public void setEjemplar(Ejemplar ejemplar) { this.ejemplar = ejemplar; }
-    public LocalDate getFechaPrestamo() { return fechaPrestamo; }
-    public void setFechaPrestamo(LocalDate fechaPrestamo) { this.fechaPrestamo = fechaPrestamo; }
-    public LocalDate getFechaDevolucion() { return fechaDevolucion; }
-    public void setFechaDevolucion(LocalDate fechaDevolucion) { this.fechaDevolucion = fechaDevolucion; }
+    public LocalDateTime getFechaPrestamo() { return fechaPrestamo; }
+    public void setFechaPrestamo(LocalDateTime fechaPrestamo) { this.fechaPrestamo = fechaPrestamo; }
+    public LocalDateTime getFechaDevolucion() { return fechaDevolucion; }
+    public void setFechaDevolucion(LocalDateTime fechaDevolucion) { this.fechaDevolucion = fechaDevolucion; }
+    public LocalDateTime getFechaDevolucionReal() { return fechaDevolucionReal; }
+    public void setFechaDevolucionReal(LocalDateTime fechaDevolucionReal) { this.fechaDevolucionReal = fechaDevolucionReal; }
     public Boolean getDevuelto() { return devuelto; }
     public void setDevuelto(Boolean devuelto) { this.devuelto = devuelto; }
     public Multa getMulta() { return multa; }

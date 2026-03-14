@@ -63,8 +63,12 @@ public class PrestamoController {
             prestamo.setEjemplar(ejemplar);
 
             // Setear fechas si vienen en el request
-            prestamo.setFechaPrestamo(request.getFechaPrestamo());
-            prestamo.setFechaDevolucion(request.getFechaDevolucion());
+            if (request.getFechaPrestamo() != null) {
+                prestamo.setFechaPrestamo(request.getFechaPrestamo().atStartOfDay());
+            }
+            if (request.getFechaDevolucion() != null) {
+                prestamo.setFechaDevolucion(request.getFechaDevolucion().atStartOfDay());
+            }
 
             // El Service buscará las entidades reales y las reemplazará
             Prestamo creado = prestamoService.crear(prestamo);
