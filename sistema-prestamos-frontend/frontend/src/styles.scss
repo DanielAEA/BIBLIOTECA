@@ -2,26 +2,41 @@
 
 :root {
     --primary-gradient: linear-gradient(135deg, #868cff 0%, #4318ff 100%);
-    --secondary-bg: #f4f7fe;
-    --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+    --bg-main: #f4f7fe;
+    --bg-card: #ffffff;
+    --bg-alt: #f8fafc;
     --text-main: #2b3674;
     --text-muted: #a3aed1;
     --text-dark: #1b2559;
+    --border-color: #e9edf7;
     --success: #01b574;
     --danger: #ee5d50;
     --warning: #ffce20;
-    --border-color: #e9edf7;
+    --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
     --radius-xl: 20px;
     --radius-lg: 16px;
     --radius-md: 12px;
 }
 
+:root.dark-theme,
+body.dark-theme {
+    --bg-main: #0b1437;
+    --bg-card: #111c44;
+    --bg-alt: #1b254b;
+    --text-main: #ffffff;
+    --text-muted: #a3aed1;
+    --text-dark: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-shadow: 0px 18px 40px rgba(0, 0, 0, 0.3);
+}
+
 body {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: var(--secondary-bg);
+    background-color: var(--bg-main);
     color: var(--text-main);
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Global Premium Utilities */
@@ -43,18 +58,18 @@ body {
 }
 
 .premium-card {
-    background: #ffffff;
+    background: var(--bg-card);
     padding: 2rem;
     border-radius: var(--radius-xl);
     box-shadow: var(--card-shadow);
     margin-bottom: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(233, 237, 247, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 .premium-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0px 24px 50px rgba(112, 144, 176, 0.18);
+    box-shadow: 0px 24px 50px rgba(0, 0, 0, 0.2);
 }
 
 .premium-header {
@@ -127,7 +142,7 @@ body {
     border-spacing: 0;
 
     th {
-        background: var(--secondary-bg);
+        background: var(--bg-alt);
         padding: 1.2rem 1rem;
         text-align: left;
         font-weight: 700;
@@ -156,7 +171,33 @@ body {
     }
 
     tr:hover td {
-        background: #f8fafc;
+        background: var(--bg-alt);
+    }
+}
+
+/* Aggressive Dark Theme Overrides for Admin Panel */
+.dark-theme {
+    .settings-card, .crud-section, .loans-card, .tabs, .settings-container, .edit-form {
+        background-color: var(--bg-card) !important;
+        background: var(--bg-card) !important;
+        border-color: var(--border-color) !important;
+        color: var(--text-main) !important;
+        box-shadow: var(--card-shadow) !important;
+    }
+
+    .tab-btn:not(.active) {
+        color: var(--text-muted) !important;
+        &:hover { background: var(--bg-alt) !important; }
+    }
+
+    h2, h3, h4, label, strong {
+        color: var(--text-dark) !important;
+    }
+
+    .data-table {
+        thead th { background: var(--bg-alt) !important; color: var(--text-muted) !important; }
+        tbody td { border-bottom-color: var(--border-color) !important; color: var(--text-main) !important; }
+        tbody tr:hover td { background: var(--bg-alt) !important; }
     }
 }
 
@@ -177,7 +218,7 @@ body {
         textarea {
             width: 100%;
             padding: 0.9rem 1.2rem;
-            background: var(--secondary-bg);
+            background: var(--bg-alt);
             border: 2px solid transparent;
             border-radius: var(--radius-md);
             color: var(--text-main);
@@ -188,7 +229,7 @@ body {
             box-sizing: border-box;
 
             &:focus {
-                background: #ffffff;
+                background: var(--bg-card);
                 border-color: #4318ff;
                 box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
             }

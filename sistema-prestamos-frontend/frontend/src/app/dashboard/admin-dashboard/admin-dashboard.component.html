@@ -38,6 +38,11 @@
           <h1>Panel de Control</h1>
           <p>Gestiona eficientemente los recursos de la biblioteca.</p>
         </div>
+        <div class="topbar-actions">
+          <button class="theme-toggle-btn" (click)="toggleTheme()" [title]="(themeService.isDarkTheme$ | async) ? 'Modo Claro' : 'Modo Oscuro'">
+            <span class="icon">{{ (themeService.isDarkTheme$ | async) ? '☀️' : '🌙' }}</span>
+          </button>
+        </div>
       </div>
     </header>
 

@@ -1,9 +1,10 @@
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #f4f7fe;
+  background-color: var(--bg-main);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: #2b3674;
+  color: var(--text-main);
+  transition: all 0.3s ease;
 }
 
 /* Base Layout */
@@ -16,12 +17,13 @@
 /* Sidebar Styling */
 .sidebar {
   width: 280px;
-  background: #ffffff;
+  background: var(--bg-card);
   display: flex;
   flex-direction: column;
-  box-shadow: 14px 0px 40px rgba(112, 144, 176, 0.08);
+  box-shadow: var(--card-shadow);
   z-index: 10;
-  border-right: 1px solid #e9edf7;
+  border-right: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
 
 .sidebar-header {
@@ -74,7 +76,7 @@
 }
 
 .menu-item:hover {
-  background: #f4f7fe;
+  background: var(--bg-alt);
   color: #4318ff;
   transform: translateX(4px);
 }
@@ -108,7 +110,7 @@
 /* Sidebar Footer / User Profile Badge */
 .sidebar-footer {
   padding: 1.5rem;
-  border-top: 1px solid #e9edf7;
+  border-top: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -165,7 +167,7 @@
 
 .admin-info .name {
   font-weight: 700;
-  color: #1b2559;
+  color: var(--text-dark);
   font-size: 0.95rem;
 }
 
@@ -185,13 +187,13 @@
 }
 
 .topbar {
-  padding: 2rem 2.5rem 1rem;
-  background: rgba(244, 247, 254, 0.85);
-  /* Matches body */
+  padding: 1.5rem 2.5rem 1rem;
+  background: var(--bg-main);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 5;
+  transition: all 0.3s ease;
 }
 
 .topbar-content {
@@ -201,18 +203,38 @@
 }
 
 .page-info h1 {
-  font-size: 2.1rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  color: #1b2559;
-  margin: 0 0 0.5rem 0;
+  color: var(--text-dark);
+  margin: 0 0 0.25rem 0;
   letter-spacing: -0.5px;
 }
 
 .page-info p {
-  color: #a3aed1;
+  color: var(--text-muted);
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
+}
+
+.theme-toggle-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
+  font-size: 1.2rem;
+
+  &:hover {
+    transform: scale(1.1);
+    border-color: #4318ff;
+  }
 }
 
 /* Content Route Area */

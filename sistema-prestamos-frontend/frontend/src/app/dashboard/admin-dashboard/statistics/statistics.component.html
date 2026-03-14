@@ -1,0 +1,209 @@
+<div class="premium-container">
+    <div class="premium-header">
+        <div class="title-group">
+            <h2>Dashboard de Inteligencia de Biblioteca</h2>
+            <p>Monitoreo en tiempo real del rendimiento y KPIs del sistema</p>
+        </div>
+        <div class="header-actions" *ngIf="summary">
+            <span class="last-update">Última actualización: {{ today | date:'short' }}</span>
+        </div>
+    </div>
+
+    <!-- Enhanced Summary Cards -->
+    <div class="stats-summary-grid">
+        <div class="stats-card-small primary">
+            <div class="icon">📚</div>
+            <div class="data">
+                <span class="count">{{ summary.totalLibros || 0 }}</span>
+                <span class="label">Total Libros</span>
+            </div>
+        </div>
+        <div class="stats-card-small secondary">
+            <div class="icon">👥</div>
+            <div class="data">
+                <span class="count">{{ summary.totalUsuarios || 0 }}</span>
+                <span class="label">Usuarios Activos</span>
+            </div>
+        </div>
+        <div class="stats-card-small warning">
+            <div class="icon">⏳</div>
+            <div class="data">
+                <span class="count">{{ summary.prestamosActivos || 0 }}</span>
+                <span class="label">Préstamos Activos</span>
+            </div>
+        </div>
+        <div class="stats-card-small danger">
+            <div class="icon">💰</div>
+            <div class="data">
+                <span class="count">{{ (summary.totalMultasPendientes || 0) | currency:'USD' }}</span>
+                <span class="label">Multas Pendientes</span>
+            </div>
+        </div>
+        <div class="stats-card-small danger-alt">
+            <div class="icon">🚫</div>
+            <div class="data">
+                <span class="count">{{ summary.prestamosVencidos || 0 }}</span>
+                <span class="label">Vencidos Hoy</span>
+            </div>
+        </div>
+        <div class="stats-card-small success">
+            <div class="icon">✅</div>
+            <div class="data">
+                <span class="count">{{ summary.ejemplaresDisponibles || 0 }}</span>
+                <span class="label">Disp. Ahora</span>
+            </div>
+        </div>
+        <div class="stats-card-small info">
+            <div class="icon">📈</div>
+            <div class="data">
+                <span class="count">{{ summary.nuevosUsuariosMes || 0 }}</span>
+                <span class="label">Nuevos (Mes)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Charts Grid -->
+    <div class="charts-grid upper">
+        <div class="premium-card chart-container featured">
+            <h3>📈 Tendencia de Préstamos (Mensual)</h3>
+            <div class="canvas-wrapper">
+                <canvas #trendChart></canvas>
+            </div>
+        </div>
+        <div class="premium-card chart-container">
+            <h3>📖 Libros más solicitados (Top 5)</h3>
+            <div class="canvas-wrapper">
+                <canvas #popChart></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid secondary">
+        <div class="premium-card chart-container">
+            <h3>🎭 Préstamos por Género</h3>
+            <div class="canvas-wrapper">
+                <canvas #genreChart></canvas>
+            </div>
+        </div>
+        <div class="premium-card chart-container">
+            <h3>🎓 Uso por Tipo de Usuario</h3>
+            <div class="canvas-wrapper">
+                <canvas #userTypeChart></canvas>
+            </div>
+        </div>
+        <div class="premium-card chart-container">
+            <h3>💸 Estado de Multas (Monto)</h3>
+            <div class="canvas-wrapper">
+                <canvas #finesChart></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="charts-grid tertiary">
+        <div class="premium-card chart-container">
+            <h3>✍️ Autores más leídos</h3>
+            <div class="canvas-wrapper">
+                <canvas #authorChart></canvas>
+            </div>
+        </div>
+        <div class="premium-card chart-container center-content">
+            <h3>🎯 Tasa de Puntualidad</h3>
+            <div class="canvas-wrapper relative">
+                <canvas #punctualityChart></canvas>
+                <div class="chart-overlay" *ngIf="summary.onTimeRate">
+                    <span class="percentage">{{ Math.round(summary.onTimeRate) }}%</span>
+                </div>
+            </div>
+        </div>
+        <div class="premium-card chart-container">
+            <h3>📂 Formatos en Inventario</h3>
+            <div class="canvas-wrapper">
+                <canvas #distChart></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Tables Grid -->
+    <div class="tables-grid">
+        <div class="premium-card table-container">
+            <div class="table-header">
+                <h3>⚠️ Usuarios con Deuda Pendiente</h3>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Monto</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let d of debtors">
+                            <td>{{ d.usuario }}</td>
+                            <td class="debt-monto">{{ d.deuda | currency:'USD' }}</td>
+                            <td><button class="btn-action">Notificar</button></td>
+                        </tr>
+                        <tr *ngIf="debtors.length === 0">
+                            <td colspan="3" class="empty-msg">No hay deudas pendientes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="premium-card table-container">
+            <div class="table-header">
+                <h3>🕸️ Libros sin movimiento (6 meses)</h3>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let b of inactiveBooks">
+                            <td>#{{ b.id }}</td>
+                            <td>{{ b.titulo }}</td>
+                            <td><button class="btn-action alt">Promover</button></td>
+                        </tr>
+                        <tr *ngIf="inactiveBooks.length === 0">
+                            <td colspan="3" class="empty-msg">Todos los libros están activos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="premium-card table-container">
+            <div class="table-header">
+                <h3>⏰ Próximos Vencimientos (3 días)</h3>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Libro</th>
+                            <th>Usuario</th>
+                            <th>Vence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of upcomingExpirations">
+                            <td>{{ p.libro }}</td>
+                            <td>{{ p.usuario }}</td>
+                            <td>{{ p.vencimiento | date:'shortDate' }}</td>
+                        </tr>
+                        <tr *ngIf="upcomingExpirations.length === 0">
+                            <td colspan="3" class="empty-msg">No hay vencimientos próximos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div class="settings-container">
-  <h2>Configuración del Sistema</h2>
+  <h2>Panel de Administración</h2>
 
   <!-- Tabs Navigation -->
   <div class="tabs">
@@ -80,16 +80,6 @@
 
   <!-- Tab Content: Préstamos -->
   <div *ngIf="activeTab === 'prestamos'" class="tab-content">
-    <div class="settings-card">
-      <h3>Configuración del Sistema</h3>
-      <div class="setting-item">
-        <strong>Nombre del sistema:</strong> {{ systemName }}
-      </div>
-      <div class="setting-item">
-        <strong>Días de préstamo:</strong> {{ loanDays }}
-      </div>
-    </div>
-
     <div class="crud-section">
       <div class="section-header">
         <h3>Gestión de Préstamos</h3>

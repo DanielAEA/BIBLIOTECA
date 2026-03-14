@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -13,7 +14,8 @@ import { AuthService } from '../../services/auth.service';
 export class AdminDashboardComponent {
 
   menu = [
-    { name: 'Configuración', path: '/admin/settings' },
+    { name: 'Panel de Administración', path: '/admin/settings' },
+    { name: 'Estadísticas', path: '/admin/statistics' },
     { name: 'Libros', path: '/admin/books' },
     { name: 'Autores', path: '/admin/authors' },
     { name: 'Editoriales', path: '/admin/editorials' },
@@ -23,7 +25,15 @@ export class AdminDashboardComponent {
     { name: 'Salas', path: '/admin/salas' }
   ];
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    public themeService: ThemeService
+  ) { }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
 
   isActive(path: string): boolean {
     return this.router.url.includes(path);

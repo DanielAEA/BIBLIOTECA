@@ -19,6 +19,7 @@ import { GenresComponent } from './dashboard/admin-dashboard/catalog/genres.comp
 import { EjemplaresComponent } from './dashboard/admin-dashboard/ejemplares/ejemplares.component';
 import { ResenasComponent } from './dashboard/admin-dashboard/resenas/resenas.component';
 import { SalasComponent } from './dashboard/admin-dashboard/salas/salas.component';
+import { StatisticsComponent } from './dashboard/admin-dashboard/statistics/statistics.component';
 
 // Not Authorized
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
@@ -41,7 +42,8 @@ export const routes: Routes = [
       { path: 'ejemplares', component: EjemplaresComponent },
       { path: 'resenas', component: ResenasComponent },
       { path: 'salas', component: SalasComponent },
-      { path: '', redirectTo: 'settings', pathMatch: 'full' }
+      { path: 'statistics', component: StatisticsComponent },
+      { path: '', redirectTo: 'statistics', pathMatch: 'full' }
     ]
   },
 
