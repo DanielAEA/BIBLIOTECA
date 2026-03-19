@@ -3,43 +3,44 @@
         <h2>Catálogo de Libros</h2>
     </div>
 
-    <div class="premium-card search-bar">
+    <div class="search-bar">
         <input type="text" [(ngModel)]="searchTerm" (input)="filterLibros()"
-            placeholder="🔍 Buscar por título, autor o género..." class="search-input">
+            placeholder="Buscar por título, autor o género..." class="search-input">
     </div>
 
     <div *ngIf="loading" class="loading">Cargando catálogo...</div>
 
     <div class="books-grid" *ngIf="!loading">
-        <div class="book-card" *ngFor="let libro of filteredLibros">
-            <div class="book-info">
-                <h3 class="book-title">{{ libro.titulo }}</h3>
-                <p class="book-author">{{ getAutoresStr(libro) }}</p>
-                <div class="book-meta">
-                    <span class="premium-badge badge-primary" *ngIf="libro.genero">{{ libro.genero.nombre }}</span>
-                    <span class="premium-badge"
-                        [ngClass]="{
-                            'badge-format-fisico': libro.formato === 'FISICO',
-                            'badge-format-digital': libro.formato === 'DIGITAL',
-                            'badge-format-ambos': libro.formato === 'AMBOS'
-                        }">
-                        {{ libro.formato === 'FISICO' ? '📘 Físico' : libro.formato === 'DIGITAL' ? '💻 Digital' : '📚 Físico y Digital' }}
-                    </span>
-                    <span class="premium-badge"
-                        [ngClass]="getEjemplaresDisponibles(libro) > 0 ? 'badge-success' : 'badge-danger'"
-                        *ngIf="libro.formato !== 'DIGITAL'">
-                        {{ getEjemplaresDisponibles(libro) }} disponible(s)
-                    </span>
-                </div>
+        <div class="premium-card book-card" *ngFor="let libro of filteredLibros">
+            <div class="book-title-row">
+                {{ libro.titulo }}
+            </div>
+            <div class="book-detail-row">
+                <strong>Autor(es):</strong> <span class="detail-value">{{ getAutoresStr(libro) }}</span>
+            </div>
+            <div class="book-detail-row" *ngIf="libro.genero">
+                <strong>Género:</strong> <span class="detail-value">{{ libro.genero.nombre }}</span>
+            </div>
+            <div class="book-detail-row">
+                <strong>Formato:</strong>
+                <span class="detail-value">
+                    {{ libro.formato === 'FISICO' ? 'Físico' : libro.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+                </span>
+                <button class="btn-read-premium" *ngIf="libro.tieneDigital" (click)="leerOnline(libro)">
+                    Leer Online
+                </button>
+            </div>
+            <div class="book-detail-row" *ngIf="libro.formato !== 'DIGITAL'">
+                <strong>Disponibles:</strong>
+                <span class="detail-value" [style.color]="getEjemplaresDisponibles(libro) === 0 ? 'var(--danger)' : 'var(--text-main)'">
+                    {{ getEjemplaresDisponibles(libro) }}
+                </span>
             </div>
             <div class="book-actions">
-                <button *ngIf="libro.formato !== 'DIGITAL'" class="premium-button" (click)="reservarLibro(libro)"
+                <button class="btn-edit-premium sm" (click)="openResenaForm(libro)">Reseñar</button>
+                <button *ngIf="libro.formato !== 'DIGITAL'" class="btn-edit-premium sm" (click)="reservarLibro(libro)"
                     [disabled]="getEjemplaresDisponibles(libro) === 0">
-                    {{ getEjemplaresDisponibles(libro) > 0 ? '📖 Reservar' : 'No disponible' }}
-                </button>
-                <button class="premium-button premium-button-alt" (click)="openResenaForm(libro)">⭐ Reseñar</button>
-                <button *ngIf="libro.tieneDigital && (libro.formato === 'DIGITAL' || libro.formato === 'AMBOS')" class="premium-button" style="background: #10b981; color: white;" (click)="leerOnline(libro)">
-                    📄 Leer Online
+                    {{ getEjemplaresDisponibles(libro) > 0 ? 'Reservar' : 'No disponible' }}
                 </button>
             </div>
         </div>
@@ -49,9 +50,9 @@
         No se encontraron libros{{ searchTerm ? ' con ese criterio' : '' }}.
     </div>
 
-    <div class="resena-overlay" *ngIf="showResenaForm" (click)="closeResenaForm()">
-        <div class="resena-modal" (click)="$event.stopPropagation()">
-            <div class="resena-modal-header">
+    <div class="modal-overlay" *ngIf="showResenaForm" (click)="closeResenaForm()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
                 <h3>Reseña — {{ resenaLibroTitulo }}</h3>
                 <button class="close-btn" (click)="closeResenaForm()">✕</button>
             </div>

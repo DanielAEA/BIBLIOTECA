@@ -1,1 +1,0 @@
-{"errors":["﻿src/app/dashboard/admin-dashboard/settings/settings.component.ts(1051,11): error TS2741: Property 'formato' is missing in type '{ titulo: string; autores: { id: number; }[]; editorial: { id: number; } | null; genero: { id: number; } | null; }' but required in type 'LibroPayload'.\r",""]}

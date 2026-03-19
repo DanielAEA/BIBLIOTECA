@@ -19,6 +19,7 @@ public class PermisoServiceImpl implements PermisoService {
 
     @Override
     public Permisos crear(@NonNull Permisos permiso) {
+        permiso.setId(null);
         return permisoRepository.save(permiso);
     }
 

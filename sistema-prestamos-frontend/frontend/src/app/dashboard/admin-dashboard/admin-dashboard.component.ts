@@ -5,24 +5,27 @@ import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
-  selector: 'app-admin-dashboard',
+  selector: 'app-admin-sidebar',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
-export class AdminDashboardComponent {
+export class AdminSidebarComponent {
+
+  isSidebarCollapsed = false;
 
   menu = [
-    { name: 'Panel de Administración', path: '/admin/configuracion' },
-    { name: 'Estadísticas', path: '/admin/estadisticas' },
-    { name: 'Libros', path: '/admin/libros' },
-    { name: 'Autores', path: '/admin/autores' },
-    { name: 'Editoriales', path: '/admin/editoriales' },
-    { name: 'Géneros', path: '/admin/generos' },
-    { name: 'Ejemplares', path: '/admin/ejemplares' },
-    { name: 'Reseñas', path: '/admin/resenas' },
-    { name: 'Salas', path: '/admin/salas' }
+    { name: 'Estadísticas', path: '/admin/estadisticas', icon: 'bx-pie-chart-alt-2' },
+    { name: 'Préstamos', path: '/admin/prestamos', icon: 'bx-transfer' },
+    { name: 'Usuarios', path: '/admin/usuarios', icon: 'bx-group' },
+    { name: 'Libros', path: '/admin/libros', icon: 'bx-book' },
+    { name: 'Autores', path: '/admin/autores', icon: 'bx-user-pin' },
+    { name: 'Editoriales', path: '/admin/editoriales', icon: 'bx-buildings' },
+    { name: 'Géneros', path: '/admin/generos', icon: 'bx-purchase-tag' },
+    { name: 'Ejemplares', path: '/admin/ejemplares', icon: 'bx-copy' },
+    { name: 'Reseñas', path: '/admin/resenas', icon: 'bx-star' },
+    { name: 'Salas', path: '/admin/salas', icon: 'bx-door-open' }
   ];
 
   constructor(
@@ -33,6 +36,10 @@ export class AdminDashboardComponent {
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
   isActive(path: string): boolean {

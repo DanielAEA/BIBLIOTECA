@@ -1,57 +1,73 @@
-<div class="table-container">
-  <h2>Gestión de Usuarios</h2>
+<div class="premium-container">
+  <div class="premium-header">
+    <h2>Gestión de Usuarios</h2>
+    <button class="premium-button" (click)="createUser()">+ Nuevo Usuario</button>
+  </div>
+
+  <!-- Modal: Usuario -->
+  <div class="modal-overlay" *ngIf="showUserForm && editingUser" (click)="cancelUserForm()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingUser.id === 0 ? 'Crear' : 'Editar' }} Usuario</h3>
+        <button class="close-btn" (click)="cancelUserForm()">✕</button>
+      </div>
+      <form (ngSubmit)="saveUser()" class="premium-form">
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input type="text" [(ngModel)]="editingUser.nombre" name="userNombre" required>
+        </div>
+        <div class="form-group">
+          <label>Correo:</label>
+          <input type="email" [(ngModel)]="editingUser.correo" name="userCorreo" required>
+        </div>
+        <div class="form-group">
+          <label>Contraseña {{ editingUser.id === 0 ? '(obligatoria)' : '(dejar vacío para mantener la actual)' }}:</label>
+          <input type="password" [(ngModel)]="editingUser.password" name="userPassword" [required]="editingUser.id === 0">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="premium-button" [disabled]="submittingUser">
+            {{ submittingUser ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button type="button" (click)="cancelUserForm()" class="premium-button premium-button-danger">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <div *ngIf="loading" class="loading">Cargando usuarios...</div>
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
-  <div *ngIf="showEditForm && editingUser" class="edit-form">
-    <h3>Editar Usuario</h3>
-    <form (ngSubmit)="saveUser()">
-      <div>
-        <label>Nombre:</label>
-        <input type="text" [(ngModel)]="editingUser.nombre" name="nombre" required>
-      </div>
-      <div>
-        <label>Correo:</label>
-        <input type="email" [(ngModel)]="editingUser.correo" name="correo" required>
-      </div>
-      <div>
-        <label>Contraseña (dejar vacío para no cambiar):</label>
-        <input type="password" [(ngModel)]="editingUser.password" name="password">
-      </div>
-      <div class="form-actions">
-        <button type="submit" class="action-btn action-save">Guardar</button>
-        <button type="button" (click)="cancelEdit()" class="action-btn action-cancel">Cancelar</button>
-      </div>
-    </form>
+  <div class="premium-card" *ngIf="!loading && users.length > 0">
+    <div class="table-responsive">
+      <table class="premium-table large-text">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td>{{ u.id }}</td>
+            <td>{{ u.nombre }}</td>
+            <td>{{ u.correo }}</td>
+            <td>{{ getRoleName(u) }}</td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-edit-premium" style="padding: 8px 16px; font-size: 0.9rem;" (click)="editUser(u)">Editar</button>
+                <button class="btn-delete-premium" style="padding: 8px 16px; font-size: 0.9rem;" (click)="deleteUser(u)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <table *ngIf="!loading && !error">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Rol</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let u of users">
-        <td>{{ u.id }}</td>
-        <td>{{ u.nombre }}</td>
-        <td>{{ u.correo }}</td>
-        <td>{{ getRoleName(u) }}</td>
-        <td>
-          <button class="action-btn action-edit" (click)="editUser(u)">Editar</button>
-          <button class="action-btn action-delete" (click)="deleteUser(u)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!loading && !error && users.length === 0" class="no-users">
+  <div *ngIf="!loading && users.length === 0" class="no-data">
     No hay usuarios registrados.
   </div>
 </div>

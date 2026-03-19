@@ -19,6 +19,7 @@ public class PrecioMultaServiceImpl implements PrecioMultaService {
 
     @Override
     public PrecioMulta crear(@NonNull PrecioMulta precioMulta) {
+        precioMulta.setId(null);
         return precioMultaRepository.save(precioMulta);
     }
 

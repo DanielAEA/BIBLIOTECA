@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserService, Usuario } from '../../../services/user.service';
+import { finalize } from 'rxjs';
+import { UserService, Usuario, UsuarioCreatePayload, UsuarioUpdatePayload } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,7 +18,8 @@ export class UsuariosComponent implements OnInit {
   loading = true;
   error: string | null = null;
   editingUser: Usuario | null = null;
-  showEditForm = false;
+  showUserForm = false;
+  submittingUser = false;
 
   constructor(private userService: UserService) { }
 
@@ -35,42 +37,90 @@ export class UsuariosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar usuarios:', err);
-        this.error = 'No se pudieron cargar los usuarios. Verifica que el backend esté corriendo.';
+        this.error = 'No se pudieron cargar los usuarios.';
         this.loading = false;
       }
     });
   }
 
-  editUser(user: Usuario) {
-    this.editingUser = { ...user };
-    this.showEditForm = true;
+  createUser() {
+    this.editingUser = {
+      id: 0,
+      nombre: '',
+      correo: '',
+      password: '',
+      rol: undefined
+    };
+    this.showUserForm = true;
   }
 
-  cancelEdit() {
+  editUser(user: Usuario) {
+    this.editingUser = { ...user, password: '' };
+    this.showUserForm = true;
+  }
+
+  cancelUserForm() {
     this.editingUser = null;
-    this.showEditForm = false;
+    this.showUserForm = false;
   }
 
   saveUser() {
     if (!this.editingUser) return;
 
-    this.userService.updateUser(this.editingUser.id, this.editingUser).subscribe({
-      next: () => {
-        this.loadUsers();
-        this.cancelEdit();
-        Swal.fire({
-          title: '¡Actualizado!',
-          text: 'Usuario actualizado correctamente',
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
-        });
-      },
-      error: (err) => {
-        console.error('Error al actualizar usuario:', err);
-        Swal.fire('Error', 'No se pudo actualizar el usuario', 'error');
+    if (!this.editingUser.nombre?.trim() || !this.editingUser.correo?.trim()) {
+      Swal.fire('Atención', 'Nombre y correo son obligatorios.', 'warning');
+      return;
+    }
+
+    this.submittingUser = true;
+
+    if (this.editingUser.id === 0) {
+      if (!this.editingUser.password?.trim()) {
+        Swal.fire('Atención', 'La contraseña es obligatoria.', 'warning');
+        this.submittingUser = false;
+        return;
       }
-    });
+
+      const payload: UsuarioCreatePayload = {
+        nombre: this.editingUser.nombre.trim(),
+        correo: this.editingUser.correo.trim(),
+        password: this.editingUser.password.trim()
+      };
+
+      this.userService.createUser(payload)
+        .pipe(finalize(() => this.submittingUser = false))
+        .subscribe({
+          next: () => {
+            this.loadUsers();
+            this.cancelUserForm();
+            Swal.fire('¡Creado!', 'Usuario creado correctamente', 'success');
+          },
+          error: (err) => {
+            Swal.fire('Error', err?.error?.message || 'Error al crear usuario', 'error');
+          }
+        });
+    } else {
+      const payload: UsuarioUpdatePayload = {
+        nombre: this.editingUser.nombre.trim(),
+        correo: this.editingUser.correo.trim()
+      };
+      if (this.editingUser.password?.trim()) {
+        payload.password = this.editingUser.password.trim();
+      }
+
+      this.userService.updateUser(this.editingUser.id, payload)
+        .pipe(finalize(() => this.submittingUser = false))
+        .subscribe({
+          next: () => {
+            this.loadUsers();
+            this.cancelUserForm();
+            Swal.fire('¡Actualizado!', 'Usuario actualizado correctamente', 'success');
+          },
+          error: (err) => {
+            Swal.fire('Error', err?.error?.message || 'Error al actualizar usuario', 'error');
+          }
+        });
+    }
   }
 
   deleteUser(user: Usuario) {
@@ -80,19 +130,13 @@ export class UsuariosComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
       if (result.isConfirmed) {
         this.userService.deleteUser(user.id).subscribe({
           next: () => {
             this.loadUsers();
-            Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success');
-          },
-          error: (err) => {
-            console.error('Error al eliminar usuario:', err);
-            Swal.fire('Error', 'No se pudo eliminar el usuario', 'error');
+            Swal.fire('¡Eliminado!', 'Usuario eliminado.', 'success');
           }
         });
       }
@@ -102,5 +146,4 @@ export class UsuariosComponent implements OnInit {
   getRoleName(user: Usuario): string {
     return user.rol?.nombre || 'Sin rol';
   }
-
 }

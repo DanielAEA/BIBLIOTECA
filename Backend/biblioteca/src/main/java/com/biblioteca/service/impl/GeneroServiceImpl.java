@@ -18,7 +18,10 @@ public class GeneroServiceImpl implements GeneroService {
     }
 
     @Override
-    public Genero crear(@NonNull Genero genero) { return generoRepository.save(genero); }
+    public Genero crear(@NonNull Genero genero) {
+        genero.setId(null);
+        return generoRepository.save(genero);
+    }
 
     @Override
     public Genero obtenerPorId(@NonNull Long id) {

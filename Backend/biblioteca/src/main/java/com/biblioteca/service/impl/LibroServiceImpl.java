@@ -19,7 +19,10 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public Libro crear(@NonNull Libro libro) { return libroRepository.save(libro); }
+    public Libro crear(@NonNull Libro libro) {
+        libro.setId(null);
+        return libroRepository.save(libro);
+    }
 
     @Override
     public Libro obtenerPorId(@NonNull Long id) {

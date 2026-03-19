@@ -18,6 +18,7 @@ public class ResenaServiceImpl implements ResenaService {
 
     @Override
     public Resena crear(Resena resena) {
+        resena.setId(null);
         if (resenaRepository.existsByLibroIdAndUsuarioId(
                 resena.getLibro().getId(), resena.getUsuario().getId())) {
             throw new RuntimeException("Ya has dejado una reseña para este libro");

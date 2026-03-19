@@ -18,7 +18,10 @@ public class EditorialServiceImpl implements EditorialService {
     }
 
     @Override
-    public Editorial crear(@NonNull Editorial editorial) { return editorialRepository.save(editorial); }
+    public Editorial crear(@NonNull Editorial editorial) {
+        editorial.setId(null);
+        return editorialRepository.save(editorial);
+    }
 
     @Override
     public Editorial obtenerPorId(@NonNull Long id) {

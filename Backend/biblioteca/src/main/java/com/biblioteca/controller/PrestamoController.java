@@ -64,10 +64,10 @@ public class PrestamoController {
 
             // Setear fechas si vienen en el request
             if (request.getFechaPrestamo() != null) {
-                prestamo.setFechaPrestamo(request.getFechaPrestamo().atStartOfDay());
+                prestamo.setFechaPrestamo(request.getFechaPrestamo());
             }
             if (request.getFechaDevolucion() != null) {
-                prestamo.setFechaDevolucion(request.getFechaDevolucion().atStartOfDay());
+                prestamo.setFechaDevolucion(request.getFechaDevolucion());
             }
 
             // El Service buscará las entidades reales y las reemplazará

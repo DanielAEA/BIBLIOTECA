@@ -4,10 +4,11 @@
 }
 
 .books-container {
-  background: white;
+  background: var(--bg-card);
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
 }
 
 .header {
@@ -22,13 +23,15 @@
 }
 
 .btn-create {
-  background: #10b981;
+  background: var(--primary-gradient);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(67, 24, 255, 0.2);
+  transition: all 0.3s ease;
 }
 
 .btn-create:hover {
@@ -51,11 +54,11 @@
 }
 
 .edit-form {
-  background: #f9fafb;
+  background: var(--bg-alt);
   padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
 }
 
 .edit-form h3 {
@@ -70,32 +73,27 @@
 .edit-form label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
-.edit-form input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
+.edit-form input,
 .edit-form select {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-main);
   font-size: 1rem;
-  background: white;
-}
-
-.edit-form input:focus,
-.edit-form select:focus {
+  font-weight: 600;
+  transition: all 0.3s ease;
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+
+  &:focus {
+    border-color: #4318ff;
+    box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
+  }
 }
 
 .help-text {
@@ -142,12 +140,12 @@
 }
 
 .book-card {
-  background: #f9fafb;
-  padding: 1.25rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid #e5e7eb;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .book-card:hover {
@@ -155,22 +153,60 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.book-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #111827;
+.book-info-row {
   margin-bottom: 0.75rem;
+  
+  .detail-value {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+}
+
+/* Specific page overrides for larger labels and buttons */
+::ng-deep .premium-container {
+    .premium-badge, .status {
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 10px !important;
+    }
+
+    .btn-premium.sm, 
+    .btn-edit-premium.sm, 
+    .btn-delete-premium.sm, 
+    .btn-view-premium.sm,
+    .action-btn {
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.35rem !important;
+        border-radius: 10px !important;
+        height: auto !important;
+    }
+}
+
+.book-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
 }
 
 .book-info {
   margin-top: 0.5rem;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: #4b5563;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .book-info strong {
-  color: #374151;
+  color: var(--text-dark, #374151);
+  font-weight: 700;
+}
+
+.detail-value {
+  color: var(--text-main, #4b5563);
+  font-weight: 600;
+  margin-left: 0.25rem;
 }
 
 .stock-low {
@@ -196,23 +232,7 @@
   transform: translateY(-1px);
 }
 
-.badge-format-fisico {
-    background: #e0f2fe;
-    color: #0369a1;
-    border: 1px solid #bae6fd;
-}
 
-.badge-format-digital {
-    background: #dcfce7;
-    color: #15803d;
-    border: 1px solid #bbf7d0;
-}
-
-.badge-format-ambos {
-    background: #f3e8ff;
-    color: #7e22ce;
-    border: 1px solid #e9d5ff;
-}
 
 .action-edit {
   background: #2563eb;
@@ -250,7 +270,7 @@
   display: flex;
   align-items: center;
   padding: 1rem;
-  background: #f3f4f6;
+  background: var(--bg-alt);
   cursor: pointer;
   user-select: none;
   transition: background-color 0.2s;
@@ -290,7 +310,7 @@
 
 .authors-content {
   padding: 1rem;
-  background: white;
+  background: var(--bg-card);
   animation: slideDown 0.3s ease;
 }
 

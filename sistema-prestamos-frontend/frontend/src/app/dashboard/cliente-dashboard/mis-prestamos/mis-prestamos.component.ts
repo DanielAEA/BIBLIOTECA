@@ -68,8 +68,8 @@ export class MisPrestamosComponent implements OnInit {
 
     private processPrestamos(prestamos: Prestamo[]) {
         this.prestamos = prestamos;
+        // La deuda total ahora incluye todas las multas NO PAGADAS (devueltas o no)
         this.totalMulta = this.prestamos
-            .filter(p => !p.devuelto)
             .reduce((sum, p) => sum + this.getFine(p), 0);
         this.loading = false;
     }
@@ -85,9 +85,16 @@ export class MisPrestamosComponent implements OnInit {
     }
 
     getFine(p: Prestamo): number {
-        if (p.devuelto) return 0;
-        const dias = this.calculateDaysRemaining(p.fechaDevolucion);
-        return dias < 0 ? Math.abs(dias) * 1000 : 0;
+        // 1. Si el backend ya calculó y guardó una multa
+        if (p.multa) {
+            return p.multa.pagada ? 0 : p.multa.total;
+        }
+        // 2. Si no hay multa guardada pero el libro está vencido (cálculo en tiempo real antes de devolver)
+        if (!p.devuelto) {
+            const dias = this.calculateDaysRemaining(p.fechaDevolucion);
+            return dias < 0 ? Math.abs(dias) * 2000 : 0; // Usar el mismo valor por defecto que el backend
+        }
+        return 0;
     }
 
     hasOverdue(p: Prestamo): boolean {

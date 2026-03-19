@@ -4,44 +4,51 @@
     <button class="premium-button" (click)="createGenero()">+ Nuevo Género</button>
   </div>
 
-  <div *ngIf="showForm && editingGenero !== undefined" class="premium-card premium-form">
-    <h3>{{ editingGenero ? 'Editar' : 'Crear' }} Género</h3>
-    <form (ngSubmit)="saveGenero()">
-      <div class="form-group">
-        <label>Nombre:</label>
-        <input type="text" [(ngModel)]="generoNombre" name="nombre" required placeholder="Ej. Realismo Mágico">
+  <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingGenero ? 'Editar' : 'Crear' }} Género</h3>
+        <button class="close-btn" (click)="cancelForm()">✕</button>
       </div>
-      <div class="form-actions">
-        <button type="submit" class="premium-button" [disabled]="submitting">
-          {{ submitting ? 'Guardando...' : 'Guardar' }}
-        </button>
-        <button type="button" (click)="cancelForm()" class="premium-button premium-button-danger">Cancelar</button>
-      </div>
-    </form>
+      <form (ngSubmit)="saveGenero()" class="premium-form">
+        <div class="form-group">
+          <label>Nombre:</label>
+          <input type="text" [(ngModel)]="generoNombre" name="nombre" required placeholder="Ej. Realismo Mágico">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="premium-button" [disabled]="submitting">
+            {{ submitting ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button type="button" (click)="cancelForm()" class="premium-button premium-button-danger">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <div *ngIf="loading" class="loading">Cargando géneros...</div>
 
   <div class="premium-card" *ngIf="!loading && generos.length > 0">
-    <table class="premium-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let g of generos">
-          <td>{{ g.id }}</td>
-          <td>{{ g.nombre }}</td>
-          <td>
-            <button class="premium-button premium-button-alt" (click)="editGenero(g)">Editar</button>
-            <button class="premium-button premium-button-danger" (click)="deleteGenero(g)">Eliminar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="premium-table large-text">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let g of generos">
+            <td>{{ g.id }}</td>
+            <td>{{ g.nombre }}</td>
+            <td>
+              <button class="btn-edit-premium sm" (click)="editGenero(g)">Editar</button>
+              <button class="btn-delete-premium sm" (click)="deleteGenero(g)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div *ngIf="!loading && generos.length === 0" class="no-data">

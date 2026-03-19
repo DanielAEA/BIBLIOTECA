@@ -18,7 +18,10 @@ public class EjemplarServiceImpl implements EjemplarService {
     }
 
     @Override
-    public Ejemplar crear(@NonNull Ejemplar ejemplar) { return ejemplarRepository.save(ejemplar); }
+    public Ejemplar crear(@NonNull Ejemplar ejemplar) {
+        ejemplar.setId(null);
+        return ejemplarRepository.save(ejemplar);
+    }
 
     @Override
     public Ejemplar obtenerPorId(@NonNull Long id) {

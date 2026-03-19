@@ -21,6 +21,7 @@ public class ReservaSalaServiceImpl implements ReservaSalaService {
 
     @Override
     public ReservaSala crear(ReservaSala reserva) {
+        reserva.setId(null);
         LocalTime horaApertura = LocalTime.of(8, 0);
         LocalTime horaCierre = LocalTime.of(19, 0);
 

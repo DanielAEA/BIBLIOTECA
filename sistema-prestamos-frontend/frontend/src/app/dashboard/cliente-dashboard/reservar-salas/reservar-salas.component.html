@@ -5,28 +5,30 @@
 
     <div *ngIf="loading" class="loading">Cargando salas...</div>
 
-    <div class="salas-grid" *ngIf="!loading">
-        <div class="sala-card" *ngFor="let sala of salas">
-            <div class="sala-icon">🏛️</div>
-            <h3>{{ sala.nombre }}</h3>
-            <p class="sala-desc">{{ sala.descripcion || 'Sin descripcion' }}</p>
-            <div class="sala-meta">
-                <span class="meta-item">👥 {{ sala.capacidad }} personas</span>
-                <span class="meta-item">📍 {{ sala.ubicacion }}</span>
+    <div class="premium-card" *ngIf="!loading && salas.length > 0">
+        <div class="salas-grid">
+            <div class="sala-card" *ngFor="let sala of salas">
+                <div class="sala-icon">🏛️</div>
+                <h3>{{ sala.nombre }}</h3>
+                <p class="sala-desc">{{ sala.descripcion || 'Sin descripcion' }}</p>
+                <div class="sala-meta">
+                    <span class="meta-item">👥 {{ sala.capacidad }} personas</span>
+                    <span class="meta-item">📍 {{ sala.ubicacion }}</span>
+                </div>
+                <button class="premium-button" (click)="openReservaForm(sala)">📅 Reservar</button>
             </div>
-            <button class="premium-button" (click)="openReservaForm(sala)">📅 Reservar</button>
         </div>
     </div>
 
     <div *ngIf="!loading && salas.length === 0" class="no-data">No hay salas disponibles para reservar.</div>
 
-    <div class="resena-overlay" *ngIf="showForm" (click)="cancelForm()">
-        <div class="resena-modal" (click)="$event.stopPropagation()">
-            <div class="resena-modal-header">
+    <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
                 <h3>Reservar — {{ getSalaName(selectedSalaId!) }}</h3>
                 <button class="close-btn" (click)="cancelForm()">✕</button>
             </div>
-            <form (ngSubmit)="submitReserva()">
+            <form (ngSubmit)="submitReserva()" class="premium-form">
                 <div class="form-group">
                     <label>Fecha:</label>
                     <input type="date" [(ngModel)]="reservaFecha" name="fecha" required [min]="getTodayDate()" (change)="onFechaChange()">
@@ -65,32 +67,34 @@
 
     <div class="premium-card" style="margin-top: 1.5rem" *ngIf="misReservas.length > 0">
         <h3>Mis Reservas</h3>
-        <table class="premium-table">
-            <thead>
-                <tr>
-                    <th>Sala</th>
-                    <th>Fecha</th>
-                    <th>Horario</th>
-                    <th>Motivo</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let r of misReservas">
-                    <td>{{ r.sala.nombre || 'N/A' }}</td>
-                    <td>{{ r.fechaReserva }}</td>
-                    <td>{{ r.horaInicio }} - {{ r.horaFin }}</td>
-                    <td>{{ r.motivo || '—' }}</td>
-                    <td>
-                        <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">{{ r.estado }}</span>
-                    </td>
-                    <td>
-                        <button *ngIf="r.estado === 'CONFIRMADA'" class="premium-button premium-button-danger"
-                            (click)="cancelarReserva(r)">Cancelar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th>Sala</th>
+                        <th>Fecha</th>
+                        <th>Horario</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of misReservas">
+                        <td>{{ r.sala.nombre || 'N/A' }}</td>
+                        <td>{{ r.fechaReserva | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ r.horaInicio }} - {{ r.horaFin }}</td>
+                        <td>{{ r.motivo || '—' }}</td>
+                        <td>
+                            <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">{{ r.estado }}</span>
+                        </td>
+                        <td>
+                            <button *ngIf="r.estado === 'CONFIRMADA'" class="premium-button premium-button-danger"
+                                (click)="cancelarReserva(r)">Cancelar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

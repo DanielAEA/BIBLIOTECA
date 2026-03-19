@@ -57,3 +57,23 @@ textarea:focus {
     padding: 2rem;
     color: #6b7280;
 }
+
+/* Specific page overrides for larger labels and buttons */
+::ng-deep .salas-container {
+    .premium-badge, .status {
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 10px !important;
+    }
+
+    .btn-premium.sm, 
+    .btn-edit-premium.sm, 
+    .btn-delete-premium.sm, 
+    .btn-view-premium.sm,
+    .action-btn {
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.35rem !important;
+        border-radius: 10px !important;
+        height: auto !important;
+    }
+}

@@ -5,6 +5,13 @@ import { tap } from 'rxjs/operators';
 import { Usuario } from './user.service';
 import { Ejemplar } from './ejemplar.service';
 
+export interface Multa {
+  id: number;
+  total: number;
+  diasAtraso: number;
+  pagada: boolean;
+}
+
 export interface Prestamo {
   id: number;
   usuario: Usuario;
@@ -13,8 +20,7 @@ export interface Prestamo {
   fechaDevolucion: string;
   fechaDevolucionReal?: string;
   devuelto: boolean;
-  multa?: number;
-  diasRetraso?: number;
+  multa?: Multa;
 }
 
 export interface PrestamoPayload {
@@ -63,6 +69,22 @@ export class LoanService {
       tap((updated) => {
         const cur = this.loansSubject.value ?? [];
         this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
+      })
+    );
+  }
+
+  payFine(prestamo: Prestamo): Observable<any> {
+    if (!prestamo.multa) return new Observable();
+    const updatedMulta = { ...prestamo.multa, pagada: true };
+    return this.http.put(`${this.baseUrl}/api/multas/${prestamo.multa.id}`, updatedMulta).pipe(
+      tap(() => {
+        const cur = this.loansSubject.value ?? [];
+        this.loansSubject.next(cur.map((p) => {
+          if (p.id === prestamo.id && p.multa) {
+            return { ...p, multa: { ...p.multa, pagada: true } };
+          }
+          return p;
+        }));
       })
     );
   }

@@ -14,11 +14,12 @@ INSERT INTO rol_permisos VALUES
 (1, 2),
 (2, 3);
 
-INSERT INTO usuarios (nombre, correo, password, rol_id) VALUES
-('Administrador', 'admin@bib.com', '1234', 1),
-('Angel Hernandez', 'angel@bib.com', '1234', 2),
-('Juan Ochoa', 'juan@bib.com', '1234', 2),
-('Luis Taborda', 'luis@bib.com', '1234', 2);
+-- Los usuarios se crean automáticamente desde la aplicación de forma segura (DataInitializer.java)
+-- INSERT INTO usuarios (nombre, correo, password, rol_id) VALUES
+-- ('Administrador', 'admin@bib.com', '1234', 1),
+-- ('Angel Hernandez', 'angel@bib.com', '1234', 2),
+-- ('Juan Ochoa', 'juan@bib.com', '1234', 2),
+-- ('Luis Taborda', 'luis@bib.com', '1234', 2);
 
 INSERT INTO precio_multas (valor_por_dia, vigente_desde) VALUES
 (2000, '2024-01-01'),

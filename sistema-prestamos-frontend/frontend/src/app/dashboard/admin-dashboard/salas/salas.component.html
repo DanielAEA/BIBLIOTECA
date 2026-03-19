@@ -1,124 +1,134 @@
-<div class="premium-container">
-    <div class="premium-header">
-        <h2>Gestión de Salas de Estudio</h2>
-        <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
-    </div>
+<div class="salas-container">
 
-    <!-- Formulario crear/editar sala -->
-    <div *ngIf="showForm" class="premium-card premium-form">
-        <h3>{{ editingSala ? 'Editar' : 'Crear' }} Sala</h3>
-        <form (ngSubmit)="saveSala()">
-            <div class="form-group">
-                <label>Nombre:</label>
-                <input type="text" [(ngModel)]="salaNombre" name="nombre" required placeholder="Ej. Sala de Lectura A">
+    <!-- Formulario crear/editar sala (Modal) -->
+    <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ editingSala ? 'Editar' : 'Crear' }} Sala</h3>
+                <button class="close-btn" (click)="cancelForm()">✕</button>
             </div>
-            <div class="form-group">
-                <label>Descripción:</label>
-                <textarea [(ngModel)]="salaDescripcion" name="descripcion" rows="3"
-                    placeholder="Descripción de la sala..."></textarea>
-            </div>
-            <div class="form-row">
+            <form (ngSubmit)="saveSala()" class="premium-form">
                 <div class="form-group">
-                    <label>Capacidad (personas):</label>
-                    <input type="number" [(ngModel)]="salaCapacidad" name="capacidad" required min="1"
-                        placeholder="Ej. 10">
+                    <label>Nombre:</label>
+                    <input type="text" [(ngModel)]="salaNombre" name="nombre" required placeholder="Ej. Sala de Lectura A">
                 </div>
                 <div class="form-group">
-                    <label>Ubicación:</label>
-                    <input type="text" [(ngModel)]="salaUbicacion" name="ubicacion" required
-                        placeholder="Ej. Piso 2, Ala Norte">
+                    <label>Descripción:</label>
+                    <textarea [(ngModel)]="salaDescripcion" name="descripcion" rows="3"
+                        placeholder="Descripción de la sala..."></textarea>
                 </div>
-            </div>
-            <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem;">
-                <input type="checkbox" [(ngModel)]="salaActiva" name="activa" id="activa"
-                    style="width: 20px; height: 20px; margin: 0;">
-                <label for="activa" style="margin: 0; cursor: pointer;">Sala activa (disponible para reservas)</label>
-            </div>
-            <div class="form-actions">
-                <button type="submit" class="premium-button" [disabled]="submitting">
-                    {{ submitting ? 'Guardando...' : 'Guardar' }}
-                </button>
-                <button type="button" (click)="cancelForm()"
-                    class="premium-button premium-button-danger">Cancelar</button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Tabla de reservas de una sala -->
-    <div *ngIf="showReservas && selectedSala" class="premium-card">
-        <div class="reservas-header">
-            <h3>Reservas — {{ selectedSala.nombre }}</h3>
-            <button class="premium-button premium-button-alt" (click)="closeReservas()">← Volver</button>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Capacidad (personas):</label>
+                        <input type="number" [(ngModel)]="salaCapacidad" name="capacidad" required min="1"
+                            placeholder="Ej. 10">
+                    </div>
+                    <div class="form-group">
+                        <label>Ubicación:</label>
+                        <input type="text" [(ngModel)]="salaUbicacion" name="ubicacion" required
+                            placeholder="Ej. Piso 2, Ala Norte">
+                    </div>
+                </div>
+                <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" [(ngModel)]="salaActiva" name="activa" id="activa"
+                        style="width: 20px; height: 20px; margin: 0;">
+                    <label for="activa" style="margin: 0; cursor: pointer;">Sala activa (disponible para reservas)</label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="premium-button" [disabled]="submitting">
+                        {{ submitting ? 'Guardando...' : 'Guardar' }}
+                    </button>
+                    <button type="button" (click)="cancelForm()"
+                        class="premium-button premium-button-danger">Cancelar</button>
+                </div>
+            </form>
         </div>
-        <table class="premium-table" *ngIf="reservas.length > 0">
-            <thead>
-                <tr>
-                    <th>Usuario</th>
-                    <th>Fecha</th>
-                    <th>Hora Inicio</th>
-                    <th>Hora Fin</th>
-                    <th>Motivo</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let r of reservas">
-                    <td>{{ r.usuario.nombre || r.usuario.correo || 'N/A' }}</td>
-                    <td>{{ r.fechaReserva }}</td>
-                    <td>{{ r.horaInicio }}</td>
-                    <td>{{ r.horaFin }}</td>
-                    <td>{{ r.motivo || '—' }}</td>
-                    <td>
-                        <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">{{ r.estado }}</span>
-                    </td>
-                    <td>
-                        <button *ngIf="r.estado === 'CONFIRMADA'" class="premium-button premium-button-danger"
-                            (click)="cancelarReserva(r)">Cancelar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div *ngIf="reservas.length === 0" class="no-data">No hay reservas para esta sala.</div>
+    </div>
+
+    <!-- Tabla de reservas de una sala (Modal) -->
+    <div class="modal-overlay" *ngIf="showReservas && selectedSala" (click)="closeReservas()">
+        <div class="modal-container" style="max-width: 900px;" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Reservas — {{ selectedSala.nombre }}</h3>
+                <button class="close-btn" (click)="closeReservas()">✕</button>
+            </div>
+            <div class="table-responsive">
+                <table class="premium-table" *ngIf="reservas.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Fecha</th>
+                            <th>Hora Inicio</th>
+                            <th>Hora Fin</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let r of reservas">
+                            <td>{{ r.usuario.nombre || r.usuario.correo || 'N/A' }}</td>
+                            <td>{{ r.fechaReserva }}</td>
+                            <td>{{ r.horaInicio }}</td>
+                            <td>{{ r.horaFin }}</td>
+                            <td>{{ r.motivo || '—' }}</td>
+                            <td>
+                                <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">{{ r.estado }}</span>
+                            </td>
+                            <td>
+                                <button *ngIf="r.estado === 'CONFIRMADA'" class="btn-delete-premium sm"
+                                    (click)="cancelarReserva(r)">Cancelar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="reservas.length === 0" class="no-data">No hay reservas para esta sala.</div>
+        </div>
     </div>
 
     <div *ngIf="loading" class="loading">Cargando salas...</div>
 
-    <!-- Tabla de salas -->
-    <div class="premium-card" *ngIf="!loading && salas.length > 0 && !showReservas">
-        <table class="premium-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Ubicación</th>
-                    <th>Capacidad</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let s of salas">
-                    <td>{{ s.id }}</td>
-                    <td>{{ s.nombre }}</td>
-                    <td>{{ s.ubicacion }}</td>
-                    <td>{{ s.capacidad }} personas</td>
-                    <td>
-                        <span class="premium-badge" [ngClass]="s.activa ? 'badge-success' : 'badge-danger'">
-                            {{ s.activa ? 'Activa' : 'Inactiva' }}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="premium-button premium-button-alt" (click)="viewReservas(s)">Reservas</button>
-                        <button class="premium-button premium-button-alt" (click)="editSala(s)">Editar</button>
-                        <button class="premium-button premium-button-danger" (click)="deleteSala(s)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="premium-card" *ngIf="!loading && salas.length > 0">
+        <div class="premium-header">
+            <h2>Gestión de Salas de Estudio</h2>
+            <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
+        </div>
+        <div class="table-responsive">
+            <table class="premium-table large-text">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Ubicación</th>
+                        <th>Capacidad</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of salas">
+                        <td>{{ s.id }}</td>
+                        <td>{{ s.nombre }}</td>
+                        <td>{{ s.ubicacion }}</td>
+                        <td>{{ s.capacidad }} personas</td>
+                        <td>
+                            <span class="premium-badge" [ngClass]="s.activa ? 'badge-success' : 'badge-danger'">
+                                {{ s.activa ? 'Activa' : 'Inactiva' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn-view-premium sm" (click)="viewReservas(s)">Reservas</button>
+                            <button class="btn-edit-premium sm" (click)="editSala(s)">Editar</button>
+                            <button class="btn-delete-premium sm" (click)="deleteSala(s)">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div *ngIf="!loading && salas.length === 0 && !showReservas" class="no-data">
+    <div *ngIf="!loading && salas.length === 0" class="no-data">
         No hay salas registradas. Crea una nueva sala para empezar.
     </div>
 </div>

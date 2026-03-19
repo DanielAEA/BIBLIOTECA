@@ -35,6 +35,7 @@ public class PrestamoServiceImpl implements PrestamoService {
     @Override
     @Transactional
     public Prestamo crear(@NonNull Prestamo prestamo) {
+        prestamo.setId(null);
         // Extraer IDs del objeto recibido
         Long usuarioId = prestamo.getUsuario() != null ? prestamo.getUsuario().getId() : null;
         Long ejemplarId = prestamo.getEjemplar() != null ? prestamo.getEjemplar().getId() : null;
@@ -94,6 +95,9 @@ public class PrestamoServiceImpl implements PrestamoService {
         Prestamo existente = prestamoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
 
+        if (Boolean.TRUE.equals(prestamo.getDevuelto()) && !Boolean.TRUE.equals(existente.getDevuelto())) {
+            existente.setFechaDevolucionReal(LocalDateTime.now());
+        }
         existente.setDevuelto(prestamo.getDevuelto());
 
         return prestamoRepository.save(existente);
@@ -139,16 +143,24 @@ public class PrestamoServiceImpl implements PrestamoService {
 
             PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
             if (precio == null) {
-                throw new RuntimeException("No hay precio de multa configurado");
+                System.out.println("⚠️ ADVERTENCIA: No hay precio de multa configurado. Usando valor por defecto de 2000.0");
+                precio = new PrecioMulta();
+                precio.setValorPorDia(2000.0);
             }
 
-            double monto = precio.getValorPorDia() * dias;
+            double monto = precio.getValorPorDia() * (double) dias;
 
-            Multa m = new Multa();
+            // BUSCAR SI YA EXISTE UNA MULTA PARA ESTE PRÉSTAMO
+            Multa m = p.getMulta();
+            if (m == null) {
+                m = new Multa();
+                m.setPrestamo(p);
+                m.setPagada(false);
+            }
+            
             m.setTotal(monto);
             m.setDiasAtraso((int) dias);
-            m.setPrecioMulta(precio);
-            m.setPrestamo(p);
+            m.setPrecioMulta(precio.getId() != null ? precio : null);
 
             multaRepository.save(m);
             p.setMulta(m);

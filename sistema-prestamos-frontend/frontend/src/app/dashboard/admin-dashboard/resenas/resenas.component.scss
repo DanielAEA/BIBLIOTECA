@@ -14,17 +14,32 @@
 
     label {
         font-weight: 500;
-        color: #374151;
+        color: var(--text-dark);
         white-space: nowrap;
     }
 
     select {
         flex: 1;
         max-width: 400px;
-        padding: 0.5rem;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        background: var(--bg-alt);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        color: var(--text-main);
         font-size: 0.95rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.3s ease;
+
+        &:focus {
+            border-color: #4318ff;
+            box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
+        }
+
+        option {
+            background: var(--bg-card);
+            color: var(--text-main);
+        }
     }
 }
 
@@ -57,4 +72,18 @@
     text-align: center;
     padding: 2rem;
     color: #6b7280;
+}
+
+/* Specific page overrides for larger buttons to match Salas exception */
+::ng-deep .premium-container {
+    .btn-premium.sm,
+    .btn-edit-premium.sm,
+    .btn-delete-premium.sm,
+    .btn-view-premium.sm,
+    .action-btn {
+        font-size: 0.88rem !important;
+        padding: 0.5rem 1.35rem !important;
+        border-radius: 10px !important;
+        height: auto !important;
+    }
 }

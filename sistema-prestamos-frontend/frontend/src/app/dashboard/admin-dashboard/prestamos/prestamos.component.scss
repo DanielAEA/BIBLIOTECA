@@ -1,0 +1,23 @@
+:host {
+    display: block;
+}
+
+.overdue {
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+.days-warning {
+    color: #f59e0b;
+}
+
+.days-overdue {
+    color: #ef4444;
+}
+
+.text-danger {
+    color: #ef4444;
+}
+
+.text-success {
+    color: #10b981;
+}

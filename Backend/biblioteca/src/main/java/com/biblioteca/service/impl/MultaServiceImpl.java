@@ -18,7 +18,10 @@ public class MultaServiceImpl implements MultaService {
     }
 
     @Override
-    public Multa crear(@NonNull Multa multa) { return multaRepository.save(multa); }
+    public Multa crear(@NonNull Multa multa) {
+        multa.setId(null);
+        return multaRepository.save(multa);
+    }
 
     @Override
     public Multa obtenerPorId(@NonNull Long id) {
@@ -30,10 +33,19 @@ public class MultaServiceImpl implements MultaService {
 
     @Override
     public Multa actualizar(@NonNull Long id, @NonNull Multa multa) {
-        multaRepository.findById(id)
+        Multa existente = multaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Multa no encontrada"));
-        multa.setId(id);
-        return multaRepository.save(multa);
+        
+        // Solo actualizamos los campos que pueden cambiar
+        if (multa.getTotal() != null) existente.setTotal(multa.getTotal());
+        if (multa.getDiasAtraso() != null) existente.setDiasAtraso(multa.getDiasAtraso());
+        if (multa.getPagada() != null) existente.setPagada(multa.getPagada());
+        
+        // Mantener las relaciones originales si no vienen en el objeto
+        if (multa.getPrestamo() != null) existente.setPrestamo(multa.getPrestamo());
+        if (multa.getPrecioMulta() != null) existente.setPrecioMulta(multa.getPrecioMulta());
+
+        return multaRepository.save(existente);
     }
 
     @Override

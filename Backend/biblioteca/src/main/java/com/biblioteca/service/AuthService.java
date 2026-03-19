@@ -44,6 +44,7 @@ public class AuthService {
                 .orElseThrow(
                         () -> new RuntimeException("Error interno: El rol 'CLIENTE' no existe en la base de datos"));
 
+        usuario.setId(null); // <-- Prevenir Mass Assignment
         usuario.setRol(rolCliente);
         // Encriptar la contraseña antes de guardar
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));

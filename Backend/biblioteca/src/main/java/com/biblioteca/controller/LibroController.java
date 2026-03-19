@@ -80,7 +80,11 @@ public class LibroController {
                 Files.createDirectories(uploadDir);
             }
 
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String originalFilename = file.getOriginalFilename();
+            if (originalFilename != null && originalFilename.contains("..")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Nombre de archivo inválido"));
+            }
+            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
             Path filePath = uploadDir.resolve(fileName);
 
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);

@@ -7,137 +7,135 @@
   <div *ngIf="loading" class="loading">Cargando libros...</div>
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
-  <div *ngIf="(showEditForm || showCreateForm) && editingBook" class="premium-card premium-form">
-    <h3>{{ showCreateForm ? 'Crear' : 'Editar' }} Libro</h3>
-    <form (ngSubmit)="saveBook()">
-      <div class="form-group">
-        <label>Título:</label>
-        <input type="text" [(ngModel)]="editingBook.titulo" name="titulo" required
-          placeholder="Ej. Cien años de soledad">
+  <div class="modal-overlay" *ngIf="(showEditForm || showCreateForm) && editingBook" (click)="cancelEdit()">
+    <div class="modal-container" style="max-width: 700px;" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ showCreateForm ? 'Crear' : 'Editar' }} Libro</h3>
+        <button class="close-btn" (click)="cancelEdit()">✕</button>
       </div>
-
-      <div class="form-group">
-        <label>Editorial:</label>
-        <select [(ngModel)]="selectedEditorialId" name="editorial" required>
-          <option [ngValue]="null" disabled>Selecciona una editorial</option>
-          <option *ngFor="let e of editorials" [ngValue]="e.id">{{ e.nombre }}</option>
-        </select>
-        <div class="inline-form">
-          <input type="text" placeholder="Nueva editorial" [(ngModel)]="newEditorialName" name="newEditorial">
-          <button type="button" class="premium-button-alt" (click)="addNewEditorial()" [disabled]="addingEditorial">
-            {{ addingEditorial ? '...' : 'Añadir' }}
-          </button>
+      <form (ngSubmit)="saveBook()" class="premium-form">
+        <div class="form-group">
+          <label>Título:</label>
+          <input type="text" [(ngModel)]="editingBook.titulo" name="titulo" required
+            placeholder="Ej. Cien años de soledad">
         </div>
-      </div>
 
-      <div class="form-group">
-        <label>Género:</label>
-        <select [(ngModel)]="selectedGeneroId" name="genero" required>
-          <option [ngValue]="null" disabled>Selecciona un género</option>
-          <option *ngFor="let g of generos" [ngValue]="g.id">{{ g.nombre }}</option>
-        </select>
-        <div class="inline-form">
-          <input type="text" placeholder="Nuevo género" [(ngModel)]="newGeneroName" name="newGenero">
-          <button type="button" class="premium-button-alt" (click)="addNewGenero()" [disabled]="addingGenero">
-            {{ addingGenero ? '...' : 'Añadir' }}
-          </button>
-        </div>
-      </div>
-
-      <div class="form-group authors-section">
-        <label>Autores</label>
-        <div class="selected-authors">
-          <div *ngIf="selectedAuthorIds.length === 0" class="no-authors">No hay autores seleccionados</div>
-          <div *ngFor="let id of selectedAuthorIds" class="premium-badge badge-success"
-            style="margin-right: 0.5rem; margin-bottom: 0.5rem; padding-right: 2rem; position: relative;">
-            {{ getAuthorName(id) }}
-            <button type="button" (click)="removeAuthor(id)"
-              style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none; border: none; color: inherit; cursor: pointer; font-weight: bold;">✕</button>
+        <div class="form-group">
+          <label>Editorial:</label>
+          <select [(ngModel)]="selectedEditorialId" name="editorial" required>
+            <option [ngValue]="null" disabled>Selecciona una editorial</option>
+            <option *ngFor="let e of editorials" [ngValue]="e.id">{{ e.nombre }}</option>
+          </select>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <input type="text" placeholder="Nueva editorial" [(ngModel)]="newEditorialName" name="newEditorial" style="flex: 1;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewEditorial()" [disabled]="addingEditorial" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+              {{ addingEditorial ? '...' : 'Añadir' }}
+            </button>
           </div>
         </div>
-        <div class="inline-form">
-          <select [(ngModel)]="selectedAuthorDropdown" name="authorDropdown" (change)="addAuthorFromDropdown()"
-            style="flex: 1;">
-            <option [ngValue]="null">+ Añadir autor existente</option>
-            <option *ngFor="let a of getAvailableAuthors()" [ngValue]="a.id">{{ a.nombre }}</option>
+
+        <div class="form-group">
+          <label>Género:</label>
+          <select [(ngModel)]="selectedGeneroId" name="genero" required>
+            <option [ngValue]="null" disabled>Selecciona un género</option>
+            <option *ngFor="let g of generos" [ngValue]="g.id">{{ g.nombre }}</option>
+          </select>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <input type="text" placeholder="Nuevo género" [(ngModel)]="newGeneroName" name="newGenero" style="flex: 1;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewGenero()" [disabled]="addingGenero" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+              {{ addingGenero ? '...' : 'Añadir' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Autores</label>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div *ngIf="selectedAuthorIds.length === 0" style="color: var(--text-muted); font-size: 0.9rem;">No hay autores seleccionados</div>
+            <div *ngFor="let id of selectedAuthorIds" class="premium-badge badge-success"
+              style="padding-right: 2rem; position: relative;">
+              {{ getAuthorName(id) }}
+              <button type="button" (click)="removeAuthor(id)"
+                style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); background: none; border: none; color: inherit; cursor: pointer; font-weight: bold;">✕</button>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <select [(ngModel)]="selectedAuthorDropdown" name="authorDropdown" (change)="addAuthorFromDropdown()"
+              style="flex: 1;">
+              <option [ngValue]="null">+ Añadir autor existente</option>
+              <option *ngFor="let a of getAvailableAuthors()" [ngValue]="a.id">{{ a.nombre }}</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="text" placeholder="O crea un nuevo autor" [(ngModel)]="newAuthorName" name="newAuthor" style="flex: 1;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewAuthor()" [disabled]="addingAuthor" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+              {{ addingAuthor ? '...' : 'Crear' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Formato:</label>
+          <select [(ngModel)]="editingBook.formato" name="formato" required>
+            <option value="FISICO">Solo Físico</option>
+            <option value="DIGITAL">Solo Digital</option>
+            <option value="AMBOS">Ambos (Físico y Digital)</option>
           </select>
         </div>
-        <div class="inline-form" style="margin-top: 0.5rem;">
-          <input type="text" placeholder="O crea un nuevo autor" [(ngModel)]="newAuthorName" name="newAuthor">
-          <button type="button" class="premium-button-alt" (click)="addNewAuthor()" [disabled]="addingAuthor">
-            {{ addingAuthor ? '...' : 'Crear' }}
-          </button>
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label>Formato:</label>
-        <select [(ngModel)]="editingBook.formato" name="formato" required>
-          <option value="FISICO">Solo Físico</option>
-          <option value="DIGITAL">Solo Digital</option>
-          <option value="AMBOS">Ambos (Físico y Digital)</option>
-        </select>
-      </div>
-
-      <div class="form-group" *ngIf="editingBook.formato === 'DIGITAL' || editingBook.formato === 'AMBOS'">
-        <label>Libro Digital (PDF):</label>
-        <div class="file-upload-container">
-          <input type="file" (change)="onFileSelected($event)" accept=".pdf" #fileInput>
-          <div *ngIf="editingBook.tieneDigital && !selectedFile" style="margin-top: 0.5rem; font-size: 0.9em; color: green; font-weight: bold;">
-            ✓ Este libro ya tiene una versión digital cargada.
-            <a [href]="'http://localhost:8080' + editingBook.archivoDigital" target="_blank" style="margin-left: 0.5rem; text-decoration: underline;">Ver PDF actual</a>
+        <div class="form-group" *ngIf="editingBook.formato === 'DIGITAL' || editingBook.formato === 'AMBOS'">
+          <label>Libro Digital (PDF):</label>
+          <div style="background: var(--bg-alt); padding: 1rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+            <input type="file" (change)="onFileSelected($event)" accept=".pdf" #fileInput>
+            <div *ngIf="editingBook.tieneDigital && !selectedFile" style="margin-top: 0.5rem; font-size: 0.9em; color: var(--success); font-weight: bold;">
+              ✓ PDF cargado. <a [href]="'http://localhost:8080' + editingBook.archivoDigital" target="_blank" style="text-decoration: underline;">Ver actual</a>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="form-actions">
-        <button type="submit" class="premium-button" [disabled]="submitting">
-          {{ submitting ? 'Guardando...' : 'Guardar' }}
-        </button>
-        <button type="button" (click)="cancelEdit()" class="premium-button premium-button-danger">Cancelar</button>
-      </div>
-    </form>
+        <div class="form-actions">
+          <button type="submit" class="premium-button" [disabled]="submitting">
+            {{ submitting ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button type="button" (click)="cancelEdit()" class="premium-button premium-button-danger">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <div *ngIf="!loading && !error" class="books-grid"
-    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-    <div *ngFor="let b of books" class="premium-card" style="margin-bottom: 0;">
+    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+    <div *ngFor="let b of books" class="premium-card" style="margin-bottom: 0; padding: 1.5rem;">
       <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1rem;">{{ b.titulo }}
       </div>
-      <div class="book-info" style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
         <strong style="color: var(--text-dark);">Autor(es):</strong> <span style="color: var(--text-muted);">{{
           getAuthorsString(b) }}</span>
       </div>
-      <div class="book-info" style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
         <strong style="color: var(--text-dark);">Editorial:</strong> <span style="color: var(--text-muted);">{{
           getEditorialName(b) }}</span>
       </div>
-      <div class="book-info" style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
         <strong style="color: var(--text-dark);">Disponibles:</strong>
-        <span class="premium-badge"
-          [ngClass]="{'badge-danger': b.stockDisponible === 0, 'badge-warning': b.stockDisponible > 0 && b.stockDisponible < 3, 'badge-success': b.stockDisponible >= 3}">
+        <span [style.color]="b.stockDisponible === 0 ? 'var(--danger)' : 'var(--text-main)'" style="font-weight: 700;">
           {{ b.stockDisponible }}
         </span>
       </div>
-      <div class="book-info" style="margin-bottom: 1.5rem; font-size: 0.95rem;">
-        <strong style="color: var(--text-dark);">Formato:</strong>
-        <span class="premium-badge" style="margin-right: 0.5rem"
-          [ngClass]="{
-            'badge-format-fisico': b.formato === 'FISICO',
-            'badge-format-digital': b.formato === 'DIGITAL',
-            'badge-format-ambos': b.formato === 'AMBOS'
-          }">
-          {{ b.formato === 'FISICO' ? '📘 Físico' : b.formato === 'DIGITAL' ? '💻 Digital' : '📚 Ambos' }}
-        </span>
-        <button class="premium-badge badge-success" *ngIf="b.tieneDigital" (click)="leerOnline(b)" 
-          style="cursor: pointer; border: none; font-family: inherit;">
-          📄 Leer Online
+      <div style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+            <strong style="color: var(--text-dark);">Formato:</strong>
+            <span style="color: var(--text-muted); margin-left: 0.5rem;">
+                {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+            </span>
+        </div>
+        <button class="btn-read-premium" *ngIf="b.tieneDigital" (click)="leerOnline(b)">
+          📄 Leer
         </button>
       </div>
-      <div class="book-actions"
-        style="display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-        <button class="premium-button premium-button-alt" style="flex: 1;" (click)="editBook(b)">Editar</button>
-        <button class="premium-button premium-button-danger" style="flex: 1;" (click)="deleteBook(b)">Eliminar</button>
+      <div style="display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        <button class="btn-edit-premium sm" style="flex: 1;" (click)="editBook(b)">Editar</button>
+        <button class="btn-delete-premium sm" style="flex: 1;" (click)="deleteBook(b)">Eliminar</button>
       </div>
     </div>
   </div>

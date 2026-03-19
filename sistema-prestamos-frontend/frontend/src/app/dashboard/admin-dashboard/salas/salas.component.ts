@@ -194,10 +194,10 @@ export class SalasComponent implements OnInit {
 
     getEstadoBadgeClass(estado: string): string {
         switch (estado) {
-            case 'CONFIRMADA': return 'badge-success';
-            case 'CANCELADA': return 'badge-danger';
-            case 'COMPLETADA': return 'badge-info';
-            default: return 'badge-warning';
+            case 'CONFIRMADA': return 'status-available';
+            case 'CANCELADA': return 'status-borrowed';
+            case 'COMPLETADA': return 'status-available';
+            default: return 'status-borrowed';
         }
     }
 }

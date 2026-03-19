@@ -1,12 +1,12 @@
 package com.biblioteca.dto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PrestamoDTO {
     private Long usuarioId;
     private Long ejemplarId;
-    private LocalDate fechaPrestamo;
-    private LocalDate fechaDevolucion;
+    private LocalDateTime fechaPrestamo;
+    private LocalDateTime fechaDevolucion;
 
     public PrestamoDTO() {
     }
@@ -27,19 +27,19 @@ public class PrestamoDTO {
         this.ejemplarId = ejemplarId;
     }
 
-    public LocalDate getFechaPrestamo() {
+    public LocalDateTime getFechaPrestamo() {
         return fechaPrestamo;
     }
 
-    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+    public void setFechaPrestamo(LocalDateTime fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
     }
 
-    public LocalDate getFechaDevolucion() {
+    public LocalDateTime getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+    public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 }

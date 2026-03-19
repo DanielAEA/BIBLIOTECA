@@ -31,6 +31,16 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   today: Date = new Date();
   private charts: Chart[] = [];
 
+  // Data cache for charts
+  private mostBorrowedBooks: any[] = [];
+  private loansByGenre: any[] = [];
+  private loansByRole: any[] = [];
+  private finesStats: any[] = [];
+  private mostBorrowedAuthors: any[] = [];
+  private punctualityRate: any = null;
+  private loansByMonth: any[] = [];
+  private inventoryDistribution: any = null;
+
   Math = Math; // Para usar en el template
 
   constructor(
@@ -41,17 +51,22 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loadSummary();
     this.loadTablesData();
+    this.fetchChartsData(); // Initial data fetch
   }
 
   ngAfterViewInit(): void {
     this.themeService.isDarkTheme$.subscribe(() => {
-      this.destroyCharts();
-      this.loadChartsData();
+      // Small delay to let the DOM apply classes before re-rendering charts
+      setTimeout(() => {
+        this.renderCharts();
+      }, 0);
     });
   }
 
   private destroyCharts() {
-    this.charts.forEach(c => c.destroy());
+    this.charts.forEach(c => {
+      if (c) c.destroy();
+    });
     this.charts = [];
   }
 
@@ -67,33 +82,84 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
     this.statsService.getUpcomingExpirations().subscribe(data => this.upcomingExpirations = data);
   }
 
-  loadChartsData() {
-    // 1. Libros más solicitados
-    this.statsService.getMostBorrowedBooks().subscribe(data => this.renderBarChart(this.popChartRef, data, 'titulo', 'total', '#6366f1'));
+  /**
+   * Fetches all chart data from API once
+   */
+  private fetchChartsData() {
+    this.loading = true;
+    
+    // Using forkJoin would be better but let's stick to individual calls for now to minimize breakage
+    this.statsService.getMostBorrowedBooks().subscribe(data => {
+      this.mostBorrowedBooks = data;
+      this.renderCharts();
+    });
 
-    // 2. Préstamos por género
-    this.statsService.getLoansByGenre().subscribe(data => this.renderPieChart(this.genreChartRef, data, 'genero', 'total'));
+    this.statsService.getLoansByGenre().subscribe(data => {
+      this.loansByGenre = data;
+      this.renderCharts();
+    });
 
-    // 3. Uso por tipo de usuario
-    this.statsService.getLoansByRole().subscribe(data => this.renderPieChart(this.userTypeChartRef, data, 'rol', 'total'));
+    this.statsService.getLoansByRole().subscribe(data => {
+      this.loansByRole = data;
+      this.renderCharts();
+    });
 
-    // 4. Multas generadas vs pagadas
-    this.statsService.getFinesStats().subscribe(data => this.renderDoughnutChart(this.finesChartRef, data, 'estado', 'total'));
+    this.statsService.getFinesStats().subscribe(data => {
+      this.finesStats = data;
+      this.renderCharts();
+    });
 
-    // 5. Autores más prestados
-    this.statsService.getMostBorrowedAuthors().subscribe(data => this.renderBarChart(this.authorChartRef, data, 'autor', 'total', '#10b981'));
+    this.statsService.getMostBorrowedAuthors().subscribe(data => {
+      this.mostBorrowedAuthors = data;
+      this.renderCharts();
+    });
 
-    // 6. Tasa de puntualidad
-    this.statsService.getPunctualityRate().subscribe(data => this.renderPunctualityChart(this.punctualityChartRef, data));
+    this.statsService.getPunctualityRate().subscribe(data => {
+      this.punctualityRate = data;
+      this.renderCharts();
+    });
 
-    // 7. Tendencia mensual
-    this.statsService.getLoansByMonth().subscribe(data => this.renderTrendChart(data));
+    this.statsService.getLoansByMonth().subscribe(data => {
+      this.loansByMonth = data;
+      this.renderCharts();
+    });
 
-    // 8. Distribución de formatos
     this.statsService.getInventoryDistribution().subscribe(data => {
-      this.renderDistributionChart(data);
+      this.inventoryDistribution = data;
+      this.renderCharts();
       this.loading = false;
     });
+  }
+
+  /**
+   * Renders or re-renders charts using cached data
+   */
+  private renderCharts() {
+    this.destroyCharts();
+
+    if (this.mostBorrowedBooks.length > 0) 
+      this.renderBarChart(this.popChartRef, this.mostBorrowedBooks, 'titulo', 'total', '#6366f1');
+
+    if (this.loansByGenre.length > 0) 
+      this.renderPieChart(this.genreChartRef, this.loansByGenre, 'genero', 'total');
+
+    if (this.loansByRole.length > 0) 
+      this.renderPieChart(this.userTypeChartRef, this.loansByRole, 'rol', 'total');
+
+    if (this.finesStats.length > 0) 
+      this.renderDoughnutChart(this.finesChartRef, this.finesStats, 'estado', 'total');
+
+    if (this.mostBorrowedAuthors.length > 0) 
+      this.renderBarChart(this.authorChartRef, this.mostBorrowedAuthors, 'autor', 'total', '#10b981');
+
+    if (this.punctualityRate) 
+      this.renderPunctualityChart(this.punctualityChartRef, this.punctualityRate);
+
+    if (this.loansByMonth.length > 0) 
+      this.renderTrendChart(this.loansByMonth);
+
+    if (this.inventoryDistribution) 
+      this.renderDistributionChart(this.inventoryDistribution);
   }
 
   private getChartOptions(overrideOptions: any = {}) {
@@ -125,7 +191,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderBarChart(ref: ElementRef, data: any[], labelKey: string, valueKey: string, color: string) {
-    if (!ref) return;
+    if (!ref || !ref.nativeElement) return;
     const chart = new Chart(ref.nativeElement, {
       type: 'bar',
       data: {
@@ -138,7 +204,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderPieChart(ref: ElementRef, data: any[], labelKey: string, valueKey: string) {
-    if (!ref) return;
+    if (!ref || !ref.nativeElement) return;
     const chart = new Chart(ref.nativeElement, {
       type: 'pie',
       data: {
@@ -151,7 +217,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderDoughnutChart(ref: ElementRef, data: any[], labelKey: string, valueKey: string) {
-    if (!ref) return;
+    if (!ref || !ref.nativeElement) return;
     const chart = new Chart(ref.nativeElement, {
       type: 'doughnut',
       data: {
@@ -164,7 +230,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderPunctualityChart(ref: ElementRef, data: any) {
-    if (!ref) return;
+    if (!ref || !ref.nativeElement) return;
     const chart = new Chart(ref.nativeElement, {
       type: 'doughnut',
       data: {
@@ -177,6 +243,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderTrendChart(data: any[]) {
+    if (!this.trendChartRef || !this.trendChartRef.nativeElement) return;
     const chart = new Chart(this.trendChartRef.nativeElement, {
       type: 'line',
       data: {
@@ -189,7 +256,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   }
 
   private renderDistributionChart(data: any) {
-    if (!this.distChartRef) return;
+    if (!this.distChartRef || !this.distChartRef.nativeElement) return;
     const chart = new Chart(this.distChartRef.nativeElement, {
       type: 'doughnut',
       data: {

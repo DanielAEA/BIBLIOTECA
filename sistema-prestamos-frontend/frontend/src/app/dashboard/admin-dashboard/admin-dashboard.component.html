@@ -1,54 +1,60 @@
-<div class="dashboard-layout">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <img src="logo.png" alt="SIBU Logo" class="sidebar-logo">
-    </div>
-
-    <nav class="menu">
-      <p class="menu-label">MENÚ PRINCIPAL</p>
-      @for (m of menu; track m.path) {
-      <button class="menu-item" [class.active]="isActive(m.path)" (click)="navigateTo(m.path)">
-        <span class="menu-text">{{ m.name }}</span>
-        <span class="active-indicator"></span>
-      </button>
-      }
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="admin-badge">
-        <div class="avatar">A</div>
-        <div class="admin-info">
-          <span class="name">Administrador</span>
-          <span class="role">Acceso total</span>
+<div class="sibu-scaled-wrapper">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar-coding" [class.open]="!isSidebarCollapsed">
+      <div class="logo-details">
+        <div class="logo-container" [style.opacity]="!isSidebarCollapsed ? '1' : '0'">
+            <img src="logo.png" alt="SIBU Logo" class="sidebar-logo">
         </div>
+        <i class='bx bx-menu' id="btn" (click)="toggleSidebar()"></i>
       </div>
-      <button class="logout-btn" (click)="logout()" title="Cerrar Sesión">
-        <i class="logout-icon">↩</i>
-      </button>
+      <ul class="nav-list">
+        <div class="menu-label">MENÚ PRINCIPAL</div>
+        @for (m of menu; track m.path) {
+        <li>
+          <a [class.active]="isActive(m.path)" (click)="navigateTo(m.path)">
+            <i class='bx' [ngClass]="m.icon"></i>
+            <span class="links_name">{{ m.name }}</span>
+          </a>
+          <span class="tooltip">{{ m.name }}</span>
+        </li>
+        }
+        <li class="profile">
+          <div class="profile-details">
+            <div class="avatar">A</div>
+            <div class="name_job">
+              <div class="name">Administrador</div>
+              <div class="job">Acceso total</div>
+            </div>
+          </div>
+          <i class='bx bx-log-out' id="log_out" (click)="logout()" title="Cerrar Sesión"></i>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-content">
+          <div class="page-info">
+            <div class="info-text">
+              <h1>Panel de Control</h1>
+              <p>Gestiona eficientemente los recursos de la biblioteca.</p>
+            </div>
+          </div>
+          <div class="topbar-actions">
+            <button class="theme-toggle-btn" (click)="toggleTheme()" [title]="(themeService.isDarkTheme$ | async) ? 'Modo Claro' : 'Modo Oscuro'">
+              <span class="icon">{{ (themeService.isDarkTheme$ | async) ? '☀️' : '🌙' }}</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Route Area -->
+      <main class="content-area">
+        <router-outlet></router-outlet>
+      </main>
     </div>
-  </aside>
-
-  <!-- Main Content Wrapper -->
-  <div class="main-wrapper">
-    <!-- Topbar -->
-    <header class="topbar">
-      <div class="topbar-content">
-        <div class="page-info">
-          <h1>Panel de Control</h1>
-          <p>Gestiona eficientemente los recursos de la biblioteca.</p>
-        </div>
-        <div class="topbar-actions">
-          <button class="theme-toggle-btn" (click)="toggleTheme()" [title]="(themeService.isDarkTheme$ | async) ? 'Modo Claro' : 'Modo Oscuro'">
-            <span class="icon">{{ (themeService.isDarkTheme$ | async) ? '☀️' : '🌙' }}</span>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Content Route Area -->
-    <main class="content-area">
-      <router-outlet></router-outlet>
-    </main>
   </div>
 </div>

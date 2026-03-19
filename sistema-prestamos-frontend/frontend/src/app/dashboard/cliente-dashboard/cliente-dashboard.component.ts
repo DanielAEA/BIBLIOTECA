@@ -5,18 +5,20 @@ import { AuthService } from '../../services/auth.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
-  selector: 'app-cliente-dashboard',
+  selector: 'app-cliente-sidebar',
   standalone: true,
   imports: [CommonModule, RouterOutlet],
   templateUrl: './cliente-dashboard.component.html',
   styleUrls: ['./cliente-dashboard.component.scss']
 })
-export class ClienteDashboardComponent {
+export class ClienteSidebarComponent {
+
+  isSidebarCollapsed = false;
 
   menu = [
-    { name: 'Mis Préstamos', path: '/cliente/prestamos' },
-    { name: 'Catálogo', path: '/cliente/catalogo' },
-    { name: 'Reservar Sala', path: '/cliente/salas' }
+    { name: 'Mis Préstamos', path: '/cliente/prestamos', icon: 'bx-book-content' },
+    { name: 'Catálogo', path: '/cliente/catalogo', icon: 'bx-library' },
+    { name: 'Reservar Sala', path: '/cliente/salas', icon: 'bx-calendar-event' }
   ];
 
   constructor(
@@ -27,6 +29,10 @@ export class ClienteDashboardComponent {
 
   toggleTheme(): void {
     this.themeService.toggleTheme();
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
   isActive(path: string): boolean {

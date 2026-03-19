@@ -19,6 +19,7 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
 
     @Override
     public RolUsuario crear(@NonNull RolUsuario rol) {
+        rol.setId(null);
         return rolUsuarioRepository.save(rol);
     }
 

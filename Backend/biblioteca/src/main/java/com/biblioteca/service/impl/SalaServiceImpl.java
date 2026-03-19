@@ -18,6 +18,7 @@ public class SalaServiceImpl implements SalaService {
 
     @Override
     public Sala crear(Sala sala) {
+        sala.setId(null);
         return salaRepository.save(sala);
     }
 

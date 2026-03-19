@@ -1,26 +1,32 @@
 :host {
     display: block;
-    padding: 1rem;
+    padding: 2rem; /* Aumentado de 0.5rem */
+}
+
+.premium-card {
+    padding: 2.5rem; /* Aumentado de 1.5rem para que el 'cuadro de atrás' sea más grande */
+    border-radius: 24px;
 }
 
 .salas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); /* Aumentado de 280px */
+    gap: 2rem; /* Más espacio entre cuadros */
 }
 
 .sala-card {
-    background: white;
+    background: var(--bg-alt);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border: 1px solid var(--border-color);
     text-align: center;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.1);
+        background: var(--bg-card);
     }
 }
 
@@ -31,26 +37,41 @@
 
 .sala-card h3 {
     margin: 0 0 0.5rem;
-    color: #1f2937;
+    color: var(--text-dark);
     font-size: 1.15rem;
+    font-weight: 800;
 }
 
 .sala-desc {
-    color: #6b7280;
+    color: var(--text-muted);
     font-size: 0.9rem;
     margin: 0 0 0.75rem;
+    min-height: 2.7rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .sala-meta {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .meta-item {
     font-size: 0.85rem;
-    color: #4b5563;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 1rem;
 }
 
 .resena-overlay {
@@ -59,7 +80,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -67,22 +89,29 @@
 }
 
 .resena-modal {
-    background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 2.5rem;
+    width: 95%;
+    max-width: 650px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .resena-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 
     h3 {
         margin: 0;
+        color: var(--text-dark);
+        font-weight: 800;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
     }
 }
 
@@ -91,10 +120,11 @@
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-    color: #6b7280;
+    color: var(--text-muted);
+    transition: color 0.2s;
 
     &:hover {
-        color: #1f2937;
+        color: var(--text-dark);
     }
 }
 
@@ -103,30 +133,40 @@
 
     label {
         display: block;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: #374151;
+        font-weight: 700;
+        margin-bottom: 0.65rem;
+        color: var(--text-dark);
+        font-size: 1rem;
     }
 
     input,
     textarea,
     select {
         width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        background: var(--bg-alt);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
         font-size: 0.95rem;
         font-family: inherit;
+        color: var(--text-main);
+        transition: all 0.3s ease;
+        outline: none;
 
         &:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            background: var(--bg-card);
+            border-color: #4318ff;
+            box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
         }
     }
 
     textarea {
         resize: vertical;
+    }
+
+    option {
+        background-color: var(--bg-card);
+        color: var(--text-main);
     }
 }
 
@@ -138,23 +178,42 @@
 
 .form-actions {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    
+    button {
+        flex: 1;
+    }
 }
 
 .badge-info {
-    background: #dbeafe;
-    color: #1e40af;
+    background: rgba(67, 140, 255, 0.15);
+    color: #3b82f6;
 }
 
 .badge-warning {
-    background: #fef3c7;
-    color: #92400e;
+    background: rgba(255, 206, 32, 0.15);
+    color: var(--warning);
 }
 
 .loading,
 .no-data {
     text-align: center;
     padding: 2rem;
-    color: #6b7280;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .premium-card {
+        padding: 1rem;
+    }
+    
+    .resena-modal {
+        padding: 1rem;
+    }
 }

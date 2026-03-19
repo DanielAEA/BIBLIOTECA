@@ -12,49 +12,42 @@
     <!-- Enhanced Summary Cards -->
     <div class="stats-summary-grid">
         <div class="stats-card-small primary">
-            <div class="icon">📚</div>
             <div class="data">
                 <span class="count">{{ summary.totalLibros || 0 }}</span>
                 <span class="label">Total Libros</span>
             </div>
         </div>
         <div class="stats-card-small secondary">
-            <div class="icon">👥</div>
             <div class="data">
                 <span class="count">{{ summary.totalUsuarios || 0 }}</span>
                 <span class="label">Usuarios Activos</span>
             </div>
         </div>
         <div class="stats-card-small warning">
-            <div class="icon">⏳</div>
             <div class="data">
                 <span class="count">{{ summary.prestamosActivos || 0 }}</span>
                 <span class="label">Préstamos Activos</span>
             </div>
         </div>
         <div class="stats-card-small danger">
-            <div class="icon">💰</div>
             <div class="data">
                 <span class="count">{{ (summary.totalMultasPendientes || 0) | currency:'USD' }}</span>
                 <span class="label">Multas Pendientes</span>
             </div>
         </div>
         <div class="stats-card-small danger-alt">
-            <div class="icon">🚫</div>
             <div class="data">
                 <span class="count">{{ summary.prestamosVencidos || 0 }}</span>
                 <span class="label">Vencidos Hoy</span>
             </div>
         </div>
         <div class="stats-card-small success">
-            <div class="icon">✅</div>
             <div class="data">
                 <span class="count">{{ summary.ejemplaresDisponibles || 0 }}</span>
                 <span class="label">Disp. Ahora</span>
             </div>
         </div>
         <div class="stats-card-small info">
-            <div class="icon">📈</div>
             <div class="data">
                 <span class="count">{{ summary.nuevosUsuariosMes || 0 }}</span>
                 <span class="label">Nuevos (Mes)</span>
@@ -65,13 +58,13 @@
     <!-- Main Charts Grid -->
     <div class="charts-grid upper">
         <div class="premium-card chart-container featured">
-            <h3>📈 Tendencia de Préstamos (Mensual)</h3>
+            <h3>Tendencia de Préstamos (Mensual)</h3>
             <div class="canvas-wrapper">
                 <canvas #trendChart></canvas>
             </div>
         </div>
         <div class="premium-card chart-container">
-            <h3>📖 Libros más solicitados (Top 5)</h3>
+            <h3>Libros más solicitados (Top 5)</h3>
             <div class="canvas-wrapper">
                 <canvas #popChart></canvas>
             </div>
@@ -80,19 +73,19 @@
 
     <div class="charts-grid secondary">
         <div class="premium-card chart-container">
-            <h3>🎭 Préstamos por Género</h3>
+            <h3>Préstamos por Género</h3>
             <div class="canvas-wrapper">
                 <canvas #genreChart></canvas>
             </div>
         </div>
         <div class="premium-card chart-container">
-            <h3>🎓 Uso por Tipo de Usuario</h3>
+            <h3>Uso por Tipo de Usuario</h3>
             <div class="canvas-wrapper">
                 <canvas #userTypeChart></canvas>
             </div>
         </div>
         <div class="premium-card chart-container">
-            <h3>💸 Estado de Multas (Monto)</h3>
+            <h3>Estado de Multas (Monto)</h3>
             <div class="canvas-wrapper">
                 <canvas #finesChart></canvas>
             </div>
@@ -101,13 +94,13 @@
 
     <div class="charts-grid tertiary">
         <div class="premium-card chart-container">
-            <h3>✍️ Autores más leídos</h3>
+            <h3>Autores más leídos</h3>
             <div class="canvas-wrapper">
                 <canvas #authorChart></canvas>
             </div>
         </div>
         <div class="premium-card chart-container center-content">
-            <h3>🎯 Tasa de Puntualidad</h3>
+            <h3>Tasa de Puntualidad</h3>
             <div class="canvas-wrapper relative">
                 <canvas #punctualityChart></canvas>
                 <div class="chart-overlay" *ngIf="summary.tasaPuntualidad !== undefined">
@@ -116,7 +109,7 @@
             </div>
         </div>
         <div class="premium-card chart-container">
-            <h3>📂 Formatos en Inventario</h3>
+            <h3>Formatos en Inventario</h3>
             <div class="canvas-wrapper">
                 <canvas #distChart></canvas>
             </div>
@@ -127,7 +120,7 @@
     <div class="tables-grid">
         <div class="premium-card table-container">
             <div class="table-header">
-                <h3>⚠️ Usuarios con Deuda Pendiente</h3>
+                <h3>Usuarios con Deuda Pendiente</h3>
             </div>
             <div class="table-responsive">
                 <table>
@@ -196,7 +189,7 @@
                         <tr *ngFor="let p of upcomingExpirations">
                             <td>{{ p.libro }}</td>
                             <td>{{ p.usuario }}</td>
-                            <td>{{ p.vencimiento | date:'shortDate' }}</td>
+                            <td>{{ p.vencimiento | date:'dd/MM/yyyy HH:mm' }}</td>
                         </tr>
                         <tr *ngIf="upcomingExpirations.length === 0">
                             <td colspan="3" class="empty-msg">No hay vencimientos próximos</td>

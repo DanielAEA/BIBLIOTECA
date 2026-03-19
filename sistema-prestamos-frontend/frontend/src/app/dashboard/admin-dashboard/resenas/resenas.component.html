@@ -19,7 +19,7 @@
     <div *ngIf="loading" class="loading">Cargando reseñas...</div>
 
     <div class="premium-card" *ngIf="!loading && resenas.length > 0">
-        <table class="premium-table">
+        <table class="premium-table large-text">
             <thead>
                 <tr>
                     <th>Libro</th>
@@ -41,7 +41,7 @@
                     <td class="comment-cell">{{ r.comentario || '—' }}</td>
                     <td>{{ r.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
                     <td>
-                        <button class="premium-button premium-button-danger" (click)="deleteResena(r)">Eliminar</button>
+                        <button class="btn-delete-premium sm" (click)="deleteResena(r)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

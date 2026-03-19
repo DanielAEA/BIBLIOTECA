@@ -1,0 +1,128 @@
+<div class="premium-container">
+  <div class="premium-header">
+    <h2>Gestión de Préstamos</h2>
+    <button class="premium-button" (click)="showLoanForm = true">+ Registrar Préstamo</button>
+  </div>
+
+  <!-- Modal: Préstamo (Nuevo) -->
+  <div class="modal-overlay" *ngIf="showLoanForm" (click)="showLoanForm = false">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Registrar Nuevo Préstamo</h3>
+        <button class="close-btn" (click)="showLoanForm = false">✕</button>
+      </div>
+      <form (ngSubmit)="createLoan()" class="premium-form">
+        <div class="form-group">
+          <label>Usuario:</label>
+          <select [(ngModel)]="selectedUserId" name="usuario" required>
+            <option [ngValue]="null" disabled>Selecciona un usuario</option>
+            <option *ngFor="let u of users" [ngValue]="u.id">{{ u.nombre }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Ejemplar:</label>
+          <select [(ngModel)]="selectedEjemplarId" name="ejemplar" required>
+            <option [ngValue]="null" disabled>{{ availableEjemplares.length === 0 ? 'No hay ejemplares disponibles' : 'Selecciona un ejemplar disponible' }}</option>
+            <option *ngFor="let e of availableEjemplares" [ngValue]="e.id">
+              {{ e.libro.titulo }} - {{ e.codigo }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Días de préstamo:</label>
+          <input type="number" min="1" [(ngModel)]="loanDays" name="diasPrestamo">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="premium-button" [disabled]="creatingLoan || availableEjemplares.length === 0">
+            {{ creatingLoan ? 'Registrando...' : 'Registrar préstamo' }}
+          </button>
+          <button type="button" (click)="showLoanForm = false" class="premium-button premium-button-danger">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="premium-card">
+    <h4 style="font-size: 1rem; color: var(--text-muted); margin-bottom: 0.75rem;">Filtros de búsqueda</h4>
+    <div style="display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center;">
+      <input type="text" [(ngModel)]="loanFilters.usuario" placeholder="Usuario..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+      <input type="text" [(ngModel)]="loanFilters.libro" placeholder="Libro..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+      <input type="text" [(ngModel)]="loanFilters.codigo" placeholder="Código ejemplar..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+      <select [(ngModel)]="loanFilters.estado"
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendientes</option>
+        <option value="devuelto">Devueltos</option>
+      </select>
+      <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-alt); padding: 0 1rem; height: 44px; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+        <input type="checkbox" [(ngModel)]="loanFilters.soloConMulta" id="filterMulta">
+        <label for="filterMulta" style="cursor: pointer;">Solo con multa</label>
+      </div>
+    </div>
+
+    <div *ngIf="loadingLoans" class="loading">Cargando préstamos...</div>
+    <div *ngIf="errorLoans" class="error-message">{{ errorLoans }}</div>
+
+    <div class="table-responsive">
+      <table *ngIf="!loadingLoans && prestamos.length > 0" class="premium-table">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Libro</th>
+            <th>Ejemplar</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Devolución</th>
+            <th>Devolución Real</th>
+            <th>Días Restantes</th>
+            <th>Multa</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of filteredPrestamos" [class.overdue]="hasOverdue(p) && !p.devuelto">
+            <td>{{ p.usuario.nombre }}</td>
+            <td>{{ p.ejemplar.libro.titulo }}</td>
+            <td>{{ p.ejemplar.codigo }}</td>
+            <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ (p.fechaDevolucionReal | date:'dd/MM/yyyy HH:mm') || '-' }}</td>
+            <td>
+              <span *ngIf="!p.devuelto" [class.days-warning]="getDaysRemaining(p) <= 3 && getDaysRemaining(p) >= 0"
+                [class.days-overdue]="hasOverdue(p)" style="font-weight: 700;">
+                {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' d' : hasOverdue(p) ?
+                Math.abs(getDaysRemaining(p)) + ' d venc.' : 'Vence hoy' }}
+              </span>
+              <span *ngIf="p.devuelto">-</span>
+            </td>
+            <td>
+              <span *ngIf="getFine(p) > 0" [class.text-danger]="!p.multa?.pagada" [class.text-success]="p.multa?.pagada" style="font-weight: 700;">
+                ${{ getFine(p).toLocaleString() }}
+              </span>
+              <span *ngIf="getFine(p) === 0" style="color: var(--text-muted);">$0</span>
+            </td>
+            <td>
+              <span class="premium-badge" [ngClass]="p.devuelto ? 'badge-success' : 'badge-warning'">
+                {{ p.devuelto ? 'DEVUELTO' : 'PENDIENTE' }}
+              </span>
+            </td>
+            <td>
+              <div style="display: flex; gap: 4px;">
+                <button *ngIf="!p.devuelto" class="btn-view-premium sm" (click)="markAsReturned(p)">Devolver</button>
+                <button *ngIf="p.multa && !p.multa.pagada" class="btn-edit-premium sm" style="background-color: #059669; color: white;" (click)="payFine(p)">Cobrar</button>
+                <button class="btn-delete-premium sm" (click)="deleteLoan(p)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="!loadingLoans && prestamos.length === 0" class="no-data">
+      No hay préstamos registrados.
+    </div>
+  </div>
+</div>

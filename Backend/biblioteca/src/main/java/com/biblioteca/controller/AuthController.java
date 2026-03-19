@@ -35,6 +35,7 @@ public class AuthController {
             String email = request.getCorreo() != null ? request.getCorreo() : request.getUsername();
             return ResponseEntity.ok(authService.login(email, request.getPassword()));
         } catch (Exception e) {
+            e.printStackTrace(); // <-- LOG THE REAL ERROR
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Credenciales incorrectas"));
         }

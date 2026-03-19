@@ -30,8 +30,8 @@
                         <strong>{{ getLibroTitulo(p) }}</strong><br>
                         <small style="color:#6b7280">{{ getEjemplarCodigo(p) }}</small>
                     </td>
-                    <td>{{ p.fechaPrestamo }}</td>
-                    <td>{{ p.fechaDevolucion }}</td>
+                    <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>
                     <td>
                         <span class="premium-badge"
                             [ngClass]="getDaysRemaining(p) <= 3 ? 'badge-danger' : 'badge-warning'">
@@ -74,8 +74,8 @@
                 <tr *ngFor="let p of getReturnedLoans()">
                     <td>{{ getLibroTitulo(p) }}</td>
                     <td>{{ getEjemplarCodigo(p) }}</td>
-                    <td>{{ p.fechaPrestamo }}</td>
-                    <td>{{ p.fechaDevolucion }}</td>
+                    <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ (p.fechaDevolucionReal | date:'dd/MM/yyyy HH:mm') || (p.fechaDevolucion | date:'dd/MM/yyyy HH:mm') }}</td>
                     <td><span class="premium-badge badge-success">Devuelto</span></td>
                     <td>
                         <button *ngIf="p.ejemplar?.libro?.tieneDigital" 

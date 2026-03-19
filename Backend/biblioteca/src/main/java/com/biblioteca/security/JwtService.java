@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "miClaveSecretaParaJWT123456789012345678901234567890";
+    @org.springframework.beans.factory.annotation.Value("${jwt.secret:miClaveSecretaParaJWT123456789012345678901234567890}")
+    private String SECRET_KEY;
 
     // Extraer el nombre de usuario (subject) del token
     public String extractUsername(String token) {
@@ -58,8 +59,8 @@ public class JwtService {
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                // Caducidad de 24 horas
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                // Caducidad de 100 años (sin expiración práctica)
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 100))
                 .signWith(getSignInKey())
                 .compact();
     }

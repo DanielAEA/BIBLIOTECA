@@ -30,6 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public Usuario crear(@NonNull Usuario usuario) {
+        usuario.setId(null); // <-- Prevenir Mass Assignment (sobreescritura accidental o maliciosa de otro usuario)
+
         // ✅ Obtener el rol managed de la base de datos
         if (usuario.getRol() != null && usuario.getRol().getId() != null) {
             RolUsuario rolReal = rolUsuarioRepository.findById(usuario.getRol().getId())

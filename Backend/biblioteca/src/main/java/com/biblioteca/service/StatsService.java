@@ -1,10 +1,12 @@
 package com.biblioteca.service;
 
+import com.biblioteca.entity.*;
 import com.biblioteca.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,14 +28,32 @@ public class StatsService {
     @Autowired
     private EjemplarRepository ejemplarRepository;
 
+    @Autowired
+    private PrecioMultaRepository precioMultaRepository;
+
     public Map<String, Object> getSummary() {
         Map<String, Object> summary = new HashMap<>();
         summary.put("totalLibros", libroRepository.count());
         summary.put("totalUsuarios", usuarioRepository.count());
         summary.put("prestamosActivos", prestamoRepository.countByDevueltoFalse());
 
-        Double multasPendientes = multaRepository.sumPendingFines();
-        summary.put("totalMultasPendientes", multasPendientes != null ? multasPendientes : 0.0);
+        Double multasPagadasPersistent = multaRepository.sumPendingFines();
+        double totalMultas = multasPagadasPersistent != null ? multasPagadasPersistent : 0.0;
+        
+        // Sumar multas potenciales de préstamos vencidos aún no devueltos
+        List<Prestamo> vencidos = prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now());
+        if (!vencidos.isEmpty()) {
+            PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
+            if (precio != null) {
+                for (Prestamo p : vencidos) {
+                    long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion(), LocalDateTime.now());
+                    if (dias > 0) {
+                        totalMultas += precio.getValorPorDia() * dias;
+                    }
+                }
+            }
+        }
+        summary.put("totalMultasPendientes", totalMultas);
 
         // Obtener cantidad de préstamos vencidos
         summary.put("prestamosVencidos", prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now()).size());
@@ -108,7 +128,40 @@ public class StatsService {
     }
 
     public List<Map<String, Object>> getUsersWithDebt() {
-        return mapResults(multaRepository.findUsersWithDebt(), "usuario", "deuda");
+        Map<String, Double> userDebtMap = new HashMap<>();
+
+        // 1. Deudas consolidadas en la tabla Multas
+        List<Object[]> persistentStats = multaRepository.findUsersWithDebt();
+        for (Object[] row : persistentStats) {
+            userDebtMap.put((String) row[0], (Double) row[1]);
+        }
+
+        // 2. Deudas potenciales de préstamos vencidos no devueltos
+        List<Prestamo> vencidos = prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now());
+        if (!vencidos.isEmpty()) {
+            PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
+            if (precio != null) {
+                for (Prestamo p : vencidos) {
+                    String nombre = p.getUsuario().getNombre();
+                    long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion(), LocalDateTime.now());
+                    if (dias > 0) {
+                        double deudaExtra = precio.getValorPorDia() * dias;
+                        userDebtMap.put(nombre, userDebtMap.getOrDefault(nombre, 0.0) + deudaExtra);
+                    }
+                }
+            }
+        }
+
+        // Convertir mapa a lista de resultados ordenada por deuda
+        return userDebtMap.entrySet().stream()
+                .map(e -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("usuario", e.getKey());
+                    map.put("deuda", e.getValue());
+                    return map;
+                })
+                .sorted((a, b) -> Double.compare((Double) b.get("deuda"), (Double) a.get("deuda")))
+                .collect(Collectors.toList());
     }
 
     public List<Map<String, Object>> getFinesStats() {

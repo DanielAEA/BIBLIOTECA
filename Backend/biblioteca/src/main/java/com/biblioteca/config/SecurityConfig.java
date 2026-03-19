@@ -37,7 +37,28 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/uploads/**").permitAll()
-                        .requestMatchers("/api/stats/**").authenticated()
+                        // Lecturas permitidas para todos los usuarios autenticados
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, 
+                                "/api/libros/**", 
+                                "/api/autores/**", 
+                                "/api/editoriales/**", 
+                                "/api/generos/**", 
+                                "/api/ejemplares/**", 
+                                "/api/salas/**",
+                                "/api/resenas/**",
+                                "/api/prestamos/**",
+                                "/api/reservas-salas/**").authenticated()
+                        // Acciones que un cliente puede realizar (crear/modificar sus reservas, prestamos o reseñas)
+                        .requestMatchers(org.springframework.http.HttpMethod.POST,
+                                "/api/resenas/**",
+                                "/api/prestamos/**",
+                                "/api/reservas-salas/**").authenticated()
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT,
+                                "/api/prestamos/**",
+                                "/api/reservas-salas/**",
+                                "/api/resenas/**").authenticated()
+                        // Rutas exclusivas para el Administrador (Crear libros, borrar usuarios, ver stats, etc.)
+                        .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

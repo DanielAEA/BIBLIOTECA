@@ -17,7 +17,10 @@ public class AutorServiceImpl implements AutorService {
     }
 
     @Override
-    public Autor crear(@NonNull Autor autor) { return autorRepository.save(autor); }
+    public Autor crear(@NonNull Autor autor) {
+        autor.setId(null);
+        return autorRepository.save(autor);
+    }
 
     @Override
     public Autor obtenerPorId(@NonNull Long id) {
