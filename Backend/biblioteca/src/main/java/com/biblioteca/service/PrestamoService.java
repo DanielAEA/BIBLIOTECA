@@ -18,4 +18,6 @@ public interface PrestamoService {
     List<Prestamo> listarPorUsuario(@NonNull Long usuarioId);
 
     Prestamo devolverLibro(@NonNull Long idPrestamo);
+
+    void registrarLecturaVirtual(Long usuarioId, Long libroId);
 }

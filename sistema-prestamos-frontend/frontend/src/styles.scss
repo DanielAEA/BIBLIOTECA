@@ -430,13 +430,14 @@ body {
 }
 
 .premium-button-danger {
-    background: #fee2e2;
-    color: var(--danger);
+    background: #fee2e2 !important;
+    color: var(--danger) !important;
+    box-shadow: none !important;
 }
 
 .premium-button-danger:hover:not(:disabled) {
-    background: var(--danger);
-    color: white;
+    background: #fca5a5 !important;
+    color: #991b1b !important;
 }
 
 .premium-table {
@@ -577,6 +578,19 @@ body {
                 border-color: #4318ff;
                 box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
             }
+        }
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+
+        button {
+            margin: 0;
         }
     }
 }

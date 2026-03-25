@@ -92,7 +92,7 @@ export class PrestamosComponent implements OnInit {
         (this.loanFilters.estado === 'devuelto' ? p.devuelto : !p.devuelto);
 
       const matchMulta = !this.loanFilters.soloConMulta || 
-        (p.multa && !p.multa.pagada);
+        (p.multa ? !p.multa.pagada : this.getFine(p) > 0);
 
       return matchUsuario && matchLibro && matchCodigo && matchEstado && matchMulta;
     });
@@ -203,8 +203,8 @@ export class PrestamosComponent implements OnInit {
 
   getDaysRemaining(p: Prestamo): number {
     if (p.devuelto) return 0;
-    const today = new Date();
-    const devolucion = new Date(p.fechaDevolucion);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const devolucion = new Date(p.fechaDevolucion); devolucion.setHours(0, 0, 0, 0);
     const diffTime = devolucion.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }

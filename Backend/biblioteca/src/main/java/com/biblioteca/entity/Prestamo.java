@@ -17,10 +17,18 @@ public class Prestamo {
     @JsonIgnoreProperties("prestamos")
     private Usuario usuario;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "ejemplar_id")
+    @ManyToOne
+    @JoinColumn(name = "ejemplar_id", nullable = true)
     @JsonIgnoreProperties("prestamos")
     private Ejemplar ejemplar;
+
+    @ManyToOne
+    @JoinColumn(name = "libro_id")
+    @JsonIgnoreProperties("ejemplares")
+    private Libro libro;
+
+    @Column(name = "tipo_prestamo", length = 20)
+    private String tipoPrestamo = "FISICO";
 
     @Column(name = "fecha_prestamo", nullable = false)
     private LocalDateTime fechaPrestamo;
@@ -37,22 +45,86 @@ public class Prestamo {
     @JsonIgnoreProperties("prestamo")
     private Multa multa;
 
-    public Prestamo() {}
+    public Prestamo() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Usuario getUsuario() { return usuario; }
-    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
-    public Ejemplar getEjemplar() { return ejemplar; }
-    public void setEjemplar(Ejemplar ejemplar) { this.ejemplar = ejemplar; }
-    public LocalDateTime getFechaPrestamo() { return fechaPrestamo; }
-    public void setFechaPrestamo(LocalDateTime fechaPrestamo) { this.fechaPrestamo = fechaPrestamo; }
-    public LocalDateTime getFechaDevolucion() { return fechaDevolucion; }
-    public void setFechaDevolucion(LocalDateTime fechaDevolucion) { this.fechaDevolucion = fechaDevolucion; }
-    public LocalDateTime getFechaDevolucionReal() { return fechaDevolucionReal; }
-    public void setFechaDevolucionReal(LocalDateTime fechaDevolucionReal) { this.fechaDevolucionReal = fechaDevolucionReal; }
-    public Boolean getDevuelto() { return devuelto; }
-    public void setDevuelto(Boolean devuelto) { this.devuelto = devuelto; }
-    public Multa getMulta() { return multa; }
-    public void setMulta(Multa multa) { this.multa = multa; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Ejemplar getEjemplar() {
+        return ejemplar;
+    }
+
+    public void setEjemplar(Ejemplar ejemplar) {
+        this.ejemplar = ejemplar;
+    }
+
+    public Libro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(Libro libro) {
+        this.libro = libro;
+    }
+
+    public String getTipoPrestamo() {
+        return tipoPrestamo;
+    }
+
+    public void setTipoPrestamo(String tipoPrestamo) {
+        this.tipoPrestamo = tipoPrestamo;
+    }
+
+    public LocalDateTime getFechaPrestamo() {
+        return fechaPrestamo;
+    }
+
+    public void setFechaPrestamo(LocalDateTime fechaPrestamo) {
+        this.fechaPrestamo = fechaPrestamo;
+    }
+
+    public LocalDateTime getFechaDevolucion() {
+        return fechaDevolucion;
+    }
+
+    public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public LocalDateTime getFechaDevolucionReal() {
+        return fechaDevolucionReal;
+    }
+
+    public void setFechaDevolucionReal(LocalDateTime fechaDevolucionReal) {
+        this.fechaDevolucionReal = fechaDevolucionReal;
+    }
+
+    public Boolean getDevuelto() {
+        return devuelto;
+    }
+
+    public void setDevuelto(Boolean devuelto) {
+        this.devuelto = devuelto;
+    }
+
+    public Multa getMulta() {
+        return multa;
+    }
+
+    public void setMulta(Multa multa) {
+        this.multa = multa;
+    }
 }

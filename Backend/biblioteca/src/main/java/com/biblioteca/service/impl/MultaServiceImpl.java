@@ -43,7 +43,6 @@ public class MultaServiceImpl implements MultaService {
         
         // Mantener las relaciones originales si no vienen en el objeto
         if (multa.getPrestamo() != null) existente.setPrestamo(multa.getPrestamo());
-        if (multa.getPrecioMulta() != null) existente.setPrecioMulta(multa.getPrecioMulta());
 
         return multaRepository.save(existente);
     }

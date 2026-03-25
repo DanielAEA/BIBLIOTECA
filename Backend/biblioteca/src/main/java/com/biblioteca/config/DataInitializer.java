@@ -1,9 +1,7 @@
 package com.biblioteca.config;
 
-import com.biblioteca.entity.PrecioMulta;
 import com.biblioteca.entity.RolUsuario;
 import com.biblioteca.entity.Usuario;
-import com.biblioteca.repository.PrecioMultaRepository;
 import com.biblioteca.repository.RolUsuarioRepository;
 import com.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +19,6 @@ public class DataInitializer implements CommandLineRunner {
     private final RolUsuarioRepository rolUsuarioRepository;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final PrecioMultaRepository precioMultaRepository;
 
     @Value("${app.admin.email:}")
     private String adminEmail;
@@ -38,30 +35,17 @@ public class DataInitializer implements CommandLineRunner {
     public DataInitializer(
             RolUsuarioRepository rolUsuarioRepository,
             UsuarioRepository usuarioRepository,
-            PasswordEncoder passwordEncoder,
-            PrecioMultaRepository precioMultaRepository) {
+            PasswordEncoder passwordEncoder) {
         this.rolUsuarioRepository = rolUsuarioRepository;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
-        this.precioMultaRepository = precioMultaRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
         initializeRoles();
         initializeUsers();
-        initializePrecioMulta();
         fixPlainTextPasswords();
-    }
-
-    private void initializePrecioMulta() {
-        if (precioMultaRepository.count() == 0) {
-            PrecioMulta precio = new PrecioMulta();
-            precio.setValorPorDia(2000.0);
-            precio.setVigenteDesde(LocalDate.now().minusYears(1));
-            precioMultaRepository.save(precio);
-            System.out.println(">>> Precio de multa inicial (2000.0) creado satisfactoriamente.");
-        }
     }
 
     /**

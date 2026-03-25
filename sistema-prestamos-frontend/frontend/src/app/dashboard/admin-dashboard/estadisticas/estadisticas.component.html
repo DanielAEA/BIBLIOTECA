@@ -78,12 +78,7 @@
                 <canvas #genreChart></canvas>
             </div>
         </div>
-        <div class="premium-card chart-container">
-            <h3>Uso por Tipo de Usuario</h3>
-            <div class="canvas-wrapper">
-                <canvas #userTypeChart></canvas>
-            </div>
-        </div>
+
         <div class="premium-card chart-container">
             <h3>Estado de Multas (Monto)</h3>
             <div class="canvas-wrapper">
@@ -128,17 +123,15 @@
                         <tr>
                             <th>Usuario</th>
                             <th>Monto</th>
-                            <th>Acción</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let d of debtors">
                             <td>{{ d.usuario }}</td>
                             <td class="debt-monto">{{ d.deuda | currency:'USD' }}</td>
-                            <td><button class="btn-action">Notificar</button></td>
                         </tr>
                         <tr *ngIf="debtors.length === 0">
-                            <td colspan="3" class="empty-msg">No hay deudas pendientes</td>
+                            <td colspan="2" class="empty-msg">No hay deudas pendientes</td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,7 +155,7 @@
                         <tr *ngFor="let b of inactiveBooks">
                             <td>#{{ b.id }}</td>
                             <td>{{ b.titulo }}</td>
-                            <td><button class="btn-action alt">Promover</button></td>
+                            <td><button class="btn-action alt" (click)="promoverLibro(b)">Promover</button></td>
                         </tr>
                         <tr *ngIf="inactiveBooks.length === 0">
                             <td colspan="3" class="empty-msg">Todos los libros están activos</td>

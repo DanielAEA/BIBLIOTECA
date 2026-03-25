@@ -16,7 +16,6 @@ Chart.register(...registerables);
 export class EstadisticasComponent implements OnInit, AfterViewInit {
   @ViewChild('popChart') popChartRef!: ElementRef;
   @ViewChild('genreChart') genreChartRef!: ElementRef;
-  @ViewChild('userTypeChart') userTypeChartRef!: ElementRef;
   @ViewChild('finesChart') finesChartRef!: ElementRef;
   @ViewChild('authorChart') authorChartRef!: ElementRef;
   @ViewChild('punctualityChart') punctualityChartRef!: ElementRef;
@@ -34,7 +33,6 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   // Data cache for charts
   private mostBorrowedBooks: any[] = [];
   private loansByGenre: any[] = [];
-  private loansByRole: any[] = [];
   private finesStats: any[] = [];
   private mostBorrowedAuthors: any[] = [];
   private punctualityRate: any = null;
@@ -99,10 +97,6 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       this.renderCharts();
     });
 
-    this.statsService.getLoansByRole().subscribe(data => {
-      this.loansByRole = data;
-      this.renderCharts();
-    });
 
     this.statsService.getFinesStats().subscribe(data => {
       this.finesStats = data;
@@ -143,8 +137,6 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
     if (this.loansByGenre.length > 0) 
       this.renderPieChart(this.genreChartRef, this.loansByGenre, 'genero', 'total');
 
-    if (this.loansByRole.length > 0) 
-      this.renderPieChart(this.userTypeChartRef, this.loansByRole, 'rol', 'total');
 
     if (this.finesStats.length > 0) 
       this.renderDoughnutChart(this.finesChartRef, this.finesStats, 'estado', 'total');
@@ -155,7 +147,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
     if (this.punctualityRate) 
       this.renderPunctualityChart(this.punctualityChartRef, this.punctualityRate);
 
-    if (this.loansByMonth.length > 0) 
+    if (this.loansByMonth) 
       this.renderTrendChart(this.loansByMonth);
 
     if (this.inventoryDistribution) 
@@ -178,11 +170,13 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       },
       scales: {
         x: {
-          ticks: { color: textColor, font: { size: 10 } },
+          beginAtZero: true,
+          ticks: { color: textColor, font: { size: 10 }, precision: 0 },
           grid: { color: gridColor }
         },
         y: {
-          ticks: { color: textColor, font: { size: 10 } },
+          beginAtZero: true,
+          ticks: { color: textColor, font: { size: 10 }, precision: 0 },
           grid: { color: gridColor }
         }
       },
@@ -196,7 +190,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       type: 'bar',
       data: {
         labels: data.map(d => d[labelKey]),
-        datasets: [{ label: 'Total', data: data.map(d => d[valueKey]), backgroundColor: color, borderRadius: 6 }]
+        datasets: [{ label: 'Total', data: data.map(d => d[valueKey]), backgroundColor: color, borderRadius: 6, maxBarThickness: 32 }]
       },
       options: this.getChartOptions({ indexAxis: 'y', plugins: { legend: { display: false } } })
     });
@@ -242,13 +236,40 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
     this.charts.push(chart);
   }
 
+  private fillMissingMonths(data: any[]): any[] {
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const esMonths = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    const today = new Date();
+    const result = [];
+    
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const enName = monthNames[d.getMonth()];
+      const esName = esMonths[d.getMonth()];
+      
+      const existing = data.find(item => 
+        item.mes?.toLowerCase() === enName.toLowerCase() || 
+        item.mes?.toLowerCase() === esName.toLowerCase()
+      );
+      
+      result.push({
+        mes: esName,
+        total: existing ? existing.total : 0
+      });
+    }
+    return result;
+  }
+
   private renderTrendChart(data: any[]) {
     if (!this.trendChartRef || !this.trendChartRef.nativeElement) return;
+    
+    const filledData = this.fillMissingMonths(data);
+
     const chart = new Chart(this.trendChartRef.nativeElement, {
       type: 'line',
       data: {
-        labels: data.map(d => d.mes),
-        datasets: [{ label: 'Préstamos', data: data.map(d => d.total) as number[], borderColor: '#6366f1', fill: true, backgroundColor: 'rgba(99, 102, 241, 0.1)', tension: 0.4 }]
+        labels: filledData.map(d => d.mes),
+        datasets: [{ label: 'Interacciones (Préstamos y Lecturas)', data: filledData.map(d => d.total) as number[], borderColor: '#6366f1', fill: true, backgroundColor: 'rgba(99, 102, 241, 0.1)', tension: 0.4 }]
       },
       options: this.getChartOptions({ plugins: { legend: { display: false } } })
     });
@@ -266,5 +287,24 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       options: this.getChartOptions({ scales: { x: { display: false }, y: { display: false } } })
     });
     this.charts.push(chart);
+  }
+
+  promoverLibro(libro: any) {
+    import('sweetalert2').then(Swal => {
+      Swal.default.fire({
+        title: '¿Promover Libro?',
+        html: `Se enviará una recomendación masiva a los usuarios sobre <strong>"${libro.titulo}"</strong>.`,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, promover',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.default.fire('¡Campaña iniciada!', `"${libro.titulo}" ahora figura en el boletín de recomendados de la semana.`, 'success');
+        }
+      });
+    });
   }
 }

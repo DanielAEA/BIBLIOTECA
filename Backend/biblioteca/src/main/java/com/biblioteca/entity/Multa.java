@@ -14,9 +14,7 @@ public class Multa {
     @JoinColumn(name = "prestamo_id", nullable = false, unique = true)
     private Prestamo prestamo;
 
-    @ManyToOne
-    @JoinColumn(name = "precio_multa_id", nullable = false)
-    private PrecioMulta precioMulta;
+
 
     @Column(name = "dias_atraso", nullable = false)
     private Integer diasAtraso;
@@ -30,9 +28,8 @@ public class Multa {
     // Constructores
     public Multa() {}
 
-    public Multa(Prestamo prestamo, PrecioMulta precioMulta, Integer diasAtraso, Double total) {
+    public Multa(Prestamo prestamo, Integer diasAtraso, Double total) {
         this.prestamo = prestamo;
-        this.precioMulta = precioMulta;
         this.diasAtraso = diasAtraso;
         this.total = total;
         this.pagada = false;
@@ -55,13 +52,7 @@ public class Multa {
         this.prestamo = prestamo;
     }
 
-    public PrecioMulta getPrecioMulta() {
-        return precioMulta;
-    }
 
-    public void setPrecioMulta(PrecioMulta precioMulta) {
-        this.precioMulta = precioMulta;
-    }
 
     public Integer getDiasAtraso() {
         return diasAtraso;
@@ -92,7 +83,6 @@ public class Multa {
         return "Multa{" +
                 "id=" + id +
                 ", prestamo=" + (prestamo != null ? prestamo.getId() : null) +
-                ", precioMulta=" + (precioMulta != null ? precioMulta.getId() : null) +
                 ", diasAtraso=" + diasAtraso +
                 ", total=" + total +
                 '}';

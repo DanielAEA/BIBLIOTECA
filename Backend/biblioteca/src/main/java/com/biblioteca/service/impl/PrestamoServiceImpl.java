@@ -18,18 +18,19 @@ public class PrestamoServiceImpl implements PrestamoService {
     private final UsuarioRepository usuarioRepository;
     private final EjemplarRepository ejemplarRepository;
     private final MultaRepository multaRepository;
-    private final PrecioMultaRepository precioMultaRepository;
+    private final LibroRepository libroRepository;
+    private static final Double VALOR_MULTA_DIARIA = 2000.0;
 
     public PrestamoServiceImpl(PrestamoRepository prestamoRepository,
             UsuarioRepository usuarioRepository,
             EjemplarRepository ejemplarRepository,
             MultaRepository multaRepository,
-            PrecioMultaRepository precioMultaRepository) {
+            LibroRepository libroRepository) {
         this.prestamoRepository = prestamoRepository;
         this.usuarioRepository = usuarioRepository;
         this.ejemplarRepository = ejemplarRepository;
         this.multaRepository = multaRepository;
-        this.precioMultaRepository = precioMultaRepository;
+        this.libroRepository = libroRepository;
     }
 
     @Override
@@ -64,6 +65,8 @@ public class PrestamoServiceImpl implements PrestamoService {
         Prestamo prestamoNuevo = new Prestamo();
         prestamoNuevo.setUsuario(usuarioReal);
         prestamoNuevo.setEjemplar(ejemplarReal);
+        prestamoNuevo.setLibro(ejemplarReal.getLibro()); // Guardamos la referencia directa
+        prestamoNuevo.setTipoPrestamo("FISICO");
         prestamoNuevo.setFechaPrestamo(prestamo.getFechaPrestamo() != null ? prestamo.getFechaPrestamo() : LocalDateTime.now());
         prestamoNuevo.setFechaDevolucion(
                 prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : LocalDateTime.now().plusDays(15));
@@ -138,17 +141,8 @@ public class PrestamoServiceImpl implements PrestamoService {
         LocalDateTime esperado = fechaDevolucionOriginal;
         LocalDateTime real = LocalDateTime.now();
 
-        if (real.isAfter(esperado)) {
-            long dias = ChronoUnit.DAYS.between(esperado, real);
-
-            PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
-            if (precio == null) {
-                System.out.println("⚠️ ADVERTENCIA: No hay precio de multa configurado. Usando valor por defecto de 2000.0");
-                precio = new PrecioMulta();
-                precio.setValorPorDia(2000.0);
-            }
-
-            double monto = precio.getValorPorDia() * (double) dias;
+        if (real.truncatedTo(ChronoUnit.DAYS).isAfter(esperado.truncatedTo(ChronoUnit.DAYS))) {
+            long dias = ChronoUnit.DAYS.between(esperado.truncatedTo(ChronoUnit.DAYS), real.truncatedTo(ChronoUnit.DAYS));
 
             // BUSCAR SI YA EXISTE UNA MULTA PARA ESTE PRÉSTAMO
             Multa m = p.getMulta();
@@ -158,9 +152,8 @@ public class PrestamoServiceImpl implements PrestamoService {
                 m.setPagada(false);
             }
             
-            m.setTotal(monto);
+            m.setTotal(VALOR_MULTA_DIARIA * (double) dias);
             m.setDiasAtraso((int) dias);
-            m.setPrecioMulta(precio.getId() != null ? precio : null);
 
             multaRepository.save(m);
             p.setMulta(m);
@@ -175,25 +168,39 @@ public class PrestamoServiceImpl implements PrestamoService {
 
         for (Prestamo p : list) {
             if (p.getMulta() == null) {
-                long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion(), LocalDateTime.now());
-
-                PrecioMulta precio = precioMultaRepository.findTopByOrderByVigenteDesdeDesc();
-                if (precio == null) {
-                    continue;
-                }
-
-                double monto = precio.getValorPorDia() * dias;
+                long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion().truncatedTo(ChronoUnit.DAYS), LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
 
                 Multa m = new Multa();
-                m.setTotal(monto);
-                m.setDiasAtraso((int) dias);
-                m.setPrecioMulta(precio);
                 m.setPrestamo(p);
+                m.setDiasAtraso((int) dias);
+                m.setTotal(VALOR_MULTA_DIARIA * dias);
 
                 multaRepository.save(m);
                 p.setMulta(m);
                 prestamoRepository.save(p);
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public void registrarLecturaVirtual(Long usuarioId, Long libroId) {
+        if (prestamoRepository.existsVirtualReadToday(usuarioId, libroId)) {
+            throw new RuntimeException("Lectura ya registrada hoy");
+        }
+        Usuario u = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Libro l = libroRepository.findById(libroId)
+                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+
+        Prestamo p = new Prestamo();
+        p.setUsuario(u);
+        p.setLibro(l);
+        p.setTipoPrestamo("VIRTUAL");
+        p.setDevuelto(true);
+        p.setFechaPrestamo(LocalDateTime.now());
+        p.setFechaDevolucion(LocalDateTime.now());
+        p.setFechaDevolucionReal(LocalDateTime.now());
+        prestamoRepository.save(p);
     }
 }

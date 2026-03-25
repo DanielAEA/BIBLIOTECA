@@ -6,6 +6,8 @@ import { BookService, Libro, LibroPayload } from '../../../services/book.service
 import { AuthorService, Autor } from '../../../services/author.service';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
 import { GeneroService, Genero } from '../../../services/genero.service';
+import { AuthService } from '../../../services/auth.service';
+import { StatsService } from '../../../services/stats.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -44,7 +46,9 @@ export class LibrosComponent implements OnInit {
     private bookService: BookService,
     private authorService: AuthorService,
     private editorialService: EditorialService,
-    private generoService: GeneroService
+    private generoService: GeneroService,
+    private authService: AuthService,
+    private statsService: StatsService
   ) { }
 
   ngOnInit() {
@@ -252,6 +256,10 @@ export class LibrosComponent implements OnInit {
 
   leerOnline(libro: Libro) {
     if (libro.archivoDigital) {
+      const payload = this.authService.getPayload();
+      if (payload && (payload.id || payload.sub)) {
+          this.statsService.registrarLecturaDigital(payload.id || payload.sub, libro.id).subscribe();
+      }
       window.open(libro.archivoDigital, '_blank');
     } else {
       Swal.fire('Error', 'El archivo de este libro no se encuentra disponible.', 'error');

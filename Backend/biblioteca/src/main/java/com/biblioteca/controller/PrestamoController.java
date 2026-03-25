@@ -114,4 +114,16 @@ public class PrestamoController {
     public ResponseEntity<List<Prestamo>> listarPorUsuario(@PathVariable @NonNull Long userId) {
         return ResponseEntity.ok(prestamoService.listarPorUsuario(userId));
     }
+
+    @PostMapping("/lectura-virtual")
+    public ResponseEntity<?> registrarLecturaVirtual(@RequestBody java.util.Map<String, Long> request) {
+        try {
+            Long usuarioId = request.get("usuarioId");
+            Long libroId = request.get("libroId");
+            prestamoService.registrarLecturaVirtual(usuarioId, libroId);
+            return ResponseEntity.ok(java.util.Map.of("message", "Lectura virtual registrada"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

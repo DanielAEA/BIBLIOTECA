@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoanService, Prestamo } from '../../../services/loan.service';
 import { AuthService } from '../../../services/auth.service';
+import { StatsService } from '../../../services/stats.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,7 +21,8 @@ export class MisPrestamosComponent implements OnInit {
 
     constructor(
         private loanService: LoanService,
-        private authService: AuthService
+        private authService: AuthService,
+        private statsService: StatsService
     ) { }
 
     ngOnInit() {
@@ -115,6 +117,10 @@ export class MisPrestamosComponent implements OnInit {
     leerOnline(p: Prestamo) {
         const libro = p?.ejemplar?.libro;
         if (libro && libro.archivoDigital) {
+            const payload = this.authService.getPayload();
+            if (payload && (payload.id || payload.sub)) {
+                this.statsService.registrarLecturaDigital(payload.id || payload.sub, libro.id).subscribe();
+            }
             window.open(libro.archivoDigital, '_blank');
         } else {
             Swal.fire('Error', 'La versión digitalizada de este libro no está disponible.', 'error');
