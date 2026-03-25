@@ -25,7 +25,7 @@ export interface LibroPayload {
 @Injectable({ providedIn: 'root' })
 export class BookService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

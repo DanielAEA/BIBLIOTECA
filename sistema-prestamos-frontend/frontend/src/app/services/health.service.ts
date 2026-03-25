@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class HealthService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 
@@ -38,7 +38,7 @@ export class HealthService {
             })),
             catchError(() => of({
               available: false,
-              message: 'No se pudo conectar al backend. Verifica que esté corriendo en http://localhost:8080'
+              message: 'No se pudo conectar al backend. Verifica que esté corriendo correctamente.'
             }))
           );
         }

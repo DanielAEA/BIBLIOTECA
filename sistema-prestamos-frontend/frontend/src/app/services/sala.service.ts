@@ -22,7 +22,7 @@ export interface SalaPayload {
 @Injectable({ providedIn: 'root' })
 export class SalaService {
 
-    private baseUrl = 'http://localhost:8080/api/salas';
+    private baseUrl = '/api/salas';
 
     constructor(private http: HttpClient) { }
 

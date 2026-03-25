@@ -27,7 +27,7 @@ export interface PromedioCalificacion {
 @Injectable({ providedIn: 'root' })
 export class ResenaService {
 
-    private baseUrl = 'http://localhost:8080/api/resenas';
+    private baseUrl = '/api/resenas';
 
     constructor(private http: HttpClient) { }
 

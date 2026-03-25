@@ -19,7 +19,7 @@ export interface EjemplarPayload {
 
 @Injectable({ providedIn: 'root' })
 export class EjemplarService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

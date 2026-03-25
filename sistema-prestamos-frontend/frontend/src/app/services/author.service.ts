@@ -10,7 +10,7 @@ export interface Autor {
 @Injectable({ providedIn: 'root' })
 export class AuthorService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

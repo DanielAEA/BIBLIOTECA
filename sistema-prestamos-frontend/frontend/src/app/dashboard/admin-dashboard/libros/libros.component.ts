@@ -252,7 +252,7 @@ export class LibrosComponent implements OnInit {
 
   leerOnline(libro: Libro) {
     if (libro.archivoDigital) {
-      window.open('http://localhost:8080' + libro.archivoDigital, '_blank');
+      window.open(libro.archivoDigital, '_blank');
     } else {
       Swal.fire('Error', 'El archivo de este libro no se encuentra disponible.', 'error');
     }

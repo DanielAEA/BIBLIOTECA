@@ -35,7 +35,7 @@ export interface PrestamoPayload {
 
 @Injectable({ providedIn: 'root' })
 export class LoanService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
   // Estado local compartido de préstamos (CRUD reactivo)
   private loansSubject = new BehaviorSubject<Prestamo[] | null>(null);
   public loans$ = this.loansSubject.asObservable();

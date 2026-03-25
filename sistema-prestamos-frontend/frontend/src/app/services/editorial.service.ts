@@ -10,7 +10,7 @@ export interface Editorial {
 @Injectable({ providedIn: 'root' })
 export class EditorialService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

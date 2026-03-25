@@ -14,7 +14,7 @@ export class AuthService {
   private userSubject = new BehaviorSubject<any>(this.getPayload());
   user$ = this.userSubject.asObservable();
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient, private router: Router) { }
 

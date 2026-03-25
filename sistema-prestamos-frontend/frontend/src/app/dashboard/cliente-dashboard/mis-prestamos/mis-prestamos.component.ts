@@ -115,7 +115,7 @@ export class MisPrestamosComponent implements OnInit {
     leerOnline(p: Prestamo) {
         const libro = p?.ejemplar?.libro;
         if (libro && libro.archivoDigital) {
-            window.open('http://localhost:8080' + libro.archivoDigital, '_blank');
+            window.open(libro.archivoDigital, '_blank');
         } else {
             Swal.fire('Error', 'La versión digitalizada de este libro no está disponible.', 'error');
         }

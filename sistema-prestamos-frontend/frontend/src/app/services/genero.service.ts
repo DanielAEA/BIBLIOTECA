@@ -10,7 +10,7 @@ export interface Genero {
 @Injectable({ providedIn: 'root' })
 export class GeneroService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

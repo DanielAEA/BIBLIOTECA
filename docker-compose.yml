@@ -1,0 +1,83 @@
+services:
+  # ============================================
+  # Base de Datos MySQL
+  # ============================================
+  db:
+    image: mysql:8.0
+    container_name: biblioteca-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: biblioteca
+    ports:
+      - "3307:3306"
+    volumes:
+      - biblioteca-data:/var/lib/mysql
+    networks:
+      - biblioteca-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ============================================
+  # Backend - Spring Boot
+  # ============================================
+  backend:
+    build:
+      context: ./Backend/biblioteca
+      dockerfile: Dockerfile
+    container_name: biblioteca-backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/biblioteca?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345
+      APP_ADMIN_EMAIL: admin@bib.com
+      APP_ADMIN_PASSWORD: admin123
+      APP_TEST_EMAIL: cliente@bib.com
+      APP_TEST_PASSWORD: cliente123
+    ports:
+      - "8080:8080"
+    volumes:
+      - biblioteca-uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - biblioteca-network
+
+  # ============================================
+  # Frontend - Angular + Nginx
+  # ============================================
+  frontend:
+    build:
+      context: ./sistema-prestamos-frontend/frontend
+      dockerfile: Dockerfile
+    container_name: biblioteca-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - biblioteca-network
+
+# ============================================
+# Volúmenes persistentes
+# ============================================
+volumes:
+  biblioteca-data:
+    name: biblioteca-mysql-data
+  biblioteca-uploads:
+    name: biblioteca-uploads
+
+# ============================================
+# Red compartida
+# ============================================
+networks:
+  biblioteca-network:
+    name: biblioteca-network
+    driver: bridge

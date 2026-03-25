@@ -32,7 +32,7 @@ export interface UsuarioUpdatePayload {
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = '';
 
   constructor(private http: HttpClient) {}
 

@@ -25,7 +25,7 @@ export interface ReservaSalaPayload {
 @Injectable({ providedIn: 'root' })
 export class ReservaSalaService {
 
-    private baseUrl = 'http://localhost:8080/api/reservas-sala';
+    private baseUrl = '/api/reservas-sala';
 
     constructor(private http: HttpClient) { }
 

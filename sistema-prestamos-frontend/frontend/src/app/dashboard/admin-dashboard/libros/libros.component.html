@@ -88,7 +88,7 @@
           <div style="background: var(--bg-alt); padding: 1rem; border-radius: 8px; border: 1px dashed var(--border-color);">
             <input type="file" (change)="onFileSelected($event)" accept=".pdf" #fileInput>
             <div *ngIf="editingBook.tieneDigital && !selectedFile" style="margin-top: 0.5rem; font-size: 0.9em; color: var(--success); font-weight: bold;">
-              ✓ PDF cargado. <a [href]="'http://localhost:8080' + editingBook.archivoDigital" target="_blank" style="text-decoration: underline;">Ver actual</a>
+              ✓ PDF cargado. <a [href]="editingBook.archivoDigital" target="_blank" style="text-decoration: underline;">Ver actual</a>
             </div>
           </div>
         </div>
