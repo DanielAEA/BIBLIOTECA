@@ -24,7 +24,7 @@ public class MultaController {
     }
 
     @GetMapping("/{id}")
-    public Multa obtener(@PathVariable @NonNull Long id) {
+    public Multa obtener(@PathVariable @NonNull String id) {
         return multaService.obtenerPorId(id);
     }
 
@@ -34,12 +34,12 @@ public class MultaController {
     }
 
     @PutMapping("/{id}")
-    public Multa actualizar(@PathVariable @NonNull Long id, @RequestBody @NonNull Multa multa) {
+    public Multa actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Multa multa) {
         return multaService.actualizar(id, multa);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable @NonNull Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         multaService.eliminar(id);
     }
 }

@@ -1,58 +1,31 @@
 package com.biblioteca.entity;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "multas")
 public class Multa {
+    // Embebido en Prestamo
+    
+    private String id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "prestamo_id", nullable = false, unique = true)
-    private Prestamo prestamo;
-
-
-
-    @Column(name = "dias_atraso", nullable = false)
     private Integer diasAtraso;
 
-    @Column(nullable = false)
     private Double total;
 
-    @Column(nullable = false)
     private Boolean pagada = false;
 
-    // Constructores
     public Multa() {}
 
-    public Multa(Prestamo prestamo, Integer diasAtraso, Double total) {
-        this.prestamo = prestamo;
+    public Multa(Integer diasAtraso, Double total) {
         this.diasAtraso = diasAtraso;
         this.total = total;
         this.pagada = false;
     }
 
-    // Getters y Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
-
-    public Prestamo getPrestamo() {
-        return prestamo;
-    }
-
-    public void setPrestamo(Prestamo prestamo) {
-        this.prestamo = prestamo;
-    }
-
-
 
     public Integer getDiasAtraso() {
         return diasAtraso;
@@ -76,15 +49,5 @@ public class Multa {
 
     public void setPagada(Boolean pagada) {
         this.pagada = pagada;
-    }
-
-    @Override
-    public String toString() {
-        return "Multa{" +
-                "id=" + id +
-                ", prestamo=" + (prestamo != null ? prestamo.getId() : null) +
-                ", diasAtraso=" + diasAtraso +
-                ", total=" + total +
-                '}';
     }
 }

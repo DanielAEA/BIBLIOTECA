@@ -25,10 +25,10 @@ export class PrestamosComponent implements OnInit {
   errorLoans: string | null = null;
   creatingLoan = false;
   showLoanForm = false;
-  returningLoanId: number | null = null;
+  returningLoanId: string | null = null;
   
-  selectedUserId: number | null = null;
-  selectedEjemplarId: number | null = null;
+  selectedUserId: string | null = null;
+  selectedEjemplarId: string | null = null;
   loanDays = 15;
 
   loanFilters = {
@@ -83,10 +83,10 @@ export class PrestamosComponent implements OnInit {
         p.usuario.nombre.toLowerCase().includes(this.loanFilters.usuario.toLowerCase());
       
       const matchLibro = !this.loanFilters.libro || 
-        p.ejemplar.libro.titulo.toLowerCase().includes(this.loanFilters.libro.toLowerCase());
+        (p.libro?.titulo?.toLowerCase().includes(this.loanFilters.libro.toLowerCase()) ?? false);
 
       const matchCodigo = !this.loanFilters.codigo ||
-        p.ejemplar.codigo.toLowerCase().includes(this.loanFilters.codigo.toLowerCase());
+        (p.ejemplarCodigo?.toLowerCase().includes(this.loanFilters.codigo.toLowerCase()) ?? false);
       
       const matchEstado = !this.loanFilters.estado || 
         (this.loanFilters.estado === 'devuelto' ? p.devuelto : !p.devuelto);
@@ -106,11 +106,17 @@ export class PrestamosComponent implements OnInit {
 
     const today = this.formatDate(new Date());
     const dueDate = this.formatDate(this.addDays(new Date(), this.loanDays));
+    
+    const selectedEjemplar = this.ejemplares.find(e => e.id === this.selectedEjemplarId);
+    if (!selectedEjemplar) {
+      Swal.fire('Error', 'Ejemplar no encontrado', 'error');
+      return;
+    }
+
     const payload: PrestamoPayload = {
-      usuarioId: Number(this.selectedUserId),
-      ejemplarId: Number(this.selectedEjemplarId),
-      usuario: { id: Number(this.selectedUserId) },
-      ejemplar: { id: Number(this.selectedEjemplarId) },
+      usuarioId: this.selectedUserId!,
+      libroId: selectedEjemplar.libro?.id,
+      ejemplarCodigo: selectedEjemplar.codigo,
       fechaPrestamo: today,
       fechaDevolucion: dueDate,
       devuelto: false
@@ -161,6 +167,54 @@ export class PrestamosComponent implements OnInit {
     });
   }
 
+  acceptLoan(prestamo: Prestamo) {
+    Swal.fire({
+      title: '¿Aceptar solicitud de préstamo?',
+      text: `Usuario: ${prestamo.usuario.nombre}, Libro: ${prestamo.libro?.titulo}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loanService.acceptLoan(prestamo.id).subscribe({
+          next: () => {
+            Swal.fire('¡Aceptado!', 'El préstamo ahora está activo.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al aceptar préstamo:', err);
+            Swal.fire('Error', 'No se pudo aceptar el préstamo', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  rejectLoan(prestamo: Prestamo) {
+    Swal.fire({
+      title: '¿Rechazar solicitud de préstamo?',
+      text: 'Esta acción liberará el ejemplar.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Sí, rechazar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loanService.rejectLoan(prestamo.id).subscribe({
+          next: () => {
+            this.loadEjemplares();
+            Swal.fire('Rechazado', 'La solicitud ha sido rechazada.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al rechazar préstamo:', err);
+            Swal.fire('Error', 'No se pudo rechazar el préstamo', 'error');
+          }
+        });
+      }
+    });
+  }
+
   payFine(prestamo: Prestamo) {
     if (!prestamo.multa) return;
     Swal.fire({
@@ -203,8 +257,18 @@ export class PrestamosComponent implements OnInit {
 
   getDaysRemaining(p: Prestamo): number {
     if (p.devuelto) return 0;
+    
+    const devolucion = new Date(p.fechaDevolucion);
+    devolucion.setHours(0, 0, 0, 0);
+
+    if (p.estado === 'SOLICITADO') {
+      const inicio = new Date(p.fechaPrestamo);
+      inicio.setHours(0, 0, 0, 0);
+      const diffTime = devolucion.getTime() - inicio.getTime();
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+
     const today = new Date(); today.setHours(0, 0, 0, 0);
-    const devolucion = new Date(p.fechaDevolucion); devolucion.setHours(0, 0, 0, 0);
     const diffTime = devolucion.getTime() - today.getTime();
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }

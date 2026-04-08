@@ -3,9 +3,10 @@ package com.biblioteca.service.impl;
 import com.biblioteca.entity.Resena;
 import com.biblioteca.repository.ResenaRepository;
 import com.biblioteca.service.ResenaService;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ResenaServiceImpl implements ResenaService {
@@ -17,16 +18,14 @@ public class ResenaServiceImpl implements ResenaService {
     }
 
     @Override
-    public Resena crear(Resena resena) {
+    public Resena crear(@NonNull Resena resena) {
         resena.setId(null);
-        if (resenaRepository.existsByLibroIdAndUsuarioId(
-                resena.getLibro().getId(), resena.getUsuario().getId())) {
-            throw new RuntimeException("Ya has dejado una reseña para este libro");
-        }
-        if (resena.getCalificacion() < 1 || resena.getCalificacion() > 5) {
-            throw new RuntimeException("La calificación debe estar entre 1 y 5");
-        }
         return resenaRepository.save(resena);
+    }
+
+    @Override
+    public Resena obtenerPorId(@NonNull String id) {
+        return resenaRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -35,40 +34,38 @@ public class ResenaServiceImpl implements ResenaService {
     }
 
     @Override
-    public List<Resena> listarPorLibro(Long libroId) {
+    public List<Resena> listarPorLibro(@NonNull String libroId) {
         return resenaRepository.findByLibroId(libroId);
     }
 
     @Override
-    public List<Resena> listarPorUsuario(Long usuarioId) {
-        return resenaRepository.findByUsuarioId(usuarioId);
+    public List<Resena> listarPorUsuario(@NonNull String usuarioId) {
+        return resenaRepository.findAll().stream()
+                .filter(r -> r.getUsuario() != null && usuarioId.equals(r.getUsuario().getId()))
+                .toList();
     }
 
     @Override
-    public Double obtenerPromedioCalificacion(Long libroId) {
-        return resenaRepository.findPromedioCalificacionByLibroId(libroId);
-    }
-
-    @Override
-    public Resena obtenerPorId(Long id) {
-        return resenaRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Resena actualizar(Long id, Resena resena) {
-        resenaRepository.findById(id)
+    public Resena actualizar(@NonNull String id, @NonNull Resena resena) {
+        Resena existente = resenaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Reseña no encontrada"));
-        resena.setId(id);
-        return resenaRepository.save(resena);
+        existente.setCalificacion(resena.getCalificacion());
+        existente.setComentario(resena.getComentario());
+        return resenaRepository.save(existente);
     }
 
     @Override
-    public void eliminar(Long id) {
+    public Double obtenerPromedioCalificacion(@NonNull String libroId) {
+        List<Resena> resenas = listarPorLibro(libroId);
+        if (resenas.isEmpty()) return 0.0;
+        return resenas.stream()
+                .mapToInt(Resena::getCalificacion)
+                .average()
+                .orElse(0.0);
+    }
+
+    @Override
+    public void eliminar(@NonNull String id) {
         resenaRepository.deleteById(id);
-    }
-
-    @Override
-    public boolean yaReseño(Long libroId, Long usuarioId) {
-        return resenaRepository.existsByLibroIdAndUsuarioId(libroId, usuarioId);
     }
 }

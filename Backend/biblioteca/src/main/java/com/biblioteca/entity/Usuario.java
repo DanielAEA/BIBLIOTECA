@@ -1,49 +1,39 @@
 package com.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "usuarios")
+@Document(collection = "usuarios")
 public class Usuario implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @Column(unique = true)
     private String correo;
 
     private String password;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "rol_id")
-    private RolUsuario rol;
+    private String rol;
 
-    @Column(name = "fecha_registro")
-    private java.time.LocalDateTime fechaRegistro = java.time.LocalDateTime.now();
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Prestamo> prestamos;
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
     public Usuario() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,33 +61,25 @@ public class Usuario implements UserDetails {
         this.password = password;
     }
 
-    public RolUsuario getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(RolUsuario rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 
-    public List<Prestamo> getPrestamos() {
-        return prestamos;
-    }
-
-    public void setPrestamos(List<Prestamo> prestamos) {
-        this.prestamos = prestamos;
-    }
-
-    public java.time.LocalDateTime getFechaRegistro() {
+    public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(java.time.LocalDateTime fechaRegistro) {
+    public void setFechaRegistro(LocalDateTime fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + rol.getNombre()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + rol));
     }
 
     @Override

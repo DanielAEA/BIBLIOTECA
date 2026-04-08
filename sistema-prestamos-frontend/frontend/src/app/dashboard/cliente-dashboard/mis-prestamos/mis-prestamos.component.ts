@@ -39,26 +39,21 @@ export class MisPrestamosComponent implements OnInit {
             return;
         }
         const userId = payload.id || payload.sub;
-        const userIdNumber = Number(userId);
         this.loading = true;
         this.error = null;
 
-        if (userIdNumber && !isNaN(userIdNumber)) {
-            this.loanService.getByUserId(userIdNumber).subscribe({
-                next: (prestamos) => this.processPrestamos(prestamos),
-                error: () => this.loadAllAndFilter(userId, userIdNumber)
-            });
-        } else {
-            this.loadAllAndFilter(userId, userIdNumber);
-        }
+        this.loanService.getByUserId(userId).subscribe({
+            next: (prestamos) => this.processPrestamos(prestamos),
+            error: () => this.loadAllAndFilter(userId)
+        });
     }
 
-    private loadAllAndFilter(userId: string | number, userIdNumber: number) {
+    private loadAllAndFilter(userId: string) {
         this.loanService.getAll().subscribe({
             next: (allPrestamos) => {
                 this.processPrestamos(allPrestamos.filter(p => {
                     const pid = p.usuario?.id;
-                    return pid === userId || pid === userIdNumber || String(pid) === String(userId);
+                    return String(pid) === String(userId);
                 }));
             },
             error: (err) => {
@@ -107,15 +102,15 @@ export class MisPrestamosComponent implements OnInit {
     getReturnedLoans(): Prestamo[] { return this.prestamos.filter(p => p.devuelto); }
 
     getLibroTitulo(p: Prestamo): string {
-        return p?.ejemplar?.libro?.titulo || 'Libro no disponible';
+        return p?.libro?.titulo || 'Libro no disponible';
     }
 
     getEjemplarCodigo(p: Prestamo): string {
-        return p?.ejemplar?.codigo || 'N/A';
+        return p?.ejemplarCodigo || 'N/A';
     }
 
     leerOnline(p: Prestamo) {
-        const libro = p?.ejemplar?.libro;
+        const libro = p?.libro;
         if (libro && libro.archivoDigital) {
             const payload = this.authService.getPayload();
             if (payload && (payload.id || payload.sub)) {

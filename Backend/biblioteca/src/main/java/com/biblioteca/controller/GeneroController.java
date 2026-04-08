@@ -2,7 +2,6 @@ package com.biblioteca.controller;
 
 import com.biblioteca.entity.Genero;
 import com.biblioteca.service.GeneroService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +12,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class GeneroController {
 
-    @Autowired
-    private GeneroService generoService;
+    private final GeneroService generoService;
+
+    public GeneroController(GeneroService generoService) {
+        this.generoService = generoService;
+    }
 
     @GetMapping
     public List<Genero> list() {
@@ -22,7 +24,7 @@ public class GeneroController {
     }
 
     @GetMapping("/{id}")
-    public Genero getById(@PathVariable @NonNull Long id) {
+    public Genero getById(@PathVariable @NonNull String id) {
         return generoService.obtenerPorId(id);
     }
 
@@ -32,12 +34,12 @@ public class GeneroController {
     }
 
     @PutMapping("/{id}")
-    public Genero update(@PathVariable @NonNull Long id, @RequestBody @NonNull Genero genero) {
+    public Genero update(@PathVariable @NonNull String id, @RequestBody @NonNull Genero genero) {
         return generoService.actualizar(id, genero);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @NonNull Long id) {
+    public void delete(@PathVariable @NonNull String id) {
         generoService.eliminar(id);
     }
 }

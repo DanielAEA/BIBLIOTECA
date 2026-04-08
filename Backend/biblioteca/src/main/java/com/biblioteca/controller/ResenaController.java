@@ -5,6 +5,7 @@ import com.biblioteca.service.ResenaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -26,22 +27,22 @@ public class ResenaController {
     }
 
     @GetMapping("/{id}")
-    public Resena obtener(@PathVariable Long id) {
+    public Resena obtener(@PathVariable @NonNull String id) {
         return resenaService.obtenerPorId(id);
     }
 
     @GetMapping("/libro/{libroId}")
-    public List<Resena> listarPorLibro(@PathVariable Long libroId) {
+    public List<Resena> listarPorLibro(@PathVariable @NonNull String libroId) {
         return resenaService.listarPorLibro(libroId);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public List<Resena> listarPorUsuario(@PathVariable Long usuarioId) {
+    public List<Resena> listarPorUsuario(@PathVariable @NonNull String usuarioId) {
         return resenaService.listarPorUsuario(usuarioId);
     }
 
     @GetMapping("/libro/{libroId}/promedio")
-    public Map<String, Object> obtenerPromedio(@PathVariable Long libroId) {
+    public Map<String, Object> obtenerPromedio(@PathVariable @NonNull String libroId) {
         Double promedio = resenaService.obtenerPromedioCalificacion(libroId);
         return Map.of(
                 "libroId", libroId,
@@ -50,7 +51,7 @@ public class ResenaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Resena resena) {
+    public ResponseEntity<?> crear(@RequestBody @NonNull Resena resena) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(resenaService.crear(resena));
         } catch (RuntimeException e) {
@@ -60,12 +61,12 @@ public class ResenaController {
     }
 
     @PutMapping("/{id}")
-    public Resena actualizar(@PathVariable Long id, @RequestBody Resena resena) {
+    public Resena actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Resena resena) {
         return resenaService.actualizar(id, resena);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         resenaService.eliminar(id);
     }
 }

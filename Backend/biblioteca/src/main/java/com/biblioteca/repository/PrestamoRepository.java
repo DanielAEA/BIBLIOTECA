@@ -1,44 +1,75 @@
 package com.biblioteca.repository;
 
 import com.biblioteca.entity.Prestamo;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Aggregation;
 import java.util.List;
+import java.time.LocalDateTime;
 
-public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {
+public interface PrestamoRepository extends MongoRepository<Prestamo, String> {
 
-    // Buscar préstamos NO devueltos cuya fecha de devolución ya pasó
-    List<Prestamo> findByDevueltoFalseAndFechaDevolucionBefore(java.time.LocalDateTime fecha);
+    List<Prestamo> findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime fecha);
 
-    // Buscar préstamos por ID de usuario
-    List<Prestamo> findByUsuarioId(Long usuarioId);
+    List<Prestamo> findByUsuarioId(String usuarioId);
 
-    @org.springframework.data.jpa.repository.Query("SELECT p.libro.titulo, COUNT(p) as total FROM Prestamo p GROUP BY p.libro.titulo ORDER BY total DESC")
-    List<Object[]> findMostBorrowedBooks();
+    @Aggregation(pipeline = {
+        "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
+        "{ '$unwind': '$libro_doc' }",
+        "{ '$group': { '_id': '$libro_doc.titulo', 'total': { '$sum': 1 } } }",
+        "{ '$sort': { 'total': -1 } }",
+        "{ '$limit': 5 }"
+    })
+    List<org.bson.Document> findMostBorrowedBooks();
 
-    @org.springframework.data.jpa.repository.Query("SELECT FUNCTION('MONTHNAME', p.fechaPrestamo), COUNT(p) FROM Prestamo p GROUP BY FUNCTION('MONTHNAME', p.fechaPrestamo)")
-    List<Object[]> findLoansByMonth();
+    @Aggregation(pipeline = {
+        "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
+        "{ '$unwind': '$libro_doc' }",
+        "{ '$lookup': { 'from': 'generos', 'localField': 'libro_doc.genero._id', 'foreignField': '_id', 'as': 'gen_doc' } }",
+        "{ '$unwind': '$gen_doc' }",
+        "{ '$group': { '_id': '$gen_doc.nombre', 'total': { '$sum': 1 } } }",
+        "{ '$sort': { 'total': -1 } }"
+    })
+    List<org.bson.Document> findLoansByGenre();
 
-    @org.springframework.data.jpa.repository.Query("SELECT p.libro.genero.nombre, COUNT(p) as total FROM Prestamo p GROUP BY p.libro.genero.nombre ORDER BY total DESC")
-    List<Object[]> findLoansByGenre();
+    @Aggregation(pipeline = {
+        "{ '$lookup': { 'from': 'usuarios', 'localField': 'usuario.$id', 'foreignField': '_id', 'as': 'usuario_doc' } }",
+        "{ '$unwind': '$usuario_doc' }",
+        "{ '$group': { '_id': '$usuario_doc.rol', 'total': { '$sum': 1 } } }",
+        "{ '$sort': { 'total': -1 } }"
+    })
+    List<org.bson.Document> findLoansByUserRole();
 
-    @org.springframework.data.jpa.repository.Query("SELECT p.usuario.rol.nombre, COUNT(p) as total FROM Prestamo p GROUP BY p.usuario.rol.nombre ORDER BY total DESC")
-    List<Object[]> findLoansByUserRole();
+    @Aggregation(pipeline = {
+        "{ '$group': { '_id': { '$dateToString': { 'format': '%Y-%m', 'date': '$fechaPrestamo' } }, 'total': { '$sum': 1 } } }",
+        "{ '$sort': { '_id': 1 } }"
+    })
+    List<org.bson.Document> findLoansByMonth();
 
-    @org.springframework.data.jpa.repository.Query("SELECT a.nombre, COUNT(p) as total FROM Prestamo p JOIN p.libro.autores a GROUP BY a.nombre ORDER BY total DESC")
-    List<Object[]> findMostBorrowedAuthors();
+    @Aggregation(pipeline = {
+        "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
+        "{ '$unwind': '$libro_doc' }",
+        "{ '$unwind': '$libro_doc.autores' }",
+        "{ '$lookup': { 'from': 'autores', 'localField': 'libro_doc.autores._id', 'foreignField': '_id', 'as': 'aut_doc' } }",
+        "{ '$unwind': '$aut_doc' }",
+        "{ '$group': { '_id': '$aut_doc.nombre', 'total': { '$sum': 1 } } }",
+        "{ '$sort': { 'total': -1 } }",
+        "{ '$limit': 5 }"
+    })
+    List<org.bson.Document> findMostBorrowedAuthors();
 
-    @org.springframework.data.jpa.repository.Query("SELECT COUNT(p) FROM Prestamo p WHERE p.devuelto = true AND p.fechaDevolucionReal <= p.fechaDevolucion")
-    long countOnTimeReturns();
+    @Aggregation(pipeline = {
+        "{ '$match': { 'multa': { '$exists': true } } }",
+        "{ '$group': { '_id': '$multa.pagada', 'total': { '$sum': '$multa.total' }, 'cantidad': { '$sum': 1 } } }"
+    })
+    List<org.bson.Document> findFinesStats();
 
-    @org.springframework.data.jpa.repository.Query("SELECT COUNT(p) FROM Prestamo p WHERE p.devuelto = true")
-    long countTotalReturns();
-
-    List<Prestamo> findByDevueltoFalseAndFechaDevolucionBetween(java.time.LocalDateTime start,
-            java.time.LocalDateTime end);
+    @Aggregation(pipeline = {
+        "{ '$group': { '_id': '$estado', 'total': { '$sum': 1 } } }",
+        "{ '$sort': { 'total': -1 } }"
+    })
+    List<org.bson.Document> findLoansByStatus();
 
     long countByDevueltoFalse();
 
-    @org.springframework.data.jpa.repository.Query("SELECT COUNT(p) > 0 FROM Prestamo p WHERE p.usuario.id = :usuarioId AND p.libro.id = :libroId AND p.tipoPrestamo = 'VIRTUAL' AND DATE(p.fechaPrestamo) = CURRENT_DATE")
-    boolean existsVirtualReadToday(@org.springframework.data.repository.query.Param("usuarioId") Long usuarioId, @org.springframework.data.repository.query.Param("libroId") Long libroId);
+    List<Prestamo> findByDevueltoFalseAndFechaDevolucionBetween(LocalDateTime start, LocalDateTime end);
 }

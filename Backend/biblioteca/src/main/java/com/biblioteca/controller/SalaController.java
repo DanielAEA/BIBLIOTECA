@@ -4,6 +4,7 @@ import com.biblioteca.entity.Sala;
 import com.biblioteca.service.SalaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,22 +31,22 @@ public class SalaController {
     }
 
     @GetMapping("/{id}")
-    public Sala obtener(@PathVariable Long id) {
+    public Sala obtener(@PathVariable @NonNull String id) {
         return salaService.obtenerPorId(id);
     }
 
     @PostMapping
-    public ResponseEntity<Sala> crear(@RequestBody Sala sala) {
+    public ResponseEntity<Sala> crear(@RequestBody @NonNull Sala sala) {
         return ResponseEntity.status(HttpStatus.CREATED).body(salaService.crear(sala));
     }
 
     @PutMapping("/{id}")
-    public Sala actualizar(@PathVariable Long id, @RequestBody Sala sala) {
+    public Sala actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Sala sala) {
         return salaService.actualizar(id, sala);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         salaService.eliminar(id);
     }
 }

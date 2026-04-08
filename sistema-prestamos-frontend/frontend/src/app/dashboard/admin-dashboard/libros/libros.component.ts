@@ -28,9 +28,9 @@ export class LibrosComponent implements OnInit {
   editingBook: Libro | null = null;
   showEditForm = false;
   showCreateForm = false;
-  selectedAuthorIds: number[] = [];
-  selectedEditorialId: number | null = null;
-  selectedGeneroId: number | null = null;
+  selectedAuthorIds: string[] = [];
+  selectedEditorialId: string | null = null;
+  selectedGeneroId: string | null = null;
   newAuthorName = '';
   newEditorialName = '';
   newGeneroName = '';
@@ -39,7 +39,7 @@ export class LibrosComponent implements OnInit {
   addingGenero = false;
   submitting = false;
   authorsExpanded = false;
-  selectedAuthorDropdown: number | null = null;
+  selectedAuthorDropdown: string | null = null;
   selectedFile: File | null = null;
 
   constructor(
@@ -107,7 +107,7 @@ export class LibrosComponent implements OnInit {
 
   createBook() {
     this.editingBook = {
-      id: 0,
+      id: '',
       titulo: '',
       stockDisponible: 0,
       autores: [],
@@ -179,7 +179,7 @@ export class LibrosComponent implements OnInit {
       formato: this.editingBook.formato || 'FISICO'
     };
 
-    const handleUpload = (bookId: number, isNew: boolean) => {
+    const handleUpload = (bookId: string, isNew: boolean) => {
       if (this.selectedFile && this.editingBook?.formato !== 'FISICO') {
         this.bookService.uploadPdf(bookId, this.selectedFile).subscribe({
           next: () => this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} y PDF subido correctamente.`),
@@ -266,6 +266,8 @@ export class LibrosComponent implements OnInit {
     }
   }
 
+
+
   getAuthorsString(book: Libro): string {
     if (!book.autores || book.autores.length === 0) {
       return 'Sin autor';
@@ -291,11 +293,11 @@ export class LibrosComponent implements OnInit {
     }
   }
 
-  removeAuthor(id: number) {
+  removeAuthor(id: string) {
     this.selectedAuthorIds = this.selectedAuthorIds.filter(aid => aid !== id);
   }
 
-  getAuthorName(id: number): string {
+  getAuthorName(id: string): string {
     return this.authors.find(a => a.id === id)?.nombre || 'Autor desconocido';
   }
 

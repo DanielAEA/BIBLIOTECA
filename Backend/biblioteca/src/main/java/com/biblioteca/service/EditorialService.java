@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface EditorialService {
     Editorial crear(@NonNull Editorial editorial);
-    Editorial obtenerPorId(@NonNull Long id);
+    Editorial obtenerPorId(@NonNull String id);
     List<Editorial> listar();
-    Editorial actualizar(@NonNull Long id, @NonNull Editorial editorial);
-    void eliminar(@NonNull Long id);
+    Editorial actualizar(@NonNull String id, @NonNull Editorial editorial);
+    void eliminar(@NonNull String id);
 }

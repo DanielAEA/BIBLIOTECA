@@ -1,26 +1,23 @@
 services:
   # ============================================
-  # Base de Datos MySQL
+  # Base de Datos MongoDB
   # ============================================
   db:
-    image: mysql:8.0
+    image: mongo:latest
     container_name: biblioteca-db
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: biblioteca
     ports:
-      - "3307:3306"
+      - "27017:27017"
     volumes:
-      - biblioteca-data:/var/lib/mysql
+      - biblioteca-data:/data/db
     networks:
       - biblioteca-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p12345" ]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 30s
+      retries: 5
+      start_period: 20s
 
   # ============================================
   # Backend - Spring Boot
@@ -32,10 +29,8 @@ services:
     container_name: biblioteca-backend
     restart: unless-stopped
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/biblioteca?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 12345
-
+      SPRING_DATA_MONGODB_URI: mongodb://db:27017/biblioteca
+      NGROK_API_HOST: ngrok
     ports:
       - "8080:8080"
     volumes:
@@ -62,12 +57,31 @@ services:
     networks:
       - biblioteca-network
 
+  # ============================================
+  # Ngrok - Túnel público
+  # ============================================
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: biblioteca-ngrok
+    restart: unless-stopped
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:-}
+    command:
+      - "http"
+      - "backend:8080"
+    ports:
+      - "4040:4040"
+    depends_on:
+      - frontend
+    networks:
+      - biblioteca-network
+
 # ============================================
 # Volúmenes persistentes
 # ============================================
 volumes:
   biblioteca-data:
-    name: biblioteca-mysql-data
+    name: biblioteca-mongodb-data
   biblioteca-uploads:
     name: biblioteca-uploads
 

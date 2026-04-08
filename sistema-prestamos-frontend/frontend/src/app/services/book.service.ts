@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Libro {
-  id: number;
+  id: string;
   titulo: string;
-  autores?: { id: number; nombre: string }[];
-  editorial?: { id: number; nombre: string };
-  genero?: { id: number; nombre: string };
+  autores?: { id: string; nombre: string }[];
+  editorial?: { id: string; nombre: string };
+  genero?: { id: string; nombre: string };
   stockDisponible: number;
   archivoDigital?: string;
   tieneDigital?: boolean;
@@ -16,9 +16,9 @@ export interface Libro {
 
 export interface LibroPayload {
   titulo: string;
-  autores: Array<{ id: number }>;
-  editorial: { id: number } | null;
-  genero: { id: number } | null;
+  autores: Array<{ id: string }>;
+  editorial: { id: string } | null;
+  genero: { id: string } | null;
   formato: string;
 }
 
@@ -33,7 +33,7 @@ export class BookService {
     return this.http.get<Libro[]>(`${this.baseUrl}/api/libros`);
   }
 
-  getBookById(id: number): Observable<Libro> {
+  getBookById(id: string): Observable<Libro> {
     return this.http.get<Libro>(`${this.baseUrl}/api/libros/${id}`);
   }
 
@@ -41,15 +41,15 @@ export class BookService {
     return this.http.post<Libro>(`${this.baseUrl}/api/libros`, libro);
   }
 
-  updateBook(id: number, libro: LibroPayload): Observable<Libro> {
+  updateBook(id: string, libro: LibroPayload): Observable<Libro> {
     return this.http.put<Libro>(`${this.baseUrl}/api/libros/${id}`, libro);
   }
 
-  deleteBook(id: number): Observable<void> {
+  deleteBook(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/libros/${id}`);
   }
 
-  uploadPdf(id: number, file: File): Observable<Libro> {
+  uploadPdf(id: string, file: File): Observable<Libro> {
     const formData = new FormData();
     formData.append('file', file);
 
@@ -79,4 +79,5 @@ export class BookService {
     });
   }
 }
+
 

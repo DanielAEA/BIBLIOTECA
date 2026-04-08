@@ -36,9 +36,9 @@ export class ClienteSidebarComponent implements OnInit {
   checkDebtsAndAlert() {
     const payload = this.authService.getPayload();
     if (!payload) return;
-    const userIdNumber = Number(payload.id || payload.sub);
+    const userId = payload.id || payload.sub;
     
-    this.loanService.getByUserId(userIdNumber).subscribe({
+    this.loanService.getByUserId(userId).subscribe({
       next: (prestamos) => {
         let totalMulta = 0;
         let mensajes: string[] = [];
@@ -55,7 +55,7 @@ export class ClienteSidebarComponent implements OnInit {
             const dias = Math.ceil((dev.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
             
             if (dias < 0) {
-              const titulo = p.ejemplar?.libro?.titulo || 'Libro';
+              const titulo = p.libro?.titulo || 'Libro';
               mensajes.push(`- "${titulo}" (Vencido hace ${Math.abs(dias)} días)`);
               if (!p.multa) { 
                 multaPrueba = Math.abs(dias) * 2000;

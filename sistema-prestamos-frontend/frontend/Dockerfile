@@ -28,8 +28,8 @@ RUN rm /etc/nginx/conf.d/default.conf
 # Copiar configuración personalizada de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar archivos compilados de Angular
-COPY --from=build /app/dist/sistema-prestamos-frontend /usr/share/nginx/html
+# Copiar archivos compilados de Angular (carpeta browser específica de Angular 17+)
+COPY --from=build /app/dist/sistema-prestamos-frontend/browser /usr/share/nginx/html/browser
 
 # Exponer puerto
 EXPOSE 80

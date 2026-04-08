@@ -1,42 +1,32 @@
 package com.biblioteca.entity;
 
-import jakarta.persistence.*;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "salas")
+@Document(collection = "salas")
 public class Sala {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @Column(length = 500)
     private String descripcion;
 
-    @Column(nullable = false)
     private Integer capacidad;
 
-    @Column(nullable = false)
     private String ubicacion;
 
     private Boolean activa = true;
 
-    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL)
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    private List<ReservaSala> reservas;
-
     public Sala() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,11 +38,11 @@ public class Sala {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
+    public String getDescription() {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescription(String descripcion) {
         this.descripcion = descripcion;
     }
 
@@ -78,13 +68,5 @@ public class Sala {
 
     public void setActiva(Boolean activa) {
         this.activa = activa;
-    }
-
-    public List<ReservaSala> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(List<ReservaSala> reservas) {
-        this.reservas = reservas;
     }
 }

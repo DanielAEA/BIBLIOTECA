@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UsuarioService {
     Usuario crear(@NonNull Usuario usuario);
-    Usuario obtenerPorId(@NonNull Long id);
+    Usuario obtenerPorId(@NonNull String id);
     List<Usuario> listar();
-    Usuario actualizar(@NonNull Long id, @NonNull Usuario usuario);
-    void eliminar(@NonNull Long id);
+    Usuario actualizar(@NonNull String id, @NonNull Usuario usuario);
+    void eliminar(@NonNull String id);
 }

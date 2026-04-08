@@ -24,7 +24,7 @@ public class EditorialController {
     }
 
     @GetMapping("/{id}")
-    public Editorial obtener(@PathVariable @NonNull Long id) {
+    public Editorial obtener(@PathVariable @NonNull String id) {
         return editorialService.obtenerPorId(id);
     }
 
@@ -34,12 +34,12 @@ public class EditorialController {
     }
 
     @PutMapping("/{id}")
-    public Editorial actualizar(@PathVariable @NonNull Long id, @RequestBody @NonNull Editorial editorial) {
+    public Editorial actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Editorial editorial) {
         return editorialService.actualizar(id, editorial);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable @NonNull Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         editorialService.eliminar(id);
     }
 }

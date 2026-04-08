@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface EjemplarService {
     Ejemplar crear(@NonNull Ejemplar ejemplar);
-    Ejemplar obtenerPorId(@NonNull Long id);
+    Ejemplar obtenerPorId(@NonNull String id);
     List<Ejemplar> listar();
-    Ejemplar actualizar(@NonNull Long id, @NonNull Ejemplar ejemplar);
-    void eliminar(@NonNull Long id);
+    Ejemplar actualizar(@NonNull String id, @NonNull Ejemplar ejemplar);
+    void eliminar(@NonNull String id);
 }

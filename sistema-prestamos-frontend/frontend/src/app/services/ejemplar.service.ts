@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Libro } from './book.service';
 
 export interface Ejemplar {
-  id: number;
+  id: string;
   codigo: string;
   disponible: boolean;
   libro: Libro;
@@ -14,7 +14,7 @@ export interface Ejemplar {
 export interface EjemplarPayload {
   codigo: string;
   disponible: boolean;
-  libro: { id: number };
+  libro: { id: string };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +27,7 @@ export class EjemplarService {
     return this.http.get<Ejemplar[]>(`${this.baseUrl}/api/ejemplares`);
   }
 
-  getById(id: number): Observable<Ejemplar> {
+  getById(id: string): Observable<Ejemplar> {
     return this.http.get<Ejemplar>(`${this.baseUrl}/api/ejemplares/${id}`);
   }
 
@@ -39,8 +39,9 @@ export class EjemplarService {
     return this.http.put<Ejemplar>(`${this.baseUrl}/api/ejemplares/${ejemplar.id}`, ejemplar);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/ejemplares/${id}`);
   }
 }
+
 

@@ -151,7 +151,7 @@
         position: relative;
 
         .links_name {
-          color: #a3aed1;
+          color: var(--text-muted);
           font-size: 14px;
           font-weight: 600;
           white-space: nowrap;
@@ -161,16 +161,16 @@
         }
 
         i {
-          color: #a3aed1;
+          color: var(--text-muted);
         }
 
         &:hover, &.active {
-          background: var(--bg-alt);
+          background: rgba(71, 85, 105, 0.2);
           border-radius: 12px;
 
           .links_name, i {
             transition: all 0.5s ease;
-            color: #4318ff;
+            color: var(--text-dark);
           }
         }
 
@@ -224,7 +224,7 @@
         height: 40px;
         width: 40px;
         min-width: 40px;
-        background: linear-gradient(135deg, #868cff 0%, #4318ff 100%);
+        background: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
         color: white;
         border-radius: 12px;
         display: flex;
@@ -348,7 +348,7 @@
 
   &:hover {
     transform: scale(1.1);
-    border-color: #4318ff;
+    border-color: #475569;
   }
 }
 

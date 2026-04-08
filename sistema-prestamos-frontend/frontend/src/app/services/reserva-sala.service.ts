@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface ReservaSala {
-    id: number;
-    sala: { id: number; nombre?: string; ubicacion?: string };
-    usuario: { id: number; nombre?: string; correo?: string };
+    id: string;
+    sala: { id: string; nombre?: string; ubicacion?: string };
+    usuario: { id: string; nombre?: string; correo?: string };
     fechaReserva: string;
     horaInicio: string;
     horaFin: string;
@@ -14,8 +14,8 @@ export interface ReservaSala {
 }
 
 export interface ReservaSalaPayload {
-    sala: { id: number };
-    usuario: { id: number };
+    sala: { id: string };
+    usuario: { id: string };
     fechaReserva: string;
     horaInicio: string;
     horaFin: string;
@@ -33,15 +33,15 @@ export class ReservaSalaService {
         return this.http.get<ReservaSala[]>(this.baseUrl);
     }
 
-    getByUsuario(usuarioId: number): Observable<ReservaSala[]> {
+    getByUsuario(usuarioId: string): Observable<ReservaSala[]> {
         return this.http.get<ReservaSala[]>(`${this.baseUrl}/usuario/${usuarioId}`);
     }
 
-    getBySala(salaId: number): Observable<ReservaSala[]> {
+    getBySala(salaId: string): Observable<ReservaSala[]> {
         return this.http.get<ReservaSala[]>(`${this.baseUrl}/sala/${salaId}`);
     }
 
-    getBySalaYFecha(salaId: number, fecha: string): Observable<ReservaSala[]> {
+    getBySalaYFecha(salaId: string, fecha: string): Observable<ReservaSala[]> {
         return this.http.get<ReservaSala[]>(`${this.baseUrl}/sala/${salaId}/fecha/${fecha}`);
     }
 
@@ -49,15 +49,15 @@ export class ReservaSalaService {
         return this.http.post<ReservaSala>(this.baseUrl, reserva);
     }
 
-    update(id: number, reserva: ReservaSalaPayload): Observable<ReservaSala> {
+    update(id: string, reserva: ReservaSalaPayload): Observable<ReservaSala> {
         return this.http.put<ReservaSala>(`${this.baseUrl}/${id}`, reserva);
     }
 
-    cambiarEstado(id: number, estado: string): Observable<ReservaSala> {
+    cambiarEstado(id: string, estado: string): Observable<ReservaSala> {
         return this.http.patch<ReservaSala>(`${this.baseUrl}/${id}/estado`, { estado });
     }
 
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
 }

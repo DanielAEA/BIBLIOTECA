@@ -12,7 +12,7 @@ export class StatsService {
     return this.http.get(`${this.baseUrl}/summary`);
   }
 
-  registrarLecturaDigital(usuarioId: number, libroId: number): Observable<any> {
+  registrarLecturaDigital(usuarioId: string, libroId: string): Observable<any> {
     return this.http.post('/api/prestamos/lectura-virtual', { usuarioId, libroId });
   }
 
@@ -40,6 +40,10 @@ export class StatsService {
     return this.http.get<any[]>(`${this.baseUrl}/most-borrowed-authors`);
   }
 
+  getLoansByStatus(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/by-status`);
+  }
+
   getPunctualityRate(): Observable<any> {
     return this.http.get(`${this.baseUrl}/punctuality`);
   }
@@ -59,6 +63,4 @@ export class StatsService {
   getInactiveBooks(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/inactive-books`);
   }
-
-
 }

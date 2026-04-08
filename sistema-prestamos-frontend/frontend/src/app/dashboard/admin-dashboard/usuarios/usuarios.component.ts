@@ -45,7 +45,7 @@ export class UsuariosComponent implements OnInit {
 
   createUser() {
     this.editingUser = {
-      id: 0,
+      id: '',
       nombre: '',
       correo: '',
       password: '',
@@ -74,7 +74,7 @@ export class UsuariosComponent implements OnInit {
 
     this.submittingUser = true;
 
-    if (this.editingUser.id === 0) {
+    if (!this.editingUser.id) {
       if (!this.editingUser.password?.trim()) {
         Swal.fire('Atención', 'La contraseña es obligatoria.', 'warning');
         this.submittingUser = false;
@@ -144,6 +144,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   getRoleName(user: Usuario): string {
-    return user.rol?.nombre || 'Sin rol';
+    return user.rol || 'Sin rol';
   }
 }

@@ -3,43 +3,26 @@ package com.biblioteca.dto;
 import java.time.LocalDateTime;
 
 public class PrestamoDTO {
-    private Long usuarioId;
-    private Long ejemplarId;
+    private String usuarioId;
+    private String libroId;
+    private String ejemplarCodigo;
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaPrestamo;
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaDevolucion;
 
-    public PrestamoDTO() {
-    }
+    public String getUsuarioId() { return usuarioId; }
+    public void setUsuarioId(String usuarioId) { this.usuarioId = usuarioId; }
 
-    public Long getUsuarioId() {
-        return usuarioId;
-    }
+    public String getLibroId() { return libroId; }
+    public void setLibroId(String libroId) { this.libroId = libroId; }
 
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
-    }
+    public String getEjemplarCodigo() { return ejemplarCodigo; }
+    public void setEjemplarCodigo(String ejemplarCodigo) { this.ejemplarCodigo = ejemplarCodigo; }
 
-    public Long getEjemplarId() {
-        return ejemplarId;
-    }
+    public LocalDateTime getFechaPrestamo() { return fechaPrestamo; }
+    public void setFechaPrestamo(LocalDateTime fechaPrestamo) { this.fechaPrestamo = fechaPrestamo; }
 
-    public void setEjemplarId(Long ejemplarId) {
-        this.ejemplarId = ejemplarId;
-    }
-
-    public LocalDateTime getFechaPrestamo() {
-        return fechaPrestamo;
-    }
-
-    public void setFechaPrestamo(LocalDateTime fechaPrestamo) {
-        this.fechaPrestamo = fechaPrestamo;
-    }
-
-    public LocalDateTime getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(LocalDateTime fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
+    public LocalDateTime getFechaDevolucion() { return fechaDevolucion; }
+    public void setFechaDevolucion(LocalDateTime fechaDevolucion) { this.fechaDevolucion = fechaDevolucion; }
 }

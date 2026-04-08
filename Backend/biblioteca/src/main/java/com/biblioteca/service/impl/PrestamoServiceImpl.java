@@ -1,89 +1,133 @@
 package com.biblioteca.service.impl;
 
-import com.biblioteca.entity.*;
-import com.biblioteca.repository.*;
+import com.biblioteca.entity.Prestamo;
+import com.biblioteca.entity.Usuario;
+import com.biblioteca.entity.Libro;
+import com.biblioteca.entity.Ejemplar;
+import com.biblioteca.entity.Multa;
+import com.biblioteca.repository.PrestamoRepository;
+import com.biblioteca.repository.UsuarioRepository;
+import com.biblioteca.repository.LibroRepository;
 import com.biblioteca.service.PrestamoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PrestamoServiceImpl implements PrestamoService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PrestamoServiceImpl.class);
+    public static final List<String> debugLogs = java.util.Collections.synchronizedList(new java.util.ArrayList<>());
+    
+    @Override
+    public void logDebug(String msg) {
+        logger.info(msg);
+        debugLogs.add(LocalDateTime.now() + " | " + msg);
+        if (debugLogs.size() > 100) debugLogs.remove(0);
+    }
+
     private final PrestamoRepository prestamoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final EjemplarRepository ejemplarRepository;
-    private final MultaRepository multaRepository;
     private final LibroRepository libroRepository;
     private static final Double VALOR_MULTA_DIARIA = 2000.0;
 
     public PrestamoServiceImpl(PrestamoRepository prestamoRepository,
             UsuarioRepository usuarioRepository,
-            EjemplarRepository ejemplarRepository,
-            MultaRepository multaRepository,
             LibroRepository libroRepository) {
         this.prestamoRepository = prestamoRepository;
         this.usuarioRepository = usuarioRepository;
-        this.ejemplarRepository = ejemplarRepository;
-        this.multaRepository = multaRepository;
         this.libroRepository = libroRepository;
     }
 
+    @SuppressWarnings("null")
     @Override
-    @Transactional
     public Prestamo crear(@NonNull Prestamo prestamo) {
-        prestamo.setId(null);
-        // Extraer IDs del objeto recibido
-        Long usuarioId = prestamo.getUsuario() != null ? prestamo.getUsuario().getId() : null;
-        Long ejemplarId = prestamo.getEjemplar() != null ? prestamo.getEjemplar().getId() : null;
+        try {
+            logDebug(">>> CREANDO PRESTAMO EN DB...");
+            
+            if (prestamo.getEstado() == null) prestamo.setEstado("ACTIVO");
+            
+            Usuario usuario = prestamo.getUsuario();
+            Libro libro = prestamo.getLibro();
+            String usuarioId = usuario != null ? usuario.getId() : null;
+            String libroId = libro != null ? libro.getId() : null;
+            String codigoEjemplar = prestamo.getEjemplarCodigo();
 
-        // Validar IDs
-        if (usuarioId == null || usuarioId <= 0) {
-            throw new RuntimeException("ID de usuario inválido o no proporcionado");
+            Usuario usuarioReal = usuarioRepository.findById(Objects.requireNonNull(usuarioId, "Usuario ID nulo"))
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            Libro libroReal = libroRepository.findById(Objects.requireNonNull(libroId, "Libro ID nulo"))
+                    .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
+
+            // IMPORTANTE: Buscar y modificar el ejemplar directamente en la lista del libro
+            Ejemplar ejemplarBuscado = null;
+            if (libroReal.getEjemplares() != null) {
+                for (Ejemplar e : libroReal.getEjemplares()) {
+                    if (codigoEjemplar.equals(e.getCodigo())) {
+                        if (!Boolean.TRUE.equals(e.getDisponible()) && !"SOLICITADO".equalsIgnoreCase(prestamo.getEstado())) {
+                            throw new RuntimeException("Ejemplar " + codigoEjemplar + " no disponible");
+                        }
+                        e.setDisponible(false); // MARCAR OCUPADO
+                        ejemplarBuscado = e;
+                        break;
+                    }
+                }
+            }
+
+            if (ejemplarBuscado == null) throw new RuntimeException("Ejemplar no encontrado en el libro");
+
+            // Persistir el cambio de disponibilidad en MongoDB
+            libroRepository.save(libroReal);
+            logDebug(">>> DISPONIBILIDAD ACTUALIZADA EN LIBRO " + libroReal.getTitulo());
+
+            prestamo.setUsuario(usuarioReal);
+            prestamo.setLibro(libroReal);
+            prestamo.setDevuelto(false);
+            if (prestamo.getFechaPrestamo() == null) prestamo.setFechaPrestamo(LocalDateTime.now());
+            if (prestamo.getFechaDevolucion() == null) prestamo.setFechaDevolucion(LocalDateTime.now().plusDays(15));
+
+            return prestamoRepository.save(prestamo);
+
+        } catch (Exception e) {
+            logDebug(">>> ERROR AL CREAR PRESTAMO: " + e.getMessage());
+            throw (e instanceof RuntimeException ? (RuntimeException)e : new RuntimeException(e));
         }
-        if (ejemplarId == null || ejemplarId <= 0) {
-            throw new RuntimeException("ID de ejemplar inválido o no proporcionado");
-        }
+    }
 
-        // Buscar entidades reales en la BD
-        Usuario usuarioReal = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + usuarioId));
+    @SuppressWarnings("null")
+    @Override
+    public Prestamo aceptarSolicitud(@NonNull String idPrestamo) {
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo)).orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
+        
+        long durationDias = ChronoUnit.DAYS.between(p.getFechaPrestamo(), p.getFechaDevolucion());
+        if (durationDias < 1) durationDias = 15; // fallback
+        
+        p.setFechaPrestamo(LocalDateTime.now());
+        p.setFechaDevolucion(LocalDateTime.now().plusDays(durationDias));
+        p.setEstado("ACTIVO");
+        
+        return prestamoRepository.save(p);
+    }
 
-        Ejemplar ejemplarReal = ejemplarRepository.findById(ejemplarId)
-                .orElseThrow(() -> new RuntimeException("Ejemplar no encontrado con ID: " + ejemplarId));
-
-        // Validar disponibilidad
-        if (!Boolean.TRUE.equals(ejemplarReal.getDisponible())) {
-            throw new RuntimeException("Ejemplar no disponible");
-        }
-
-        // ✅ SOLUCIÓN: Crear un objeto completamente NUEVO sin tocar el que recibimos
-        Prestamo prestamoNuevo = new Prestamo();
-        prestamoNuevo.setUsuario(usuarioReal);
-        prestamoNuevo.setEjemplar(ejemplarReal);
-        prestamoNuevo.setLibro(ejemplarReal.getLibro()); // Guardamos la referencia directa
-        prestamoNuevo.setTipoPrestamo("FISICO");
-        prestamoNuevo.setFechaPrestamo(prestamo.getFechaPrestamo() != null ? prestamo.getFechaPrestamo() : LocalDateTime.now());
-        prestamoNuevo.setFechaDevolucion(
-                prestamo.getFechaDevolucion() != null ? prestamo.getFechaDevolucion() : LocalDateTime.now().plusDays(15));
-        prestamoNuevo.setDevuelto(false);
-
-        // Guardar el préstamo
-        Prestamo guardado = prestamoRepository.save(prestamoNuevo);
-
-        // Actualizar disponibilidad del ejemplar
-        ejemplarReal.setDisponible(false);
-        ejemplarRepository.save(ejemplarReal);
-
-        return guardado;
+    @SuppressWarnings("null")
+    @Override
+    public Prestamo rechazarSolicitud(@NonNull String idPrestamo) {
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo)).orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
+        p.setEstado("RECHAZADO");
+        p.setDevuelto(true);
+        liberarEjemplar(p); // LIBERAR EN MONGO
+        return prestamoRepository.save(p);
     }
 
     @Override
-    public Prestamo obtenerPorId(@NonNull Long id) {
+    public Prestamo obtenerPorId(@NonNull String id) {
         return prestamoRepository.findById(id).orElse(null);
     }
 
@@ -92,115 +136,84 @@ public class PrestamoServiceImpl implements PrestamoService {
         return prestamoRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     @Override
-    @Transactional
-    public Prestamo actualizar(@NonNull Long id, @NonNull Prestamo prestamo) {
-        Prestamo existente = prestamoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
-
+    public Prestamo actualizar(@NonNull String id, @NonNull Prestamo prestamo) {
+        Prestamo existente = prestamoRepository.findById(Objects.requireNonNull(id)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
         if (Boolean.TRUE.equals(prestamo.getDevuelto()) && !Boolean.TRUE.equals(existente.getDevuelto())) {
             existente.setFechaDevolucionReal(LocalDateTime.now());
+            existente.setEstado("DEVUELTO");
+            liberarEjemplar(existente);
         }
-        existente.setDevuelto(prestamo.getDevuelto());
-
+        if (prestamo.getDevuelto() != null) existente.setDevuelto(prestamo.getDevuelto());
+        if (prestamo.getEstado() != null) existente.setEstado(prestamo.getEstado());
         return prestamoRepository.save(existente);
     }
 
-    @Override
-    @Transactional
-    public void eliminar(@NonNull Long id) {
-        if (prestamoRepository.existsById(id)) {
-            prestamoRepository.deleteById(id);
+    @SuppressWarnings("null")
+    private void liberarEjemplar(Prestamo p) {
+        if (p.getLibro() == null) return;
+        Libro libro = libroRepository.findById(Objects.requireNonNull(p.getLibro().getId())).orElse(null);
+        if (libro != null && libro.getEjemplares() != null) {
+            for (Ejemplar e : libro.getEjemplares()) {
+                if (p.getEjemplarCodigo().equals(e.getCodigo())) {
+                    e.setDisponible(true); // MARCAR DISPONIBLE
+                    break;
+                }
+            }
+            libroRepository.save(libro); // PERSISTIR EN MONGO
+            logDebug(">>> EJEMPLAR LIBERADO EN MONGO PARA EL LIBRO " + libro.getTitulo());
         }
     }
 
     @Override
-    public List<Prestamo> listarPorUsuario(@NonNull Long usuarioId) {
+    public void eliminar(@NonNull String id) {
+        prestamoRepository.deleteById(Objects.requireNonNull(id));
+    }
+
+    @Override
+    public List<Prestamo> listarPorUsuario(@NonNull String usuarioId) {
         return prestamoRepository.findByUsuarioId(usuarioId);
     }
 
+    @SuppressWarnings("null")
     @Override
-    @Transactional
-    public Prestamo devolverLibro(@NonNull Long idPrestamo) {
-        Prestamo p = prestamoRepository.findById(idPrestamo)
-                .orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
-
-        if (Boolean.TRUE.equals(p.getDevuelto())) {
-            throw new RuntimeException("Ya fue devuelto");
-        }
-
-        LocalDateTime fechaDevolucionOriginal = p.getFechaDevolucion();
-
+    public Prestamo devolverLibro(@NonNull String idPrestamo) {
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo)).orElseThrow(() -> new RuntimeException("Prestamo no encontrado"));
+        if (Boolean.TRUE.equals(p.getDevuelto())) throw new RuntimeException("Ya fue devuelto");
         p.setDevuelto(true);
+        p.setEstado("DEVUELTO");
         p.setFechaDevolucionReal(LocalDateTime.now());
-
-        Ejemplar e = p.getEjemplar();
-        e.setDisponible(true);
-        ejemplarRepository.save(e);
-
-        LocalDateTime esperado = fechaDevolucionOriginal;
-        LocalDateTime real = LocalDateTime.now();
-
-        if (real.truncatedTo(ChronoUnit.DAYS).isAfter(esperado.truncatedTo(ChronoUnit.DAYS))) {
-            long dias = ChronoUnit.DAYS.between(esperado.truncatedTo(ChronoUnit.DAYS), real.truncatedTo(ChronoUnit.DAYS));
-
-            // BUSCAR SI YA EXISTE UNA MULTA PARA ESTE PRÉSTAMO
-            Multa m = p.getMulta();
-            if (m == null) {
-                m = new Multa();
-                m.setPrestamo(p);
-                m.setPagada(false);
-            }
-            
+        liberarEjemplar(p);
+        long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion().truncatedTo(ChronoUnit.DAYS), LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
+        if (dias > 0) {
+            Multa m = new Multa();
             m.setTotal(VALOR_MULTA_DIARIA * (double) dias);
             m.setDiasAtraso((int) dias);
-
-            multaRepository.save(m);
             p.setMulta(m);
         }
-
         return prestamoRepository.save(p);
     }
 
-    @Transactional
-    public void procesarVencidos() {
-        List<Prestamo> list = prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now());
-
-        for (Prestamo p : list) {
-            if (p.getMulta() == null) {
-                long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion().truncatedTo(ChronoUnit.DAYS), LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
-
-                Multa m = new Multa();
-                m.setPrestamo(p);
-                m.setDiasAtraso((int) dias);
-                m.setTotal(VALOR_MULTA_DIARIA * dias);
-
-                multaRepository.save(m);
-                p.setMulta(m);
-                prestamoRepository.save(p);
-            }
-        }
-    }
-
+    @SuppressWarnings("null")
     @Override
-    @Transactional
-    public void registrarLecturaVirtual(Long usuarioId, Long libroId) {
-        if (prestamoRepository.existsVirtualReadToday(usuarioId, libroId)) {
-            throw new RuntimeException("Lectura ya registrada hoy");
-        }
-        Usuario u = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        Libro l = libroRepository.findById(libroId)
-                .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
-
+    public void registrarLecturaVirtual(@NonNull String usuarioId, @NonNull String libroId) {
+        Usuario u = usuarioRepository.findById(Objects.requireNonNull(usuarioId)).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Libro l = libroRepository.findById(Objects.requireNonNull(libroId)).orElseThrow(() -> new RuntimeException("Libro no encontrado"));
         Prestamo p = new Prestamo();
         p.setUsuario(u);
         p.setLibro(l);
         p.setTipoPrestamo("VIRTUAL");
         p.setDevuelto(true);
+        p.setEstado("DEVUELTO");
         p.setFechaPrestamo(LocalDateTime.now());
         p.setFechaDevolucion(LocalDateTime.now());
         p.setFechaDevolucionReal(LocalDateTime.now());
         prestamoRepository.save(p);
+    }
+
+    @Override
+    public List<String> getDebugLogs() {
+        return new java.util.ArrayList<>(debugLogs);
     }
 }

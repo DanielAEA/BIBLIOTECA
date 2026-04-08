@@ -25,7 +25,7 @@ public class AutorController {
     }
 
     @GetMapping("/{id}")
-    public Autor obtenerPorId(@PathVariable @NonNull Long id) {
+    public Autor obtenerPorId(@PathVariable @NonNull String id) {
         return autorService.obtenerPorId(id);
     }
 
@@ -36,12 +36,12 @@ public class AutorController {
     }
 
     @PutMapping("/{id}")
-    public Autor actualizar(@PathVariable @NonNull Long id, @RequestBody @NonNull Autor autor) {
+    public Autor actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Autor autor) {
         return autorService.actualizar(id, autor);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable @NonNull Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         autorService.eliminar(id);
     }
 }

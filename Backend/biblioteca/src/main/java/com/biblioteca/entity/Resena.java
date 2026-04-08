@@ -1,45 +1,36 @@
 package com.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "resenas")
+@Document(collection = "resenas")
 public class Resena {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "libro_id")
-    @JsonIgnoreProperties({ "ejemplares", "autores", "resenas" })
+    @DBRef
     private Libro libro;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id")
-    @JsonIgnoreProperties({ "prestamos", "password", "authorities", "accountNonExpired", "accountNonLocked",
-            "credentialsNonExpired", "enabled", "username" })
+    @DBRef
     private Usuario usuario;
 
-    @Column(nullable = false)
-    private Integer calificacion; // 1-5 estrellas
+    private Integer calificacion;
 
-    @Column(length = 1000)
     private String comentario;
 
-    @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     public Resena() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -21,6 +21,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   @ViewChild('punctualityChart') punctualityChartRef!: ElementRef;
   @ViewChild('trendChart') trendChartRef!: ElementRef;
   @ViewChild('distChart') distChartRef!: ElementRef;
+  @ViewChild('statusChart') statusChartRef!: ElementRef;
 
   summary: any = {};
   debtors: any[] = [];
@@ -38,6 +39,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
   private punctualityRate: any = null;
   private loansByMonth: any[] = [];
   private inventoryDistribution: any = null;
+  private loansByStatus: any[] = [];
 
   Math = Math; // Para usar en el template
 
@@ -118,6 +120,11 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       this.renderCharts();
     });
 
+    this.statsService.getLoansByStatus().subscribe(data => {
+      this.loansByStatus = data;
+      this.renderCharts();
+    });
+
     this.statsService.getInventoryDistribution().subscribe(data => {
       this.inventoryDistribution = data;
       this.renderCharts();
@@ -152,6 +159,9 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
 
     if (this.inventoryDistribution) 
       this.renderDistributionChart(this.inventoryDistribution);
+
+    if (this.loansByStatus.length > 0)
+      this.renderPieChart(this.statusChartRef, this.loansByStatus, 'estado', 'total');
   }
 
   private getChartOptions(overrideOptions: any = {}) {
@@ -249,7 +259,8 @@ export class EstadisticasComponent implements OnInit, AfterViewInit {
       
       const existing = data.find(item => 
         item.mes?.toLowerCase() === enName.toLowerCase() || 
-        item.mes?.toLowerCase() === esName.toLowerCase()
+        item.mes?.toLowerCase() === esName.toLowerCase() ||
+        item.mes === `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}`
       );
       
       result.push({

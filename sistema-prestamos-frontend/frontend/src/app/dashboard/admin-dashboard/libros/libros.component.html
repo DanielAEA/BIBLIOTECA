@@ -27,8 +27,10 @@
             <option *ngFor="let e of editorials" [ngValue]="e.id">{{ e.nombre }}</option>
           </select>
           <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-            <input type="text" placeholder="Nueva editorial" [(ngModel)]="newEditorialName" name="newEditorial" style="flex: 1;">
-            <button type="button" class="premium-button-alt sm" (click)="addNewEditorial()" [disabled]="addingEditorial" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+            <input type="text" placeholder="Nueva editorial" [(ngModel)]="newEditorialName" name="newEditorial"
+              style="flex: 1;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewEditorial()" [disabled]="addingEditorial"
+              style="padding: 0 1rem; height: 44px; border-radius: 8px;">
               {{ addingEditorial ? '...' : 'Añadir' }}
             </button>
           </div>
@@ -42,7 +44,8 @@
           </select>
           <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
             <input type="text" placeholder="Nuevo género" [(ngModel)]="newGeneroName" name="newGenero" style="flex: 1;">
-            <button type="button" class="premium-button-alt sm" (click)="addNewGenero()" [disabled]="addingGenero" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewGenero()" [disabled]="addingGenero"
+              style="padding: 0 1rem; height: 44px; border-radius: 8px;">
               {{ addingGenero ? '...' : 'Añadir' }}
             </button>
           </div>
@@ -51,7 +54,8 @@
         <div class="form-group">
           <label>Autores</label>
           <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <div *ngIf="selectedAuthorIds.length === 0" style="color: var(--text-muted); font-size: 0.9rem;">No hay autores seleccionados</div>
+            <div *ngIf="selectedAuthorIds.length === 0" style="color: var(--text-muted); font-size: 0.9rem;">No hay
+              autores seleccionados</div>
             <div *ngFor="let id of selectedAuthorIds" class="premium-badge badge-success"
               style="padding-right: 2rem; position: relative;">
               {{ getAuthorName(id) }}
@@ -67,8 +71,10 @@
             </select>
           </div>
           <div style="display: flex; gap: 0.5rem;">
-            <input type="text" placeholder="O crea un nuevo autor" [(ngModel)]="newAuthorName" name="newAuthor" style="flex: 1;">
-            <button type="button" class="premium-button-alt sm" (click)="addNewAuthor()" [disabled]="addingAuthor" style="padding: 0 1rem; height: 44px; border-radius: 8px;">
+            <input type="text" placeholder="O crea un nuevo autor" [(ngModel)]="newAuthorName" name="newAuthor"
+              style="flex: 1;">
+            <button type="button" class="premium-button-alt sm" (click)="addNewAuthor()" [disabled]="addingAuthor"
+              style="padding: 0 1rem; height: 44px; border-radius: 8px;">
               {{ addingAuthor ? '...' : 'Crear' }}
             </button>
           </div>
@@ -85,10 +91,13 @@
 
         <div class="form-group" *ngIf="editingBook.formato === 'DIGITAL' || editingBook.formato === 'AMBOS'">
           <label>Libro Digital (PDF):</label>
-          <div style="background: var(--bg-alt); padding: 1rem; border-radius: 8px; border: 1px dashed var(--border-color);">
+          <div
+            style="background: var(--bg-alt); padding: 1rem; border-radius: 8px; border: 1px dashed var(--border-color);">
             <input type="file" (change)="onFileSelected($event)" accept=".pdf" #fileInput>
-            <div *ngIf="editingBook.tieneDigital && !selectedFile" style="margin-top: 0.5rem; font-size: 0.9em; color: var(--success); font-weight: bold;">
-              ✓ PDF cargado. <a [href]="editingBook.archivoDigital" target="_blank" style="text-decoration: underline;">Ver actual</a>
+            <div *ngIf="editingBook.tieneDigital && !selectedFile"
+              style="margin-top: 0.5rem; font-size: 0.9em; color: var(--success); font-weight: bold;">
+              ✓ PDF cargado. <a [href]="editingBook.archivoDigital" target="_blank"
+                style="text-decoration: underline;">Ver actual</a>
             </div>
           </div>
         </div>
@@ -122,12 +131,13 @@
           {{ b.stockDisponible }}
         </span>
       </div>
-      <div style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
+      <div
+        style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
         <div>
-            <strong style="color: var(--text-dark);">Formato:</strong>
-            <span style="color: var(--text-muted); margin-left: 0.5rem;">
-                {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
-            </span>
+          <strong style="color: var(--text-dark);">Formato:</strong>
+          <span style="color: var(--text-muted); margin-left: 0.5rem;">
+            {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+          </span>
         </div>
         <button class="btn-read-premium" *ngIf="b.tieneDigital" (click)="leerOnline(b)">
           📄 Leer

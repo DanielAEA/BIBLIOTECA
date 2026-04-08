@@ -3,12 +3,11 @@ package com.biblioteca.service.impl;
 import com.biblioteca.entity.ReservaSala;
 import com.biblioteca.repository.ReservaSalaRepository;
 import com.biblioteca.service.ReservaSalaService;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ReservaSalaServiceImpl implements ReservaSalaService {
@@ -20,36 +19,14 @@ public class ReservaSalaServiceImpl implements ReservaSalaService {
     }
 
     @Override
-    public ReservaSala crear(ReservaSala reserva) {
+    public ReservaSala crear(@NonNull ReservaSala reserva) {
         reserva.setId(null);
-        LocalTime horaApertura = LocalTime.of(8, 0);
-        LocalTime horaCierre = LocalTime.of(19, 0);
-
-        if (reserva.getHoraInicio().isBefore(horaApertura) || reserva.getHoraFin().isAfter(horaCierre)) {
-            throw new RuntimeException("El horario permitido para reservas es de 08:00 a 19:00");
-        }
-
-        long duracionMinutos = Duration.between(reserva.getHoraInicio(), reserva.getHoraFin()).toMinutes();
-        if (duracionMinutos > 60) {
-            throw new RuntimeException("La reserva no puede exceder 1 hora de duración");
-        }
-        if (duracionMinutos < 30) {
-            throw new RuntimeException("La reserva debe ser de al menos 30 minutos");
-        }
-
-        // Verificar conflictos de horario
-        List<ReservaSala> reservasExistentes = reservaSalaRepository
-                .findReservasActivasBySalaAndFecha(reserva.getSala().getId(), reserva.getFechaReserva());
-
-        for (ReservaSala existente : reservasExistentes) {
-            if (reserva.getHoraInicio().isBefore(existente.getHoraFin())
-                    && reserva.getHoraFin().isAfter(existente.getHoraInicio())) {
-                throw new RuntimeException("La sala ya está reservada en ese horario");
-            }
-        }
-
-        reserva.setEstado("CONFIRMADA");
         return reservaSalaRepository.save(reserva);
+    }
+
+    @Override
+    public ReservaSala obtenerPorId(@NonNull String id) {
+        return reservaSalaRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -58,43 +35,41 @@ public class ReservaSalaServiceImpl implements ReservaSalaService {
     }
 
     @Override
-    public List<ReservaSala> listarPorUsuario(Long usuarioId) {
+    public List<ReservaSala> listarPorUsuario(@NonNull String usuarioId) {
         return reservaSalaRepository.findByUsuarioId(usuarioId);
     }
 
     @Override
-    public List<ReservaSala> listarPorSala(Long salaId) {
+    public List<ReservaSala> listarPorSala(@NonNull String salaId) {
         return reservaSalaRepository.findBySalaId(salaId);
     }
 
     @Override
-    public List<ReservaSala> listarPorSalaYFecha(Long salaId, LocalDate fecha) {
+    public List<ReservaSala> listarPorSalaYFecha(@NonNull String salaId, @NonNull LocalDate fecha) {
         return reservaSalaRepository.findBySalaIdAndFechaReserva(salaId, fecha);
     }
 
     @Override
-    public ReservaSala obtenerPorId(Long id) {
-        return reservaSalaRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public ReservaSala actualizar(Long id, ReservaSala reserva) {
-        reservaSalaRepository.findById(id)
+    public ReservaSala actualizar(@NonNull String id, @NonNull ReservaSala reserva) {
+        ReservaSala existente = reservaSalaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
-        reserva.setId(id);
-        return reservaSalaRepository.save(reserva);
+        existente.setFechaReserva(reserva.getFechaReserva());
+        existente.setHoraInicio(reserva.getHoraInicio());
+        existente.setHoraFin(reserva.getHoraFin());
+        existente.setEstado(reserva.getEstado());
+        return reservaSalaRepository.save(existente);
     }
 
     @Override
-    public ReservaSala cambiarEstado(Long id, String estado) {
-        ReservaSala reserva = reservaSalaRepository.findById(id)
+    public ReservaSala cambiarEstado(@NonNull String id, @NonNull String estado) {
+        ReservaSala existente = reservaSalaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Reserva no encontrada"));
-        reserva.setEstado(estado);
-        return reservaSalaRepository.save(reserva);
+        existente.setEstado(estado);
+        return reservaSalaRepository.save(existente);
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void eliminar(@NonNull String id) {
         reservaSalaRepository.deleteById(id);
     }
 }

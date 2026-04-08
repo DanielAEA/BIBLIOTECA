@@ -3,23 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Resena {
-    id: number;
-    libro: { id: number; titulo?: string };
-    usuario: { id: number; nombre?: string; correo?: string };
+    id: string;
+    libro: { id: string; titulo?: string };
+    usuario: { id: string; nombre?: string; correo?: string };
     calificacion: number;
     comentario: string;
     fechaCreacion: string;
 }
 
 export interface ResenaPayload {
-    libro: { id: number };
-    usuario: { id: number };
+    libro: { id: string };
+    usuario: { id: string };
     calificacion: number;
     comentario: string;
 }
 
 export interface PromedioCalificacion {
-    libroId: number;
+    libroId: string;
     promedio: number;
     totalResenas: number;
 }
@@ -35,15 +35,15 @@ export class ResenaService {
         return this.http.get<Resena[]>(this.baseUrl);
     }
 
-    getByLibro(libroId: number): Observable<Resena[]> {
+    getByLibro(libroId: string): Observable<Resena[]> {
         return this.http.get<Resena[]>(`${this.baseUrl}/libro/${libroId}`);
     }
 
-    getByUsuario(usuarioId: number): Observable<Resena[]> {
+    getByUsuario(usuarioId: string): Observable<Resena[]> {
         return this.http.get<Resena[]>(`${this.baseUrl}/usuario/${usuarioId}`);
     }
 
-    getPromedio(libroId: number): Observable<PromedioCalificacion> {
+    getPromedio(libroId: string): Observable<PromedioCalificacion> {
         return this.http.get<PromedioCalificacion>(`${this.baseUrl}/libro/${libroId}/promedio`);
     }
 
@@ -51,11 +51,11 @@ export class ResenaService {
         return this.http.post<Resena>(this.baseUrl, resena);
     }
 
-    update(id: number, resena: ResenaPayload): Observable<Resena> {
+    update(id: string, resena: ResenaPayload): Observable<Resena> {
         return this.http.put<Resena>(`${this.baseUrl}/${id}`, resena);
     }
 
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
 }

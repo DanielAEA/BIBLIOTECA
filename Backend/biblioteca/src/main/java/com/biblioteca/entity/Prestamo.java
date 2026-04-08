@@ -1,58 +1,47 @@
 package com.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "prestamos")
+@Document(collection = "prestamos")
 public class Prestamo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id")
-    @JsonIgnoreProperties("prestamos")
+    @DBRef
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "ejemplar_id", nullable = true)
-    @JsonIgnoreProperties("prestamos")
-    private Ejemplar ejemplar;
+    @DBRef
+    private Libro libro; 
 
-    @ManyToOne
-    @JoinColumn(name = "libro_id")
-    @JsonIgnoreProperties("ejemplares")
-    private Libro libro;
+    private String ejemplarCodigo; 
 
-    @Column(name = "tipo_prestamo", length = 20)
     private String tipoPrestamo = "FISICO";
 
-    @Column(name = "fecha_prestamo", nullable = false)
     private LocalDateTime fechaPrestamo;
 
-    @Column(name = "fecha_devolucion", nullable = false)
     private LocalDateTime fechaDevolucion;
 
-    @Column(name = "fecha_devolucion_real")
     private LocalDateTime fechaDevolucionReal;
 
     private Boolean devuelto = false;
+    
+    // Estados: SOLICITADO, ACTIVO, DEVUELTO, RECHAZADO
+    private String estado = "ACTIVO";
 
-    @OneToOne(mappedBy = "prestamo", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("prestamo")
-    private Multa multa;
+    private Multa multa; 
 
     public Prestamo() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -64,20 +53,20 @@ public class Prestamo {
         this.usuario = usuario;
     }
 
-    public Ejemplar getEjemplar() {
-        return ejemplar;
-    }
-
-    public void setEjemplar(Ejemplar ejemplar) {
-        this.ejemplar = ejemplar;
-    }
-
     public Libro getLibro() {
         return libro;
     }
 
     public void setLibro(Libro libro) {
         this.libro = libro;
+    }
+
+    public String getEjemplarCodigo() {
+        return ejemplarCodigo;
+    }
+
+    public void setEjemplarCodigo(String ejemplarCodigo) {
+        this.ejemplarCodigo = ejemplarCodigo;
     }
 
     public String getTipoPrestamo() {
@@ -118,6 +107,14 @@ public class Prestamo {
 
     public void setDevuelto(Boolean devuelto) {
         this.devuelto = devuelto;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Multa getMulta() {

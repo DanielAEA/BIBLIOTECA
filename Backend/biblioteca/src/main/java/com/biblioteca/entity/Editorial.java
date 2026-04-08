@@ -1,23 +1,20 @@
 package com.biblioteca.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
-@Entity
-@Table(name = "editoriales")
+@Document(collection = "editoriales")
 public class Editorial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @OneToMany(mappedBy = "editorial")
     @JsonIgnore
-    private List<Libro> libros;
+    private List<String> libroIds;
 
     public Editorial() {
     }
@@ -26,11 +23,11 @@ public class Editorial {
         this.nombre = nombre;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -42,11 +39,11 @@ public class Editorial {
         this.nombre = nombre;
     }
 
-    public List<Libro> getLibros() {
-        return libros;
+    public List<String> getLibroIds() {
+        return libroIds;
     }
 
-    public void setLibros(List<Libro> libros) {
-        this.libros = libros;
+    public void setLibroIds(List<String> libroIds) {
+        this.libroIds = libroIds;
     }
 }

@@ -8,7 +8,7 @@
   <div class="modal-overlay" *ngIf="showUserForm && editingUser" (click)="cancelUserForm()">
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h3>{{ editingUser.id === 0 ? 'Crear' : 'Editar' }} Usuario</h3>
+        <h3>{{ !editingUser.id ? 'Crear' : 'Editar' }} Usuario</h3>
         <button class="close-btn" (click)="cancelUserForm()">✕</button>
       </div>
       <form (ngSubmit)="saveUser()" class="premium-form">
@@ -21,8 +21,8 @@
           <input type="email" [(ngModel)]="editingUser.correo" name="userCorreo" required>
         </div>
         <div class="form-group">
-          <label>Contraseña {{ editingUser.id === 0 ? '(obligatoria)' : '(dejar vacío para mantener la actual)' }}:</label>
-          <input type="password" [(ngModel)]="editingUser.password" name="userPassword" [required]="editingUser.id === 0">
+          <label>Contraseña {{ !editingUser.id ? '(obligatoria)' : '(dejar vacío para mantener la actual)' }}:</label>
+          <input type="password" [(ngModel)]="editingUser.password" name="userPassword" [required]="!editingUser.id">
         </div>
         <div class="form-actions">
           <button type="submit" class="premium-button" [disabled]="submittingUser">

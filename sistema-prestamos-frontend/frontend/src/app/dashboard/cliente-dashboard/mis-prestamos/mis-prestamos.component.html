@@ -44,7 +44,7 @@
                             getFine(p).toLocaleString() }}</span>
                     </td>
                     <td>
-                        <button *ngIf="p.ejemplar?.libro?.tieneDigital" 
+                        <button *ngIf="p.libro?.tieneDigital" 
                                 (click)="leerOnline(p)" 
                                 class="premium-badge badge-format-digital" 
                                 style="cursor: pointer; border: none; font-family: inherit;">
@@ -78,7 +78,7 @@
                     <td>{{ (p.fechaDevolucionReal | date:'dd/MM/yyyy HH:mm') || (p.fechaDevolucion | date:'dd/MM/yyyy HH:mm') }}</td>
                     <td><span class="premium-badge badge-success">Devuelto</span></td>
                     <td>
-                        <button *ngIf="p.ejemplar?.libro?.tieneDigital" 
+                        <button *ngIf="p.libro?.tieneDigital" 
                                 (click)="leerOnline(p)" 
                                 class="premium-badge badge-format-digital" 
                                 style="cursor: pointer; border: none; font-family: inherit;">

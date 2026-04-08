@@ -85,8 +85,8 @@
         <tbody>
           <tr *ngFor="let p of filteredPrestamos" [class.overdue]="hasOverdue(p) && !p.devuelto">
             <td>{{ p.usuario.nombre }}</td>
-            <td>{{ p.ejemplar.libro.titulo }}</td>
-            <td>{{ p.ejemplar.codigo }}</td>
+            <td>{{ p.libro?.titulo || '-' }}</td>
+            <td>{{ p.ejemplarCodigo }}</td>
             <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
             <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>
             <td>{{ (p.fechaDevolucionReal | date:'dd/MM/yyyy HH:mm') || '-' }}</td>
@@ -105,15 +105,24 @@
               <span *ngIf="getFine(p) === 0" style="color: var(--text-muted);">$0</span>
             </td>
             <td>
-              <span class="premium-badge" [ngClass]="p.devuelto ? 'badge-success' : 'badge-warning'">
-                {{ p.devuelto ? 'DEVUELTO' : 'PENDIENTE' }}
+              <span class="premium-badge" [ngClass]="{
+                'badge-success': p.devuelto,
+                'badge-warning': !p.devuelto && p.estado !== 'SOLICITADO',
+                'badge-info': p.estado === 'SOLICITADO'
+              }" [style.background-color]="p.estado === 'SOLICITADO' ? '#3b82f6' : null">
+                {{ p.devuelto ? 'DEVUELTO' : (p.estado === 'SOLICITADO' ? 'SOLICITADO' : 'ACTIVO') }}
               </span>
             </td>
             <td>
               <div style="display: flex; gap: 4px;">
-                <button *ngIf="!p.devuelto" class="btn-view-premium sm" (click)="markAsReturned(p)">Devolver</button>
+                <ng-container *ngIf="p.estado === 'SOLICITADO'">
+                  <button class="btn-view-premium sm" style="background-color: #10b981; color: white;" (click)="acceptLoan(p)">Aceptar</button>
+                  <button class="btn-delete-premium sm" (click)="rejectLoan(p)">Rechazar</button>
+                </ng-container>
+                
+                <button *ngIf="!p.devuelto && p.estado !== 'SOLICITADO'" class="btn-view-premium sm" (click)="markAsReturned(p)">Devolver</button>
                 <button *ngIf="p.multa && !p.multa.pagada" class="btn-edit-premium sm" style="background-color: #059669; color: white;" (click)="payFine(p)">Cobrar</button>
-                <button class="btn-delete-premium sm" (click)="deleteLoan(p)">Eliminar</button>
+                <button *ngIf="p.estado !== 'SOLICITADO'" class="btn-delete-premium sm" (click)="deleteLoan(p)">Eliminar</button>
               </div>
             </td>
           </tr>

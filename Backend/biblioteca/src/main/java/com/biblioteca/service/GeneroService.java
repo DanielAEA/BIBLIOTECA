@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface GeneroService {
     Genero crear(@NonNull Genero genero);
-    Genero obtenerPorId(@NonNull Long id);
+    Genero obtenerPorId(@NonNull String id);
     List<Genero> listar();
-    Genero actualizar(@NonNull Long id, @NonNull Genero genero);
-    void eliminar(@NonNull Long id);
+    Genero actualizar(@NonNull String id, @NonNull Genero genero);
+    void eliminar(@NonNull String id);
 }

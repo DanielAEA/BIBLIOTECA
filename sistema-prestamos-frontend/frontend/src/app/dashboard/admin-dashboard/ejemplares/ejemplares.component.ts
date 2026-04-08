@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { EjemplarService, Ejemplar, EjemplarPayload } from '../../../services/ejemplar.service';
 import { BookService, Libro } from '../../../services/book.service';
+import { ConfigService } from '../../../core/services/config.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -19,14 +20,15 @@ export class EjemplaresComponent implements OnInit {
   showForm = false;
   ejemplarCodigo = '';
   ejemplarDisponible = true;
-  selectedLibroId: number | null = null;
+  selectedLibroId: string | null = null;
   libros: Libro[] = [];
   loading = false;
   submitting = false;
 
   constructor(
     private ejemplarService: EjemplarService,
-    private bookService: BookService
+    private bookService: BookService,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -170,6 +172,29 @@ export class EjemplaresComponent implements OnInit {
           }
         });
       }
+    });
+  }
+
+  verQr(ejemplar: Ejemplar) {
+    const apiBase = this.configService.apiUrl;
+    // URL del QR estático generado por el backend
+    const qrImgUrl = `${apiBase}/qr/qr-ejemplar-${ejemplar.id}.png`;
+    
+    Swal.fire({
+      title: `QR - Ejemplar ${ejemplar.codigo}`,
+      html: `
+        <div style="text-align: center;">
+          <img src="${qrImgUrl}" alt="QR Code" style="width:250px;height:250px;margin:0 auto;display:block;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+          <p style="margin-top:1.5rem;color:#475569;font-weight:500;">Libro: <i>${ejemplar.libro.titulo}</i></p>
+          <p style="margin-top:0.5rem;color:#64748b;font-size:0.9rem;">Código QR del ejemplar para identificación</p>
+        </div>
+      `,
+      showCloseButton: true,
+      showConfirmButton: false,
+      width: 450,
+      padding: '2rem',
+      background: '#ffffff',
+      color: '#1e293b'
     });
   }
 }

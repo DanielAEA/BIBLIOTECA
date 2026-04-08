@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface AutorService {
     Autor crear(@NonNull Autor autor);
-    Autor obtenerPorId(@NonNull Long id);
+    Autor obtenerPorId(@NonNull String id);
     List<Autor> listar();
-    Autor actualizar(@NonNull Long id, @NonNull Autor autor);
-    void eliminar(@NonNull Long id);
+    Autor actualizar(@NonNull String id, @NonNull Autor autor);
+    void eliminar(@NonNull String id);
 }

@@ -18,7 +18,7 @@ export class ResenasComponent implements OnInit {
     loading = false;
 
     // Filtro
-    selectedLibroFilter: number | null = null;
+    selectedLibroFilter: string | null = null;
 
     constructor(
         private resenaService: ResenaService,

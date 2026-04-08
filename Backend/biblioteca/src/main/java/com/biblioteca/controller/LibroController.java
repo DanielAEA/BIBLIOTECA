@@ -3,17 +3,27 @@ package com.biblioteca.controller;
 import com.biblioteca.dto.LibroDTO;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.service.LibroService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.biblioteca.service.QrService;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +35,13 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 public class LibroController {
 
-    @Autowired
-    private LibroService libroService;
+    private final LibroService libroService;
+    private final QrService qrService;
+
+    public LibroController(LibroService libroService, QrService qrService) {
+        this.libroService = libroService;
+        this.qrService = qrService;
+    }
 
     @GetMapping
     public List<LibroDTO> list() {
@@ -36,30 +51,34 @@ public class LibroController {
     }
 
     @GetMapping("/{id}")
-    public LibroDTO getById(@PathVariable @NonNull Long id) {
+    public ResponseEntity<LibroDTO> getById(@PathVariable @NonNull String id) {
         Libro libro = libroService.obtenerPorId(id);
-        return libro != null ? convertToDTO(libro) : null;
+        if (libro == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(convertToDTO(libro));
     }
 
     @PostMapping
     public LibroDTO create(@RequestBody @NonNull Libro libro) {
         Libro creado = libroService.crear(libro);
+        System.out.println(">>> LIBRO CREADO: " + creado.getTitulo() + " (ID: " + creado.getId() + ")");
         return convertToDTO(creado);
     }
 
     @PutMapping("/{id}")
-    public LibroDTO update(@PathVariable @NonNull Long id, @RequestBody @NonNull Libro libro) {
+    public LibroDTO update(@PathVariable @NonNull String id, @RequestBody @NonNull Libro libro) {
         Libro actualizado = libroService.actualizar(id, libro);
         return convertToDTO(actualizado);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable @NonNull Long id) {
+    public void delete(@PathVariable @NonNull String id) {
         libroService.eliminar(id);
     }
 
     @PostMapping("/{id}/upload-pdf")
-    public ResponseEntity<?> uploadPdf(@PathVariable @NonNull Long id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadPdf(@PathVariable @NonNull String id, @RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "El archivo está vacío"));
         }
@@ -75,7 +94,7 @@ public class LibroController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Libro no encontrado"));
             }
 
-            Path uploadDir = Paths.get("uploads/libros");
+            Path uploadDir = Path.of("uploads/libros");
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
             }
@@ -99,6 +118,18 @@ public class LibroController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Error al guardar el archivo: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{id}/qr")
+    public ResponseEntity<byte[]> getQrImage(@PathVariable @NonNull String id) {
+        byte[] qrBytes = qrService.generarQr(id, false);
+        if (qrBytes != null) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
+                    .body(qrBytes);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -146,4 +177,3 @@ public class LibroController {
         );
     }
 }
-

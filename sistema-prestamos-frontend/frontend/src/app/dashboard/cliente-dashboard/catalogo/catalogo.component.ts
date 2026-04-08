@@ -23,7 +23,7 @@ export class CatalogoClienteComponent implements OnInit {
     searchTerm = '';
 
     showResenaForm = false;
-    resenaLibroId: number | null = null;
+    resenaLibroId: string | null = null;
     resenaLibroTitulo = '';
     resenaCalificacion = 5;
     resenaComentario = '';
@@ -98,11 +98,15 @@ export class CatalogoClienteComponent implements OnInit {
                 const devolucion = new Date(today);
                 devolucion.setDate(devolucion.getDate() + 15);
 
+                const pad = (n: number) => n.toString().padStart(2, '0');
+                const formatDt = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:00`;
+
                 const body = {
-                    usuario: { id: userPayload.id || userPayload.sub },
-                    ejemplar: { id: disponibles[0].id },
-                    fechaPrestamo: today.toISOString().split('T')[0],
-                    fechaDevolucion: devolucion.toISOString().split('T')[0],
+                    usuarioId: userPayload.id || userPayload.sub,
+                    libroId: libro.id,
+                    ejemplarCodigo: disponibles[0].codigo,
+                    fechaPrestamo: formatDt(today),
+                    fechaDevolucion: formatDt(devolucion),
                     devuelto: false
                 };
 

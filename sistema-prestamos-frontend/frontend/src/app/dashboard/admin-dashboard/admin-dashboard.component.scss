@@ -195,12 +195,12 @@
         }
 
         &:hover, &.active {
-          background: rgba(67, 24, 255, 0.1);
+          background: rgba(71, 85, 105, 0.2);
           border-radius: 12px;
 
           .links_name, i {
             transition: all 0.3s ease;
-            color: #4318ff;
+            color: var(--text-dark); /* var(--text-dark) is white in dark-theme */
           }
         }
         
@@ -254,7 +254,7 @@
         height: 40px;
         width: 40px;
         min-width: 40px;
-        background: linear-gradient(135deg, #868cff 0%, #4318ff 100%);
+        background: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
         color: white;
         border-radius: 12px;
         display: flex;
@@ -376,7 +376,7 @@
 
   &:hover {
     transform: scale(1.1);
-    border-color: #4318ff;
+    border-color: #475569;
   }
 }
 

@@ -1,62 +1,43 @@
 package com.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
-@Entity
-@Table(name = "libros")
+@Document(collection = "libros")
 public class Libro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String titulo;
 
-    @ManyToMany
-    @JoinTable(name = "libro_autores", joinColumns = @JoinColumn(name = "libro_id"), inverseJoinColumns = @JoinColumn(name = "autor_id"))
-    @JsonIgnoreProperties("libros")
-    private List<Autor> autores;
+    private List<Autor> autores; // Embebido
 
-    @ManyToOne
-    @JoinColumn(name = "editorial_id", nullable = false)
-    @JsonIgnoreProperties("libros")
-    private Editorial editorial;
+    private Editorial editorial; // Embebido
 
-    @ManyToOne
-    @JoinColumn(name = "genero_id", nullable = false)
-    @JsonIgnoreProperties("libros")
-    private Genero genero;
+    private Genero genero; // Embebido
 
-    @Column(length = 100)
     private String isbn;
 
-    @Column(length = 100)
     private String publicacion;
 
-    @Column(name = "archivo_digital", length = 500)
-    private String archivoDigital; // Ruta al archivo PDF o recurso digital
+    private String archivoDigital;
 
-    @Column(name = "tiene_digital")
-    private Boolean tieneDigital = false; // Indica si el libro tiene una versión digital disponible
+    private Boolean tieneDigital = false;
 
-    @Column(name = "formato", length = 20)
-    private String formato = "FISICO"; // Formato del libro: FISICO, DIGITAL, o AMBOS
+    private String formato = "FISICO";
 
-    @OneToMany(mappedBy = "libro")
-    @JsonIgnoreProperties("libro")
-    private List<Ejemplar> ejemplares;
+    private List<Ejemplar> ejemplares; // Embebido
 
     public Libro() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Genero {
-  id: number;
+  id: string;
   nombre: string;
 }
 
@@ -18,7 +18,7 @@ export class GeneroService {
     return this.http.get<Genero[]>(`${this.baseUrl}/api/generos`);
   }
 
-  getById(id: number): Observable<Genero> {
+  getById(id: string): Observable<Genero> {
     return this.http.get<Genero>(`${this.baseUrl}/api/generos/${id}`);
   }
 
@@ -26,12 +26,13 @@ export class GeneroService {
     return this.http.post<Genero>(`${this.baseUrl}/api/generos`, { nombre });
   }
 
-  update(id: number, nombre: string): Observable<Genero> {
+  update(id: string, nombre: string): Observable<Genero> {
     return this.http.put<Genero>(`${this.baseUrl}/api/generos/${id}`, { nombre });
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/generos/${id}`);
   }
 }
+
 

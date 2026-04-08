@@ -3,40 +3,41 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Usuario } from './user.service';
-import { Ejemplar } from './ejemplar.service';
+import { Libro } from './book.service';
 
 export interface Multa {
-  id: number;
+  id: string;
   total: number;
   diasAtraso: number;
   pagada: boolean;
 }
 
 export interface Prestamo {
-  id: number;
+  id: string;
   usuario: Usuario;
-  ejemplar: Ejemplar;
+  libro?: Libro;
+  ejemplarCodigo?: string;
+  tipoPrestamo?: string;
   fechaPrestamo: string;
   fechaDevolucion: string;
   fechaDevolucionReal?: string;
   devuelto: boolean;
+  estado?: string;
   multa?: Multa;
 }
 
 export interface PrestamoPayload {
-  usuarioId?: number;
-  ejemplarId?: number;
-  usuario?: { id: number };
-  ejemplar?: { id: number };
+  usuarioId?: string;
+  libroId?: string;
+  ejemplarCodigo?: string;
   fechaPrestamo: string;
   fechaDevolucion: string;
-  devuelto: boolean;
+  devuelto?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
 export class LoanService {
   private baseUrl = '';
-  // Estado local compartido de préstamos (CRUD reactivo)
   private loansSubject = new BehaviorSubject<Prestamo[] | null>(null);
   public loans$ = this.loansSubject.asObservable();
 
@@ -55,7 +56,7 @@ export class LoanService {
     );
   }
 
-  update(id: number, prestamo: PrestamoPayload): Observable<Prestamo> {
+  update(id: string, prestamo: PrestamoPayload): Observable<Prestamo> {
     return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}`, prestamo).pipe(
       tap((updated) => {
         const cur = this.loansSubject.value ?? [];
@@ -64,8 +65,26 @@ export class LoanService {
     );
   }
 
-  returnLoan(id: number): Observable<Prestamo> {
+  returnLoan(id: string): Observable<Prestamo> {
     return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}/devolver`, {}).pipe(
+      tap((updated) => {
+        const cur = this.loansSubject.value ?? [];
+        this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
+      })
+    );
+  }
+
+  acceptLoan(id: string): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}/aceptar`, {}).pipe(
+      tap((updated) => {
+        const cur = this.loansSubject.value ?? [];
+        this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
+      })
+    );
+  }
+
+  rejectLoan(id: string): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${id}/rechazar`, {}).pipe(
       tap((updated) => {
         const cur = this.loansSubject.value ?? [];
         this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
@@ -89,7 +108,7 @@ export class LoanService {
     );
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/prestamos/${id}`).pipe(
       tap(() => {
         const cur = this.loansSubject.value ?? [];
@@ -98,11 +117,10 @@ export class LoanService {
     );
   }
 
-  getByUserId(userId: number): Observable<Prestamo[]> {
+  getByUserId(userId: string): Observable<Prestamo[]> {
     return this.http.get<Prestamo[]>(`${this.baseUrl}/api/prestamos/usuario/${userId}`);
   }
 
-  // Cargar y sincronizar todos los préstamos en el subject
   loadAll(): void {
     this.getAll().subscribe({
       next: (list) => this.loansSubject.next(list),
@@ -113,4 +131,3 @@ export class LoanService {
     });
   }
 }
-

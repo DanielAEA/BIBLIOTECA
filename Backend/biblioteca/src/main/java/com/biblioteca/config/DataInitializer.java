@@ -1,9 +1,9 @@
 package com.biblioteca.config;
 
-import com.biblioteca.entity.RolUsuario;
 import com.biblioteca.entity.Usuario;
-import com.biblioteca.repository.RolUsuarioRepository;
 import com.biblioteca.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-    private final RolUsuarioRepository rolUsuarioRepository;
+    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -31,17 +31,14 @@ public class DataInitializer implements CommandLineRunner {
     private String testPassword;
 
     public DataInitializer(
-            RolUsuarioRepository rolUsuarioRepository,
             UsuarioRepository usuarioRepository,
             PasswordEncoder passwordEncoder) {
-        this.rolUsuarioRepository = rolUsuarioRepository;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        initializeRoles();
         initializeUsers();
         fixPlainTextPasswords();
     }
@@ -55,56 +52,41 @@ public class DataInitializer implements CommandLineRunner {
         int fixed = 0;
         for (Usuario u : usuarios) {
             if (u.getPassword() != null && !u.getPassword().startsWith("$2a$")) {
-                System.out.println("🔐 Encriptando contraseña para: " + u.getCorreo());
+                logger.info("🔐 Encriptando contraseña para: {}", u.getCorreo());
                 u.setPassword(passwordEncoder.encode(u.getPassword()));
                 usuarioRepository.save(u);
                 fixed++;
             }
         }
         if (fixed > 0) {
-            System.out.println("✅ Se encriptaron " + fixed + " contraseñas en texto plano.");
-        }
-    }
-
-    private void initializeRoles() {
-        List<String> roles = List.of("ADMIN", "CLIENTE");
-        for (String roleName : roles) {
-            if (rolUsuarioRepository.findByNombre(roleName).isEmpty()) {
-                RolUsuario rol = new RolUsuario();
-                rol.setNombre(roleName);
-                rolUsuarioRepository.save(rol);
-            }
+            logger.info("✅ Se encriptaron {} contraseñas en texto plano.", fixed);
         }
     }
 
     private void initializeUsers() {
-        if (usuarioRepository.count() == 0) {
-            RolUsuario rolAdmin = rolUsuarioRepository.findByNombre("ADMIN")
-                    .orElseThrow(() -> new RuntimeException("Error: Rol ADMIN no encontrado"));
-
-            RolUsuario rolCliente = rolUsuarioRepository.findByNombre("CLIENTE")
-                    .orElseThrow(() -> new RuntimeException("Error: Rol CLIENTE no encontrado"));
-
-            // Usuario ADMIN inicial
-            if (adminEmail != null && !adminEmail.isEmpty()) {
+        // Usuario ADMIN inicial
+        if (adminEmail != null && !adminEmail.isEmpty()) {
+            if (usuarioRepository.findByCorreo(adminEmail) == null) {
                 Usuario admin = new Usuario();
                 admin.setNombre("Administrador");
                 admin.setCorreo(adminEmail);
                 admin.setPassword(passwordEncoder.encode(adminPassword));
-                admin.setRol(rolAdmin);
+                admin.setRol("ADMIN");
                 usuarioRepository.save(admin);
-                System.out.println(">>> Usuario ADMIN inicial creado satisfactoriamente.");
+                logger.info(">>> Usuario ADMIN ({}) creado satisfactoriamente.", adminEmail);
             }
+        }
 
-            // Usuario PRUEBA inicial
-            if (testEmail != null && !testEmail.isEmpty()) {
+        // Usuario PRUEBA inicial
+        if (testEmail != null && !testEmail.isEmpty()) {
+            if (usuarioRepository.findByCorreo(testEmail) == null) {
                 Usuario prueba = new Usuario();
                 prueba.setNombre("Usuario Prueba");
                 prueba.setCorreo(testEmail);
                 prueba.setPassword(passwordEncoder.encode(testPassword));
-                prueba.setRol(rolCliente);
+                prueba.setRol("CLIENTE");
                 usuarioRepository.save(prueba);
-                System.out.println(">>> Usuario PRUEBA inicial creado satisfactoriamente.");
+                logger.info(">>> Usuario PRUEBA ({}) creado satisfactoriamente.", testEmail);
             }
         }
     }

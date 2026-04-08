@@ -28,7 +28,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public UsuarioDTO obtener(@PathVariable @NonNull Long id) {
+    public UsuarioDTO obtener(@PathVariable @NonNull String id) {
         Usuario usuario = usuarioService.obtenerPorId(id);
         return usuario != null ? convertToDTO(usuario) : null;
     }
@@ -40,21 +40,17 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public UsuarioDTO actualizar(@PathVariable @NonNull Long id, @RequestBody @NonNull Usuario usuario) {
+    public UsuarioDTO actualizar(@PathVariable @NonNull String id, @RequestBody @NonNull Usuario usuario) {
         Usuario actualizado = usuarioService.actualizar(id, usuario);
         return convertToDTO(actualizado);
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable @NonNull Long id) {
+    public void eliminar(@PathVariable @NonNull String id) {
         usuarioService.eliminar(id);
     }
 
     private UsuarioDTO convertToDTO(Usuario usuario) {
-        UsuarioDTO.RolDTO rolDTO = null;
-        if (usuario.getRol() != null) {
-            rolDTO = new UsuarioDTO.RolDTO(usuario.getRol().getId(), usuario.getRol().getNombre());
-        }
-        return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getCorreo(), rolDTO);
+        return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getCorreo(), usuario.getRol());
     }
 }

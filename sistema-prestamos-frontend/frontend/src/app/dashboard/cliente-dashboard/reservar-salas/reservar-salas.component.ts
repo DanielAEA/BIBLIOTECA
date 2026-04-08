@@ -19,7 +19,7 @@ export class ReservarSalasComponent implements OnInit {
     loading = false;
 
     showForm = false;
-    selectedSalaId: number | null = null;
+    selectedSalaId: string | null = null;
     reservaFecha = '';
     reservaHoraInicio = '';
     reservaHoraFin = '';
@@ -168,7 +168,7 @@ export class ReservarSalasComponent implements OnInit {
         }
     }
 
-    getSalaName(id: number): string {
+    getSalaName(id: string): string {
         return this.salas.find(s => s.id === id)?.nombre || 'Sala';
     }
 

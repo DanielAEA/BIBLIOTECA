@@ -20,14 +20,11 @@ export class AuthService {
 
   login(correo: string, password: string): Observable<void> {
     const body = { correo, password };
-    console.log('📤 Enviando petición de login a:', `${this.baseUrl}/auth/login`);
-    console.log('📤 Body enviado:', body);
 
     return this.http
       .post<LoginResponse>(`${this.baseUrl}/auth/login`, body)
       .pipe(
         map((res) => {
-          console.log('✅ Respuesta del servidor:', res);
           localStorage.setItem(this.tokenKey, res.token);
           this.userSubject.next(this.getPayload());
         })
@@ -35,7 +32,6 @@ export class AuthService {
   }
 
   register(userData: any): Observable<any> {
-    console.log('📤 Enviando petición de registro a:', `${this.baseUrl}/auth/register`);
     return this.http.post(`${this.baseUrl}/auth/register`, userData);
   }
 

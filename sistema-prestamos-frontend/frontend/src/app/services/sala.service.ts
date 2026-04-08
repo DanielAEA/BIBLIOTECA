@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Sala {
-    id: number;
+    id: string;
     nombre: string;
     descripcion: string;
     capacidad: number;
@@ -34,7 +34,7 @@ export class SalaService {
         return this.http.get<Sala[]>(`${this.baseUrl}/activas`);
     }
 
-    getById(id: number): Observable<Sala> {
+    getById(id: string): Observable<Sala> {
         return this.http.get<Sala>(`${this.baseUrl}/${id}`);
     }
 
@@ -42,11 +42,12 @@ export class SalaService {
         return this.http.post<Sala>(this.baseUrl, sala);
     }
 
-    update(id: number, sala: SalaPayload): Observable<Sala> {
+    update(id: string, sala: SalaPayload): Observable<Sala> {
         return this.http.put<Sala>(`${this.baseUrl}/${id}`, sala);
     }
 
-    delete(id: number): Observable<void> {
+    delete(id: string): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
     }
 }
+

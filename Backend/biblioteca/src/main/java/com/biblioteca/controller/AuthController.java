@@ -2,6 +2,8 @@ package com.biblioteca.controller;
 
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.service.AuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -20,22 +23,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Usuario usuario) {
+    public ResponseEntity<Object> register(@RequestBody Usuario usuario) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(usuario));
         } catch (Exception e) {
+            logger.error("Error en registro: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("error", e.getMessage()));
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<Object> login(@RequestBody LoginRequest request) {
         try {
             String email = request.getCorreo() != null ? request.getCorreo() : request.getUsername();
             return ResponseEntity.ok(authService.login(email, request.getPassword()));
         } catch (Exception e) {
-            e.printStackTrace(); // <-- LOG THE REAL ERROR
+            logger.error("Error de login para {}: {}", request.getCorreo(), e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Credenciales incorrectas"));
         }

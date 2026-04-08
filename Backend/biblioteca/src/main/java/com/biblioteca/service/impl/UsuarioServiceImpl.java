@@ -1,54 +1,42 @@
 package com.biblioteca.service.impl;
 
-import com.biblioteca.entity.RolUsuario;
 import com.biblioteca.entity.Usuario;
-import com.biblioteca.repository.RolUsuarioRepository;
 import com.biblioteca.repository.UsuarioRepository;
 import com.biblioteca.service.UsuarioService;
 import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-    private final RolUsuarioRepository rolUsuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository,
-                              RolUsuarioRepository rolUsuarioRepository,
-                              PasswordEncoder passwordEncoder) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.rolUsuarioRepository = rolUsuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @SuppressWarnings("null")
     @Override
-    @Transactional
     public Usuario crear(@NonNull Usuario usuario) {
-        usuario.setId(null); // <-- Prevenir Mass Assignment (sobreescritura accidental o maliciosa de otro usuario)
-
-        // ✅ Obtener el rol managed de la base de datos
-        if (usuario.getRol() != null && usuario.getRol().getId() != null) {
-            RolUsuario rolReal = rolUsuarioRepository.findById(usuario.getRol().getId())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID: " + usuario.getRol().getId()));
-            usuario.setRol(rolReal);
+        usuario.setId(null);
+        // Si no se especifica rol al crear, por defecto es CLIENTE
+        if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
+            usuario.setRol("CLIENTE");
         }
-
-        if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
+        if (usuario.getPassword() != null) {
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
-
         return usuarioRepository.save(usuario);
     }
 
     @Override
-    public Usuario obtenerPorId(@NonNull Long id) {
-        return usuarioRepository.findById(id).orElse(null);
+    public Usuario obtenerPorId(@NonNull String id) {
+        return usuarioRepository.findById(Objects.requireNonNull(id)).orElse(null); // test
     }
 
     @Override
@@ -56,31 +44,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    @SuppressWarnings("null")
     @Override
-    @Transactional
-    public Usuario actualizar(@NonNull Long id, @NonNull Usuario usuario) {
-        Usuario existente = usuarioRepository.findById(id)
+    public Usuario actualizar(@NonNull String id, @NonNull Usuario usuario) {
+        Usuario existente = usuarioRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        existente.setNombre(usuario.getNombre());
-        existente.setCorreo(usuario.getCorreo());
+        
+        if (usuario.getNombre() != null) existente.setNombre(usuario.getNombre());
+        if (usuario.getCorreo() != null) existente.setCorreo(usuario.getCorreo());
+        
+        // PROTECCIÓN DE ROL: Solo actualizar si viene un valor no nulo
+        if (usuario.getRol() != null && !usuario.getRol().isEmpty()) {
+            existente.setRol(usuario.getRol());
+        }
+        
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
             existente.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
-
-        // ✅ Obtener el rol managed si cambió
-        if (usuario.getRol() != null && usuario.getRol().getId() != null) {
-            RolUsuario rolReal = rolUsuarioRepository.findById(usuario.getRol().getId())
-                    .orElseThrow(() -> new RuntimeException("Rol no encontrado con ID: " + usuario.getRol().getId()));
-            existente.setRol(rolReal);
-        }
-
+        
         return usuarioRepository.save(existente);
     }
 
     @Override
-    @Transactional
-    public void eliminar(@NonNull Long id) {
-        usuarioRepository.deleteById(id);
+    public void eliminar(@NonNull String id) {
+        usuarioRepository.deleteById(Objects.requireNonNull(id));
     }
 }

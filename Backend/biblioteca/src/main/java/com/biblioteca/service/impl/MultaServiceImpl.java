@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class MultaServiceImpl implements MultaService {
@@ -18,37 +19,40 @@ public class MultaServiceImpl implements MultaService {
     }
 
     @Override
+    @NonNull
     public Multa crear(@NonNull Multa multa) {
         multa.setId(null);
-        return multaRepository.save(multa);
+        return Objects.requireNonNull(multaRepository.save(multa));
     }
 
     @Override
-    public Multa obtenerPorId(@NonNull Long id) {
-        return multaRepository.findById(id).orElse(null);
+    public Multa obtenerPorId(@NonNull String id) {
+        return multaRepository.findById(Objects.requireNonNull(id)).orElse(null);
     }
 
     @Override
-    public List<Multa> listar() { return multaRepository.findAll(); }
+    @NonNull
+    public List<Multa> listar() {
+        return multaRepository.findAll();
+    }
 
     @Override
-    public Multa actualizar(@NonNull Long id, @NonNull Multa multa) {
-        Multa existente = multaRepository.findById(id)
+    @NonNull
+    @SuppressWarnings("null") // Objects.requireNonNull guarantees non-null at runtime
+    public Multa actualizar(@NonNull String id, @NonNull Multa multa) {
+        Multa existente = multaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Multa no encontrada"));
         
         // Solo actualizamos los campos que pueden cambiar
         if (multa.getTotal() != null) existente.setTotal(multa.getTotal());
         if (multa.getDiasAtraso() != null) existente.setDiasAtraso(multa.getDiasAtraso());
         if (multa.getPagada() != null) existente.setPagada(multa.getPagada());
-        
-        // Mantener las relaciones originales si no vienen en el objeto
-        if (multa.getPrestamo() != null) existente.setPrestamo(multa.getPrestamo());
 
-        return multaRepository.save(existente);
+        return Objects.requireNonNull(multaRepository.save(existente));
     }
 
     @Override
-    public void eliminar(@NonNull Long id) {
-        multaRepository.deleteById(id);
+    public void eliminar(@NonNull String id) {
+        multaRepository.deleteById(Objects.requireNonNull(id));
     }
 }

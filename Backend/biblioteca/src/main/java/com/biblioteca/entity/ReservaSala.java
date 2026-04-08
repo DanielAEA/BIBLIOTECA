@@ -1,52 +1,45 @@
 package com.biblioteca.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity
-@Table(name = "reservas_sala")
+@Document(collection = "reservas_sala")
 public class ReservaSala {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "sala_id")
-    @JsonIgnoreProperties("reservas")
+    @DBRef
     private Sala sala;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "usuario_id")
-    @JsonIgnoreProperties({ "prestamos", "password", "authorities", "accountNonExpired", "accountNonLocked",
-            "credentialsNonExpired", "enabled", "username" })
+    @DBRef
     private Usuario usuario;
 
-    @Column(name = "fecha_reserva", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaReserva;
 
-    @Column(name = "hora_inicio", nullable = false)
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime horaInicio;
 
-    @Column(name = "hora_fin", nullable = false)
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime horaFin;
 
-    @Column(length = 500)
     private String motivo;
 
-    @Column(nullable = false)
-    private String estado = "PENDIENTE"; // PENDIENTE, CONFIRMADA, CANCELADA, COMPLETADA
+    private String estado = "PENDIENTE";
 
     public ReservaSala() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
