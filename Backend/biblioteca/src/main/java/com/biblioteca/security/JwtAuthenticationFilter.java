@@ -57,8 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Logear si se necesita, el token es inválido o ha expirado.
-            // Continuar con la cadena sin establecer la autenticación.
+            
+            
             System.err.println("Error procesando el token JWT: " + e.getMessage());
         }
 

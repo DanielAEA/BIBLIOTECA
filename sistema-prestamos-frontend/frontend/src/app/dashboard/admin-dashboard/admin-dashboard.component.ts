@@ -23,8 +23,6 @@ export class AdminSidebarComponent {
     { name: 'Autores', path: '/admin/autores', icon: 'bx-user-pin' },
     { name: 'Editoriales', path: '/admin/editoriales', icon: 'bx-buildings' },
     { name: 'Géneros', path: '/admin/generos', icon: 'bx-purchase-tag' },
-    { name: 'Ejemplares', path: '/admin/ejemplares', icon: 'bx-copy' },
-    { name: 'Reseñas', path: '/admin/resenas', icon: 'bx-star' },
     { name: 'Salas', path: '/admin/salas', icon: 'bx-door-open' }
   ];
 

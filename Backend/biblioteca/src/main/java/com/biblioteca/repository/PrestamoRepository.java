@@ -14,7 +14,7 @@ public interface PrestamoRepository extends MongoRepository<Prestamo, String> {
 
     @Aggregation(pipeline = {
         "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
-        "{ '$unwind': '$libro_doc' }",
+        "{ '$unwind': { 'path': '$libro_doc', 'preserveNullAndEmptyArrays': true } }",
         "{ '$group': { '_id': '$libro_doc.titulo', 'total': { '$sum': 1 } } }",
         "{ '$sort': { 'total': -1 } }",
         "{ '$limit': 5 }"
@@ -23,18 +23,18 @@ public interface PrestamoRepository extends MongoRepository<Prestamo, String> {
 
     @Aggregation(pipeline = {
         "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
-        "{ '$unwind': '$libro_doc' }",
-        "{ '$lookup': { 'from': 'generos', 'localField': 'libro_doc.genero._id', 'foreignField': '_id', 'as': 'gen_doc' } }",
-        "{ '$unwind': '$gen_doc' }",
-        "{ '$group': { '_id': '$gen_doc.nombre', 'total': { '$sum': 1 } } }",
+        "{ '$unwind': { 'path': '$libro_doc', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$lookup': { 'from': 'generos', 'localField': 'libro_doc.genero', 'foreignField': '_id', 'as': 'gen_doc' } }",
+        "{ '$unwind': { 'path': '$gen_doc', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$group': { '_id': { '$ifNull': [ '$gen_doc.nombre', 'Sin Género' ] }, 'total': { '$sum': 1 } } }",
         "{ '$sort': { 'total': -1 } }"
     })
     List<org.bson.Document> findLoansByGenre();
 
     @Aggregation(pipeline = {
         "{ '$lookup': { 'from': 'usuarios', 'localField': 'usuario.$id', 'foreignField': '_id', 'as': 'usuario_doc' } }",
-        "{ '$unwind': '$usuario_doc' }",
-        "{ '$group': { '_id': '$usuario_doc.rol', 'total': { '$sum': 1 } } }",
+        "{ '$unwind': { 'path': '$usuario_doc', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$group': { '_id': { '$ifNull': [ '$usuario_doc.rol', 'Sin Rol' ] }, 'total': { '$sum': 1 } } }",
         "{ '$sort': { 'total': -1 } }"
     })
     List<org.bson.Document> findLoansByUserRole();
@@ -47,11 +47,11 @@ public interface PrestamoRepository extends MongoRepository<Prestamo, String> {
 
     @Aggregation(pipeline = {
         "{ '$lookup': { 'from': 'libros', 'localField': 'libro.$id', 'foreignField': '_id', 'as': 'libro_doc' } }",
-        "{ '$unwind': '$libro_doc' }",
-        "{ '$unwind': '$libro_doc.autores' }",
-        "{ '$lookup': { 'from': 'autores', 'localField': 'libro_doc.autores._id', 'foreignField': '_id', 'as': 'aut_doc' } }",
-        "{ '$unwind': '$aut_doc' }",
-        "{ '$group': { '_id': '$aut_doc.nombre', 'total': { '$sum': 1 } } }",
+        "{ '$unwind': { 'path': '$libro_doc', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$unwind': { 'path': '$libro_doc.autores', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$lookup': { 'from': 'autores', 'localField': 'libro_doc.autores', 'foreignField': '_id', 'as': 'aut_doc' } }",
+        "{ '$unwind': { 'path': '$aut_doc', 'preserveNullAndEmptyArrays': true } }",
+        "{ '$group': { '_id': { '$ifNull': [ '$aut_doc.nombre', 'Autor Desconocido' ] }, 'total': { '$sum': 1 } } }",
         "{ '$sort': { 'total': -1 } }",
         "{ '$limit': 5 }"
     })

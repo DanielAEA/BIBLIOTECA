@@ -20,7 +20,7 @@ public class GeneroController {
 
     @GetMapping
     public List<Genero> list() {
-        return generoService.listar();   //
+        return generoService.listar();   
     }
 
     @GetMapping("/{id}")

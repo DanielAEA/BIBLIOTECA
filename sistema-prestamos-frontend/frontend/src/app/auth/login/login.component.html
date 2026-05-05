@@ -7,11 +7,12 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-logo-side">
-        <img src="logo.png" alt="SIBU Logo" class="big-logo">
+        <img src="logo-light.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-light">
+        <img src="logo-dark.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-dark">
       </div>
 
       <div class="auth-form-side">
-        <!-- Error toast notification -->
+        
         <div class="error-toast" *ngIf="errorMessage" [class.show]="showError" [class.hide]="!showError">
           <span class="error-toast-text">{{ errorMessage }}</span>
           <button class="error-toast-close" (click)="showError = false">✕</button>
@@ -19,7 +20,7 @@
 
         <div class="auth-header">
           <h1>Bienvenido</h1>
-          <p>Inicia sesión para acceder a la biblioteca</p>
+          <p>Inicia sesión para acceder a CiberBook</p>
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form">

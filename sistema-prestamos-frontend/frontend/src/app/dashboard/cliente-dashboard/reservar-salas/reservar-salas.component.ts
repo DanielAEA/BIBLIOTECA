@@ -106,7 +106,7 @@ export class ReservarSalasComponent implements OnInit {
                 const exInicio = r.horaInicio.substring(0, 5);
                 const exFin = r.horaFin.substring(0, 5);
                 if (hora >= exInicio && hora < exFin) {
-                    return false; // Está ocupado
+                    return false; 
                 }
             }
             return true;

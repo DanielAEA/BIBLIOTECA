@@ -23,8 +23,11 @@ public class EditorialServiceImpl implements EditorialService {
 
     @Override
     public Editorial crear(@NonNull Editorial editorial) {
-        editorial.setId(null);
-        return editorialRepository.save(editorial);
+        return editorialRepository.findByNombre(editorial.getNombre())
+                .orElseGet(() -> {
+                    editorial.setId(null);
+                    return editorialRepository.save(editorial);
+                });
     }
 
     @Override
@@ -44,7 +47,7 @@ public class EditorialServiceImpl implements EditorialService {
         existente.setNombre(editorial.getNombre());
         Editorial guardado = editorialRepository.save(existente);
         
-        // Actualización en cascada para Libros que tienen esta editorial embebida
+        
         List<Libro> libros = libroRepository.findAll();
         for (Libro libro : libros) {
             if (libro.getEditorial() != null && id.equals(libro.getEditorial().getId())) {

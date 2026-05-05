@@ -36,16 +36,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Rutas totalmente públicas
-                        .requestMatchers("/auth/**", "/uploads/**", "/api/prestamos/debug-logs", "/api/stats/config", "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**", "/api/admin/regenerar-qr").permitAll()
                         
-                        // 2. Lecturas específicas que DEBEN ser públicas para el escaneo QR
+                        .requestMatchers("/auth/**", "/uploads/**", "/api/prestamos/debug-logs", "/api/stats/**", "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**", "/api/admin/regenerar-qr", "/api/libros/download-pdf/**").permitAll()
+                        
+                        
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/ejemplares/*").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*/qr").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*/ejemplares/*/qr").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/solicitudes/nueva").permitAll()
 
-                        // 3. Lecturas permitidas para usuarios autenticados (el resto de la API)
+                        
                         .requestMatchers(org.springframework.http.HttpMethod.GET, 
                                 "/api/libros/**", 
                                 "/api/autores/**", 
@@ -57,7 +58,7 @@ public class SecurityConfig {
                                 "/api/prestamos/**",
                                 "/api/reservas-sala/**").authenticated()
                         
-                        // 4. Acciones de cliente autenticado
+                        
                         .requestMatchers(org.springframework.http.HttpMethod.POST,
                                 "/api/resenas/**",
                                 "/api/prestamos/**",
@@ -67,10 +68,10 @@ public class SecurityConfig {
                                 "/api/reservas-sala/**",
                                 "/api/resenas/**").authenticated()
                         
-                        // 5. Rutas exclusivas para ADMIN
+                        
                         .requestMatchers("/api/**").hasRole("ADMIN")
                         
-                        // 6. Cualquier otra cosa requiere autenticación
+                        
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

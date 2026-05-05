@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { Router } from '@angular/router';
+import { finalize, forkJoin } from 'rxjs';
 import { BookService, Libro, LibroPayload } from '../../../services/book.service';
 import { AuthorService, Autor } from '../../../services/author.service';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
@@ -9,11 +10,12 @@ import { GeneroService, Genero } from '../../../services/genero.service';
 import { AuthService } from '../../../services/auth.service';
 import { StatsService } from '../../../services/stats.service';
 import Swal from 'sweetalert2';
+import { BookCoverUploadComponent } from './book-cover-upload.component';
 
 @Component({
   selector: 'app-libros',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BookCoverUploadComponent],
   templateUrl: './libros.component.html',
   styleUrls: ['./libros.component.scss']
 })
@@ -42,13 +44,18 @@ export class LibrosComponent implements OnInit {
   selectedAuthorDropdown: string | null = null;
   selectedFile: File | null = null;
 
+  // New features: View toggle and bulk selection
+  isListView = false;
+  selectedBookIds: Set<string> = new Set();
+
   constructor(
     private bookService: BookService,
     private authorService: AuthorService,
     private editorialService: EditorialService,
     private generoService: GeneroService,
     private authService: AuthService,
-    private statsService: StatsService
+    private statsService: StatsService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -66,7 +73,7 @@ export class LibrosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar libros:', err);
-        this.error = 'No se pudieron cargar los libros. Verifica que el backend esté corriendo.';
+        this.error = 'No se pudieron cargar los libros.';
         this.loading = false;
       }
     });
@@ -74,24 +81,13 @@ export class LibrosComponent implements OnInit {
 
   loadMetadata() {
     this.authorService.getAll().subscribe({
-      next: (authors) => (this.authors = authors),
-      error: (err) => console.error('Error al cargar autores:', err)
+      next: (authors) => (this.authors = authors)
     });
-
     this.editorialService.getAll().subscribe({
-      next: (editorials) => {
-        console.log('Editoriales cargadas:', editorials);
-        this.editorials = editorials;
-      },
-      error: (err) => {
-        console.error('Error al cargar editoriales:', err);
-        Swal.fire('Error', 'No se pudieron cargar las editoriales.', 'error');
-      }
+      next: (editorials) => (this.editorials = editorials)
     });
-
     this.generoService.getAll().subscribe({
-      next: (generos) => (this.generos = generos),
-      error: (err) => console.error('Error al cargar géneros:', err)
+      next: (generos) => (this.generos = generos)
     });
   }
 
@@ -102,18 +98,19 @@ export class LibrosComponent implements OnInit {
     this.selectedGeneroId = book.genero?.id ?? null;
     this.showEditForm = true;
     this.showCreateForm = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   createBook() {
     this.editingBook = {
       id: '',
       titulo: '',
-      stockDisponible: 0,
+      stockDisponible: 1,
       autores: [],
       editorial: undefined,
       genero: undefined,
-      formato: 'FISICO'
+      formato: 'FISICO',
+      isbn: '',
+      urlPortada: ''
     };
     this.selectedAuthorIds = [];
     this.selectedEditorialId = null;
@@ -121,7 +118,6 @@ export class LibrosComponent implements OnInit {
     this.selectedFile = null;
     this.showCreateForm = true;
     this.showEditForm = false;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   cancelEdit() {
@@ -140,19 +136,9 @@ export class LibrosComponent implements OnInit {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        Swal.fire('Error', 'Solo se permiten archivos PDF', 'error');
-        event.target.value = '';
-        this.selectedFile = null;
-        return;
-      }
+    if (file && file.type === 'application/pdf') {
       this.selectedFile = file;
     }
-  }
-
-  toggleAuthors() {
-    this.authorsExpanded = !this.authorsExpanded;
   }
 
   saveBook() {
@@ -176,41 +162,35 @@ export class LibrosComponent implements OnInit {
       autores: this.selectedAuthorIds.map((id) => ({ id })),
       editorial: this.selectedEditorialId ? { id: this.selectedEditorialId } : null,
       genero: this.selectedGeneroId ? { id: this.selectedGeneroId } : null,
-      formato: this.editingBook.formato || 'FISICO'
+      formato: this.editingBook.formato || 'FISICO',
+      isbn: this.editingBook.isbn,
+      urlPortada: this.editingBook.urlPortada
     };
 
     const handleUpload = (bookId: string, isNew: boolean) => {
       if (this.selectedFile && this.editingBook?.formato !== 'FISICO') {
         this.bookService.uploadPdf(bookId, this.selectedFile).subscribe({
-          next: () => this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} y PDF subido correctamente.`),
+          next: () => this.finishSave('¡Éxito!', `Libro guardado.`),
           error: (err) => {
-            console.error('Error al subir PDF:', err);
-            this.finishSave('¡Advertencia!', `Libro guardado, pero falló la subida del PDF: ${err.error?.error || err.message}`);
+            console.error('[PDF UPLOAD ERROR]', err);
+            const msg = err.error?.error || err.message || 'Error desconocido al subir el archivo.';
+            this.finishSave('¡Error PDF!', `Libro guardado, pero el PDF falló: ${msg}`);
           }
         });
       } else {
-        this.finishSave('¡Éxito!', `Libro ${isNew ? 'creado' : 'actualizado'} correctamente.`);
+        this.finishSave('¡Éxito!', `Libro guardado correctamente.`);
       }
     };
 
     if (this.showCreateForm) {
       this.bookService.createBook(payload).subscribe({
         next: (res) => handleUpload(res.id, true),
-        error: (err) => {
-          this.submitting = false;
-          console.error('Error al crear libro:', err);
-          const errorMessage = err?.error?.message || err?.message || 'Error desconocido';
-          Swal.fire('Error', `No se pudo crear el libro: ${errorMessage}`, 'error');
-        }
+        error: () => { this.submitting = false; Swal.fire('Error', 'No se pudo crear.', 'error'); }
       });
     } else {
       this.bookService.updateBook(this.editingBook.id, payload).subscribe({
         next: (res) => handleUpload(res.id, false),
-        error: (err) => {
-          this.submitting = false;
-          console.error('Error al actualizar libro:', err);
-          Swal.fire('Error', 'No se pudo actualizar el libro', 'error');
-        }
+        error: () => { this.submitting = false; Swal.fire('Error', 'No se pudo actualizar.', 'error'); }
       });
     }
   }
@@ -219,36 +199,19 @@ export class LibrosComponent implements OnInit {
     this.submitting = false;
     this.loadBooks();
     this.cancelEdit();
-    Swal.fire({
-      title,
-      text,
-      icon: title === '¡Éxito!' ? 'success' : 'warning',
-      timer: 2000,
-      showConfirmButton: false
-    });
+    Swal.fire({ title, text, icon: title === '¡Éxito!' ? 'success' : 'warning', timer: 2000, showConfirmButton: false });
   }
 
   deleteBook(book: Libro) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: `Deseas eliminar el libro "${book.titulo}"`,
+      title: '¿Eliminar?',
+      text: book.titulo,
       icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      showCancelButton: true
     }).then((result) => {
       if (result.isConfirmed) {
         this.bookService.deleteBook(book.id).subscribe({
-          next: () => {
-            this.loadBooks();
-            Swal.fire('¡Eliminado!', 'El libro ha sido eliminado.', 'success');
-          },
-          error: (err) => {
-            console.error('Error al eliminar libro:', err);
-            Swal.fire('Error', 'No se pudo eliminar el libro', 'error');
-          }
+          next: () => { this.loadBooks(); Swal.fire('Eliminado', '', 'success'); }
         });
       }
     });
@@ -256,22 +219,12 @@ export class LibrosComponent implements OnInit {
 
   leerOnline(libro: Libro) {
     if (libro.archivoDigital) {
-      const payload = this.authService.getPayload();
-      if (payload && (payload.id || payload.sub)) {
-          this.statsService.registrarLecturaDigital(payload.id || payload.sub, libro.id).subscribe();
-      }
       window.open(libro.archivoDigital, '_blank');
-    } else {
-      Swal.fire('Error', 'El archivo de este libro no se encuentra disponible.', 'error');
     }
   }
 
-
-
   getAuthorsString(book: Libro): string {
-    if (!book.autores || book.autores.length === 0) {
-      return 'Sin autor';
-    }
+    if (!book.autores || book.autores.length === 0) return 'Sin autor';
     return book.autores.map(a => a.nombre).join(', ');
   }
 
@@ -279,11 +232,8 @@ export class LibrosComponent implements OnInit {
     return book.editorial?.nombre || 'Sin editorial';
   }
 
-  getSelectedAuthorsNames(): string {
-    return this.selectedAuthorIds
-      .map(id => this.authors.find(a => a.id === id)?.nombre)
-      .filter(Boolean)
-      .join(', ');
+  getAuthorName(id: string): string {
+    return this.authors.find(a => a.id === id)?.nombre || 'Autor desconocido';
   }
 
   addAuthorFromDropdown() {
@@ -297,75 +247,182 @@ export class LibrosComponent implements OnInit {
     this.selectedAuthorIds = this.selectedAuthorIds.filter(aid => aid !== id);
   }
 
-  getAuthorName(id: string): string {
-    return this.authors.find(a => a.id === id)?.nombre || 'Autor desconocido';
-  }
-
   getAvailableAuthors(): Autor[] {
     return this.authors.filter(a => !this.selectedAuthorIds.includes(a.id));
   }
 
   addNewAuthor() {
-    const nombre = this.newAuthorName.trim();
-    if (!nombre) {
-      Swal.fire('Atención', 'Ingresa el nombre del autor.', 'warning');
+    if (!this.newAuthorName.trim()) return;
+    
+    // Check if it already exists in the list
+    const existing = this.authors.find(a => a.nombre.toLowerCase() === this.newAuthorName.trim().toLowerCase());
+    if (existing) {
+      if (!this.selectedAuthorIds.includes(existing.id)) {
+        this.selectedAuthorIds = [...this.selectedAuthorIds, existing.id];
+      }
+      this.newAuthorName = '';
       return;
     }
+
     this.addingAuthor = true;
-    this.authorService.create(nombre).subscribe({
+    this.authorService.create(this.newAuthorName).subscribe({
       next: (autor) => {
         this.authors.push(autor);
         this.selectedAuthorIds = [...this.selectedAuthorIds, autor.id];
         this.newAuthorName = '';
-        this.authorsExpanded = false;
-      },
-      error: (err) => {
-        console.error('Error al crear autor:', err);
-        Swal.fire('Error', 'No se pudo crear el autor.', 'error');
-      },
-      complete: () => (this.addingAuthor = false)
+        this.addingAuthor = false;
+      }
     });
   }
 
   addNewEditorial() {
-    const nombre = this.newEditorialName.trim();
-    if (!nombre) {
-      Swal.fire('Atención', 'Ingresa el nombre de la editorial.', 'warning');
+    if (!this.newEditorialName.trim()) return;
+
+    const existing = this.editorials.find(e => e.nombre.toLowerCase() === this.newEditorialName.trim().toLowerCase());
+    if (existing) {
+      this.selectedEditorialId = existing.id;
+      this.newEditorialName = '';
       return;
     }
+
     this.addingEditorial = true;
-    this.editorialService.create(nombre).subscribe({
-      next: (editorial) => {
-        this.editorials.push(editorial);
-        this.selectedEditorialId = editorial.id;
+    this.editorialService.create(this.newEditorialName).subscribe({
+      next: (ed) => {
+        this.editorials.push(ed);
+        this.selectedEditorialId = ed.id;
         this.newEditorialName = '';
-      },
-      error: (err) => {
-        console.error('Error al crear editorial:', err);
-        Swal.fire('Error', 'No se pudo crear la editorial.', 'error');
-      },
-      complete: () => (this.addingEditorial = false)
+        this.addingEditorial = false;
+      }
     });
   }
 
   addNewGenero() {
-    const nombre = this.newGeneroName.trim();
-    if (!nombre) {
-      Swal.fire('Atención', 'Ingresa el nombre del género.', 'warning');
+    if (!this.newGeneroName.trim()) return;
+
+    const existing = this.generos.find(g => g.nombre.toLowerCase() === this.newGeneroName.trim().toLowerCase());
+    if (existing) {
+      this.selectedGeneroId = existing.id;
+      this.newGeneroName = '';
       return;
     }
+
     this.addingGenero = true;
-    this.generoService.create(nombre).subscribe({
-      next: (genero) => {
-        this.generos.push(genero);
-        this.selectedGeneroId = genero.id;
+    this.generoService.create(this.newGeneroName).subscribe({
+      next: (gen) => {
+        this.generos.push(gen);
+        this.selectedGeneroId = gen.id;
         this.newGeneroName = '';
-      },
-      error: (err) => {
-        console.error('Error al crear género:', err);
-        Swal.fire('Error', 'No se pudo crear el género.', 'error');
-      },
-      complete: () => (this.addingGenero = false)
+        this.addingGenero = false;
+      }
+    });
+  }
+
+  verDetalles(book: Libro) {
+    this.router.navigate(['/admin/libros', book.id]);
+  }
+
+  onCoverUpdated(url: string) {
+    if (this.editingBook) this.editingBook.urlPortada = url;
+    this.loadBooks();
+  }
+
+  onMetadataFetched(data: any) {
+    if (!this.editingBook) return;
+    
+    this.editingBook.titulo = data.titulo || this.editingBook.titulo;
+    this.editingBook.urlPortada = data.urlPortada || this.editingBook.urlPortada;
+    this.editingBook.descripcion = data.descripcion || this.editingBook.descripcion;
+    this.editingBook.publicacion = data.publicacion || data.anio || this.editingBook.publicacion;
+    
+    if (data.autores && data.autores.length > 0) {
+      data.autores.forEach((nombre: string) => {
+        const existente = this.authors.find(a => a.nombre.toLowerCase() === nombre.toLowerCase());
+        if (existente) {
+          if (!this.selectedAuthorIds.includes(existente.id)) {
+            this.selectedAuthorIds.push(existente.id);
+          }
+        } else {
+          this.authorService.create(nombre).subscribe(a => {
+            this.authors.push(a);
+            this.selectedAuthorIds.push(a.id);
+          });
+        }
+      });
+    }
+
+    if (data.editorial) {
+      const existente = this.editorials.find(e => e.nombre.toLowerCase() === data.editorial.toLowerCase());
+      if (existente) {
+        this.selectedEditorialId = existente.id;
+      } else {
+        this.editorialService.create(data.editorial).subscribe(e => {
+          this.editorials.push(e);
+          this.selectedEditorialId = e.id;
+        });
+      }
+    }
+
+    if (data.genero) {
+      const existente = this.generos.find(g => g.nombre.toLowerCase() === data.genero.toLowerCase());
+      if (existente) {
+        this.selectedGeneroId = existente.id;
+      } else {
+        this.generoService.create(data.genero).subscribe(g => {
+          this.generos.push(g);
+          this.selectedGeneroId = g.id;
+        });
+      }
+    }
+  }
+
+  toggleView() {
+    this.isListView = !this.isListView;
+    this.selectedBookIds.clear();
+  }
+
+  toggleSelection(bookId: string) {
+    if (this.selectedBookIds.has(bookId)) {
+      this.selectedBookIds.delete(bookId);
+    } else {
+      this.selectedBookIds.add(bookId);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.books.forEach(b => this.selectedBookIds.add(b.id));
+    } else {
+      this.selectedBookIds.clear();
+    }
+  }
+
+  deleteSelectedBooks() {
+    const count = this.selectedBookIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} libros.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        this.bookService.bulkDeleteBooks(Array.from(this.selectedBookIds)).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.loadBooks();
+            this.selectedBookIds.clear();
+            Swal.fire('Eliminados', `${count} libros eliminados correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting books:', err);
+            Swal.fire('Error', 'No se pudieron eliminar los libros.', 'error');
+            this.loadBooks();
+          }
+        });
+      }
     });
   }
 }

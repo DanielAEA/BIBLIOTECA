@@ -72,7 +72,7 @@ export class ClienteSidebarComponent implements OnInit {
                texto += `\n\nDeuda actual en sistema: $${totalMulta.toLocaleString()}`;
             }
             Swal.default.fire({
-              title: 'Aviso de Biblioteca',
+              title: 'Aviso de CiberBook',
               text: texto,
               icon: 'warning',
               confirmButtonText: 'Entendido',

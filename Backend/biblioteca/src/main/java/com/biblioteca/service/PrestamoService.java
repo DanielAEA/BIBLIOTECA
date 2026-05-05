@@ -14,6 +14,7 @@ public interface PrestamoService {
     Prestamo devolverLibro(@NonNull String idPrestamo);
     Prestamo aceptarSolicitud(@NonNull String idPrestamo);
     Prestamo rechazarSolicitud(@NonNull String idPrestamo);
+    Prestamo pagarMulta(@NonNull String idPrestamo);
     void registrarLecturaVirtual(@NonNull String usuarioId, @NonNull String libroId);
     List<String> getDebugLogs();
     void logDebug(String message);

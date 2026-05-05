@@ -24,7 +24,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario crear(@NonNull Usuario usuario) {
         usuario.setId(null);
-        // Si no se especifica rol al crear, por defecto es CLIENTE
+        
         if (usuario.getRol() == null || usuario.getRol().isEmpty()) {
             usuario.setRol("CLIENTE");
         }
@@ -36,7 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario obtenerPorId(@NonNull String id) {
-        return usuarioRepository.findById(Objects.requireNonNull(id)).orElse(null); // test
+        return usuarioRepository.findById(Objects.requireNonNull(id)).orElse(null); 
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario.getNombre() != null) existente.setNombre(usuario.getNombre());
         if (usuario.getCorreo() != null) existente.setCorreo(usuario.getCorreo());
         
-        // PROTECCIÓN DE ROL: Solo actualizar si viene un valor no nulo
+        
         if (usuario.getRol() != null && !usuario.getRol().isEmpty()) {
             existente.setRol(usuario.getRol());
         }

@@ -92,18 +92,11 @@ export class LoanService {
     );
   }
 
-  payFine(prestamo: Prestamo): Observable<any> {
-    if (!prestamo.multa) return new Observable();
-    const updatedMulta = { ...prestamo.multa, pagada: true };
-    return this.http.put(`${this.baseUrl}/api/multas/${prestamo.multa.id}`, updatedMulta).pipe(
-      tap(() => {
+  payFine(prestamo: Prestamo): Observable<Prestamo> {
+    return this.http.put<Prestamo>(`${this.baseUrl}/api/prestamos/${prestamo.id}/pagar-multa`, {}).pipe(
+      tap((updated) => {
         const cur = this.loansSubject.value ?? [];
-        this.loansSubject.next(cur.map((p) => {
-          if (p.id === prestamo.id && p.multa) {
-            return { ...p, multa: { ...p.multa, pagada: true } };
-          }
-          return p;
-        }));
+        this.loansSubject.next(cur.map((p) => (p.id === updated.id ? updated : p)));
       })
     );
   }

@@ -1,10 +1,10 @@
-<div class="sibu-scaled-wrapper">
+<div class="ciberbook-wrapper">
   <div class="dashboard-layout">
-    <!-- Sidebar -->
+    
     <aside class="sidebar-coding" [class.open]="!isSidebarCollapsed">
       <div class="logo-details">
         <div class="logo-container" [style.opacity]="!isSidebarCollapsed ? '1' : '0'">
-            <img src="logo.png" alt="SIBU Logo" class="sidebar-logo">
+            <img [src]="(themeService.isDarkTheme$ | async) ? 'logo-dark.png?v=2' : 'logo-light.png?v=2'" alt="CiberBook Logo" class="sidebar-logo">
         </div>
         <i class='bx bx-menu' id="btn" (click)="toggleSidebar()"></i>
       </div>
@@ -32,9 +32,9 @@
       </ul>
     </aside>
 
-    <!-- Main Content Wrapper -->
+    
     <div class="main-wrapper">
-      <!-- Topbar -->
+      
       <header class="topbar">
         <div class="topbar-content">
           <div class="page-info">
@@ -51,10 +51,10 @@
         </div>
       </header>
 
-      <!-- Content Route Area -->
+      
       <main class="content-area">
         <router-outlet></router-outlet>
       </main>
     </div>
   </div>
-</div>
+</div>

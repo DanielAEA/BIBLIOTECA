@@ -173,6 +173,16 @@ public class PrestamoController {
         }
     }
 
+    @PutMapping("/{id}/pagar-multa")
+    public ResponseEntity<Object> pagarMulta(@PathVariable @NonNull String id) {
+        try {
+            return ResponseEntity.ok(mapToDTO(prestamoService.pagarMulta(id)));
+        } catch (Exception e) {
+            logger.error("Error al cobrar multa del préstamo {}: {}", id, e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/debug-logs")
     public List<String> getDebugLogs() {
         return prestamoService.getDebugLogs();

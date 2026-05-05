@@ -18,7 +18,7 @@ public class AutorController {
         this.autorService = autorService;
     }
 
-    // Lista todos los autores
+    
     @GetMapping
     public List<Autor> listar() {
         return autorService.listar();

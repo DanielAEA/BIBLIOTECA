@@ -23,8 +23,11 @@ public class AutorServiceImpl implements AutorService {
 
     @Override
     public Autor crear(@NonNull Autor autor) {
-        autor.setId(null);
-        return autorRepository.save(autor);
+        return autorRepository.findByNombre(autor.getNombre())
+                .orElseGet(() -> {
+                    autor.setId(null);
+                    return autorRepository.save(autor);
+                });
     }
 
     @Override
@@ -44,7 +47,7 @@ public class AutorServiceImpl implements AutorService {
         existente.setNombre(autor.getNombre());
         Autor guardado = autorRepository.save(existente);
         
-        // Actualización en cascada para Libros que tienen este autor embebido
+        
         List<Libro> libros = libroRepository.findAll(); 
         for (Libro libro : libros) {
             boolean modificado = false;

@@ -6,7 +6,16 @@ export const baseUrlInterceptor: HttpInterceptorFn = (req, next) => {
   const configService = inject(ConfigService);
   const baseUrl = configService.apiUrl;
 
+  
+  if (baseUrl === '/api' && req.url.startsWith('/api')) {
+    return next(req);
+  }
+
   if (baseUrl && (req.url.startsWith('/api') || req.url.startsWith('/auth') || req.url.startsWith('/uploads'))) {
+    
+    if (req.url.startsWith(baseUrl)) {
+      return next(req);
+    }
     const apiReq = req.clone({ url: `${baseUrl}${req.url}` });
     return next(apiReq);
   }

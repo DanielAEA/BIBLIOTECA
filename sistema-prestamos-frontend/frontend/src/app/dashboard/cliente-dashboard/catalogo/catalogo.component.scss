@@ -3,7 +3,7 @@
     padding: 1rem;
 }
 
-/* Search bar - full width, aligned with title */
+
 .search-bar {
     margin-bottom: 1.5rem;
 }
@@ -28,14 +28,14 @@
     }
 }
 
-/* Grid layout matching admin */
+
 .books-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
-/* Card matching admin's premium-card style */
+
 .book-card {
     margin-bottom: 0;
     display: flex;
@@ -46,8 +46,16 @@
     font-size: 1.25rem;
     font-weight: 800;
     color: var(--text-dark, #1f2937);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     letter-spacing: -0.3px;
+    
+    
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;         
+    overflow: hidden;
+    height: 3rem;          
 }
 
 .book-detail-row {
@@ -70,25 +78,78 @@
     margin-bottom: 1.5rem;
 }
 
-/* Badge styles matching admin */
 
 
 
 
-/* Actions row matching admin */
+
+
 .book-actions {
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
     border-top: 1px solid var(--border-color, #e5e7eb);
     padding-top: 1rem;
     margin-top: auto;
+}
 
-    button {
-        flex: 1;
+.btn-primary-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #1b2559; 
+    border: none;
+    color: white;
+    padding: 0.7rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex: 2;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(27, 37, 89, 0.15);
+
+    i { font-size: 1.1rem; }
+
+    &:hover {
+        background: #2b3674;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(27, 37, 89, 0.25);
+    }
+
+    &:active {
+        transform: translateY(0);
     }
 }
 
-/* Status feedback */
+.btn-secondary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #f1f5f9; 
+    border: none;
+    color: #475569;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1.2;
+    justify-content: center;
+
+    i { font-size: 1rem; }
+
+    &:hover {
+        color: #1e293b;
+        background: #e2e8f0;
+        transform: translateY(-1px);
+    }
+}
+
+
 .loading,
 .no-data {
     text-align: center;
@@ -96,7 +157,7 @@
     color: var(--text-muted, #6b7280);
 }
 
-/* =================== REVIEW MODAL =================== */
+
 .resena-overlay {
     position: fixed;
     top: 0;

@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "app.admin.email",
+      "type": "java.lang.String",
+      "description": "Correo del administrador inicial configurado en DataInitializer."
+    },
+    {
+      "name": "app.admin.password",
+      "type": "java.lang.String",
+      "description": "Contraseña del administrador inicial configurada en DataInitializer."
+    },
+    {
+      "name": "app.test.email",
+      "type": "java.lang.String",
+      "description": "Correo del usuario de prueba inicial configurado en DataInitializer."
+    },
+    {
+      "name": "app.test.password",
+      "type": "java.lang.String",
+      "description": "Contraseña del usuario de prueba inicial configurada en DataInitializer."
+    }
+  ]
+}

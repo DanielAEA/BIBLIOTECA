@@ -27,7 +27,7 @@
   .circle-1 {
     width: 400px;
     height: 400px;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
     top: -100px;
     right: -100px;
   }
@@ -35,7 +35,7 @@
   .circle-2 {
     width: 300px;
     height: 300px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+    background: linear-gradient(135deg, #475569 0%, #1e293b 100%);
     bottom: -50px;
     left: -50px;
   }
@@ -69,13 +69,13 @@
 
 .auth-logo-side {
   flex: 1.1;
-  background: white;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
-
+  position: relative;
+  
   .big-logo {
     width: 100%;
     max-width: 320px;
@@ -109,7 +109,7 @@
   }
 }
 
-// Error toast notification
+
 .error-toast {
   display: flex;
   align-items: center;
@@ -213,8 +213,8 @@
 
       &:focus {
         outline: none;
-        border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        border-color: #1e293b;
+        box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.1);
       }
 
       &::placeholder {
@@ -234,7 +234,7 @@
 .auth-button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -246,12 +246,12 @@
   justify-content: center;
   gap: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.35);
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.35);
+    background: linear-gradient(135deg, #0f172a 0%, #000000 100%);
   }
 
   &:active:not(:disabled) {
@@ -285,7 +285,7 @@
   }
 
   a {
-    color: #6366f1;
+    color: #1e293b;
     font-weight: 600;
     text-decoration: none;
 

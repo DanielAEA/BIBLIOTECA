@@ -1,0 +1,196 @@
+<div class="detalle-wrapper" *ngIf="!loading && libro">
+  
+  <button class="back-btn" (click)="goBack()">
+    <i class='bx bx-arrow-back'></i> Volver
+  </button>
+
+  
+  <div class="hero-section">
+    <div class="cover-container">
+      <img [src]="libro.urlPortada || 'https://via.placeholder.com/300x450?text=Sin+Portada'"
+           (error)="libro.urlPortada = 'https://via.placeholder.com/300x450?text=Error'"
+           alt="Portada" class="cover-img">
+    </div>
+
+    <div class="book-info">
+      <h1 class="book-title">{{ libro.titulo }}</h1>
+      <p class="book-authors">{{ getAutoresStr() }}</p>
+      
+      <div class="meta-tags">
+        
+        <span class="meta-tag tag-admin" *ngIf="isAdmin">
+          <i class='bx bx-key'></i> <strong>CÓDIGO:</strong> {{ libro.codigo || libro.id.substring(0,8).toUpperCase() }}
+        </span>
+        <span class="meta-tag" *ngIf="libro.editorial">
+          <i class='bx bx-buildings'></i> <strong>Editorial:</strong> {{ libro.editorial.nombre }}
+        </span>
+        <span class="meta-tag" *ngIf="libro.genero">
+          <i class='bx bx-purchase-tag'></i> <strong>Género:</strong> {{ libro.genero.nombre }}
+        </span>
+        <span class="meta-tag" *ngIf="libro.isbn">
+          <i class='bx bx-barcode'></i> <strong>ISBN:</strong> {{ libro.isbn }}
+        </span>
+        <span class="meta-tag" *ngIf="libro.publicacion">
+          <i class='bx bx-calendar'></i> <strong>Publicación:</strong> {{ libro.publicacion }}
+        </span>
+        <span class="meta-tag">
+          <i class='bx bx-book-open'></i>
+          <strong>Formato:</strong>
+          {{ libro.formato === 'FISICO' ? 'Físico' : libro.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+        </span>
+      </div>
+
+      
+      <div class="stock-section" *ngIf="libro.formato !== 'DIGITAL'">
+        <div class="stock-badge" [class.stock-available]="getStockDisponible() > 0" [class.stock-empty]="getStockDisponible() === 0">
+          <i class='bx bx-package'></i>
+          {{ getStockDisponible() }} de {{ getTotalEjemplares() }} disponibles
+        </div>
+      </div>
+
+      
+      <div class="rating-section" *ngIf="promedioLibro > 0">
+        <span class="stars-display">
+          <span *ngFor="let s of getStars(Math.round(promedioLibro))" class="star filled">★</span>
+          <span *ngFor="let s of getEmptyStars(Math.round(promedioLibro))" class="star empty">☆</span>
+        </span>
+        <span class="rating-text">{{ promedioLibro.toFixed(1) }}/5 ({{ resenasLibro.length }} reseñas)</span>
+      </div>
+
+      
+      <div class="action-buttons">
+        <button class="btn-primary" *ngIf="!isAdmin && libro.formato !== 'DIGITAL'"
+                (click)="reservarLibro()" [disabled]="getStockDisponible() === 0">
+          <i class='bx bx-book-reader'></i>
+          {{ getStockDisponible() > 0 ? 'Reservar Préstamo' : 'Sin ejemplares' }}
+        </button>
+        <button class="btn-secondary" *ngIf="libro.tieneDigital" (click)="leerOnline()">
+          <i class='bx bx-file'></i> Leer Online (PDF)
+        </button>
+        <button class="btn-secondary" *ngIf="!isAdmin" (click)="toggleResenaForm()">
+          <i class='bx bx-star'></i> Escribir Reseña
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section-card" *ngIf="isAdmin">
+    <div class="section-header">
+      <h3 class="section-title"><i class='bx bx-copy'></i> Ejemplares ({{ getTotalEjemplares() }})</h3>
+      <button class="btn-add" (click)="toggleEjemplarForm()">
+        <i class='bx' [ngClass]="showEjemplarForm ? 'bx-x' : 'bx-plus'"></i>
+        {{ showEjemplarForm ? 'Cancelar' : 'Agregar' }}
+      </button>
+    </div>
+
+    
+    <div class="add-form" *ngIf="showEjemplarForm">
+      <div style="flex: 1;">
+        <input type="text" [(ngModel)]="nuevoCodigo" placeholder="Ej: LIB001" class="form-input" style="text-transform: uppercase;">
+        <small style="display:block; margin-top: 4px; color: var(--text-muted);">
+          Siguiente sugerido: <strong>{{ nextSuggestedCode }}</strong>
+        </small>
+      </div>
+      <button class="btn-primary sm" (click)="addEjemplar()" [disabled]="addingEjemplar">
+        {{ addingEjemplar ? 'Agregando...' : 'Agregar' }}
+      </button>
+    </div>
+
+    
+    <div class="ejemplares-table-wrapper" *ngIf="libro.ejemplares && libro.ejemplares.length > 0">
+      <table class="ejemplares-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Estado</th>
+            <th>Disponible</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ej of libro.ejemplares">
+            <td><code class="code-badge">{{ ej.codigo }}</code></td>
+            <td>
+              <span class="status-badge" [class.status-disponible]="ej.estado === 'DISPONIBLE'" [class.status-prestado]="ej.estado !== 'DISPONIBLE'">
+                {{ ej.estado || 'DISPONIBLE' }}
+              </span>
+            </td>
+            <td>
+              <span [style.color]="ej.disponible ? 'var(--success, #10b981)' : 'var(--danger, #ef4444)'" style="font-weight: 700;">
+                {{ ej.disponible ? 'Sí' : 'No' }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="icon-btn qr-btn" (click)="verQrEjemplar(ej)" title="Ver QR">
+                <i class='bx bx-qr'></i>
+              </button>
+              <button class="icon-btn delete-btn" (click)="deleteEjemplar(ej)" title="Eliminar">
+                <i class='bx bx-trash'></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="empty-message" *ngIf="!libro.ejemplares || libro.ejemplares.length === 0">
+      No hay ejemplares registrados. Agrega uno para comenzar.
+    </p>
+  </div>
+
+  
+  <div class="section-card" *ngIf="libro.descripcion">
+    <h3 class="section-title"><i class='bx bx-text'></i> Descripción</h3>
+    <p class="description-text">{{ libro.descripcion }}</p>
+  </div>
+
+  
+  <div class="section-card">
+    <div class="section-header">
+      <h3 class="section-title"><i class='bx bx-star'></i> Reseñas ({{ resenasLibro.length }})</h3>
+      <button class="btn-add" *ngIf="!isAdmin" (click)="toggleResenaForm()">
+        <i class='bx' [ngClass]="showResenaForm ? 'bx-x' : 'bx-pencil'"></i>
+        {{ showResenaForm ? 'Cancelar' : 'Escribir Reseña' }}
+      </button>
+    </div>
+
+    
+    <div class="add-form resena-form" *ngIf="showResenaForm" style="flex-direction: column;">
+      <div>
+        <label>Calificación:</label>
+        <div class="star-selector mt-1">
+          <i class='bx' *ngFor="let s of [1,2,3,4,5]" 
+             [ngClass]="s <= resenaCalificacion ? 'bxs-star active star-btn' : 'bx-star star-btn'"
+             (click)="resenaCalificacion = s"></i>
+        </div>
+      </div>
+      <div style="width: 100%;">
+        <label>Comentario:</label>
+        <textarea [(ngModel)]="resenaComentario" rows="3" placeholder="¿Qué te pareció este libro?..." style="width:100%; margin-top:0.5rem;"></textarea>
+      </div>
+      <div style="text-align: right; width: 100%;">
+        <button class="btn-primary sm" (click)="submitResena()" [disabled]="submittingResena || !resenaComentario.trim()">
+          {{ submittingResena ? 'Enviando...' : 'Publicar Reseña' }}
+        </button>
+      </div>
+    </div>
+
+    
+    <div class="resenas-list" *ngIf="resenasLibro.length > 0">
+      <div class="resena-item" *ngFor="let r of resenasLibro">
+        <div class="resena-header">
+          <strong>{{ r.usuario.nombre || 'Anónimo' }}</strong>
+          <span class="stars-small">
+            <span *ngFor="let s of getStars(r.calificacion)" class="star filled">★</span>
+            <span *ngFor="let s of getEmptyStars(r.calificacion)" class="star empty">☆</span>
+          </span>
+        </div>
+        <p class="resena-comment">{{ r.comentario }}</p>
+        <span class="resena-date">{{ r.fechaCreacion | date:'mediumDate' }}</span>
+      </div>
+    </div>
+    <div class="empty-message" *ngIf="resenasLibro.length === 0">
+      Aún no hay reseñas para este libro.
+    </div>
+  </div>
+</div>

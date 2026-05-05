@@ -43,10 +43,7 @@ public class DataInitializer implements CommandLineRunner {
         fixPlainTextPasswords();
     }
 
-    /**
-     * Detecta contraseñas en texto plano y las encripta con BCrypt.
-     * Esto corrige usuarios que fueron insertados directamente en la BD con SQL.
-     */
+    
     private void fixPlainTextPasswords() {
         List<Usuario> usuarios = usuarioRepository.findAll();
         int fixed = 0;
@@ -64,7 +61,7 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeUsers() {
-        // Usuario ADMIN inicial
+        
         if (adminEmail != null && !adminEmail.isEmpty()) {
             if (usuarioRepository.findByCorreo(adminEmail) == null) {
                 Usuario admin = new Usuario();
@@ -77,7 +74,7 @@ public class DataInitializer implements CommandLineRunner {
             }
         }
 
-        // Usuario PRUEBA inicial
+        
         if (testEmail != null && !testEmail.isEmpty()) {
             if (usuarioRepository.findByCorreo(testEmail) == null) {
                 Usuario prueba = new Usuario();

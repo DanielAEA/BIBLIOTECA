@@ -7,14 +7,14 @@
   transition: all 0.3s ease;
 }
 
-/* Base Layout */
+
 .dashboard-layout {
   display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Sidebar Styling */
+
 .sidebar-coding {
   position: relative;
   height: 100%;
@@ -25,7 +25,7 @@
   transition: all 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: var(--card-shadow); /* Premium light shadow */
+  box-shadow: var(--card-shadow); 
 
   &::-webkit-scrollbar {
     display: none;
@@ -36,22 +36,22 @@
   }
 
   .logo-details {
-    height: 140px;
+    height: 120px;
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    margin-bottom: 2px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: transparent;
 
     .logo-container {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
-      transition: opacity 0.3s ease;
-      overflow: hidden;
-      padding-right: 30px; /* leave room for button */
+      justify-content: center;
+      transition: all 0.3s ease;
+      overflow: visible;
     }
 
     .sidebar-logo {
@@ -60,7 +60,12 @@
       max-height: 130px;
       max-width: 195px;
       object-fit: contain;
-      filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.4)) brightness(1.2); /* Make it stand out on dark bg */
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
 
     #btn {
@@ -183,7 +188,7 @@
         .links_name {
           color: var(--text-muted);
           font-size: 14px;
-          font-weight: 600; /* Bolder text for visibility */
+          font-weight: 600; 
           white-space: nowrap;
           opacity: 0;
           pointer-events: none;
@@ -200,7 +205,7 @@
 
           .links_name, i {
             transition: all 0.3s ease;
-            color: var(--text-dark); /* var(--text-dark) is white in dark-theme */
+            color: var(--text-dark); 
           }
         }
         
@@ -312,7 +317,7 @@
   }
 }
 
-/* Main Wrapper & Topbar */
+
 .main-wrapper {
   flex: 1;
   display: flex;
@@ -380,7 +385,7 @@
   }
 }
 
-/* Content Route Area */
+
 .content-area {
   padding: 0.75rem 1.5rem 1.5rem;
   flex: 1;
@@ -388,7 +393,7 @@
   overflow-y: auto;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 900px) {
   .page-info h1 {
     font-size: 1.8rem;
@@ -432,7 +437,7 @@
       li {
         margin: 0 5px;
         
-        input, .bx-search { display: none; } /* Hide search on extreme mobile */
+        input, .bx-search { display: none; } 
         
         a {
           padding: 0 15px;
@@ -448,14 +453,14 @@
       }
       
       .profile {
-        display: none; /* Hide profile block on mobile nav row */
+        display: none; 
       }
     }
   }
 
   .content-area {
     padding: 1rem;
-    zoom: 1; /* Disable zoom on mobile */
+    zoom: 1; 
     overflow-x: hidden;
   }
 

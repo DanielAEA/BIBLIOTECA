@@ -1,7 +1,4 @@
 services:
-  # ============================================
-  # Base de Datos MongoDB
-  # ============================================
   db:
     image: mongo:latest
     container_name: biblioteca-db
@@ -19,9 +16,6 @@ services:
       retries: 5
       start_period: 20s
 
-  # ============================================
-  # Backend - Spring Boot
-  # ============================================
   backend:
     build:
       context: ./Backend/biblioteca
@@ -41,9 +35,6 @@ services:
     networks:
       - biblioteca-network
 
-  # ============================================
-  # Frontend - Angular + Nginx
-  # ============================================
   frontend:
     build:
       context: ./sistema-prestamos-frontend/frontend
@@ -57,9 +48,6 @@ services:
     networks:
       - biblioteca-network
 
-  # ============================================
-  # Ngrok - Túnel público
-  # ============================================
   ngrok:
     image: ngrok/ngrok:latest
     container_name: biblioteca-ngrok
@@ -76,18 +64,12 @@ services:
     networks:
       - biblioteca-network
 
-# ============================================
-# Volúmenes persistentes
-# ============================================
 volumes:
   biblioteca-data:
     name: biblioteca-mongodb-data
   biblioteca-uploads:
     name: biblioteca-uploads
 
-# ============================================
-# Red compartida
-# ============================================
 networks:
   biblioteca-network:
     name: biblioteca-network

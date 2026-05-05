@@ -4,7 +4,7 @@
     <button class="premium-button" (click)="showLoanForm = true">+ Registrar Préstamo</button>
   </div>
 
-  <!-- Modal: Préstamo (Nuevo) -->
+  
   <div class="modal-overlay" *ngIf="showLoanForm" (click)="showLoanForm = false">
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -99,10 +99,20 @@
               <span *ngIf="p.devuelto">-</span>
             </td>
             <td>
-              <span *ngIf="getFine(p) > 0" [class.text-danger]="!p.multa?.pagada" [class.text-success]="p.multa?.pagada" style="font-weight: 700;">
-                ${{ getFine(p).toLocaleString() }}
-              </span>
-              <span *ngIf="getFine(p) === 0" style="color: var(--text-muted);">$0</span>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" *ngIf="getFine(p) > 0" 
+                       [checked]="p.multa?.pagada || false" 
+                       (change)="payFine(p)" 
+                       [disabled]="p.multa?.pagada || false"
+                       title="Marcar como pagada">
+                
+                <span *ngIf="getFine(p) > 0" [class.text-danger]="!p.multa?.pagada" [class.text-success]="p.multa?.pagada" style="font-weight: 700;">
+                  ${{ getFine(p).toLocaleString() }}
+                </span>
+                <span *ngIf="getFine(p) === 0" style="color: var(--text-muted);">$0</span>
+
+                <span *ngIf="p.multa?.pagada" class="premium-badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">PAGADO</span>
+              </div>
             </td>
             <td>
               <span class="premium-badge" [ngClass]="{
@@ -121,7 +131,6 @@
                 </ng-container>
                 
                 <button *ngIf="!p.devuelto && p.estado !== 'SOLICITADO'" class="btn-view-premium sm" (click)="markAsReturned(p)">Devolver</button>
-                <button *ngIf="p.multa && !p.multa.pagada" class="btn-edit-premium sm" style="background-color: #059669; color: white;" (click)="payFine(p)">Cobrar</button>
                 <button *ngIf="p.estado !== 'SOLICITADO'" class="btn-delete-premium sm" (click)="deleteLoan(p)">Eliminar</button>
               </div>
             </td>

@@ -1,17 +1,17 @@
 :host {
     display: block;
-    padding: 2rem; /* Aumentado de 0.5rem */
+    padding: 2rem; 
 }
 
 .premium-card {
-    padding: 2.5rem; /* Aumentado de 1.5rem para que el 'cuadro de atrás' sea más grande */
+    padding: 2.5rem; 
     border-radius: 24px;
 }
 
 .salas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); /* Aumentado de 280px */
-    gap: 2rem; /* Más espacio entre cuadros */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); 
+    gap: 2rem; 
 }
 
 .sala-card {
@@ -47,10 +47,12 @@
     font-size: 0.9rem;
     margin: 0 0 0.75rem;
     min-height: 2.7rem;
+    
+    
     display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
     -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;         
     overflow: hidden;
 }
 

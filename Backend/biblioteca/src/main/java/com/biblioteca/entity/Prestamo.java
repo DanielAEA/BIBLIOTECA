@@ -29,7 +29,7 @@ public class Prestamo {
 
     private Boolean devuelto = false;
     
-    // Estados: SOLICITADO, ACTIVO, DEVUELTO, RECHAZADO
+    
     private String estado = "ACTIVO";
 
     private Multa multa; 

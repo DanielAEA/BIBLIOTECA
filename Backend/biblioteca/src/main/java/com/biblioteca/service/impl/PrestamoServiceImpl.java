@@ -64,7 +64,7 @@ public class PrestamoServiceImpl implements PrestamoService {
             Libro libroReal = libroRepository.findById(Objects.requireNonNull(libroId, "Libro ID nulo"))
                     .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
 
-            // IMPORTANTE: Buscar y modificar el ejemplar directamente en la lista del libro
+            
             Ejemplar ejemplarBuscado = null;
             if (libroReal.getEjemplares() != null) {
                 for (Ejemplar e : libroReal.getEjemplares()) {
@@ -72,16 +72,17 @@ public class PrestamoServiceImpl implements PrestamoService {
                         if (!Boolean.TRUE.equals(e.getDisponible()) && !"SOLICITADO".equalsIgnoreCase(prestamo.getEstado())) {
                             throw new RuntimeException("Ejemplar " + codigoEjemplar + " no disponible");
                         }
-                        e.setDisponible(false); // MARCAR OCUPADO
+                        e.setDisponible(false); 
+                        e.setEstado("PRESTADO");
                         ejemplarBuscado = e;
                         break;
                     }
                 }
             }
 
-            if (ejemplarBuscado == null) throw new RuntimeException("Ejemplar no encontrado en el libro");
+            if (ejemplarBuscado == null) throw new RuntimeException("Ejemplar " + codigoEjemplar + " no encontrado en el libro");
 
-            // Persistir el cambio de disponibilidad en MongoDB
+            
             libroRepository.save(libroReal);
             logDebug(">>> DISPONIBILIDAD ACTUALIZADA EN LIBRO " + libroReal.getTitulo());
 
@@ -106,7 +107,7 @@ public class PrestamoServiceImpl implements PrestamoService {
         if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
         
         long durationDias = ChronoUnit.DAYS.between(p.getFechaPrestamo(), p.getFechaDevolucion());
-        if (durationDias < 1) durationDias = 15; // fallback
+        if (durationDias < 1) durationDias = 15; 
         
         p.setFechaPrestamo(LocalDateTime.now());
         p.setFechaDevolucion(LocalDateTime.now().plusDays(durationDias));
@@ -122,8 +123,25 @@ public class PrestamoServiceImpl implements PrestamoService {
         if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
         p.setEstado("RECHAZADO");
         p.setDevuelto(true);
-        liberarEjemplar(p); // LIBERAR EN MONGO
+        liberarEjemplar(p); 
         return prestamoRepository.save(p);
+    }
+
+    @SuppressWarnings("null")
+    private void liberarEjemplar(Prestamo p) {
+        if (p.getLibro() == null || p.getEjemplarCodigo() == null) return;
+        Libro libro = libroRepository.findById(Objects.requireNonNull(p.getLibro().getId())).orElse(null);
+        if (libro != null && libro.getEjemplares() != null) {
+            for (Ejemplar e : libro.getEjemplares()) {
+                if (p.getEjemplarCodigo().equals(e.getCodigo())) {
+                    e.setDisponible(true); 
+                    e.setEstado("DISPONIBLE");
+                    break;
+                }
+            }
+            libroRepository.save(libro); 
+            logDebug(">>> EJEMPLAR LIBERADO EN MONGO PARA EL LIBRO " + libro.getTitulo());
+        }
     }
 
     @Override
@@ -150,22 +168,6 @@ public class PrestamoServiceImpl implements PrestamoService {
         return prestamoRepository.save(existente);
     }
 
-    @SuppressWarnings("null")
-    private void liberarEjemplar(Prestamo p) {
-        if (p.getLibro() == null) return;
-        Libro libro = libroRepository.findById(Objects.requireNonNull(p.getLibro().getId())).orElse(null);
-        if (libro != null && libro.getEjemplares() != null) {
-            for (Ejemplar e : libro.getEjemplares()) {
-                if (p.getEjemplarCodigo().equals(e.getCodigo())) {
-                    e.setDisponible(true); // MARCAR DISPONIBLE
-                    break;
-                }
-            }
-            libroRepository.save(libro); // PERSISTIR EN MONGO
-            logDebug(">>> EJEMPLAR LIBERADO EN MONGO PARA EL LIBRO " + libro.getTitulo());
-        }
-    }
-
     @Override
     public void eliminar(@NonNull String id) {
         prestamoRepository.deleteById(Objects.requireNonNull(id));
@@ -174,6 +176,31 @@ public class PrestamoServiceImpl implements PrestamoService {
     @Override
     public List<Prestamo> listarPorUsuario(@NonNull String usuarioId) {
         return prestamoRepository.findByUsuarioId(usuarioId);
+    }
+
+    @SuppressWarnings("null")
+    @Override
+    public Prestamo pagarMulta(@NonNull String idPrestamo) {
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo))
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+        
+        Multa m = p.getMulta();
+        if (m == null) {
+            // Si no hay multa formal, calcularla según el retraso actual
+            long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion().truncatedTo(ChronoUnit.DAYS), 
+                                             LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
+            if (dias > 0) {
+                m = new Multa();
+                m.setTotal(VALOR_MULTA_DIARIA * (double) dias);
+                m.setDiasAtraso((int) dias);
+            } else {
+                throw new RuntimeException("Este préstamo no tiene multas pendientes.");
+            }
+        }
+        
+        m.setPagada(true);
+        p.setMulta(m);
+        return prestamoRepository.save(p);
     }
 
     @SuppressWarnings("null")

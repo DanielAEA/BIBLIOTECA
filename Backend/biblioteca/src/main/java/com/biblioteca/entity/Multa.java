@@ -1,7 +1,7 @@
 package com.biblioteca.entity;
 
 public class Multa {
-    // Embebido en Prestamo
+    
     
     private String id;
 

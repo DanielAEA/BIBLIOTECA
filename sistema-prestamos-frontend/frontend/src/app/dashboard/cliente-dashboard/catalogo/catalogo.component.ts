@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BookService, Libro } from '../../../services/book.service';
 import { LoanService } from '../../../services/loan.service';
 import { ResenaService, Resena } from '../../../services/resena.service';
@@ -36,7 +37,8 @@ export class CatalogoClienteComponent implements OnInit {
         private loanService: LoanService,
         private resenaService: ResenaService,
         private authService: AuthService,
-        private statsService: StatsService
+        private statsService: StatsService,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -185,4 +187,8 @@ export class CatalogoClienteComponent implements OnInit {
 
     getStars(n: number): number[] { return Array(n).fill(0); }
     getEmptyStars(n: number): number[] { return Array(5 - n).fill(0); }
+
+    verDetalles(libro: any) {
+        this.router.navigate(['/cliente/catalogo', libro.id]);
+    }
 }

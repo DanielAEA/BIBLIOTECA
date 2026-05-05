@@ -5,7 +5,14 @@
             <p>Monitoreo en tiempo real del rendimiento y KPIs del sistema</p>
         </div>
         <div class="header-actions" *ngIf="summary">
-            <span class="last-update">Última actualización: {{ today | date:'short' }}</span>
+            <button class="btn-toggle-source" [class.is-sample]="isSampleData" (click)="toggleDataSource()" 
+                    [title]="isSampleData ? 'Ver datos reales del sistema' : 'Ver datos de demostración'">
+                {{ isSampleData ? 'Activar Tiempo Real' : 'Ver Previsualización' }}
+            </button>
+            <span class="data-source-badge" [class.sample]="isSampleData">
+                {{ isSampleData ? 'Modo Previsualización' : 'Datos en Tiempo Real' }}
+            </span>
+            <span class="last-update" *ngIf="!isSampleData">Última actualización: {{ today | date:'short' }}</span>
         </div>
     </div>
 
@@ -31,7 +38,7 @@
         </div>
         <div class="stats-card-small danger">
             <div class="data">
-                <span class="count">{{ (summary.totalMultasPendientes || 0) | currency:'USD' }}</span>
+                <span class="count">{{ (summary.totalMultasPendientes || 0) | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
                 <span class="label">Multas Pendientes</span>
             </div>
         </div>
@@ -60,13 +67,23 @@
         <div class="premium-card chart-container featured">
             <h3>Tendencia de Préstamos (Mensual)</h3>
             <div class="canvas-wrapper">
-                <canvas #trendChart></canvas>
+                <div class="loading-overlay" *ngIf="loading"><div class="spinner"></div></div>
+                <canvas #trendChart [hidden]="!loading && loansByMonth.length === 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!loading && loansByMonth.length === 0">
+                    <i class='bx bx-line-chart'></i>
+                    <span>Sin historial de préstamos</span>
+                </div>
             </div>
         </div>
         <div class="premium-card chart-container">
             <h3>Libros más solicitados (Top 5)</h3>
             <div class="canvas-wrapper">
-                <canvas #popChart></canvas>
+                <div class="loading-overlay" *ngIf="loading"><div class="spinner"></div></div>
+                <canvas #popChart [hidden]="!loading && mostBorrowedBooks.length === 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!loading && mostBorrowedBooks.length === 0">
+                    <i class='bx bx-book-bookmark'></i>
+                    <span>Sin préstamos registrados</span>
+                </div>
             </div>
         </div>
     </div>
@@ -75,21 +92,33 @@
         <div class="premium-card chart-container">
             <h3>Préstamos por Género</h3>
             <div class="canvas-wrapper">
-                <canvas #genreChart></canvas>
+                <canvas #genreChart *ngIf="loansByGenre && loansByGenre.length > 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!loansByGenre || loansByGenre.length === 0">
+                    <i class="fas fa-tags"></i>
+                    <span>Datos insuficientes</span>
+                </div>
             </div>
         </div>
 
         <div class="premium-card chart-container">
             <h3>Estado de Multas (Monto)</h3>
             <div class="canvas-wrapper">
-                <canvas #finesChart></canvas>
+                <canvas #finesChart *ngIf="finesStats && finesStats.length > 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!finesStats || finesStats.length === 0">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Sin multas registradas</span>
+                </div>
             </div>
         </div>
 
         <div class="premium-card chart-container">
             <h3>Estado de Préstamos</h3>
             <div class="canvas-wrapper">
-                <canvas #statusChart></canvas>
+                <canvas #statusChart *ngIf="loansByStatus && loansByStatus.length > 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!loansByStatus || loansByStatus.length === 0">
+                    <i class="fas fa-tasks"></i>
+                    <span>Sin estados disponibles</span>
+                </div>
             </div>
         </div>
     </div>
@@ -98,22 +127,34 @@
         <div class="premium-card chart-container">
             <h3>Autores más leídos</h3>
             <div class="canvas-wrapper">
-                <canvas #authorChart></canvas>
+                <canvas #authorChart *ngIf="mostBorrowedAuthors && mostBorrowedAuthors.length > 0"></canvas>
+                <div class="no-data-overlay" *ngIf="!mostBorrowedAuthors || mostBorrowedAuthors.length === 0">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Datos insuficientes</span>
+                </div>
             </div>
         </div>
         <div class="premium-card chart-container center-content">
             <h3>Tasa de Puntualidad</h3>
             <div class="canvas-wrapper relative">
-                <canvas #punctualityChart></canvas>
-                <div class="chart-overlay" *ngIf="summary.tasaPuntualidad !== undefined">
+                <canvas #punctualityChart *ngIf="punctualityRate"></canvas>
+                <div class="chart-overlay" *ngIf="summary.tasaPuntualidad !== undefined && punctualityRate">
                     <span class="percentage">{{ Math.round(summary.tasaPuntualidad) }}%</span>
+                </div>
+                <div class="no-data-overlay" *ngIf="!punctualityRate">
+                    <i class="fas fa-clock"></i>
+                    <span>Tasa no calculable</span>
                 </div>
             </div>
         </div>
         <div class="premium-card chart-container">
             <h3>Formatos en Inventario</h3>
             <div class="canvas-wrapper">
-                <canvas #distChart></canvas>
+                <canvas #distChart *ngIf="inventoryDistribution"></canvas>
+                <div class="no-data-overlay" *ngIf="!inventoryDistribution">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Inventario vacío</span>
+                </div>
             </div>
         </div>
     </div>
@@ -135,37 +176,10 @@
                     <tbody>
                         <tr *ngFor="let d of debtors">
                             <td>{{ d.usuario }}</td>
-                            <td class="debt-monto">{{ d.deuda | currency:'USD' }}</td>
+                            <td class="debt-monto">{{ d.deuda | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
                         </tr>
                         <tr *ngIf="debtors.length === 0">
                             <td colspan="2" class="empty-msg">No hay deudas pendientes</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="premium-card table-container">
-            <div class="table-header">
-                <h3>🕸️ Libros sin movimiento (6 meses)</h3>
-            </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Título</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let b of inactiveBooks">
-                            <td>#{{ b.id }}</td>
-                            <td>{{ b.titulo }}</td>
-                            <td><button class="btn-action alt" (click)="promoverLibro(b)">Promover</button></td>
-                        </tr>
-                        <tr *ngIf="inactiveBooks.length === 0">
-                            <td colspan="3" class="empty-msg">Todos los libros están activos</td>
                         </tr>
                     </tbody>
                 </table>

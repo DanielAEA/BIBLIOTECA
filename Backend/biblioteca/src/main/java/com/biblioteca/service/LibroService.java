@@ -10,4 +10,6 @@ public interface LibroService {
     List<Libro> listar();
     Libro actualizar(@NonNull String id, @NonNull Libro libro);
     void eliminar(@NonNull String id);
+    void eliminarVarios(@NonNull List<String> ids);
+    void asignarCodigosLibros();
 }

@@ -1,14 +1,27 @@
 <div class="premium-container">
   <div class="premium-header">
     <h2>Gestión de Libros</h2>
-    <button class="premium-button" (click)="createBook()">+ Nuevo Libro</button>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <div class="view-toggle">
+        <button [class.active]="!isListView" (click)="toggleView()">Cuadrícula</button>
+        <button [class.active]="isListView" (click)="toggleView()">Lista</button>
+      </div>
+      <button class="premium-button" (click)="createBook()">+ Nuevo Libro</button>
+    </div>
+  </div>
+
+  <div class="bulk-actions" *ngIf="selectedBookIds.size > 0">
+    <span class="selected-count">{{ selectedBookIds.size }} items seleccionados</span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedBooks()">
+      Eliminar seleccionados
+    </button>
   </div>
 
   <div *ngIf="loading" class="loading">Cargando libros...</div>
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
   <div class="modal-overlay" *ngIf="(showEditForm || showCreateForm) && editingBook" (click)="cancelEdit()">
-    <div class="modal-container" style="max-width: 700px;" (click)="$event.stopPropagation()">
+    <div class="modal-container-enhanced" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>{{ showCreateForm ? 'Crear' : 'Editar' }} Libro</h3>
         <button class="close-btn" (click)="cancelEdit()">✕</button>
@@ -18,6 +31,19 @@
           <label>Título:</label>
           <input type="text" [(ngModel)]="editingBook.titulo" name="titulo" required
             placeholder="Ej. Cien años de soledad">
+        </div>
+
+        <div class="form-group">
+          <label>ISBN:</label>
+          <input type="text" [(ngModel)]="editingBook.isbn" name="isbn" placeholder="978-...">
+        </div>
+
+        
+        <div class="form-group" *ngIf="editingBook">
+          <app-book-cover-upload [libroId]="editingBook.id" [isbn]="editingBook.isbn"
+            [currentCover]="editingBook.urlPortada" (coverUpdated)="onCoverUpdated($event)"
+            (metadataFetched)="onMetadataFetched($event)">
+          </app-book-cover-upload>
         </div>
 
         <div class="form-group">
@@ -112,45 +138,96 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && !error" class="books-grid"
+  <div *ngIf="!loading && !error && !isListView" class="books-grid"
     style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
-    <div *ngFor="let b of books" class="premium-card" style="margin-bottom: 0; padding: 1.5rem;">
-      <div style="font-size: 1.25rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1rem;">{{ b.titulo }}
+    <div *ngFor="let b of books" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden;">
+      <div class="book-cover-container" style="height: 300px; width: 100%; background: #f1f5f9; cursor: pointer;"
+        (click)="verDetalles(b)">
+        <img [src]="b.urlPortada || 'https://via.placeholder.com/300x450?text=Sin+Portada'"
+          (error)="b.urlPortada = 'https://via.placeholder.com/300x450?text=Error+Imagen'"
+          style="width: 100%; height: 100%; object-fit: cover;">
       </div>
-      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
-        <strong style="color: var(--text-dark);">Autor(es):</strong> <span style="color: var(--text-muted);">{{
-          getAuthorsString(b) }}</span>
-      </div>
-      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
-        <strong style="color: var(--text-dark);">Editorial:</strong> <span style="color: var(--text-muted);">{{
-          getEditorialName(b) }}</span>
-      </div>
-      <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
-        <strong style="color: var(--text-dark);">Disponibles:</strong>
-        <span [style.color]="b.stockDisponible === 0 ? 'var(--danger)' : 'var(--text-main)'" style="font-weight: 700;">
-          {{ b.stockDisponible }}
-        </span>
-      </div>
-      <div
-        style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
-        <div>
-          <strong style="color: var(--text-dark);">Formato:</strong>
-          <span style="color: var(--text-muted); margin-left: 0.5rem;">
-            {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
-          </span>
+      <div style="padding: 1.5rem;">
+        <div class="book-title">{{ b.titulo }}</div>
+        <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
+          <strong style="color: var(--text-dark);">Autor(es):</strong> <span style="color: var(--text-muted);">{{
+            getAuthorsString(b) }}</span>
         </div>
-        <button class="btn-read-premium" *ngIf="b.tieneDigital" (click)="leerOnline(b)">
-          📄 Leer
-        </button>
+
+        <div
+          style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <strong style="color: var(--text-dark);">Formato:</strong>
+            <span style="color: var(--text-muted); margin-left: 0.5rem;">
+              {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+            </span>
+          </div>
+          <button class="btn-read-premium" *ngIf="b.tieneDigital" (click)="leerOnline(b)">
+            Leer
+          </button>
+        </div>
+        <div style="display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+          <button class="btn-view-premium sm" style="flex: 1;" (click)="verDetalles(b)">Detalles</button>
+          <button class="btn-edit-premium sm" style="flex: 1;" (click)="editBook(b)">Editar</button>
+          <button class="btn-delete-premium sm" style="flex: 1;" (click)="deleteBook(b)">Eliminar</button>
+        </div>
       </div>
-      <div style="display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-        <button class="btn-edit-premium sm" style="flex: 1;" (click)="editBook(b)">Editar</button>
-        <button class="btn-delete-premium sm" style="flex: 1;" (click)="deleteBook(b)">Eliminar</button>
-      </div>
+    </div>
+
+    <div *ngIf="!loading && !error && !isListView && books.length === 0" class="no-books">
+      No hay libros registrados.
     </div>
   </div>
 
-  <div *ngIf="!loading && !error && books.length === 0" class="no-books">
-    No hay libros registrados.
+  <!-- List View -->
+  <div *ngIf="!loading && !error && isListView" class="list-view-container">
+    <div class="premium-card table-card" style="padding: 0; overflow: hidden;">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th style="width: 50px; text-align: center;">
+              <input type="checkbox" (change)="toggleAll($event)" [checked]="selectedBookIds.size === books.length && books.length > 0">
+            </th>
+            <th>Portada</th>
+            <th>Título</th>
+            <th>Autor(es)</th>
+            <th>Formato</th>
+            <th style="text-align: right;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let b of books" [class.selected]="selectedBookIds.has(b.id)">
+            <td style="text-align: center;">
+              <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)">
+            </td>
+            <td>
+              <img [src]="b.urlPortada || 'https://via.placeholder.com/40x60?text=S/P'" 
+                   style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
+            </td>
+            <td>
+              <div style="font-weight: 700; color: var(--text-dark);">{{ b.titulo }}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">ISBN: {{ b.isbn || 'N/A' }}</div>
+            </td>
+            <td>{{ getAuthorsString(b) }}</td>
+            <td>
+              <span class="premium-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-info' : 'badge-success'">
+                {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+              </span>
+            </td>
+            <td style="text-align: right;">
+              <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button class="btn-read-premium sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)">Leer</button>
+                <button class="btn-view-premium sm" (click)="verDetalles(b)">Ver</button>
+                <button class="btn-edit-premium sm" (click)="editBook(b)">Editar</button>
+                <button class="btn-delete-premium sm" (click)="deleteBook(b)">Eliminar</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="books.length === 0">
+            <td colspan="6" class="no-books">No hay libros registrados.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

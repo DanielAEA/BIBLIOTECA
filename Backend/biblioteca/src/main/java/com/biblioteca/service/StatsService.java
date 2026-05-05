@@ -32,14 +32,11 @@ public class StatsService {
 
         double totalMultas = 0.0;
         
-        // Calcular multas de préstamos devueltos con multa y préstamos vencidos aún no devueltos
         List<Prestamo> todos = prestamoRepository.findAll();
         for (Prestamo p : todos) {
-            // Multa consolidada en el objeto
             if (p.getMulta() != null && !Boolean.TRUE.equals(p.getMulta().getPagada())) {
                 totalMultas += p.getMulta().getTotal();
             }
-            // Multa potencial si no ha devuelto y ya venció
             if (!Boolean.TRUE.equals(p.getDevuelto()) && p.getFechaDevolucion().isBefore(LocalDateTime.now())) {
                 long dias = ChronoUnit.DAYS.between(p.getFechaDevolucion().truncatedTo(ChronoUnit.DAYS), 
                                                  LocalDateTime.now().truncatedTo(ChronoUnit.DAYS));
@@ -50,10 +47,9 @@ public class StatsService {
         }
         summary.put("totalMultasPendientes", totalMultas);
 
-        // Obtener cantidad de préstamos vencidos
         summary.put("prestamosVencidos", prestamoRepository.findByDevueltoFalseAndFechaDevolucionBefore(LocalDateTime.now()).size());
 
-        // Contar ejemplares disponibles (están embebidos en libros)
+        
         long disponibles = libroRepository.findAll().stream()
                 .filter(l -> l.getEjemplares() != null)
                 .flatMap(l -> l.getEjemplares().stream())
@@ -61,7 +57,6 @@ public class StatsService {
                 .count();
         summary.put("ejemplaresDisponibles", disponibles);
 
-        // Calcular nuevos usuarios del último mes
         LocalDateTime mesAtras = LocalDateTime.now().minusMonths(1);
         summary.put("nuevosUsuariosMes", usuarioRepository.countByFechaRegistroBetween(mesAtras, LocalDateTime.now()));
 
@@ -129,9 +124,10 @@ public class StatsService {
     public List<Map<String, Object>> getFinesStats() {
         return prestamoRepository.findFinesStats().stream().map(doc -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("estado", doc.get("_id").equals(true) ? "PAGADA" : "PENDIENTE");
-            map.put("total", doc.get("total"));
-            map.put("cantidad", doc.get("cantidad"));
+            Object id = doc.get("_id");
+            map.put("estado", Boolean.TRUE.equals(id) ? "PAGADA" : "PENDIENTE");
+            map.put("total", doc.get("total") != null ? doc.get("total") : 0);
+            map.put("cantidad", doc.get("cantidad") != null ? doc.get("cantidad") : 0);
             return map;
         }).collect(Collectors.toList());
     }
@@ -156,10 +152,13 @@ public class StatsService {
     }
 
     private List<Map<String, Object>> mapMongoResults(List<Document> results, String keyName, String valueName) {
+        if (results == null) return new ArrayList<>();
         return results.stream().map(doc -> {
             Map<String, Object> map = new HashMap<>();
-            map.put(keyName, doc.get("_id"));
-            map.put(valueName, doc.get("total"));
+            Object id = doc.get("_id");
+            Object total = doc.get("total");
+            map.put(keyName, id != null ? id : "N/A");
+            map.put(valueName, total != null ? total : 0);
             return map;
         }).collect(Collectors.toList());
     }

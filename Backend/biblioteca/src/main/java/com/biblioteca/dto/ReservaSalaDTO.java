@@ -19,7 +19,7 @@ public class ReservaSalaDTO {
     
     private String motivo;
 
-    // Getters and Setters
+    
     public String getSalaId() { return salaId; }
     public void setSalaId(String salaId) { this.salaId = salaId; }
 

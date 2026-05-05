@@ -21,18 +21,18 @@ public class JwtService {
     @org.springframework.beans.factory.annotation.Value("${jwt.secret:miClaveSecretaParaJWT123456789012345678901234567890}")
     private String SECRET_KEY;
 
-    // Extraer el nombre de usuario (subject) del token
+    
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // Extraer una información específica (claim) del token
+    
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // Generar un token con la información del usuario
+    
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities()
@@ -44,7 +44,7 @@ public class JwtService {
         extraClaims.put("roles", roles);
         extraClaims.put("authorities", roles);
 
-        // Incluir el ID numérico del usuario si es una instancia de Usuario (entidad personalizada)
+        
         if (userDetails instanceof com.biblioteca.entity.Usuario) {
             extraClaims.put("id", ((com.biblioteca.entity.Usuario) userDetails).getId());
         }
@@ -52,36 +52,36 @@ public class JwtService {
         return generateToken(extraClaims, userDetails);
     }
 
-    // Método interno para construir y firmar el token JWT
+    
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                // Caducidad de 100 años (sin expiración práctica)
+                
                 .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 100))
                 .signWith(getSignInKey())
                 .compact();
     }
 
-    // Validar si el token pertenece al usuario y no ha caducado
+    
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    // Comprobar si el token ha expirado
+    
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    // Extraer la fecha de expiración del token
+    
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    // Obtener todos los datos (claims) contenidos en el token
+    
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
@@ -91,7 +91,7 @@ public class JwtService {
                 .getPayload();
     }
 
-    // Obtener la clave de firma a partir de la constante SECRET_KEY
+    
     private SecretKey getSignInKey() {
         byte[] keyBytes = SECRET_KEY.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);

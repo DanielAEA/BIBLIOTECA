@@ -1,6 +1,6 @@
 <div class="salas-container">
 
-    <!-- Formulario crear/editar sala (Modal) -->
+    
     <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
         <div class="modal-container" (click)="$event.stopPropagation()">
             <div class="modal-header">
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <!-- Tabla de reservas de una sala (Modal) -->
+    
     <div class="modal-overlay" *ngIf="showReservas && selectedSala" (click)="closeReservas()">
         <div class="modal-container" style="max-width: 900px;" (click)="$event.stopPropagation()">
             <div class="modal-header">

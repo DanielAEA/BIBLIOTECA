@@ -9,7 +9,7 @@
     <div *ngIf="loading" class="loading">Cargando tus préstamos...</div>
     <div *ngIf="error" class="error-message">{{ error }}</div>
 
-    <!-- Préstamos Activos -->
+    
     <div *ngIf="!loading && !error" class="premium-card">
         <h3>Préstamos Activos</h3>
         <div *ngIf="getActiveLoans().length === 0" class="no-data">No tienes libros pendientes de devolución.</div>
@@ -56,7 +56,7 @@
         </table>
     </div>
 
-    <!-- Historial -->
+    
     <div *ngIf="!loading && !error && getReturnedLoans().length > 0" class="premium-card" style="margin-top:1rem">
         <h3>Historial de Lectura</h3>
         <table class="premium-table">

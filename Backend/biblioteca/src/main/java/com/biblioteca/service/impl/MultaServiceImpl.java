@@ -38,12 +38,12 @@ public class MultaServiceImpl implements MultaService {
 
     @Override
     @NonNull
-    @SuppressWarnings("null") // Objects.requireNonNull guarantees non-null at runtime
+    @SuppressWarnings("null") 
     public Multa actualizar(@NonNull String id, @NonNull Multa multa) {
         Multa existente = multaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Multa no encontrada"));
         
-        // Solo actualizamos los campos que pueden cambiar
+        
         if (multa.getTotal() != null) existente.setTotal(multa.getTotal());
         if (multa.getDiasAtraso() != null) existente.setDiasAtraso(multa.getDiasAtraso());
         if (multa.getPagada() != null) existente.setPagada(multa.getPagada());

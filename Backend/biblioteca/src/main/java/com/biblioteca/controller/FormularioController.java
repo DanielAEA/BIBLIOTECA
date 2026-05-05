@@ -27,7 +27,7 @@ public class FormularioController {
                 tituloLibro = libro.get().getTitulo();
             }
         } catch (Exception ignored) {
-            // silencioso
+            
         }
 
         String titulo = tituloLibro;

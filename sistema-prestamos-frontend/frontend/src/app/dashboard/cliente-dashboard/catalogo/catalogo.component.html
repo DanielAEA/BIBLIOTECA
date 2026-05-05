@@ -11,16 +11,20 @@
     <div *ngIf="loading" class="loading">Cargando catálogo...</div>
 
     <div class="books-grid" *ngIf="!loading">
-        <div class="premium-card book-card" *ngFor="let libro of filteredLibros">
-            <div class="book-title-row">
-                {{ libro.titulo }}
+        <div class="premium-card book-card" *ngFor="let libro of filteredLibros" style="padding: 0; overflow: hidden;">
+            <div class="book-cover-container" style="height: 250px; width: 100%; background: #f1f5f9; cursor: pointer;" (click)="verDetalles(libro)">
+                <img [src]="libro.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'" 
+                     (error)="libro.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
+                     style="width: 100%; height: 100%; object-fit: cover;">
             </div>
+            <div style="padding: 1.25rem;">
+                <div class="book-title-row">
+                    {{ libro.titulo }}
+                </div>
             <div class="book-detail-row">
                 <strong>Autor(es):</strong> <span class="detail-value">{{ getAutoresStr(libro) }}</span>
             </div>
-            <div class="book-detail-row" *ngIf="libro.genero">
-                <strong>Género:</strong> <span class="detail-value">{{ libro.genero.nombre }}</span>
-            </div>
+
             <div class="book-detail-row">
                 <strong>Formato:</strong>
                 <span class="detail-value">
@@ -30,17 +34,13 @@
                     Leer Online
                 </button>
             </div>
-            <div class="book-detail-row" *ngIf="libro.formato !== 'DIGITAL'">
-                <strong>Disponibles:</strong>
-                <span class="detail-value" [style.color]="getEjemplaresDisponibles(libro) === 0 ? 'var(--danger)' : 'var(--text-main)'">
-                    {{ getEjemplaresDisponibles(libro) }}
-                </span>
-            </div>
+
             <div class="book-actions">
-                <button class="btn-edit-premium sm" (click)="openResenaForm(libro)">Reseñar</button>
-                <button *ngIf="libro.formato !== 'DIGITAL'" class="btn-edit-premium sm" (click)="reservarLibro(libro)"
-                    [disabled]="getEjemplaresDisponibles(libro) === 0">
-                    {{ getEjemplaresDisponibles(libro) > 0 ? 'Reservar' : 'No disponible' }}
+                <button class="btn-primary-outline" (click)="verDetalles(libro)">
+                    <i class='bx bx-info-circle'></i> Ver detalles
+                </button>
+                <button class="btn-secondary-link" (click)="openResenaForm(libro)">
+                    <i class='bx bx-star'></i> Reseñar
                 </button>
             </div>
         </div>

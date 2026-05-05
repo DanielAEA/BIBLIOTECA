@@ -17,7 +17,7 @@ export class ResenasComponent implements OnInit {
     libros: Libro[] = [];
     loading = false;
 
-    // Filtro
+    
     selectedLibroFilter: string | null = null;
 
     constructor(

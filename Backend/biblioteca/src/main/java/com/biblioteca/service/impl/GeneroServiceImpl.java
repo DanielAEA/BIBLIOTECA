@@ -23,8 +23,11 @@ public class GeneroServiceImpl implements GeneroService {
 
     @Override
     public Genero crear(@NonNull Genero genero) {
-        genero.setId(null);
-        return generoRepository.save(genero);
+        return generoRepository.findByNombre(genero.getNombre())
+                .orElseGet(() -> {
+                    genero.setId(null);
+                    return generoRepository.save(genero);
+                });
     }
 
     @Override
@@ -44,7 +47,7 @@ public class GeneroServiceImpl implements GeneroService {
         existente.setNombre(genero.getNombre());
         Genero guardado = generoRepository.save(existente);
         
-        // Actualización en cascada para Libros
+        
         List<Libro> libros = libroRepository.findAll();
         for (Libro libro : libros) {
             if (libro.getGenero() != null && id.equals(libro.getGenero().getId())) {

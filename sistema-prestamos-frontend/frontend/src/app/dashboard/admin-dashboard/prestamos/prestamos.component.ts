@@ -216,10 +216,12 @@ export class PrestamosComponent implements OnInit {
   }
 
   payFine(prestamo: Prestamo) {
-    if (!prestamo.multa) return;
+    const fineAmount = this.getFine(prestamo);
+    if (fineAmount <= 0) return;
+
     Swal.fire({
       title: '¿Confirmar cobro?',
-      text: `¿Cobrar multa de $${prestamo.multa.total.toLocaleString()}?`,
+      text: `¿Cobrar multa de $${fineAmount.toLocaleString()}?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, cobrar'

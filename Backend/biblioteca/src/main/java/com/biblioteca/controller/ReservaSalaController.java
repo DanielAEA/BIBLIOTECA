@@ -111,8 +111,8 @@ public class ReservaSalaController {
             reserva.setHoraInicio(dto.getHoraInicio());
             reserva.setHoraFin(dto.getHoraFin());
             reserva.setMotivo(dto.getMotivo());
-            reserva.setEstado("CONFIRMADA"); // Por defecto confirmada al crear por cliente? O pendiente?
-            // En el frontend no se especifica, pero segun el componente admin se ve CONFIRMADA
+            reserva.setEstado("CONFIRMADA"); 
+            
             
             ReservaSala guardada = reservaSalaService.crear(reserva);
             return ResponseEntity.status(HttpStatus.CREATED).body(mapToDTO(guardada));

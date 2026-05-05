@@ -30,14 +30,14 @@ public class AuthService {
     }
 
     public Map<String, Object> register(Usuario usuario) {
-        // Verificar si el correo ya existe
+        
         if (usuarioRepository.findByCorreo(usuario.getCorreo()) != null) {
             throw new RuntimeException("El correo ya está registrado");
         }
 
-        // Asignar el rol de 'CLIENTE' por defecto a los nuevos registros
+        
         usuario.setRol("CLIENTE");
-        // Encriptar la contraseña antes de guardar
+        
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
         try {
@@ -51,11 +51,11 @@ public class AuthService {
     }
 
     public Map<String, Object> login(String email, String password) {
-        // Autenticar credenciales
+        
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, password));
 
-        // Obtener usuario y generar token JWT
+        
         Usuario usuario = usuarioRepository.findByCorreo(email);
         String token = jwtService.generateToken(usuario);
 

@@ -22,14 +22,14 @@ export class SalasComponent implements OnInit {
     editingSala: Sala | null = null;
     submitting = false;
 
-    // Formulario sala
+    
     salaNombre = '';
     salaDescripcion = '';
     salaCapacidad: number | null = null;
     salaUbicacion = '';
     salaActiva = true;
 
-    // Ver reservas de una sala
+    
     selectedSala: Sala | null = null;
 
     constructor(

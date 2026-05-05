@@ -24,7 +24,7 @@ body.dark-theme {
     --bg-card: #111c44;
     --bg-alt: #1b254b;
     --text-main: #ffffff;
-    --text-muted: #e2e8f0; /* Brighter light-grey for better visibility */
+    --text-muted: #e2e8f0; 
     --text-dark: #ffffff;
     --border-color: rgba(255, 255, 255, 0.15);
     --card-shadow: 0px 18px 40px rgba(0, 0, 0, 0.5);
@@ -43,7 +43,24 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* === Global Premium Modals === */
+/* Logo theme switching */
+.logo-for-dark {
+    display: none !important;
+}
+
+.logo-for-light {
+    display: block !important;
+}
+
+.dark-theme .logo-for-dark {
+    display: block !important;
+}
+
+.dark-theme .logo-for-light {
+    display: none !important;
+}
+
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -118,9 +135,9 @@ body {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* === Global UI Scaling Wrapper (The "Perfect" State) === */
-.sibu-scaled-wrapper {
-    font-size: 14px; /* Keep base normal */
+
+.ciberbook-wrapper {
+    font-size: 14px; 
     
     --radius-xl: 16px;
     --radius-lg: 12px;
@@ -160,7 +177,7 @@ body {
         }
     }
 
-    /* Outer Page Wrappers */
+    
     .salas-container, .settings-container, .table-container, .premium-container {
         padding: 0.75rem 1rem;
         min-height: calc(100vh - 80px);
@@ -205,7 +222,7 @@ body {
         }
     }
 
-    /* Action Buttons - Image 2 Pixel Perfect */
+    
     .action-btn {
         padding: 0.35rem 1.1rem;
         border-radius: 8px;
@@ -228,7 +245,7 @@ body {
 
     .action-edit { background: #e2e8f0 !important; color: #1b2559 !important; }
     .action-delete { background: #fee2e2 !important; color: #ef4444 !important; }
-    .action-save { background: #1b2559 !important; color: white !important; } /* Enterprise Black */
+    .action-save { background: #1b2559 !important; color: white !important; } 
     .action-cancel { background: #f1f5f9 !important; color: #64748b !important; }
     .action-view { background: #f0fdf4 !important; color: #10b981 !important; }
 
@@ -266,12 +283,12 @@ body {
             color: #065f46 !important; 
         }
         &.status-borrowed, &.status-pending, &.status-inactive { 
-            background: #fff7ed !important; /* Peach/Yellow for PENDIENTE in Image 2 */
+            background: #fff7ed !important; 
             color: #c2410c !important; 
         }
     }
 
-    /* The Main Rounded Cards */
+    
     .table-card, .crud-section, .edit-form {
         background: var(--bg-card) !important;
         padding: 0 !important; 
@@ -288,11 +305,11 @@ body {
         h3, h4 { margin-top: 0; margin-bottom: 1.5rem; }
     }
 
-    /* Horizontal Compact Layouts for "Image 2" */
+    
     .horizontal-row {
         display: flex;
         flex-direction: row;
-        flex-wrap: nowrap; /* Force one line */
+        flex-wrap: nowrap; 
         gap: 1.25rem;
         align-items: flex-end;
         width: 100%;
@@ -327,15 +344,15 @@ body {
     }
 }
 
-/* Base Styles (Dark Mode Compatibility) */
-.dark-theme .sibu-scaled-wrapper {
+
+.dark-theme .ciberbook-wrapper {
     .action-edit { background: rgba(27, 37, 89, 0.15); color: #94a3b8; }
     .action-delete { background: rgba(239, 68, 68, 0.15); color: #f87171; }
     .action-view { background: rgba(16, 185, 129, 0.15); color: #34d399; }
     .action-cancel { background: rgba(255,255,255,0.05); color: #94a3b8; }
 }
 
-/* Global Premium Utilities (Refined) */
+
 .premium-container {
     padding: 1.5rem;
     animation: slideFadeUp 0.3s ease forwards;
@@ -491,7 +508,7 @@ body {
     }
 }
 
-/* Aggressive Dark Theme Overrides for All Dashboards */
+
 .dark-theme {
     .tabs {
         display: inline-flex;
@@ -622,7 +639,7 @@ body {
     color: var(--warning);
 }
 
-/* === Subtly Refined Action Buttons (No Icons) === */
+
 .btn-premium {
   display: inline-flex;
   align-items: center;
@@ -668,7 +685,7 @@ body {
 .btn-delete-premium {
   @extend .btn-premium;
   background: #fee2e2;
-  color: #dc2626; /* Slightly darker red for better contrast */
+  color: #dc2626; 
 
   &:hover {
     background: #fecaca;
@@ -700,7 +717,7 @@ body {
     &:hover { background: rgba(239, 68, 68, 0.25); }
   }
 
-  /* Badge Overrides for Dark Mode */
+  
   .badge-success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
   .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; }
   .badge-warning { background: rgba(255, 206, 32, 0.15); color: var(--warning); }
@@ -721,7 +738,7 @@ body {
   }
 }
 
-/* === Global Read Online Button (Premium & Compact) === */
+
 .btn-read-premium {
   display: inline-flex;
   align-items: center;
@@ -750,7 +767,7 @@ body {
   }
 }
 
-/* Global Responsive Rules */
+
 @media (max-width: 768px) {
     .premium-card {
         padding: 1rem !important;
@@ -758,7 +775,7 @@ body {
     }
 
     .premium-table {
-        min-width: 600px; /* Forces horizontal scroll if content doesn't fit */
+        min-width: 600px; 
     }
 
     .horizontal-row, .filters-row {

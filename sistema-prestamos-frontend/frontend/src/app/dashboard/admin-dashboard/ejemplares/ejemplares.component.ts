@@ -177,7 +177,7 @@ export class EjemplaresComponent implements OnInit {
 
   verQr(ejemplar: Ejemplar) {
     const apiBase = this.configService.apiUrl;
-    // URL del QR estático generado por el backend
+    
     const qrImgUrl = `${apiBase}/qr/qr-ejemplar-${ejemplar.id}.png`;
     
     Swal.fire({

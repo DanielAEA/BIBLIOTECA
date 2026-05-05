@@ -38,29 +38,29 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public SolicitudPrestamo crearSolicitud(@NonNull SolicitudPrestamo solicitud) {
-        // 1. Verificar si el usuario está registrado
+        
         Usuario usuario = usuarioRepository.findByCorreo(solicitud.getEmailCliente());
         if (usuario == null) {
             throw new RuntimeException("El correo " + solicitud.getEmailCliente() + " no está registrado. Por favor, regístrate primero.");
         }
 
-        // 2. Buscar el libro y ejemplar para validar disponibilidad
+        
         Libro libro = libroRepository.findById(Objects.requireNonNull(solicitud.getLibroId()))
                 .orElseThrow(() -> new RuntimeException("Libro no encontrado"));
         
         List<Ejemplar> ejemplares = libro.getEjemplares();
-        if (ejemplares == null) throw new RuntimeException("Este libro no tiene ejemplares registrados");
+        if (ejemplares == null || ejemplares.isEmpty()) throw new RuntimeException("Este libro no tiene ejemplares registrados");
 
         String codigoEjemplar = solicitud.getCodigoEjemplar();
-        if (codigoEjemplar == null || codigoEjemplar.equals("N/A")) {
-            // Si no viene código (ej: libroId directo), buscar el primero disponible
+        if (codigoEjemplar == null || codigoEjemplar.equals("N/A") || codigoEjemplar.isBlank()) {
+            
             Ejemplar disponible = ejemplares.stream()
                     .filter(e -> Boolean.TRUE.equals(e.getDisponible()))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("No hay ejemplares disponibles para este libro"));
             codigoEjemplar = disponible.getCodigo();
         } else {
-            // Validar que el ejemplar específico esté disponible
+            
             String finalCodigo = codigoEjemplar;
             Ejemplar e = ejemplares.stream()
                     .filter(ex -> ex.getCodigo().equals(finalCodigo))
@@ -71,13 +71,12 @@ public class SolicitudServiceImpl implements SolicitudService {
             }
         }
 
-        // 3. CREAR EL PRÉSTAMO DIRECTAMENTE (Estado: SOLICITADO)
-        // Esto hace que aparezca en la gestión de préstamos del administrador
+        
         Prestamo prestamoNuevo = new Prestamo();
         prestamoNuevo.setUsuario(usuario);
         prestamoNuevo.setLibro(libro);
         prestamoNuevo.setEjemplarCodigo(codigoEjemplar);
-        prestamoNuevo.setEstado("SOLICITADO"); // Aparecerá como solicitud pendiente en la tabla de préstamos
+        prestamoNuevo.setEstado("SOLICITADO"); 
         prestamoNuevo.setFechaPrestamo(LocalDateTime.now());
         
         int dias = (solicitud.getDiasPrestamo() != null && solicitud.getDiasPrestamo() > 0) 
@@ -87,8 +86,9 @@ public class SolicitudServiceImpl implements SolicitudService {
         
         prestamoService.crear(prestamoNuevo);
 
-        // 4. Guardar también el registro de solicitud (opcional, para histórico)
-        solicitud.setEstado("PENDIENTE"); // Cambiado a PENDIENTE para que el admin lo acepte
+        
+        solicitud.setCodigoEjemplar(codigoEjemplar);
+        solicitud.setEstado("PENDIENTE"); 
         solicitud.setFechaSolicitud(LocalDateTime.now());
         return solicitudRepository.save(solicitud);
     }

@@ -1,32 +1,30 @@
 package com.biblioteca.controller;
 
 import com.biblioteca.dto.LibroDTO;
+import com.biblioteca.entity.Ejemplar;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.service.LibroService;
 import com.biblioteca.service.QrService;
+import com.biblioteca.service.BookMetadataService;
+import com.biblioteca.service.CoverService;
+import com.biblioteca.repository.LibroRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,32 +35,94 @@ public class LibroController {
 
     private final LibroService libroService;
     private final QrService qrService;
+    private final CoverService coverService;
+    private final BookMetadataService bookMetadataService;
+    private final LibroRepository libroRepository;
 
-    public LibroController(LibroService libroService, QrService qrService) {
+    @Value("${sibu.storage.path}")
+    private String storagePath;
+
+    public LibroController(LibroService libroService, QrService qrService, CoverService coverService, 
+                          BookMetadataService bookMetadataService, LibroRepository libroRepository) {
         this.libroService = libroService;
         this.qrService = qrService;
+        this.coverService = coverService;
+        this.bookMetadataService = bookMetadataService;
+        this.libroRepository = libroRepository;
+    }
+
+    @PostMapping("/{id}/upload-pdf")
+    public ResponseEntity<?> uploadPdf(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+        System.out.println("[DEBUG] Recibiendo PDF para libro: " + id + ", nombre: " + file.getOriginalFilename());
+        try {
+            Libro libro = libroService.obtenerPorId(id);
+            if (libro == null) return ResponseEntity.notFound().build();
+
+            if (file.isEmpty()) return ResponseEntity.badRequest().body(Map.of("error", "Archivo vacío"));
+
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path path = Paths.get(storagePath, "libros", fileName);
+            Files.createDirectories(path.getParent());
+            Files.write(path, file.getBytes());
+
+            libro.setArchivoDigital("/api/libros/download-pdf/" + fileName);
+            libro.setTieneDigital(true);
+            libroService.actualizar(id, libro);
+
+            return ResponseEntity.ok(convertToDTO(libro));
+        } catch (Exception e) {
+            System.err.println("[ERROR] Fallo al subir PDF: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error al guardar el PDF: " + e.getMessage()));
+        }
+    }
+
+    @GetMapping("/download-pdf/{fileName}")
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable String fileName) {
+        try {
+            Path path = Paths.get(storagePath, "libros", fileName);
+            if (!Files.exists(path)) return ResponseEntity.notFound().build();
+
+            byte[] content = Files.readAllBytes(path);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(content);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping
-    public List<LibroDTO> list() {
-        return libroService.listar().stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
+    public List<LibroDTO> getAll() {
+        return libroService.listar().stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
+    @GetMapping("/cover-preview")
+    public ResponseEntity<Map<String, String>> coverPreview(@RequestParam String isbn) {
+        String url = coverService.fetchCoverByIsbn(isbn);
+        if (url == null || url.isBlank()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(Map.of("url", url));
+    }
+
+    @GetMapping("/metadata")
+    public ResponseEntity<Map<String, Object>> getMetadata(@RequestParam String isbn) {
+        Map<String, Object> metadata = bookMetadataService.fetchMetadataByIsbn(isbn);
+        if (metadata == null || metadata.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(metadata);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<LibroDTO> getById(@PathVariable @NonNull String id) {
         Libro libro = libroService.obtenerPorId(id);
-        if (libro == null) {
-            return ResponseEntity.notFound().build();
-        }
+        if (libro == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(convertToDTO(libro));
     }
 
     @PostMapping
     public LibroDTO create(@RequestBody @NonNull Libro libro) {
         Libro creado = libroService.crear(libro);
-        System.out.println(">>> LIBRO CREADO: " + creado.getTitulo() + " (ID: " + creado.getId() + ")");
         return convertToDTO(creado);
     }
 
@@ -72,108 +132,138 @@ public class LibroController {
         return convertToDTO(actualizado);
     }
 
+    @DeleteMapping("/bulk-delete")
+    public ResponseEntity<?> bulkDelete(@RequestBody @NonNull List<String> ids) {
+        libroService.eliminarVarios(ids);
+        return ResponseEntity.ok(Map.of("message", "Libros eliminados correctamente"));
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable @NonNull String id) {
         libroService.eliminar(id);
     }
 
-    @PostMapping("/{id}/upload-pdf")
-    public ResponseEntity<?> uploadPdf(@PathVariable @NonNull String id, @RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "El archivo está vacío"));
-        }
+    
+    
+    
 
+    @PostMapping("/{id}/ejemplares")
+    public ResponseEntity<?> addEjemplar(@PathVariable @NonNull String id, @RequestBody @NonNull Ejemplar ejemplar) {
         try {
-            String contentType = file.getContentType();
-            if (contentType == null || !contentType.equals("application/pdf")) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Solo se permiten archivos PDF"));
+            if (ejemplar.getCodigo() == null || ejemplar.getCodigo().isBlank()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "El código del ejemplar es obligatorio"));
+            }
+
+            String codigoUpper = ejemplar.getCodigo().trim().toUpperCase();
+            
+            
+            Optional<Libro> libConEj = libroRepository.findByEjemplarId(codigoUpper);
+            if (libConEj.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body(Map.of("error", "El código '" + codigoUpper + "' ya está registrado en otro ejemplar"));
             }
 
             Libro libro = libroService.obtenerPorId(id);
-            if (libro == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Libro no encontrado"));
+            if (libro == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Libro no encontrado"));
+
+            if (libro.getEjemplares() == null) {
+                libro.setEjemplares(new ArrayList<>());
             }
 
-            Path uploadDir = Path.of("uploads/libros");
-            if (!Files.exists(uploadDir)) {
-                Files.createDirectories(uploadDir);
-            }
+            ejemplar.setId(java.util.UUID.randomUUID().toString());
+            ejemplar.setCodigo(codigoUpper);
+            ejemplar.setEstado("DISPONIBLE");
+            ejemplar.setDisponible(true);
 
-            String originalFilename = file.getOriginalFilename();
-            if (originalFilename != null && originalFilename.contains("..")) {
-                return ResponseEntity.badRequest().body(Map.of("error", "Nombre de archivo inválido"));
-            }
-            String fileName = UUID.randomUUID().toString() + "_" + originalFilename;
-            Path filePath = uploadDir.resolve(fileName);
-
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-
-            libro.setArchivoDigital("/uploads/libros/" + fileName);
-            libro.setTieneDigital(true);
+            libro.getEjemplares().add(ejemplar);
             Libro actualizado = libroService.actualizar(id, libro);
-
-            return ResponseEntity.ok(convertToDTO(actualizado));
-
-        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(convertToDTO(actualizado));
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Error al guardar el archivo: " + e.getMessage()));
+                    .body(Map.of("error", "Error interno: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/ejemplares/next-code")
+    public Map<String, String> getNextEjemplarCode() {
+        List<Libro> todos = libroService.listar();
+        int max = 0;
+        for (Libro l : todos) {
+            if (l.getEjemplares() != null) {
+                for (Ejemplar e : l.getEjemplares()) {
+                    if (e.getCodigo() != null && e.getCodigo().startsWith("LIB")) {
+                        try {
+                            int num = Integer.parseInt(e.getCodigo().substring(3));
+                            if (num > max) max = num;
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+        }
+        return Map.of("nextCode", String.format("LIB%03d", max + 1));
+    }
+
+    @DeleteMapping("/{id}/ejemplares/{ejemplarId}")
+    public ResponseEntity<LibroDTO> deleteEjemplar(@PathVariable @NonNull String id,
+                                                    @PathVariable @NonNull String ejemplarId) {
+        Libro libro = libroService.obtenerPorId(id);
+        if (libro == null || libro.getEjemplares() == null) return ResponseEntity.notFound().build();
+
+        boolean removed = libro.getEjemplares().removeIf(e -> ejemplarId.equals(e.getId()));
+        if (!removed) return ResponseEntity.notFound().build();
+
+        Libro actualizado = libroService.actualizar(id, libro);
+        return ResponseEntity.ok(convertToDTO(actualizado));
+    }
+
+    @GetMapping("/{id}/ejemplares/{ejemplarId}/qr")
+    public ResponseEntity<byte[]> getEjemplarQr(@PathVariable @NonNull String id,
+                                                 @PathVariable @NonNull String ejemplarId) {
+        byte[] qrBytes = qrService.generarQr(ejemplarId, true);
+        if (qrBytes != null) {
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE).body(qrBytes);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/{id}/qr")
     public ResponseEntity<byte[]> getQrImage(@PathVariable @NonNull String id) {
         byte[] qrBytes = qrService.generarQr(id, false);
         if (qrBytes != null) {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
-                    .body(qrBytes);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE).body(qrBytes);
         }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     private LibroDTO convertToDTO(Libro libro) {
-        List<LibroDTO.AutorDTO> autoresDTO = null;
-        if (libro.getAutores() != null) {
-            autoresDTO = libro.getAutores().stream()
-                .map(autor -> new LibroDTO.AutorDTO(autor.getId(), autor.getNombre()))
-                .collect(Collectors.toList());
-        }
-
-        LibroDTO.EditorialDTO editorialDTO = null;
-        if (libro.getEditorial() != null) {
-            editorialDTO = new LibroDTO.EditorialDTO(
-                libro.getEditorial().getId(),
-                libro.getEditorial().getNombre()
-            );
-        }
-
-        LibroDTO.GeneroDTO generoDTO = null;
-        if (libro.getGenero() != null) {
-            generoDTO = new LibroDTO.GeneroDTO(
-                libro.getGenero().getId(),
-                libro.getGenero().getNombre()
-            );
-        }
-
-        int stockDisponible = 0;
+        int stock = 0;
+        List<LibroDTO.EjemplarDTO> ejemplarDTOs = new ArrayList<>();
         if (libro.getEjemplares() != null) {
-            stockDisponible = (int) libro.getEjemplares().stream()
-                .filter(ejemplar -> ejemplar.getDisponible() != null && ejemplar.getDisponible())
-                .count();
+            stock = (int) libro.getEjemplares().stream()
+                    .filter(e -> Boolean.TRUE.equals(e.getDisponible()))
+                    .count();
+            ejemplarDTOs = libro.getEjemplares().stream()
+                    .map(e -> new LibroDTO.EjemplarDTO(e.getId(), e.getCodigo(), e.getDisponible(), e.getEstado()))
+                    .collect(Collectors.toList());
         }
 
         return new LibroDTO(
             libro.getId(),
             libro.getTitulo(),
-            autoresDTO,
-            editorialDTO,
-            generoDTO,
-            stockDisponible,
-            libro.getArchivoDigital(),
-            libro.getTieneDigital(),
-            libro.getFormato()
+            libro.getAutores() != null ? libro.getAutores().stream().map(a -> new LibroDTO.AutorDTO(a.getId(), a.getNombre())).collect(Collectors.toList()) : null,
+            libro.getEditorial() != null ? new LibroDTO.EditorialDTO(libro.getEditorial().getId(), libro.getEditorial().getNombre()) : null,
+            libro.getGenero() != null ? new LibroDTO.GeneroDTO(libro.getGenero().getId(), libro.getGenero().getNombre()) : null,
+            stock, 
+            libro.getArchivoDigital(), 
+            libro.getTieneDigital(), 
+            libro.getFormato(),
+            libro.getIsbn(),
+            libro.getUrlPortada(),
+            "/api/libros/" + libro.getId() + "/qr",
+            libro.getCodigo(),
+            libro.getPublicacion(),
+            libro.getDescripcion(),
+            ejemplarDTOs
         );
     }
 }

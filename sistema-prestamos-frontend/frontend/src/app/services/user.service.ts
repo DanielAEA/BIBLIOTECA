@@ -10,7 +10,7 @@ export interface Usuario {
   rol?: string;
 }
 
-// Interfaz para crear usuario (sin ID)
+
 export interface UsuarioCreatePayload {
   nombre: string;
   correo: string;
@@ -18,7 +18,7 @@ export interface UsuarioCreatePayload {
   rol?: string;
 }
 
-// Interfaz para actualizar usuario (ID va en la URL)
+
 export interface UsuarioUpdatePayload {
   nombre: string;
   correo: string;

@@ -16,7 +16,7 @@ public class QrRegenerador {
 
     @EventListener(ApplicationReadyEvent.class)
     public void regenerarAlIniciar() {
-        String ngrokUrl = "http://localhost:8080"; // default
+        String ngrokUrl = "http://localhost:8080"; 
         try {
             RestTemplate rt = new RestTemplate();
             String json = rt.getForObject("http://localhost:4040/api/tunnels", String.class);

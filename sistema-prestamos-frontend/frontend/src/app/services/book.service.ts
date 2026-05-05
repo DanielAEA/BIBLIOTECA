@@ -1,6 +1,13 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+export interface EjemplarDTO {
+  id: string;
+  codigo: string;
+  disponible: boolean;
+  estado: string;
+}
 
 export interface Libro {
   id: string;
@@ -12,6 +19,13 @@ export interface Libro {
   archivoDigital?: string;
   tieneDigital?: boolean;
   formato?: string;
+  isbn?: string;
+  urlPortada?: string;
+  urlQr?: string;
+  codigo?: string;
+  publicacion?: string;
+  descripcion?: string;
+  ejemplares?: EjemplarDTO[];
 }
 
 export interface LibroPayload {
@@ -20,6 +34,11 @@ export interface LibroPayload {
   editorial: { id: string } | null;
   genero: { id: string } | null;
   formato: string;
+  isbn?: string;
+  urlPortada?: string;
+  urlQr?: string;
+  publicacion?: string;
+  descripcion?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -45,39 +64,55 @@ export class BookService {
     return this.http.put<Libro>(`${this.baseUrl}/api/libros/${id}`, libro);
   }
 
+  bulkDeleteBooks(ids: string[]): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/api/libros/bulk-delete`, { body: ids });
+  }
+
   deleteBook(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/api/libros/${id}`);
+  }
+
+  getCoverPreview(isbn: string): Observable<{ url: string }> {
+    return this.http.get<{ url: string }>(`${this.baseUrl}/api/libros/cover-preview`, { params: { isbn } });
+  }
+
+  getBookMetadata(isbn: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/libros/metadata`, { params: { isbn } });
+  }
+
+  uploadPortada(id: string, file: File): Observable<Libro> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<Libro>(`${this.baseUrl}/api/libros/${id}/portada`, formData);
+  }
+
+  deletePortada(id: string): Observable<Libro> {
+    return this.http.delete<Libro>(`${this.baseUrl}/api/libros/${id}/portada`);
   }
 
   uploadPdf(id: string, file: File): Observable<Libro> {
     const formData = new FormData();
     formData.append('file', file);
+    return this.http.post<Libro>(`${this.baseUrl}/api/libros/${id}/upload-pdf`, formData);
+  }
 
-    const token = localStorage.getItem('sp_token');
+  
+  
+  
 
-    return new Observable<Libro>(observer => {
-      fetch(`${this.baseUrl}/api/libros/${id}/upload-pdf`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Upload failed');
-        }
-        return response.json();
-      })
-      .then(data => {
-        observer.next(data);
-        observer.complete();
-      })
-      .catch(error => {
-        observer.error(error);
-      });
-    });
+  addEjemplar(libroId: string, ejemplar: { codigo: string }): Observable<Libro> {
+    return this.http.post<Libro>(`${this.baseUrl}/api/libros/${libroId}/ejemplares`, ejemplar);
+  }
+
+  deleteEjemplar(libroId: string, ejemplarId: string): Observable<Libro> {
+    return this.http.delete<Libro>(`${this.baseUrl}/api/libros/${libroId}/ejemplares/${ejemplarId}`);
+  }
+
+  getEjemplarQrUrl(libroId: string, ejemplarId: string): string {
+    return `${this.baseUrl}/api/libros/${libroId}/ejemplares/${ejemplarId}/qr`;
+  }
+
+  getNextEjemplarCode(): Observable<{ nextCode: string }> {
+    return this.http.get<{ nextCode: string }>(`${this.baseUrl}/api/libros/ejemplares/next-code`);
   }
 }
-
-
