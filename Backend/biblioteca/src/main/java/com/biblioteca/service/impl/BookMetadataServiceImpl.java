@@ -67,8 +67,8 @@ public class BookMetadataServiceImpl implements BookMetadataService {
 
             ParameterizedTypeReference<Map<String, Object>> typeRef = new ParameterizedTypeReference<>() {
             };
-            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url,
-                    HttpMethod.GET, entity, typeRef);
+            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(Objects.requireNonNull(url),
+                    Objects.requireNonNull(HttpMethod.GET), entity, Objects.requireNonNull(typeRef));
             Map<String, Object> response = responseEntity.getBody();
 
             if (response != null && response.get("items") != null) {
@@ -95,8 +95,8 @@ public class BookMetadataServiceImpl implements BookMetadataService {
 
             ParameterizedTypeReference<Map<String, Object>> typeRef = new ParameterizedTypeReference<>() {
             };
-            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url,
-                    HttpMethod.GET, entity, typeRef);
+            ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(Objects.requireNonNull(url),
+                    Objects.requireNonNull(HttpMethod.GET), entity, Objects.requireNonNull(typeRef));
             Map<String, Object> response = responseEntity.getBody();
 
             String key = "ISBN:" + cleanIsbn;

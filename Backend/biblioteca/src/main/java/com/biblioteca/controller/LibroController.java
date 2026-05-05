@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/libros")
@@ -52,7 +53,7 @@ public class LibroController {
     }
 
     @PostMapping("/{id}/upload-pdf")
-    public ResponseEntity<?> uploadPdf(@PathVariable String id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadPdf(@PathVariable @NonNull String id, @RequestParam("file") @NonNull MultipartFile file) {
         System.out.println("[DEBUG] Recibiendo PDF para libro: " + id + ", nombre: " + file.getOriginalFilename());
         try {
             Libro libro = libroService.obtenerPorId(id);
@@ -79,7 +80,7 @@ public class LibroController {
     }
 
     @GetMapping("/download-pdf/{fileName}")
-    public ResponseEntity<byte[]> downloadPdf(@PathVariable String fileName) {
+    public ResponseEntity<byte[]> downloadPdf(@PathVariable @NonNull String fileName) {
         try {
             Path path = Paths.get(storagePath, "libros", fileName);
             if (!Files.exists(path)) return ResponseEntity.notFound().build();
@@ -87,7 +88,7 @@ public class LibroController {
             byte[] content = Files.readAllBytes(path);
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
-                    .contentType(MediaType.APPLICATION_PDF)
+                    .contentType(Objects.requireNonNull(MediaType.APPLICATION_PDF))
                     .body(content);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -100,14 +101,14 @@ public class LibroController {
     }
 
     @GetMapping("/cover-preview")
-    public ResponseEntity<Map<String, String>> coverPreview(@RequestParam String isbn) {
+    public ResponseEntity<Map<String, String>> coverPreview(@RequestParam @NonNull String isbn) {
         String url = coverService.fetchCoverByIsbn(isbn);
         if (url == null || url.isBlank()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(Map.of("url", url));
     }
 
     @GetMapping("/metadata")
-    public ResponseEntity<Map<String, Object>> getMetadata(@RequestParam String isbn) {
+    public ResponseEntity<Map<String, Object>> getMetadata(@RequestParam @NonNull String isbn) {
         Map<String, Object> metadata = bookMetadataService.fetchMetadataByIsbn(isbn);
         if (metadata == null || metadata.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(metadata);

@@ -30,7 +30,7 @@ public class CoverServiceImpl implements CoverService {
             headers.set("User-Agent", "Sibu/1.0 (Biblioteca App; mailto:admin@sibu.com)");
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class);
+            ResponseEntity<byte[]> response = restTemplate.exchange(url, Objects.requireNonNull(HttpMethod.GET), entity, byte[].class);
             
             byte[] body = response.getBody();
             if (response.getStatusCode().is2xxSuccessful() && body != null) {
