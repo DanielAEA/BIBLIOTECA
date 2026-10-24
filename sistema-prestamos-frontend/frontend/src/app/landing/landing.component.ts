@@ -16,19 +16,6 @@ interface FaqItem {
   isOpen: boolean;
 }
 
-interface SystemPreview {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-}
-
-interface InstitutionPoint {
-  icon: string;
-  title: string;
-  description: string;
-}
-
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -37,57 +24,10 @@ interface InstitutionPoint {
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
-  heroBenefits = [
-    { icon: 'bx-book-open', text: 'Catálogo en línea' },
-    { icon: 'bx-qr-scan', text: 'Préstamos con QR' },
-    { icon: 'bx-door-open', text: 'Salas de estudio' }
-  ];
-
   heroHighlights = [
     { icon: 'bx-check-double', text: 'Préstamos, multas y salas en un solo lugar' },
     { icon: 'bx-devices', text: 'Gestión 100% digital' },
     { icon: 'bx-time', text: 'Acceso disponible 24/7' }
-  ];
-
-  systemPreviews: SystemPreview[] = [
-    {
-      id: 'dashboard',
-      title: 'Panel de Control',
-      description: 'Métricas de préstamos, usuarios activos y libros disponibles en tiempo real.',
-      image: 'assets/preview-dashboard.png'
-    },
-    {
-      id: 'catalogo',
-      title: 'Catálogo Digital',
-      description: 'Búsqueda instantánea con filtros por autor, género, editorial y disponibilidad.',
-      image: 'assets/preview-catalogo.png'
-    },
-    {
-      id: 'salas',
-      title: 'Reserva de Salas',
-      description: 'Disponibilidad horaria por turnos con confirmación inmediata.',
-      image: 'assets/preview-salas.png'
-    }
-  ];
-
-  activePreview = 'dashboard';
-
-  institutionPoints: InstitutionPoint[] = [
-    {
-      icon: 'bx-transfer-alt',
-      title: 'Pasa tu biblioteca física a una virtual',
-      description: 'Migra inventarios, fichas y registros a una plataforma en la nube accesible desde cualquier dispositivo.'
-    },
-    {
-      icon: 'bx-cloud',
-      title: 'Monta una biblioteca sin local ni estantería',
-      description: 'Administra colecciones digitales y préstamos sin necesidad de infraestructura física de almacenamiento.'
-    },
-    {
-      icon: 'bx-slider-alt',
-      title: 'Controla préstamos, multas y salas desde un solo panel',
-      description: 'Automatiza cálculos de entregas fuera de término y coordina espacios de estudio desde una vista centralizada.'
-    }
   ];
 
   features: FeatureItem[] = [
@@ -132,7 +72,7 @@ export class LandingComponent {
   faqs: FaqItem[] = [
     {
       question: '¿Cómo puedo ingresar al sistema de CiberBook?',
-      answer: 'Haz clic en el botón "Iniciar Sesión" en la barra superior o en el botón secundario del inicio. Introduce tu correo y contraseña para entrar a tu panel.',
+      answer: 'Haz clic en el botón "Iniciar Sesión" en la barra superior o en el inicio. Introduce tu correo y contraseña para entrar a tu panel.',
       isOpen: true
     },
     {
@@ -147,16 +87,12 @@ export class LandingComponent {
     },
     {
       question: '¿Qué hago si no tengo una cuenta registrada?',
-      answer: 'Puedes hacer clic en el botón "Crear Cuenta" para registrarte en menos de un minuto y empezar a solicitar libros.',
+      answer: 'Puedes hacer clic en el botón "Registrarse" para crear tu cuenta en menos de un minuto y empezar a solicitar libros.',
       isOpen: false
     }
   ];
 
   constructor(public themeService: ThemeService) {}
-
-  selectPreview(id: string): void {
-    this.activePreview = id;
-  }
 
   toggleFaq(index: number): void {
     this.faqs[index].isOpen = !this.faqs[index].isOpen;
