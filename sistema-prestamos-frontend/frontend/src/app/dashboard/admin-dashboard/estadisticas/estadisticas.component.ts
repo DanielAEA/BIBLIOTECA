@@ -31,9 +31,9 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
   debtors: any[] = [];
   upcomingExpirations: any[] = [];
   loading = true;
+  error = false;
   today: Date = new Date();
   Math = Math;
-  isSampleData = false;
 
   // Control Flags
   viewReady = false;
@@ -53,17 +53,12 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
   private charts: Chart[] = [];
   private themeSubscription?: Subscription;
 
-  // Real Data Backup
-  private realData: any = null;
-
   constructor(
     private statsService: StatsService,
     public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
-    this.loadSummary();
-    this.loadTablesData();
     this.fetchAllChartsData();
   }
 
@@ -85,57 +80,36 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Unified Data Fetching with forkJoin
-  private fetchAllChartsData(): void {
+  public fetchAllChartsData(): void {
     this.loading = true;
+    this.error = false;
+    this.dataReady = false;
+    this.destroyCharts();
+
     forkJoin({
-      summary: this.statsService.getSummary().pipe(catchError(() => of({}))),
-      debtors: this.statsService.getDebtors().pipe(catchError(() => of([]))),
-      expirations: this.statsService.getUpcomingExpirations().pipe(catchError(() => of([]))),
-      books: this.statsService.getMostBorrowedBooks().pipe(catchError(() => of([]))),
-      genres: this.statsService.getLoansByGenre().pipe(catchError(() => of([]))),
-      fines: this.statsService.getFinesStats().pipe(catchError(() => of([]))),
-      authors: this.statsService.getMostBorrowedAuthors().pipe(catchError(() => of([]))),
-      punctuality: this.statsService.getPunctualityRate().pipe(catchError(() => of({ aTiempo: 0, atrasados: 0 }))),
-      trends: this.statsService.getLoansByMonth().pipe(catchError(() => of([]))),
-      status: this.statsService.getLoansByStatus().pipe(catchError(() => of([]))),
-      dist: this.statsService.getInventoryDistribution().pipe(catchError(() => of({})))
+      summary: this.statsService.getSummary(),
+      debtors: this.statsService.getDebtors(),
+      expirations: this.statsService.getUpcomingExpirations(),
+      books: this.statsService.getMostBorrowedBooks(),
+      genres: this.statsService.getLoansByGenre(),
+      fines: this.statsService.getFinesStats(),
+      authors: this.statsService.getMostBorrowedAuthors(),
+      punctuality: this.statsService.getPunctualityRate(),
+      trends: this.statsService.getLoansByMonth(),
+      status: this.statsService.getLoansByStatus(),
+      dist: this.statsService.getInventoryDistribution()
     }).subscribe({
       next: (results) => {
-        this.realData = results;
         this.applyData(results);
-
-        // Verification for automatic preview mode - If there's literally anything in the DB, use real data
-        const summary = results.summary || {};
-        const hasRealData = (summary.totalLibros > 0) || 
-                          (summary.totalUsuarios > 0) || 
-                          (summary.prestamosActivos > 0) ||
-                          (results.trends && results.trends.length > 0);
-
-        console.log('--- Resumen de Datos ---');
-        console.log('Libros:', summary.totalLibros);
-        console.log('Usuarios:', summary.totalUsuarios);
-        console.log('Préstamos Activos:', summary.prestamosActivos);
-        console.log('Tendencias:', results.trends?.length);
-        console.log('¿Usando datos reales?:', hasRealData);
-
-        if (!hasRealData) {
-          this.isSampleData = true;
-          this.populateWithSampleData();
-        } else {
-          this.isSampleData = false;
-        }
-
         this.dataReady = true;
         this.loading = false;
+        this.today = new Date();
         this.tryRender();
       },
       error: (err) => {
         console.error('Error fetching stats data:', err);
-        this.isSampleData = true;
-        this.populateWithSampleData();
-        this.dataReady = true;
+        this.error = true;
         this.loading = false;
-        this.tryRender();
       }
     });
   }
@@ -154,95 +128,10 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.inventoryDistribution = data.dist;
   }
 
-  toggleDataSource(): void {
-    this.isSampleData = !this.isSampleData;
-    if (this.isSampleData) {
-      this.populateWithSampleData();
-    } else {
-      if (this.realData) {
-        this.applyData(this.realData);
-      } else {
-        this.fetchAllChartsData();
-        return;
-      }
-    }
-    this.today = new Date();
-    setTimeout(() => this.renderCharts(), 0);
-  }
-
-  private populateWithSampleData(): void {
-    this.summary = {
-      totalLibros: 450,
-      totalUsuarios: 125,
-      prestamosActivos: 18,
-      totalMultasPendientes: 45000,
-      prestamosVencidos: 3,
-      ejemplaresDisponibles: 432,
-      nuevosUsuariosMes: 12,
-      tasaPuntualidad: 85
-    };
-    this.debtors = [
-      { usuario: 'Juan Pérez', deuda: 12500 },
-      { usuario: 'María García', deuda: 5000 },
-      { usuario: 'Carlos López', deuda: 8500 }
-    ];
-    this.upcomingExpirations = [
-      { libro: 'Cien años de soledad', usuario: 'Juan Pérez', vencimiento: new Date(Date.now() + 86400000) },
-      { libro: '1984', usuario: 'Elena Ruiz', vencimiento: new Date(Date.now() + 172800000) }
-    ];
-    this.mostBorrowedBooks = [
-      { titulo: 'Cien años de soledad', total: 25 },
-      { titulo: 'Don Quijote de la Mancha', total: 18 },
-      { titulo: 'El Principito', total: 15 },
-      { titulo: '1984', total: 12 },
-      { titulo: 'Rayuela', total: 10 }
-    ];
-    this.loansByGenre = [
-      { genero: 'Ficción', total: 45 },
-      { genero: 'Historia', total: 30 },
-      { genero: 'Ciencia', total: 20 },
-      { genero: 'Biografía', total: 15 },
-      { genero: 'Poesía', total: 10 }
-    ];
-    this.finesStats = [
-      { estado: 'PAGADA', total: 65000 },
-      { estado: 'PENDIENTE', total: 45000 }
-    ];
-    this.mostBorrowedAuthors = [
-      { autor: 'Gabriel García Márquez', total: 40 },
-      { autor: 'Miguel de Cervantes', total: 32 },
-      { autor: 'Antoine de Saint-Exupéry', total: 28 },
-      { autor: 'George Orwell', total: 22 },
-      { autor: 'Julio Cortázar', total: 18 }
-    ];
-    this.punctualityRate = { aTiempo: 85, atrasados: 15 };
-    this.loansByMonth = [
-      { mes: 'Enero', total: 120 },
-      { mes: 'Febrero', total: 150 },
-      { mes: 'Marzo', total: 110 },
-      { mes: 'Abril', total: 180 },
-      { mes: 'Mayo', total: 200 }
-    ];
-    this.loansByStatus = [
-      { estado: 'ENTREGADO', total: 150 },
-      { estado: 'EN_PROCESO', total: 45 },
-      { estado: 'DEVUELTO', total: 300 }
-    ];
-    this.inventoryDistribution = { 'FISICO': 450, 'DIGITAL': 120, 'AMBOS': 80 };
-  }
-
   private tryRender(): void {
     if (this.viewReady && this.dataReady) {
       this.renderCharts();
     }
-  }
-
-  private loadSummary() {
-    // No longer needed separately as it's included in fetchAllChartsData
-  }
-
-  private loadTablesData() {
-    // No longer needed separately as it's included in fetchAllChartsData
   }
 
   private destroyCharts(): void {
@@ -253,11 +142,14 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
   private renderCharts(): void {
     this.destroyCharts();
 
+    const isDark = document.body.classList.contains('dark-theme');
+    const primaryColor = isDark ? '#00e5ff' : '#0284c7';
+
     // Chart 1: Popular Books
     if (this.mostBorrowedBooks.length > 0) 
-      this.renderBarChart(this.popChartRef, this.mostBorrowedBooks, 'titulo', 'total', '#6366f1');
+      this.renderBarChart(this.popChartRef, this.mostBorrowedBooks, 'titulo', 'total', primaryColor);
 
-    // Chart 2: Loans by Genre (Polar Area for better visualization)
+    // Chart 2: Loans by Genre
     if (this.loansByGenre.length > 0) 
       this.renderGenreChart(this.genreChartRef, this.loansByGenre);
 
@@ -274,11 +166,11 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderPunctualityChart(this.punctualityChartRef, this.punctualityRate);
 
     // Chart 6: Trend
-    if (this.loansByMonth) 
+    if (this.loansByMonth && this.loansByMonth.length > 0) 
       this.renderTrendChart(this.loansByMonth);
 
     // Chart 7: Distribution
-    if (this.inventoryDistribution) 
+    if (this.inventoryDistribution && Object.keys(this.inventoryDistribution).length > 0) 
       this.renderDistributionChart(this.inventoryDistribution);
 
     // Chart 8: Loans by Status
@@ -288,8 +180,8 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getChartOptions(overrideOptions: any = {}) {
     const isDark = document.body.classList.contains('dark-theme');
-    const textColor = isDark ? '#a3aed1' : '#64748b';
-    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+    const textColor = isDark ? '#cbd5e1' : '#475569';
+    const gridColor = isDark ? 'rgba(0, 229, 255, 0.12)' : 'rgba(0, 0, 0, 0.06)';
 
     return {
       responsive: true,
@@ -404,11 +296,19 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
   private renderTrendChart(data: any[]) {
     if (!this.trendChartRef?.nativeElement) return;
     const filledData = this.fillMissingMonths(data);
+    const isDark = document.body.classList.contains('dark-theme');
     const chart = new Chart(this.trendChartRef.nativeElement, {
       type: 'line',
       data: {
         labels: filledData.map(d => d.mes),
-        datasets: [{ label: 'Interacciones', data: filledData.map(d => d.total) as number[], borderColor: '#6366f1', fill: true, backgroundColor: 'rgba(99, 102, 241, 0.1)', tension: 0.4 }]
+        datasets: [{
+          label: 'Interacciones',
+          data: filledData.map(d => d.total) as number[],
+          borderColor: isDark ? '#00e5ff' : '#0284c7',
+          fill: true,
+          backgroundColor: isDark ? 'rgba(0, 229, 255, 0.12)' : 'rgba(2, 132, 199, 0.1)',
+          tension: 0.4
+        }]
       },
       options: this.getChartOptions({ plugins: { legend: { display: false } } })
     });
