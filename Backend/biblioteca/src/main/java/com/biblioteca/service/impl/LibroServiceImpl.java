@@ -95,6 +95,13 @@ public class LibroServiceImpl implements LibroService {
         return libroRepository.findAll();
     }
 
+    @Override
+    public com.biblioteca.dto.PageResponse<com.biblioteca.dto.LibroDTO> listarPaginado(
+            org.springframework.data.domain.Pageable pageable,
+            String search, String autor, String genero, String bloque, String armario) {
+        return libroRepository.findLibrosPaginados(pageable, search, autor, genero, bloque, armario);
+    }
+
     @SuppressWarnings("null")
     @Override
     public Libro actualizar(@NonNull String id, @NonNull Libro libro) {

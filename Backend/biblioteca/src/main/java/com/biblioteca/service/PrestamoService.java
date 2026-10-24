@@ -8,9 +8,14 @@ public interface PrestamoService {
     Prestamo crear(@NonNull Prestamo prestamo);
     Prestamo obtenerPorId(@NonNull String id);
     List<Prestamo> listar();
+    com.biblioteca.dto.PageResponse<java.util.Map<String, Object>> listarPaginado(
+            org.springframework.data.domain.Pageable pageable,
+            String usuario, String libro, String ejemplarCodigo, String estado, Boolean soloConMulta);
     Prestamo actualizar(@NonNull String id, @NonNull Prestamo prestamo);
     void eliminar(@NonNull String id);
     List<Prestamo> listarPorUsuario(@NonNull String usuarioId);
+    com.biblioteca.dto.PageResponse<java.util.Map<String, Object>> listarPorUsuarioPaginado(
+            @NonNull String usuarioId, org.springframework.data.domain.Pageable pageable);
     Prestamo devolverLibro(@NonNull String idPrestamo);
     Prestamo aceptarSolicitud(@NonNull String idPrestamo);
     Prestamo rechazarSolicitud(@NonNull String idPrestamo);

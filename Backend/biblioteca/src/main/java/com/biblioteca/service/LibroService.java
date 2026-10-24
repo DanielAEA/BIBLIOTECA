@@ -8,6 +8,9 @@ public interface LibroService {
     Libro crear(@NonNull Libro libro);
     Libro obtenerPorId(@NonNull String id);
     List<Libro> listar();
+    com.biblioteca.dto.PageResponse<com.biblioteca.dto.LibroDTO> listarPaginado(
+            org.springframework.data.domain.Pageable pageable,
+            String search, String autor, String genero, String bloque, String armario);
     Libro actualizar(@NonNull String id, @NonNull Libro libro);
     void eliminar(@NonNull String id);
     void eliminarVarios(@NonNull List<String> ids);

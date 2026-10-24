@@ -96,8 +96,22 @@ public class LibroController {
     }
 
     @GetMapping
-    public List<LibroDTO> getAll() {
-        return libroService.listar().stream().map(this::convertToDTO).collect(Collectors.toList());
+    public ResponseEntity<?> getAll(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String autor,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false) String bloque,
+            @RequestParam(required = false) String armario) {
+        if (page != null) {
+            int pageNum = Math.max(0, page);
+            int pageSize = (size != null && size > 0) ? Math.min(size, 100) : 10;
+            org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(pageNum, pageSize);
+            return ResponseEntity.ok(libroService.listarPaginado(pageable, search, autor, genero, bloque, armario));
+        }
+        List<LibroDTO> allBooks = libroService.listar().stream().map(this::convertToDTO).collect(Collectors.toList());
+        return ResponseEntity.ok(allBooks);
     }
 
     @GetMapping("/cover-preview")
@@ -244,7 +258,7 @@ public class LibroController {
                     .filter(e -> Boolean.TRUE.equals(e.getDisponible()))
                     .count();
             ejemplarDTOs = libro.getEjemplares().stream()
-                    .map(e -> new LibroDTO.EjemplarDTO(e.getId(), e.getCodigo(), e.getDisponible(), e.getEstado()))
+                    .map(e -> new LibroDTO.EjemplarDTO(e.getId(), e.getCodigo(), e.getDisponible(), e.getEstado(), e.getBloque(), e.getEstante()))
                     .collect(Collectors.toList());
         }
 

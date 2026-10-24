@@ -1,15 +1,24 @@
 package com.biblioteca.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "libros")
+@CompoundIndexes({
+    @CompoundIndex(name = "idx_libros_titulo_codigo", def = "{'titulo': 1, 'codigo': 1}"),
+    @CompoundIndex(name = "idx_libros_ejemplares_ubicacion", def = "{'ejemplares.bloque': 1, 'ejemplares.estante': 1}")
+})
 public class Libro {
 
     @Id
     private String id;
+
+    @Indexed
     private String titulo;
     
     @DocumentReference(lazy = true)
@@ -21,7 +30,10 @@ public class Libro {
     @DocumentReference(lazy = true)
     private Genero genero; 
     
+    @Indexed
     private String isbn;
+
+    @Indexed
     private String codigo;
     private String urlPortada;
     private String publicacion;

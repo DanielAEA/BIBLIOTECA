@@ -29,8 +29,21 @@ public class PrestamoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> listar() {
+    public ResponseEntity<?> listar(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String usuario,
+            @RequestParam(required = false) String libro,
+            @RequestParam(required = false) String ejemplarCodigo,
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Boolean soloConMulta) {
         try {
+            if (page != null) {
+                int pageNum = Math.max(0, page);
+                int pageSize = (size != null && size > 0) ? Math.min(size, 100) : 10;
+                org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(pageNum, pageSize);
+                return ResponseEntity.ok(prestamoService.listarPaginado(pageable, usuario, libro, ejemplarCodigo, estado, soloConMulta));
+            }
             List<Map<String, Object>> dtos = prestamoService.listar().stream()
                     .map(this::mapToDTO)
                     .collect(Collectors.toList());
@@ -190,10 +203,20 @@ public class PrestamoController {
 
 
     @GetMapping("/usuario/{userId}")
-    public List<Map<String, Object>> listarPorUsuario(@PathVariable @NonNull String userId) {
-        return prestamoService.listarPorUsuario(userId).stream()
+    public ResponseEntity<?> listarPorUsuario(
+            @PathVariable @NonNull String userId,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+        if (page != null) {
+            int pageNum = Math.max(0, page);
+            int pageSize = (size != null && size > 0) ? Math.min(size, 100) : 10;
+            org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(pageNum, pageSize);
+            return ResponseEntity.ok(prestamoService.listarPorUsuarioPaginado(userId, pageable));
+        }
+        List<Map<String, Object>> dtos = prestamoService.listarPorUsuario(userId).stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
     }
 
     @PostMapping("/lectura-virtual")

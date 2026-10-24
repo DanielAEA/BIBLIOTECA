@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import org.springframework.data.mongodb.core.index.Indexed;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -16,8 +17,10 @@ public class Usuario implements UserDetails {
     @Id
     private String id;
 
+    @Indexed
     private String nombre;
 
+    @Indexed(unique = true)
     private String correo;
 
     private String password;

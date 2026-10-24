@@ -1,11 +1,18 @@
 package com.biblioteca.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.time.LocalDateTime;
 
 @Document(collection = "prestamos")
+@CompoundIndexes({
+    @CompoundIndex(name = "idx_prestamo_usuario_fecha", def = "{'usuario.$id': 1, 'fechaPrestamo': -1}"),
+    @CompoundIndex(name = "idx_prestamo_estado_fecha", def = "{'estado': 1, 'fechaPrestamo': -1}")
+})
 public class Prestamo {
 
     @Id
@@ -17,6 +24,7 @@ public class Prestamo {
     @DBRef
     private Libro libro; 
 
+    @Indexed
     private String ejemplarCodigo; 
 
     private String tipoPrestamo = "FISICO";

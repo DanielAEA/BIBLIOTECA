@@ -154,6 +154,13 @@ public class PrestamoServiceImpl implements PrestamoService {
         return prestamoRepository.findAll();
     }
 
+    @Override
+    public com.biblioteca.dto.PageResponse<java.util.Map<String, Object>> listarPaginado(
+            org.springframework.data.domain.Pageable pageable,
+            String usuario, String libro, String ejemplarCodigo, String estado, Boolean soloConMulta) {
+        return prestamoRepository.findPrestamosPaginados(pageable, usuario, libro, ejemplarCodigo, estado, soloConMulta);
+    }
+
     @SuppressWarnings("null")
     @Override
     public Prestamo actualizar(@NonNull String id, @NonNull Prestamo prestamo) {
@@ -176,6 +183,12 @@ public class PrestamoServiceImpl implements PrestamoService {
     @Override
     public List<Prestamo> listarPorUsuario(@NonNull String usuarioId) {
         return prestamoRepository.findByUsuarioId(usuarioId);
+    }
+
+    @Override
+    public com.biblioteca.dto.PageResponse<java.util.Map<String, Object>> listarPorUsuarioPaginado(
+            @NonNull String usuarioId, org.springframework.data.domain.Pageable pageable) {
+        return prestamoRepository.findPrestamosPorUsuarioPaginados(usuarioId, pageable);
     }
 
     @SuppressWarnings("null")

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface LibroRepository extends MongoRepository<Libro, String> {
+public interface LibroRepository extends MongoRepository<Libro, String>, LibroRepositoryCustom {
     long countByFormato(String formato);
 
     @Query("{ $or: [ { 'ejemplares._id': ?0 }, { 'ejemplares.id': ?0 }, { 'ejemplares.codigo': ?0 } ] }")

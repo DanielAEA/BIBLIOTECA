@@ -44,6 +44,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    @Override
+    public org.springframework.data.domain.Page<Usuario> listarPaginado(org.springframework.data.domain.Pageable pageable, String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            String term = search.trim();
+            return usuarioRepository.findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(term, term, pageable);
+        }
+        return usuarioRepository.findAll(pageable);
+    }
+
     @SuppressWarnings("null")
     @Override
     public Usuario actualizar(@NonNull String id, @NonNull Usuario usuario) {
