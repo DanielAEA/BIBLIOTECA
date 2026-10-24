@@ -1,66 +1,125 @@
-<div class="auth-wrapper">
-  <div class="auth-background">
-    <div class="glass-circle circle-1"></div>
-    <div class="glass-circle circle-2"></div>
-  </div>
+<div class="auth-wrapper" [class.dark-theme]="themeService.isDarkTheme$ | async">
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-purple"></div>
 
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-logo-side">
-        <a routerLink="/" title="Volver a la página principal" style="display: block; text-decoration: none;">
-          <img src="logo-light.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-light">
-          <img src="logo-dark.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-dark">
+        <a routerLink="/" class="brand-showcase" title="Volver al inicio">
+          <div class="cyber-emblem">
+            <svg class="emblem-svg" viewBox="0 0 200 135" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <filter id="glowEffectLogin" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              <path d="M100 68 V14" stroke="#00b4ff" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="100" cy="14" r="5.5" fill="#00b4ff" filter="url(#glowEffectLogin)"/>
+              <path d="M96 68 L78 40 V28" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="78" cy="26" r="4.5" fill="#00b4ff" filter="url(#glowEffectLogin)"/>
+              <path d="M92 72 L62 48 L46 42" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="44" cy="41.5" r="4.5" fill="#00b4ff" filter="url(#glowEffectLogin)"/>
+              <path d="M104 68 L122 40 V28" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="122" cy="26" r="4.5" fill="#00b4ff" filter="url(#glowEffectLogin)"/>
+              <path d="M108 72 L138 48 L154 42" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="156" cy="41.5" r="4.5" fill="#00b4ff" filter="url(#glowEffectLogin)"/>
+              <path d="M28 48 V104" stroke="#00a8ff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M172 48 V104" stroke="#00a8ff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M30 104 C60 120 85 116 100 122 C115 116 140 120 170 104" stroke="#00a8ff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M98 64 C80 54 50 48 36 50 V102 C50 100 80 106 98 114 Z" fill="#ffffff" stroke="#00a8ff" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M102 64 C120 54 150 48 164 50 V102 C150 100 120 106 102 114 Z" fill="#ffffff" stroke="#00a8ff" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M100 64 V117" stroke="#0090ea" stroke-width="4.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Ciber<span class="highlight">Book</span></span>
+            <span class="brand-sub">BIBLIOTECA DIGITAL</span>
+          </div>
+          <p class="brand-tagline">Tu biblioteca, un mundo de posibilidades</p>
         </a>
       </div>
 
       <div class="auth-form-side">
-        <div class="auth-top-nav">
-          <a routerLink="/" class="back-link">
-            <i class="bx bx-left-arrow-alt"></i>
-            <span>Volver al inicio</span>
-          </a>
-        </div>
-        
-        <div class="error-toast" *ngIf="errorMessage" [class.show]="showError" [class.hide]="!showError">
-          <span class="error-toast-text">{{ errorMessage }}</span>
-          <button class="error-toast-close" (click)="showError = false">✕</button>
-        </div>
-
-        <div class="auth-header">
-          <h1>Bienvenido</h1>
-          <p>Inicia sesión para acceder a CiberBook</p>
-        </div>
-
-        <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form">
-          <div class="form-group">
-            <label>Correo Electrónico</label>
-            <div class="input-wrapper">
-              <input formControlName="username" type="email" placeholder="ejemplo@correo.com">
-            </div>
-            <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid" class="form-error">
-              El correo es obligatorio.
-            </div>
+        <div class="auth-form-wrapper">
+          <div class="auth-top-nav">
+            <a routerLink="/" class="back-link">
+              <i class="bx bx-left-arrow-alt"></i>
+              <span>Volver al inicio</span>
+            </a>
+            <button type="button" class="theme-toggle-btn" (click)="themeService.toggleTheme()" aria-label="Cambiar tema">
+              <i class="bx" [class.bx-sun]="themeService.isDarkTheme$ | async" [class.bx-moon]="!(themeService.isDarkTheme$ | async)"></i>
+            </button>
           </div>
 
-          <div class="form-group">
-            <label>Contraseña</label>
-            <div class="input-wrapper">
-              <input formControlName="password" type="password" placeholder="••••••••">
-            </div>
-            <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="form-error">
-              La contraseña es obligatoria.
-            </div>
+          <div class="auth-header">
+            <h1>Bienvenido</h1>
+            <p>Inicia sesión para acceder a CiberBook</p>
           </div>
 
-          <button type="submit" class="auth-button" [disabled]="loginForm.invalid">
-            <span>Ingresar</span>
-            <i class="arrow">→</i>
-          </button>
-
-          <div class="auth-footer">
-            <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+          <div *ngIf="errorMessage && showError" class="auth-alert error" role="alert">
+            <i class="bx bx-error-circle"></i>
+            <span>{{ errorMessage }}</span>
           </div>
-        </form>
+
+          <form [formGroup]="loginForm" (ngSubmit)="login()" class="auth-form" novalidate>
+            <div class="form-group">
+              <label for="login-email">Correo Electrónico</label>
+              <div class="input-wrapper" [class.has-error]="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+                <i class="input-icon bx bx-envelope"></i>
+                <input
+                  #emailInput
+                  id="login-email"
+                  formControlName="username"
+                  type="email"
+                  placeholder="ejemplo@correo.com"
+                  autocomplete="email">
+              </div>
+              <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']" class="form-error">
+                <i class="bx bx-error-circle"></i>
+                <span>El correo es obligatorio</span>
+              </div>
+              <div *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['email']" class="form-error">
+                <i class="bx bx-error-circle"></i>
+                <span>Escribe un correo válido</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="login-password">Contraseña</label>
+              <div class="input-wrapper" [class.has-error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                <i class="input-icon bx bx-lock-alt"></i>
+                <input
+                  id="login-password"
+                  formControlName="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  placeholder="••••••••"
+                  autocomplete="current-password">
+                <button
+                  type="button"
+                  class="password-toggle"
+                  (click)="togglePassword()"
+                  [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+                  <i class="bx" [ngClass]="showPassword ? 'bx-hide' : 'bx-show'"></i>
+                </button>
+              </div>
+              <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="form-error">
+                <i class="bx bx-error-circle"></i>
+                <span>La contraseña es obligatoria</span>
+              </div>
+            </div>
+
+            <button type="submit" class="auth-button" [disabled]="loading">
+              <span *ngIf="!loading">Ingresar</span>
+              <div *ngIf="loading" class="spinner-inline" aria-hidden="true"></div>
+              <span *ngIf="loading">Ingresando...</span>
+            </button>
+
+            <div class="auth-footer">
+              <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
