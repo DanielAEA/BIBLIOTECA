@@ -25,7 +25,7 @@ interface FaqItem {
 })
 export class LandingComponent {
   heroHighlights = [
-    { icon: 'bx-check-double', text: 'Préstamos, multas y salas en un solo lugar' },
+    { icon: 'bx-check-double', text: 'Catálogo, préstamos y salas en un solo lugar' },
     { icon: 'bx-devices', text: 'Gestión 100% digital' },
     { icon: 'bx-time', text: 'Acceso disponible 24/7' }
   ];
