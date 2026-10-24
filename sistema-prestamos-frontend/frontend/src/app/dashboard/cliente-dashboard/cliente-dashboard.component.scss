@@ -650,26 +650,32 @@
 @media (max-width: 768px) {
   .dashboard-layout {
     flex-direction: column;
+    height: 100vh;
   }
 
   .sidebar-coding {
-    width: 100%;
+    width: 100% !important;
     height: auto;
     border-right: none;
-    padding: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding: 6px 12px;
 
-    &.open { width: 100%; }
+    &.open { 
+      width: 100% !important; 
+    }
     
     .logo-details {
-      padding-left: 20px;
-      justify-content: space-between;
+      padding: 0 4px;
+      justify-content: space-between !important;
+      margin-bottom: 8px;
+      margin-top: 4px;
       
-      #btn {
-        position: relative;
-        right: auto;
-        top: auto;
-        transform: none;
-        padding-right: 20px;
+      .brand-logo .brand-text {
+        display: flex !important;
+      }
+
+      .btn-toggle-sidebar {
+        display: none !important;
       }
     }
     
@@ -678,22 +684,45 @@
       flex-direction: row;
       overflow-x: auto;
       margin-top: 0;
-      padding: 5px 10px;
-      background: var(--bg-card);
+      padding: 4px 0;
+      background: transparent;
+      gap: 4px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .menu-label {
+        display: none;
+      }
       
       li {
-        margin: 0 5px;
+        margin: 0;
+        flex-shrink: 0;
+        
         a {
-          padding: 0 15px;
+          padding: 0 12px;
+          height: 38px;
         }
 
         .links_name {
           opacity: 1 !important;
           pointer-events: auto !important;
-          margin-left: 8px;
+          font-size: 12px;
         }
 
-        .tooltip { display: none; }
+        i {
+          height: 38px;
+          line-height: 38px;
+          min-width: 28px;
+          font-size: 16px;
+        }
+
+        .tooltip { 
+          display: none !important; 
+        }
       }
       
       .profile {
@@ -703,12 +732,27 @@
   }
 
   .content-area {
-    padding: 1rem;
+    padding: 0.75rem;
     zoom: 1; 
     overflow-x: hidden;
   }
 
   .topbar {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
+    
+    .page-info {
+      h1 {
+        font-size: 1.35rem;
+      }
+      p {
+        font-size: 0.8rem;
+      }
+    }
+
+    .theme-toggle-btn {
+      width: 38px;
+      height: 38px;
+      font-size: 1.15rem;
+    }
   }
 }
