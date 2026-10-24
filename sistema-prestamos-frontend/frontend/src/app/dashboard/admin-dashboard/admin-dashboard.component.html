@@ -1,12 +1,23 @@
-<div class="ciberbook-wrapper">
+<div class="ciberbook-wrapper" [class.dark-theme]="themeService.isDarkTheme$ | async">
   <div class="dashboard-layout">
     
     <aside class="sidebar-coding" [class.open]="!isSidebarCollapsed">
-      <div class="logo-details">
-        <div class="logo-container" [style.opacity]="!isSidebarCollapsed ? '1' : '0'">
-            <img [src]="(themeService.isDarkTheme$ | async) ? 'logo-dark.png?v=2' : 'logo-light.png?v=2'" alt="CiberBook Logo" class="sidebar-logo">
+      <div class="logo-details" (click)="isSidebarCollapsed ? toggleSidebar() : null" [title]="isSidebarCollapsed ? 'Expandir menú' : ''">
+        <div class="brand-logo" (click)="!isSidebarCollapsed ? navigateTo('/admin/estadisticas') : null">
+          <div class="logo-mark">
+            <svg class="circuit-book-mini" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M20 10V32M20 10C16 8 8 9 5 11V31C8 29 16 28 20 32M20 10C24 8 32 9 35 11V31C32 29 24 28 20 32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="20" cy="7" r="2.5" fill="currentColor" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Ciber<span class="highlight">Book</span></span>
+            <span class="brand-sub">BIBLIOTECA DIGITAL</span>
+          </div>
         </div>
-        <i class='bx bx-menu' id="btn" (click)="toggleSidebar()"></i>
+        <button type="button" class="btn-toggle-sidebar" id="btn" (click)="toggleSidebar(); $event.stopPropagation()" aria-label="Alternar menú lateral">
+          <i class='bx bx-menu'></i>
+        </button>
       </div>
       <ul class="nav-list">
         <div class="menu-label">MENÚ PRINCIPAL</div>
