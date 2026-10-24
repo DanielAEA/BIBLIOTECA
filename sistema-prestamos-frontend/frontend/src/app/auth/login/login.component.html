@@ -7,11 +7,19 @@
   <div class="auth-container">
     <div class="auth-card">
       <div class="auth-logo-side">
-        <img src="logo-light.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-light">
-        <img src="logo-dark.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-dark">
+        <a routerLink="/" title="Volver a la página principal" style="display: block; text-decoration: none;">
+          <img src="logo-light.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-light">
+          <img src="logo-dark.png?v=2" alt="CiberBook Logo" class="big-logo logo-for-dark">
+        </a>
       </div>
 
       <div class="auth-form-side">
+        <div class="auth-top-nav">
+          <a routerLink="/" class="back-link">
+            <i class="bx bx-left-arrow-alt"></i>
+            <span>Volver al inicio</span>
+          </a>
+        </div>
         
         <div class="error-toast" *ngIf="errorMessage" [class.show]="showError" [class.hide]="!showError">
           <span class="error-toast-text">{{ errorMessage }}</span>

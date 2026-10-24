@@ -23,7 +23,11 @@ import { PrestamosComponent } from './dashboard/admin-dashboard/prestamos/presta
 
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
+import { LandingComponent } from './landing/landing.component';
+
 export const routes: Routes = [
+  { path: '', component: LandingComponent, pathMatch: 'full' },
+  { path: 'landing', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
@@ -62,5 +66,7 @@ export const routes: Routes = [
   },
 
   { path: 'not-authorized', component: NotAuthorizedComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' }
+  { path: 'solicitar/:id', loadComponent: () => import('./qr/solicitar/solicitar.component').then(m => m.SolicitarComponent) },
+  { path: 'solicitar-ejemplar/:id', loadComponent: () => import('./qr/solicitar-ejemplar/solicitar-ejemplar.component').then(m => m.SolicitarEjemplarComponent) },
+  { path: '**', redirectTo: '' }
 ];

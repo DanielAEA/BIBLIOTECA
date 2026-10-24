@@ -1,0 +1,402 @@
+<div class="landing-page">
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-purple"></div>
+
+  <header class="landing-navbar">
+    <div class="nav-container">
+      <a routerLink="/" class="brand-logo" aria-label="Ir a página de inicio de CiberBook">
+        <div class="logo-mark">
+          <svg class="circuit-book-mini" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M20 10V32M20 10C16 8 8 9 5 11V31C8 29 16 28 20 32M20 10C24 8 32 9 35 11V31C32 29 24 28 20 32" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="7" r="2.5" fill="#00e5ff"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Ciber<span class="highlight">Book</span></span>
+          <span class="brand-sub">BIBLIOTECA DIGITAL</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#hero" (click)="scrollToSection('hero', $event)">Inicio</a>
+        <a href="#sistema" (click)="scrollToSection('sistema', $event)">El Sistema</a>
+        <a href="#instituciones" (click)="scrollToSection('instituciones', $event)">Instituciones</a>
+        <a href="#servicios" (click)="scrollToSection('servicios', $event)">Servicios</a>
+        <a href="#salas" (click)="scrollToSection('salas', $event)">Salas</a>
+        <a href="#faq" (click)="scrollToSection('faq', $event)">Preguntas</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" (click)="themeService.toggleTheme()" aria-label="Cambiar tema de color">
+          <i class="bx" [class.bx-sun]="themeService.isDarkTheme$ | async" [class.bx-moon]="!(themeService.isDarkTheme$ | async)"></i>
+        </button>
+
+        <a routerLink="/login" class="btn btn-secondary" id="nav-btn-login">
+          <i class="bx bx-log-in"></i>
+          <span>Iniciar Sesión</span>
+        </a>
+        <a routerLink="/register" class="btn btn-primary" id="nav-btn-register">
+          <span>Crear Cuenta</span>
+          <i class="bx bx-right-arrow-alt"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero-section" id="hero">
+    <div class="hero-backdrop" style="background-image: url('landing-hero-bg.webp');"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid-pattern"></div>
+
+    <div class="hero-content-wrapper">
+      <div class="hero-main-stage">
+        <div class="hero-brand-compact">
+          <div class="cyber-emblem-compact" aria-hidden="true">
+            <svg class="emblem-svg" viewBox="0 0 200 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 68 V14" stroke="#00b4ff" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="100" cy="14" r="5.5" fill="#00b4ff"/>
+              <path d="M96 68 L78 40 V28" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="78" cy="26" r="4.5" fill="#00b4ff"/>
+              <path d="M92 72 L62 48 L46 42" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="44" cy="41.5" r="4.5" fill="#00b4ff"/>
+              <path d="M104 68 L122 40 V28" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="122" cy="26" r="4.5" fill="#00b4ff"/>
+              <path d="M108 72 L138 48 L154 42" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="156" cy="41.5" r="4.5" fill="#00b4ff"/>
+              <path d="M28 48 V104" stroke="#00a8ff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M172 48 V104" stroke="#00a8ff" stroke-width="6" stroke-linecap="round"/>
+              <path d="M30 104 C60 120 85 116 100 122 C115 116 140 120 170 104" stroke="#00a8ff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M98 64 C80 54 50 48 36 50 V102 C50 100 80 106 98 114 Z" fill="#ffffff" stroke="#00a8ff" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M102 64 C120 54 150 48 164 50 V102 C150 100 120 106 102 114 Z" fill="#ffffff" stroke="#00a8ff" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M100 64 V117" stroke="#0090ea" stroke-width="4.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="hero-brand-name">Ciber<span class="highlight">Book</span></span>
+        </div>
+
+        <h1 class="hero-headline">Pide libros, reserva salas y revisa tus préstamos desde el celular</h1>
+        <p class="hero-subheadline">CiberBook digitaliza la gestión de tu biblioteca: catálogo en línea, préstamos con QR, multas automáticas y salas de estudio.</p>
+
+        <div class="hero-benefits-aligned">
+          <div class="benefit-item" *ngFor="let item of heroBenefits">
+            <i class="bx" [ngClass]="item.icon"></i>
+            <span>{{ item.text }}</span>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a routerLink="/register" class="btn btn-primary btn-cta" id="hero-btn-register">
+            <span>Crear Cuenta</span>
+            <i class="bx bx-right-arrow-alt"></i>
+          </a>
+          <a routerLink="/login" class="btn btn-secondary btn-cta" id="hero-btn-login">
+            <i class="bx bx-log-in"></i>
+            <span>Iniciar Sesión</span>
+          </a>
+        </div>
+
+        <div class="hero-highlights-strip">
+          <div class="highlight-pill" *ngFor="let h of heroHighlights">
+            <i class="bx" [ngClass]="h.icon"></i>
+            <span>{{ h.text }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview-section" id="sistema">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-tag">EL PRODUCTO REAL</span>
+        <h2 class="section-title">Diseñado para la Gestión Diaria de tu Biblioteca</h2>
+        <p class="section-description">Explora cómo luce la interfaz de usuario en sus principales módulos operativos.</p>
+      </div>
+
+      <div class="preview-tabs">
+        <button
+          *ngFor="let p of systemPreviews"
+          class="preview-tab-btn"
+          [class.active]="activePreview === p.id"
+          (click)="selectPreview(p.id)">
+          {{ p.title }}
+        </button>
+      </div>
+
+      <div class="browser-frame">
+        <div class="browser-header">
+          <div class="browser-dots">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+          </div>
+          <div class="browser-address">
+            <i class="bx bx-lock-alt"></i>
+            <span>app.ciberbook.edu/{{ activePreview }}</span>
+          </div>
+          <div class="browser-actions">
+            <i class="bx bx-refresh"></i>
+          </div>
+        </div>
+
+        <div class="browser-viewport">
+          <div *ngFor="let p of systemPreviews" [hidden]="activePreview !== p.id" class="preview-content-box">
+            <div class="preview-image-container">
+              <img
+                [src]="p.image"
+                [alt]="'Captura del sistema ' + p.title"
+                loading="lazy"
+                class="preview-real-img"
+                (error)="$any($event.target).style.display='none'; fallbackBox.style.display='flex'">
+              
+              <div #fallbackBox class="preview-fallback-container">
+                <div class="fallback-card">
+                  <div class="fallback-icon">
+                    <i class="bx bx-desktop"></i>
+                  </div>
+                  <h3>{{ p.title }}</h3>
+                  <p>{{ p.description }}</p>
+                  <span class="asset-slot-badge">Espacio reservado: {{ p.image }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="institution-section" id="instituciones">
+    <div class="section-container">
+      <div class="institution-card-banner">
+        <div class="institution-header">
+          <span class="section-tag">PARA TU INSTITUCIÓN</span>
+          <h2 class="institution-title">Colegios, Universidades, Empresas y Bibliotecas Comunitarias</h2>
+          <p class="institution-desc">
+            Moderniza la administración de tus recursos bibliográficos y ofrece a tu comunidad un acceso digital ágil y seguro.
+          </p>
+        </div>
+
+        <div class="institution-grid">
+          <div class="inst-point-card" *ngFor="let point of institutionPoints">
+            <div class="inst-icon-wrap">
+              <i class="bx" [ngClass]="point.icon"></i>
+            </div>
+            <h3>{{ point.title }}</h3>
+            <p>{{ point.description }}</p>
+          </div>
+        </div>
+
+        <div class="institution-footer-cta">
+          <a href="mailto:contacto@ciberbook.edu?subject=Solicitud%20de%20Demostraci%C3%B3n%20CiberBook" class="btn btn-primary btn-lg" id="btn-demo-institution">
+            <i class="bx bx-envelope"></i>
+            <span>Solicitar demostración</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section" id="servicios">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-tag">SERVICIOS INTEGRALES</span>
+        <h2 class="section-title">Diseñado para Estudiantes, Docentes e Instituciones Educativas</h2>
+        <p class="section-description">
+          Disfruta de una experiencia bibliotecaria moderna, rápida e intuitiva desde cualquier pantalla.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let f of features">
+          <div class="feature-card-glow"></div>
+          <div class="feature-tag-row">
+            <span class="f-tag">{{ f.tag }}</span>
+          </div>
+          <div class="feature-icon-wrapper">
+            <i class="bx" [ngClass]="f.icon"></i>
+          </div>
+          <h3 class="feature-title">{{ f.title }}</h3>
+          <p class="feature-desc">{{ f.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rooms-highlight-section" id="salas">
+    <div class="section-container">
+      <div class="rooms-card-banner">
+        <div class="rooms-content">
+          <span class="section-tag"><i class="bx bx-time-five"></i> ESPACIOS EN TIEMPO REAL</span>
+          <h2>Reserva Salas de Estudio Equipadas</h2>
+          <p>
+            ¿Necesitas preparar una exposición grupal o concentrarte en silencio? En CiberBook puedes
+            consultar la disponibilidad en vivo y reservar tu lugar sin hacer filas.
+          </p>
+          <ul class="rooms-benefits-list">
+            <li><i class="bx bx-check-circle"></i> Pantallas interactivas y proyectores</li>
+            <li><i class="bx bx-check-circle"></i> Conexión Wi-Fi de alta velocidad</li>
+            <li><i class="bx bx-check-circle"></i> Climatización y aislamiento acústico</li>
+          </ul>
+          <div class="rooms-cta">
+            <a routerLink="/register" class="btn btn-primary btn-lg">
+              <i class="bx bx-calendar-check"></i>
+              <span>Crear Cuenta para Reservar</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="rooms-visual">
+          <div class="visual-card-glass">
+            <div class="visual-badge"><i class="bx bx-check"></i> Disponible Ahora</div>
+            <div class="room-preview-box">
+              <i class="bx bx-chalkboard large-room-icon"></i>
+              <div class="room-preview-info">
+                <h4>Sala Multimedia Alfa</h4>
+                <p>Capacidad: 8 personas • Piso 2</p>
+                <div class="room-slot-tags">
+                  <span class="slot available">09:00 - 11:00 (Disponible)</span>
+                  <span class="slot available">14:00 - 16:00 (Disponible)</span>
+                  <span class="slot busy"><del>16:00 - 18:00</del> (Ocupado)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps-section">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-tag">FLUJO FÁCIL</span>
+        <h2 class="section-title">¿Cómo Funciona CiberBook?</h2>
+        <p class="section-description">Acceder a miles de recursos educativos es simple y toma menos de un minuto.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon-circle"><i class="bx bx-user-check"></i></div>
+          <h3>Inicia Sesión</h3>
+          <p>Ingresa con tu correo para activar tu cuenta.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon-circle"><i class="bx bx-search-alt"></i></div>
+          <h3>Busca tu Ejemplar</h3>
+          <p>Explora el catálogo por título, autor, género o editorial con filtros en tiempo real.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon-circle"><i class="bx bx-book-bookmark"></i></div>
+          <h3>Disfruta la Lectura</h3>
+          <p>Retira tu libro con código QR o lee en nuestras salas de estudio sin complicaciones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section" id="faq">
+    <div class="section-container">
+      <div class="section-header text-center">
+        <span class="section-tag">AYUDA & SOPORTE</span>
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <p class="section-description">Resolvemos tus dudas sobre préstamos, cuentas y horarios.</p>
+      </div>
+
+      <div class="faq-accordion-list">
+        <div class="faq-accordion-item" *ngFor="let faq of faqs; let i = index" [class.open]="faq.isOpen">
+          <button class="faq-question-btn" (click)="toggleFaq(i)">
+            <span class="faq-q-text">{{ faq.question }}</span>
+            <i class="bx bx-chevron-down faq-arrow"></i>
+          </button>
+          <div class="faq-answer-container" *ngIf="faq.isOpen">
+            <p class="faq-answer-text">{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner-section">
+    <div class="section-container">
+      <div class="cta-card">
+        <div class="cta-glow-circle"></div>
+        <div class="cta-body">
+          <h2 class="cta-heading">¿Listo para comenzar a aprender?</h2>
+          <p class="cta-sub">
+            Conéctate ahora a CiberBook y aprovecha todos los recursos que tu biblioteca tiene para ti.
+          </p>
+          <div class="cta-buttons-wrapper">
+            <a routerLink="/register" class="btn btn-primary btn-cta-large" id="cta-btn-register">
+              <span>Crear Cuenta Nueva</span>
+              <i class="bx bx-right-arrow-alt"></i>
+            </a>
+            <a routerLink="/login" class="btn btn-secondary btn-cta-large" id="cta-btn-login">
+              <i class="bx bx-log-in"></i>
+              <span>Iniciar Sesión</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="footer-brand">
+          <svg class="circuit-book-mini" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M20 10V32M20 10C16 8 8 9 5 11V31C8 29 16 28 20 32M20 10C24 8 32 9 35 11V31C32 29 24 28 20 32" stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="20" cy="7" r="2.5" fill="#00e5ff"/>
+          </svg>
+          <span class="footer-brand-name">Ciber<span>Book</span></span>
+        </div>
+        <p class="footer-desc">
+          Plataforma de gestión inteligente de bibliotecas y recursos de aprendizaje para instituciones educativas.
+        </p>
+        <div class="footer-status">
+          <span class="status-indicator"></span>
+          <span>Plataforma activa 24/7</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="#hero" (click)="scrollToSection('hero', $event)">Inicio</a></li>
+          <li><a href="#sistema" (click)="scrollToSection('sistema', $event)">El Sistema</a></li>
+          <li><a href="#instituciones" (click)="scrollToSection('instituciones', $event)">Instituciones</a></li>
+          <li><a href="#servicios" (click)="scrollToSection('servicios', $event)">Servicios</a></li>
+          <li><a href="#salas" (click)="scrollToSection('salas', $event)">Salas de Estudio</a></li>
+          <li><a href="#faq" (click)="scrollToSection('faq', $event)">Preguntas Frecuentes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Accesos</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/register"><i class="bx bx-chevron-right"></i> Crear Cuenta</a></li>
+          <li><a routerLink="/login"><i class="bx bx-chevron-right"></i> Iniciar Sesión</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Contacto</h4>
+        <p class="footer-contact-item"><i class="bx bx-envelope"></i> soporte&#64;ciberbook.edu</p>
+        <p class="footer-contact-item"><i class="bx bx-map-pin"></i> Campus Principal - Biblioteca Central</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="bottom-container">
+        <p>&copy; 2026 CiberBook. Todos los derechos reservados.</p>
+        <p class="made-with">Tu biblioteca, un mundo de posibilidades.</p>
+      </div>
+    </div>
+  </footer>
+</div>

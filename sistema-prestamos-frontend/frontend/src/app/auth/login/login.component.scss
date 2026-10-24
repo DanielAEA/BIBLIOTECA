@@ -104,6 +104,35 @@
   justify-content: center;
   position: relative;
 
+  .auth-top-nav {
+    margin-bottom: 1.25rem;
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748b;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 1.15rem;
+        transition: transform 0.2s ease;
+      }
+
+      &:hover {
+        color: #00d2ff;
+        transform: translateX(-3px);
+
+        i {
+          transform: translateX(-2px);
+        }
+      }
+    }
+  }
+
   @media (max-width: 768px) {
     padding: 40px;
   }
