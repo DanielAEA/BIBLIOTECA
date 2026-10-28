@@ -2,9 +2,13 @@
   <div class="premium-header">
     <h2>Gestión de Libros</h2>
     <div style="display: flex; gap: 1rem; align-items: center;">
-      <div class="view-toggle">
-        <button [class.active]="!isListView" (click)="toggleView()">Cuadrícula</button>
-        <button [class.active]="isListView" (click)="toggleView()">Lista</button>
+      <div class="view-toggles">
+        <button class="icon-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')" title="Cuadrícula">
+          <i class='bx bx-grid-alt'></i>
+        </button>
+        <button class="icon-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')" title="Lista">
+          <i class='bx bx-list-ul'></i>
+        </button>
       </div>
       <button class="premium-button" (click)="createBook()">+ Nuevo Libro</button>
     </div>
@@ -138,96 +142,99 @@
     </div>
   </div>
 
-  <div *ngIf="!loading && !error && !isListView" class="books-grid"
-    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
-    <div *ngFor="let b of books" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden;">
-      <div class="book-cover-container" style="height: 300px; width: 100%; background: #f1f5f9; cursor: pointer;"
-        (click)="verDetalles(b)">
-        <img [src]="b.urlPortada || 'https://via.placeholder.com/300x450?text=Sin+Portada'"
-          (error)="b.urlPortada = 'https://via.placeholder.com/300x450?text=Error+Imagen'"
-          style="width: 100%; height: 100%; object-fit: cover;">
-      </div>
-      <div style="padding: 1.5rem;">
-        <div class="book-title">{{ b.titulo }}</div>
-        <div style="margin-bottom: 0.5rem; font-size: 0.95rem;">
-          <strong style="color: var(--text-dark);">Autor(es):</strong> <span style="color: var(--text-muted);">{{
-            getAuthorsString(b) }}</span>
-        </div>
-
-        <div
-          style="margin-bottom: 1.5rem; font-size: 0.95rem; display: flex; align-items: center; justify-content: space-between;">
-          <div>
-            <strong style="color: var(--text-dark);">Formato:</strong>
-            <span style="color: var(--text-muted); margin-left: 0.5rem;">
-              {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
-            </span>
-          </div>
-          <button class="btn-read-premium" *ngIf="b.tieneDigital" (click)="leerOnline(b)">
-            Leer
-          </button>
-        </div>
-        <div style="display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-          <button class="btn-view-premium sm" style="flex: 1;" (click)="verDetalles(b)">Detalles</button>
-          <button class="btn-edit-premium sm" style="flex: 1;" (click)="editBook(b)">Editar</button>
-          <button class="btn-delete-premium sm" style="flex: 1;" (click)="deleteBook(b)">Eliminar</button>
-        </div>
-      </div>
-    </div>
-
-    <div *ngIf="!loading && !error && !isListView && books.length === 0" class="no-books">
-      No hay libros registrados.
-    </div>
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Cargando libros...</span>
   </div>
 
-  <!-- List View -->
-  <div *ngIf="!loading && !error && isListView" class="list-view-container">
-    <div class="premium-card table-card" style="padding: 0; overflow: hidden;">
-      <table class="premium-table">
-        <thead>
-          <tr>
-            <th style="width: 50px; text-align: center;">
-              <input type="checkbox" (change)="toggleAll($event)" [checked]="selectedBookIds.size === books.length && books.length > 0">
-            </th>
-            <th>Portada</th>
-            <th>Título</th>
-            <th>Autor(es)</th>
-            <th>Formato</th>
-            <th style="text-align: right;">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let b of books" [class.selected]="selectedBookIds.has(b.id)">
-            <td style="text-align: center;">
-              <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)">
-            </td>
-            <td>
-              <img [src]="b.urlPortada || 'https://via.placeholder.com/40x60?text=S/P'" 
-                   style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
-            </td>
-            <td>
-              <div style="font-weight: 700; color: var(--text-dark);">{{ b.titulo }}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">ISBN: {{ b.isbn || 'N/A' }}</div>
-            </td>
-            <td>{{ getAuthorsString(b) }}</td>
-            <td>
-              <span class="premium-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-info' : 'badge-success'">
-                {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
-              </span>
-            </td>
-            <td style="text-align: right;">
-              <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                <button class="btn-read-premium sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)">Leer</button>
-                <button class="btn-view-premium sm" (click)="verDetalles(b)">Ver</button>
-                <button class="btn-edit-premium sm" (click)="editBook(b)">Editar</button>
-                <button class="btn-delete-premium sm" (click)="deleteBook(b)">Eliminar</button>
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="books.length === 0">
-            <td colspan="6" class="no-books">No hay libros registrados.</td>
-          </tr>
-        </tbody>
-      </table>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="!loading && !error">
+    <div class="bloque-section" *ngFor="let g of getBooksAgrupadosPorBloque()">
+      <h3 class="bloque-title"><i class='bx bx-cabinet'></i> {{ g.bloque }}</h3>
+
+      <!-- Grid View -->
+      <div *ngIf="viewMode === 'grid'" class="books-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+        <div *ngFor="let b of g.items" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden;">
+          <div class="book-cover-container" style="height: 200px; width: 100%; background: #f1f5f9; cursor: pointer;"
+            (click)="verDetalles(b)">
+            <img [src]="b.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'"
+              (error)="b.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
+              style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <div style="padding: 1rem;">
+            <div class="book-title" style="font-size: 1rem; margin-bottom: 0.5rem;">{{ b.titulo }}</div>
+            <div style="display: flex; gap: 0.3rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+              <button class="btn-view-premium sm" style="flex: 1; padding: 0.4rem;" (click)="verDetalles(b)">Ver</button>
+              <button class="btn-edit-premium sm" style="flex: 1; padding: 0.4rem;" (click)="editBook(b)">Editar</button>
+              <button class="btn-delete-premium sm" style="flex: 1; padding: 0.4rem;" (click)="deleteBook(b)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View (Inside Block) -->
+      <div *ngIf="viewMode === 'list'" class="list-view-container">
+        <div class="premium-card table-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+          <table class="premium-table">
+            <thead>
+              <tr>
+                <th style="width: 50px; text-align: center;">
+                  <input type="checkbox" (change)="toggleAll($event)" [checked]="selectedBookIds.size === books.length && books.length > 0">
+                </th>
+                <th>Portada</th>
+                <th>Título</th>
+                <th>Autor(es)</th>
+                <th>Formato</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of g.items" [class.selected]="selectedBookIds.has(b.id)">
+                <td style="text-align: center;">
+                  <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)">
+                </td>
+                <td>
+                  <img [src]="b.urlPortada || 'https://via.placeholder.com/40x60?text=S/P'" 
+                       style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
+                </td>
+                <td>
+                  <div style="font-weight: 700; color: var(--text-dark);">{{ b.titulo }}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">ISBN: {{ b.isbn || 'N/A' }}</div>
+                </td>
+                <td>{{ getAuthorsString(b) }}</td>
+                <td>
+                  <span class="premium-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-info' : 'badge-success'">
+                    {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+                  </span>
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                    <button class="btn-read-premium sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)">Leer</button>
+                    <button class="btn-view-premium sm" (click)="verDetalles(b)">Ver</button>
+                    <button class="btn-edit-premium sm" (click)="editBook(b)">Editar</button>
+                    <button class="btn-delete-premium sm" (click)="deleteBook(b)">Eliminar</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <app-pagination
+      *ngIf="books.length > 0"
+      [page]="page"
+      [size]="size"
+      [totalElements]="totalElements"
+      (pageChange)="onPageChange($event)"
+      (sizeChange)="onSizeChange($event)"
+    ></app-pagination>
+
+    <div *ngIf="books.length === 0" class="no-books">
+      No hay libros registrados.
     </div>
   </div>
 </div>

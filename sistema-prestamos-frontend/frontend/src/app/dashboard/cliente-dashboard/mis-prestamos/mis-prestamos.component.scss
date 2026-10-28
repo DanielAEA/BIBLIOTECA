@@ -6,8 +6,32 @@
 .loading,
 .no-data {
     text-align: center;
-    padding: 2rem;
-    color: #6b7280;
+    padding: 3rem 1rem;
+    color: var(--text-muted, #6b7280);
+    font-size: 1rem;
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
+    color: var(--text-muted, #94a3b8);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 210, 255, 0.15);
+    border-top-color: var(--accent-cyan, #00d2ff);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .error-message {
@@ -19,7 +43,38 @@
 }
 
 .overdue-row {
-    background: #fef2f2 !important;
+    background-color: #fff1f2 !important;
+}
+
+body.dark-theme .overdue-row {
+    background-color: rgba(220, 38, 38, 0.1) !important;
+    
+    td {
+        color: #f87171 !important;
+        border-bottom-color: rgba(255, 255, 255, 0.05) !important;
+        
+        small { color: #fca5a5 !important; }
+        strong { color: #ffffff !important; }
+    }
+
+    .premium-badge.badge-danger {
+        background-color: #7f1d1d !important;
+        color: #fca5a5 !important;
+    }
+}
+
+.dark-theme {
+    .premium-card {
+        background: var(--bg-card) !important;
+    }
+    
+    .premium-table {
+        th { background: var(--bg-alt) !important; color: var(--text-muted) !important; }
+        td { color: var(--text-main) !important; border-bottom-color: var(--border-color) !important; }
+        tr:hover td { background: var(--bg-alt) !important; }
+    }
+
+    h2, h3, strong { color: var(--text-dark) !important; }
 }
 
 .text-danger {

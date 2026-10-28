@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Usuario } from './user.service';
 import { Libro } from './book.service';
+import { environment } from '../../environments/environment';
 
 export interface Multa {
   id: string;
@@ -35,9 +36,11 @@ export interface PrestamoPayload {
   devuelto?: boolean;
 }
 
+import { PageResponse } from '../shared/pagination/pagination.component';
+
 @Injectable({ providedIn: 'root' })
 export class LoanService {
-  private baseUrl = '';
+  private baseUrl = environment.apiUrl;
   private loansSubject = new BehaviorSubject<Prestamo[] | null>(null);
   public loans$ = this.loansSubject.asObservable();
 
@@ -45,6 +48,24 @@ export class LoanService {
 
   getAll(): Observable<Prestamo[]> {
     return this.http.get<Prestamo[]>(`${this.baseUrl}/api/prestamos`);
+  }
+
+  getLoansPaginated(page: number = 0, size: number = 10, filters?: any): Observable<PageResponse<Prestamo>> {
+    let params: any = { page, size };
+    if (filters) {
+      if (filters.usuario?.trim()) params.usuario = filters.usuario.trim();
+      if (filters.libro?.trim()) params.libro = filters.libro.trim();
+      if (filters.codigo?.trim()) params.ejemplarCodigo = filters.codigo.trim();
+      if (filters.estado?.trim()) params.estado = filters.estado.trim();
+      if (filters.soloConMulta) params.soloConMulta = true;
+    }
+    return this.http.get<PageResponse<Prestamo>>(`${this.baseUrl}/api/prestamos`, { params });
+  }
+
+  getByUserIdPaginated(userId: string, page: number = 0, size: number = 10): Observable<PageResponse<Prestamo>> {
+    return this.http.get<PageResponse<Prestamo>>(`${this.baseUrl}/api/prestamos/usuario/${userId}`, {
+      params: { page, size }
+    });
   }
 
   create(payload: PrestamoPayload): Observable<Prestamo> {

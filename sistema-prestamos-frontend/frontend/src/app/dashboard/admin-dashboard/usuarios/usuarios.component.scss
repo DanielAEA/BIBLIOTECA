@@ -119,8 +119,53 @@ td {
   border: 1px solid #fecaca;
 }
 
-.no-users {
+.no-users,
+.no-data {
   text-align: center;
-  padding: 2rem;
-  color: #6b7280;
+  padding: 3rem 1rem;
+  color: var(--text-muted, #94a3b8);
+  font-size: 1rem;
+}
+
+.search-box {
+  .search-input {
+    min-height: 44px;
+    min-width: 260px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.12));
+    background: var(--bg-card, #131b2e);
+    color: var(--text-main, #f8fafc);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: 2px solid var(--accent-cyan, #00d2ff);
+      outline-offset: 1px;
+      border-color: var(--accent-cyan, #00d2ff);
+    }
+  }
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  gap: 1rem;
+  color: var(--text-muted, #94a3b8);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 210, 255, 0.15);
+  border-top-color: var(--accent-cyan, #00d2ff);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

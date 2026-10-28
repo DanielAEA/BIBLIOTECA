@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, forkJoin } from 'rxjs';
 import { BookService, Libro, LibroPayload } from '../../../services/book.service';
 import { AuthorService, Autor } from '../../../services/author.service';
@@ -9,19 +9,23 @@ import { EditorialService, Editorial } from '../../../services/editorial.service
 import { GeneroService, Genero } from '../../../services/genero.service';
 import { AuthService } from '../../../services/auth.service';
 import { StatsService } from '../../../services/stats.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
 import { BookCoverUploadComponent } from './book-cover-upload.component';
 
 @Component({
   selector: 'app-libros',
   standalone: true,
-  imports: [CommonModule, FormsModule, BookCoverUploadComponent],
+  imports: [CommonModule, FormsModule, BookCoverUploadComponent, PaginationComponent],
   templateUrl: './libros.component.html',
   styleUrls: ['./libros.component.scss']
 })
 export class LibrosComponent implements OnInit {
 
   books: Libro[] = [];
+  page: number = 0;
+  size: number = 10;
+  totalElements: number = 0;
   authors: Autor[] = [];
   editorials: Editorial[] = [];
   generos: Genero[] = [];
@@ -45,8 +49,41 @@ export class LibrosComponent implements OnInit {
   selectedFile: File | null = null;
 
   // New features: View toggle and bulk selection
-  isListView = false;
+  viewMode: 'grid' | 'list' = 'grid';
   selectedBookIds: Set<string> = new Set();
+
+  setViewMode(mode: 'grid' | 'list') {
+    this.viewMode = mode;
+    this.selectedBookIds.clear();
+  }
+
+  getBooksAgrupadosPorBloque() {
+    const groups: { [key: string]: Libro[] } = {};
+    this.books.forEach(libro => {
+      const bloques = new Set<string>();
+      libro.ejemplares?.forEach((e: any) => {
+        if (e.bloque) bloques.add(e.bloque);
+      });
+
+      if (bloques.size === 0) {
+        const b = 'General';
+        if (!groups[b]) groups[b] = [];
+        groups[b].push(libro);
+      } else {
+        bloques.forEach(b => {
+          if (!groups[b]) groups[b] = [];
+          if (!groups[b].some(l => l.id === libro.id)) {
+            groups[b].push(libro);
+          }
+        });
+      }
+    });
+
+    return Object.keys(groups).sort().map(key => ({
+      bloque: key,
+      items: groups[key]
+    }));
+  }
 
   constructor(
     private bookService: BookService,
@@ -55,20 +92,47 @@ export class LibrosComponent implements OnInit {
     private generoService: GeneroService,
     private authService: AuthService,
     private statsService: StatsService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.loadBooks();
+    this.route.queryParams.subscribe(params => {
+      this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
+      this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+      this.loadBooks();
+    });
     this.loadMetadata();
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.updateQueryParams();
+  }
+
+  onSizeChange(newSize: number) {
+    this.size = newSize;
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
+  private updateQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page: this.page, size: this.size },
+      queryParamsHandling: 'merge'
+    });
   }
 
   loadBooks() {
     this.loading = true;
     this.error = null;
-    this.bookService.getAllBooks().subscribe({
-      next: (books) => {
-        this.books = books;
+    this.bookService.getBooksPaginated(this.page, this.size).subscribe({
+      next: (response) => {
+        this.books = response.content || [];
+        this.page = response.page;
+        this.size = response.size;
+        this.totalElements = response.totalElements;
         this.loading = false;
       },
       error: (err) => {
@@ -376,7 +440,7 @@ export class LibrosComponent implements OnInit {
   }
 
   toggleView() {
-    this.isListView = !this.isListView;
+    this.viewMode = this.viewMode === 'grid' ? 'list' : 'grid';
     this.selectedBookIds.clear();
   }
 

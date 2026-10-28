@@ -1,27 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { BookService, Libro } from '../../../services/book.service';
 import { LoanService } from '../../../services/loan.service';
 import { ResenaService, Resena } from '../../../services/resena.service';
 import { AuthService } from '../../../services/auth.service';
 import { StatsService } from '../../../services/stats.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-catalogo-cliente',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, PaginationComponent],
     templateUrl: './catalogo.component.html',
     styleUrls: ['./catalogo.component.scss']
 })
-export class CatalogoClienteComponent implements OnInit {
+export class CatalogoClienteComponent implements OnInit, OnDestroy {
     Math = Math;
     libros: any[] = [];
     filteredLibros: any[] = [];
     loading = false;
     searchTerm = '';
+    viewMode: 'grid' | 'list' = 'grid';
+
+    page: number = 0;
+    size: number = 10;
+    totalElements: number = 0;
+
+    private searchSubject = new Subject<string>();
+    private searchSub?: Subscription;
 
     showResenaForm = false;
     resenaLibroId: string | null = null;
@@ -38,19 +48,69 @@ export class CatalogoClienteComponent implements OnInit {
         private resenaService: ResenaService,
         private authService: AuthService,
         private statsService: StatsService,
+        private route: ActivatedRoute,
         private router: Router
     ) { }
 
     ngOnInit() {
-        this.loadLibros();
+        this.route.queryParams.subscribe(params => {
+            this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
+            this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+            this.searchTerm = params['search'] || '';
+
+            this.loadLibros();
+        });
+
+        this.searchSub = this.searchSubject.pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+        ).subscribe(term => {
+            this.page = 0;
+            this.searchTerm = term;
+            this.updateQueryParams();
+        });
+    }
+
+    ngOnDestroy() {
+        this.searchSub?.unsubscribe();
+    }
+
+    onSearchInput(val: string) {
+        this.searchSubject.next(val);
+    }
+
+    onPageChange(newPage: number) {
+        this.page = newPage;
+        this.updateQueryParams();
+    }
+
+    onSizeChange(newSize: number) {
+        this.size = newSize;
+        this.page = 0;
+        this.updateQueryParams();
+    }
+
+    private updateQueryParams() {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+                page: this.page,
+                size: this.size,
+                search: this.searchTerm ? this.searchTerm : null
+            },
+            queryParamsHandling: 'merge'
+        });
     }
 
     loadLibros() {
         this.loading = true;
-        this.bookService.getAllBooks().subscribe({
-            next: (libros) => {
-                this.libros = libros;
-                this.filteredLibros = libros;
+        this.bookService.getBooksPaginated(this.page, this.size, { search: this.searchTerm }).subscribe({
+            next: (response) => {
+                this.libros = response.content || [];
+                this.filteredLibros = this.libros;
+                this.page = response.page;
+                this.size = response.size;
+                this.totalElements = response.totalElements;
                 this.loading = false;
             },
             error: () => { this.loading = false; }
@@ -58,12 +118,55 @@ export class CatalogoClienteComponent implements OnInit {
     }
 
     filterLibros() {
-        const term = this.searchTerm.toLowerCase();
+        const term = this.searchTerm.toLowerCase().trim();
+        if (!term) {
+            this.filteredLibros = this.libros;
+            return;
+        }
         this.filteredLibros = this.libros.filter((l: any) =>
             l.titulo?.toLowerCase().includes(term) ||
             l.autores?.some((a: any) => a.nombre?.toLowerCase().includes(term)) ||
-            l.genero?.nombre?.toLowerCase().includes(term)
+            l.genero?.nombre?.toLowerCase().includes(term) ||
+            l.ejemplares?.some((e: any) => 
+                e.bloque?.toLowerCase().includes(term) || 
+                e.estante?.toLowerCase().includes(term) ||
+                e.codigo?.toLowerCase().includes(term)
+            )
         );
+    }
+
+    setViewMode(mode: 'grid' | 'list') {
+        this.viewMode = mode;
+    }
+
+    getLibrosAgrupadosPorBloque() {
+        const groups: { [key: string]: any[] } = {};
+        this.filteredLibros.forEach(libro => {
+            
+            const bloques = new Set<string>();
+            libro.ejemplares?.forEach((e: any) => {
+                if (e.bloque) bloques.add(e.bloque);
+            });
+
+            if (bloques.size === 0) {
+                const b = 'General';
+                if (!groups[b]) groups[b] = [];
+                groups[b].push(libro);
+            } else {
+                bloques.forEach(b => {
+                    if (!groups[b]) groups[b] = [];
+                    
+                    if (!groups[b].some(l => l.id === libro.id)) {
+                        groups[b].push(libro);
+                    }
+                });
+            }
+        });
+
+        return Object.keys(groups).sort().map(key => ({
+            bloque: key,
+            items: groups[key]
+        }));
     }
 
     getEjemplaresDisponibles(libro: any): number {

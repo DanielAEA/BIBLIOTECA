@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { UserService, Usuario, UsuarioCreatePayload, UsuarioUpdatePayload } from '../../../services/user.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.scss']
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
 
   users: Usuario[] = [];
   loading = true;
@@ -21,18 +23,83 @@ export class UsuariosComponent implements OnInit {
   showUserForm = false;
   submittingUser = false;
 
-  constructor(private userService: UserService) { }
+  page: number = 0;
+  size: number = 10;
+  totalElements: number = 0;
+  searchTerm: string = '';
+
+  private searchSubject = new Subject<string>();
+  private searchSub?: Subscription;
+
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.loadUsers();
+    this.route.queryParams.subscribe(params => {
+      const qPage = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
+      const qSize = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+      const qSearch = params['search'] || '';
+
+      this.page = qPage;
+      this.size = qSize;
+      this.searchTerm = qSearch;
+
+      this.loadUsers();
+    });
+
+    this.searchSub = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.page = 0;
+      this.searchTerm = term;
+      this.updateQueryParams();
+    });
+  }
+
+  ngOnDestroy() {
+    this.searchSub?.unsubscribe();
+  }
+
+  onSearchInput(value: string) {
+    this.searchSubject.next(value);
+  }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+    this.updateQueryParams();
+  }
+
+  onSizeChange(newSize: number) {
+    this.size = newSize;
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
+  private updateQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        page: this.page,
+        size: this.size,
+        search: this.searchTerm ? this.searchTerm : null
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   loadUsers() {
     this.loading = true;
     this.error = null;
-    this.userService.getAllUsers().subscribe({
-      next: (users) => {
-        this.users = users;
+    this.userService.getUsersPaginated(this.page, this.size, this.searchTerm).subscribe({
+      next: (response) => {
+        this.users = response.content || [];
+        this.page = response.page;
+        this.size = response.size;
+        this.totalElements = response.totalElements;
         this.loading = false;
       },
       error: (err) => {

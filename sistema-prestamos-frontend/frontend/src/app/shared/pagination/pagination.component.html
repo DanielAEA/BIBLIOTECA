@@ -1,0 +1,52 @@
+<nav class="pagination-container" aria-label="Navegación de páginas">
+  <div class="pagination-info">
+    <span>Mostrando {{ startItem }} a {{ endItem }} de {{ totalElements }}</span>
+    <div class="page-size-selector">
+      <label for="pageSizeSelect">Filas por página:</label>
+      <select id="pageSizeSelect" [ngModel]="size" (change)="onSizeChange($event)" aria-label="Cantidad de elementos por página">
+        <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+      </select>
+    </div>
+  </div>
+
+  <ul class="pagination-controls" *ngIf="totalPages > 1">
+    <li>
+      <button
+        type="button"
+        class="pagination-btn nav-btn"
+        [disabled]="page === 0"
+        (click)="previous()"
+        aria-label="Página anterior"
+      >
+        <span aria-hidden="true">&laquo;</span> Anterior
+      </button>
+    </li>
+
+    <li *ngFor="let p of visiblePages">
+      <span *ngIf="p === '...'" class="pagination-ellipsis" aria-hidden="true">&hellip;</span>
+      <button
+        *ngIf="p !== '...'"
+        type="button"
+        class="pagination-btn page-num-btn"
+        [class.active]="p === page + 1"
+        [attr.aria-current]="p === page + 1 ? 'page' : null"
+        [attr.aria-label]="'Página ' + p"
+        (click)="goToPage(p)"
+      >
+        {{ p }}
+      </button>
+    </li>
+
+    <li>
+      <button
+        type="button"
+        class="pagination-btn nav-btn"
+        [disabled]="page >= totalPages - 1 || totalPages === 0"
+        (click)="next()"
+        aria-label="Página siguiente"
+      >
+        Siguiente <span aria-hidden="true">&raquo;</span>
+      </button>
+    </li>
+  </ul>
+</nav>

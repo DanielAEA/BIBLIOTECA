@@ -1,10 +1,21 @@
 <div class="premium-container">
   <div class="premium-header">
     <h2>Gestión de Usuarios</h2>
-    <button class="premium-button" (click)="createUser()">+ Nuevo Usuario</button>
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <div class="search-box">
+        <input
+          type="text"
+          class="premium-input search-input"
+          placeholder="Buscar por nombre o correo..."
+          [ngModel]="searchTerm"
+          (ngModelChange)="onSearchInput($event)"
+          aria-label="Buscar usuarios"
+        />
+      </div>
+      <button class="premium-button" (click)="createUser()">+ Nuevo Usuario</button>
+    </div>
   </div>
 
-  
   <div class="modal-overlay" *ngIf="showUserForm && editingUser" (click)="cancelUserForm()">
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -34,7 +45,11 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="loading">Cargando usuarios...</div>
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Cargando usuarios...</span>
+  </div>
+
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
   <div class="premium-card" *ngIf="!loading && users.length > 0">
@@ -65,9 +80,18 @@
         </tbody>
       </table>
     </div>
+
+    <app-pagination
+      [page]="page"
+      [size]="size"
+      [totalElements]="totalElements"
+      (pageChange)="onPageChange($event)"
+      (sizeChange)="onSizeChange($event)"
+    ></app-pagination>
   </div>
 
   <div *ngIf="!loading && users.length === 0" class="no-data">
-    No hay usuarios registrados.
+    <p *ngIf="searchTerm">No se encontraron usuarios para la búsqueda "{{ searchTerm }}".</p>
+    <p *ngIf="!searchTerm">No hay usuarios registrados.</p>
   </div>
 </div>

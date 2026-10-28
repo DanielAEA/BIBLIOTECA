@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoanService, Prestamo } from '../../../services/loan.service';
 import { AuthService } from '../../../services/auth.service';
 import { StatsService } from '../../../services/stats.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-mis-prestamos',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule, PaginationComponent],
     templateUrl: './mis-prestamos.component.html',
     styleUrls: ['./mis-prestamos.component.scss']
 })
@@ -19,16 +22,43 @@ export class MisPrestamosComponent implements OnInit {
     error: string | null = null;
     totalMulta = 0;
 
+    page: number = 0;
+    size: number = 10;
+    totalElements: number = 0;
+
     constructor(
         private loanService: LoanService,
         private authService: AuthService,
-        private statsService: StatsService
+        private statsService: StatsService,
+        private route: ActivatedRoute,
+        private router: Router
     ) { }
 
     ngOnInit() {
-        this.loanService.loadAll();
-        this.loadMyLoans();
-        this.loanService.loans$.subscribe(() => this.loadMyLoans());
+        this.route.queryParams.subscribe(params => {
+            this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
+            this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+            this.loadMyLoans();
+        });
+    }
+
+    onPageChange(newPage: number) {
+        this.page = newPage;
+        this.updateQueryParams();
+    }
+
+    onSizeChange(newSize: number) {
+        this.size = newSize;
+        this.page = 0;
+        this.updateQueryParams();
+    }
+
+    private updateQueryParams() {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: this.page, size: this.size },
+            queryParamsHandling: 'merge'
+        });
     }
 
     loadMyLoans() {
@@ -42,33 +72,30 @@ export class MisPrestamosComponent implements OnInit {
         this.loading = true;
         this.error = null;
 
-        this.loanService.getByUserId(userId).subscribe({
-            next: (prestamos) => this.processPrestamos(prestamos),
-            error: () => this.loadAllAndFilter(userId)
-        });
-    }
-
-    private loadAllAndFilter(userId: string) {
-        this.loanService.getAll().subscribe({
-            next: (allPrestamos) => {
-                this.processPrestamos(allPrestamos.filter(p => {
-                    const pid = p.usuario?.id;
-                    return String(pid) === String(userId);
-                }));
-            },
-            error: (err) => {
-                this.error = 'No se pudieron cargar tus préstamos.';
+        this.loanService.getByUserIdPaginated(userId, this.page, this.size).subscribe({
+            next: (response) => {
+                this.prestamos = response.content || [];
+                this.page = response.page;
+                this.size = response.size;
+                this.totalElements = response.totalElements;
+                this.totalMulta = this.prestamos.reduce((sum, p) => sum + this.getFine(p), 0);
                 this.loading = false;
+            },
+            error: () => {
+                this.loanService.getByUserId(userId).subscribe({
+                    next: (all) => {
+                        this.prestamos = all;
+                        this.totalElements = all.length;
+                        this.totalMulta = this.prestamos.reduce((sum, p) => sum + this.getFine(p), 0);
+                        this.loading = false;
+                    },
+                    error: () => {
+                        this.error = 'No se pudieron cargar tus préstamos.';
+                        this.loading = false;
+                    }
+                });
             }
         });
-    }
-
-    private processPrestamos(prestamos: Prestamo[]) {
-        this.prestamos = prestamos;
-        
-        this.totalMulta = this.prestamos
-            .reduce((sum, p) => sum + this.getFine(p), 0);
-        this.loading = false;
     }
 
     calculateDaysRemaining(fechaDevolucion: string): number {
@@ -82,11 +109,9 @@ export class MisPrestamosComponent implements OnInit {
     }
 
     getFine(p: Prestamo): number {
-        
         if (p.multa) {
             return p.multa.pagada ? 0 : p.multa.total;
         }
-        
         if (!p.devuelto) {
             const dias = this.calculateDaysRemaining(p.fechaDevolucion);
             return dias < 0 ? Math.abs(dias) * 2000 : 0; 
@@ -98,27 +123,41 @@ export class MisPrestamosComponent implements OnInit {
         return !p.devuelto && this.calculateDaysRemaining(p.fechaDevolucion) < 0;
     }
 
-    getActiveLoans(): Prestamo[] { return this.prestamos.filter(p => !p.devuelto); }
-    getReturnedLoans(): Prestamo[] { return this.prestamos.filter(p => p.devuelto); }
-
     getLibroTitulo(p: Prestamo): string {
-        return p?.libro?.titulo || 'Libro no disponible';
+        return p.libro?.titulo || 'Libro sin título';
     }
 
     getEjemplarCodigo(p: Prestamo): string {
-        return p?.ejemplarCodigo || 'N/A';
+        return p.ejemplarCodigo || '-';
+    }
+
+    getActiveLoans(): Prestamo[] {
+        return this.prestamos.filter(p => !p.devuelto);
+    }
+
+    getReturnedLoans(): Prestamo[] {
+        return this.prestamos.filter(p => p.devuelto);
     }
 
     leerOnline(p: Prestamo) {
-        const libro = p?.libro;
-        if (libro && libro.archivoDigital) {
-            const payload = this.authService.getPayload();
-            if (payload && (payload.id || payload.sub)) {
-                this.statsService.registrarLecturaDigital(payload.id || payload.sub, libro.id).subscribe();
-            }
-            window.open(libro.archivoDigital, '_blank');
+        if (!p.libro?.id) {
+            Swal.fire('Error', 'No se encontró la información del libro', 'error');
+            return;
+        }
+
+        const payload = this.authService.getPayload();
+        const userId = payload?.id || payload?.sub;
+
+        if (userId) {
+            this.statsService.registrarLecturaDigital(userId, p.libro.id).subscribe({
+                error: (err: any) => console.error('Error al registrar métrica de lectura online:', err)
+            });
+        }
+
+        if (p.libro?.archivoDigital) {
+            window.open(p.libro.archivoDigital, '_blank');
         } else {
-            Swal.fire('Error', 'La versión digitalizada de este libro no está disponible.', 'error');
+            Swal.fire('No disponible', 'Este libro no cuenta con versión digital disponible.', 'info');
         }
     }
 }

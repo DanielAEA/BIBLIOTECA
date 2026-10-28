@@ -4,7 +4,6 @@
     <button class="premium-button" (click)="showLoanForm = true">+ Registrar Préstamo</button>
   </div>
 
-  
   <div class="modal-overlay" *ngIf="showLoanForm" (click)="showLoanForm = false">
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -24,7 +23,7 @@
           <select [(ngModel)]="selectedEjemplarId" name="ejemplar" required>
             <option [ngValue]="null" disabled>{{ availableEjemplares.length === 0 ? 'No hay ejemplares disponibles' : 'Selecciona un ejemplar disponible' }}</option>
             <option *ngFor="let e of availableEjemplares" [ngValue]="e.id">
-              {{ e.libro.titulo }} - {{ e.codigo }}
+              {{ e.libro.titulo || 'Libro' }} - {{ e.codigo }}
             </option>
           </select>
         </div>
@@ -45,29 +44,33 @@
   <div class="premium-card">
     <h4 style="font-size: 1rem; color: var(--text-muted); margin-bottom: 0.75rem;">Filtros de búsqueda</h4>
     <div style="display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center;">
-      <input type="text" [(ngModel)]="loanFilters.usuario" placeholder="Usuario..."
-        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
-      <input type="text" [(ngModel)]="loanFilters.libro" placeholder="Libro..."
-        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
-      <input type="text" [(ngModel)]="loanFilters.codigo" placeholder="Código ejemplar..."
-        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
-      <select [(ngModel)]="loanFilters.estado"
-        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
+      <input type="text" [(ngModel)]="loanFilters.usuario" (ngModelChange)="onFilterTextInput()" placeholder="Usuario..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;" aria-label="Filtrar por usuario">
+      <input type="text" [(ngModel)]="loanFilters.libro" (ngModelChange)="onFilterTextInput()" placeholder="Libro..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;" aria-label="Filtrar por libro">
+      <input type="text" [(ngModel)]="loanFilters.codigo" (ngModelChange)="onFilterTextInput()" placeholder="Código ejemplar..."
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;" aria-label="Filtrar por código de ejemplar">
+      <select [(ngModel)]="loanFilters.estado" (ngModelChange)="onFilterChange()"
+        style="flex: 1; min-width: 140px; height: 44px; border-radius: 10px; padding: 0 1rem; background: var(--bg-alt); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;" aria-label="Filtrar por estado">
         <option value="">Todos los estados</option>
-        <option value="pendiente">Pendientes</option>
+        <option value="activo">Activos / Pendientes</option>
         <option value="devuelto">Devueltos</option>
       </select>
       <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--bg-alt); padding: 0 1rem; height: 44px; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-main); font-weight: 500;">
-        <input type="checkbox" [(ngModel)]="loanFilters.soloConMulta" id="filterMulta">
+        <input type="checkbox" [(ngModel)]="loanFilters.soloConMulta" (ngModelChange)="onFilterChange()" id="filterMulta">
         <label for="filterMulta" style="cursor: pointer;">Solo con multa</label>
       </div>
     </div>
 
-    <div *ngIf="loadingLoans" class="loading">Cargando préstamos...</div>
+    <div *ngIf="loadingLoans" class="loading-state">
+      <div class="spinner" aria-hidden="true"></div>
+      <span>Cargando préstamos...</span>
+    </div>
+
     <div *ngIf="errorLoans" class="error-message">{{ errorLoans }}</div>
 
-    <div class="table-responsive">
-      <table *ngIf="!loadingLoans && prestamos.length > 0" class="premium-table">
+    <div class="table-responsive" *ngIf="!loadingLoans && prestamos.length > 0">
+      <table class="premium-table">
         <thead>
           <tr>
             <th>Usuario</th>
@@ -83,8 +86,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of filteredPrestamos" [class.overdue]="hasOverdue(p) && !p.devuelto">
-            <td>{{ p.usuario.nombre }}</td>
+          <tr *ngFor="let p of prestamos" [class.overdue]="hasOverdue(p) && !p.devuelto">
+            <td>{{ p.usuario.nombre || '-' }}</td>
             <td>{{ p.libro?.titulo || '-' }}</td>
             <td>{{ p.ejemplarCodigo }}</td>
             <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
@@ -137,10 +140,18 @@
           </tr>
         </tbody>
       </table>
+
+      <app-pagination
+        [page]="page"
+        [size]="size"
+        [totalElements]="totalElements"
+        (pageChange)="onPageChange($event)"
+        (sizeChange)="onSizeChange($event)"
+      ></app-pagination>
     </div>
 
     <div *ngIf="!loadingLoans && prestamos.length === 0" class="no-data">
-      No hay préstamos registrados.
+      No hay préstamos que coincidan con los filtros seleccionados.
     </div>
   </div>
 </div>

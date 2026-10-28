@@ -1,52 +1,94 @@
 <div class="premium-container">
     <div class="premium-header">
         <h2>Catálogo de Libros</h2>
-    </div>
-
-    <div class="search-bar">
-        <input type="text" [(ngModel)]="searchTerm" (input)="filterLibros()"
-            placeholder="Buscar por título, autor o género..." class="search-input">
-    </div>
-
-    <div *ngIf="loading" class="loading">Cargando catálogo...</div>
-
-    <div class="books-grid" *ngIf="!loading">
-        <div class="premium-card book-card" *ngFor="let libro of filteredLibros" style="padding: 0; overflow: hidden;">
-            <div class="book-cover-container" style="height: 250px; width: 100%; background: #f1f5f9; cursor: pointer;" (click)="verDetalles(libro)">
-                <img [src]="libro.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'" 
-                     (error)="libro.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
-                     style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div style="padding: 1.25rem;">
-                <div class="book-title-row">
-                    {{ libro.titulo }}
-                </div>
-            <div class="book-detail-row">
-                <strong>Autor(es):</strong> <span class="detail-value">{{ getAutoresStr(libro) }}</span>
-            </div>
-
-            <div class="book-detail-row">
-                <strong>Formato:</strong>
-                <span class="detail-value">
-                    {{ libro.formato === 'FISICO' ? 'Físico' : libro.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
-                </span>
-                <button class="btn-read-premium" *ngIf="libro.tieneDigital" (click)="leerOnline(libro)">
-                    Leer Online
-                </button>
-            </div>
-
-            <div class="book-actions">
-                <button class="btn-primary-outline" (click)="verDetalles(libro)">
-                    <i class='bx bx-info-circle'></i> Ver detalles
-                </button>
-                <button class="btn-secondary-link" (click)="openResenaForm(libro)">
-                    <i class='bx bx-star'></i> Reseñar
-                </button>
-            </div>
+        <div class="view-toggles">
+            <button class="icon-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')" title="Cuadrícula">
+                <i class='bx bx-grid-alt'></i>
+            </button>
+            <button class="icon-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')" title="Lista">
+                <i class='bx bx-list-ul'></i>
+            </button>
         </div>
     </div>
 
-    <div *ngIf="!loading && filteredLibros.length === 0" class="no-data">
+    <div class="search-bar">
+        <input type="text" [ngModel]="searchTerm" (ngModelChange)="onSearchInput($event)"
+            placeholder="Buscar por título, autor, género, bloque o armario..." class="search-input" aria-label="Buscar libros">
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Cargando catálogo...</span>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="bloque-section" *ngFor="let g of getLibrosAgrupadosPorBloque()">
+            <h3 class="bloque-title"><i class='bx bx-cabinet'></i> {{ g.bloque }}</h3>
+            
+            <!-- Grid View -->
+            <div class="books-grid" *ngIf="viewMode === 'grid'">
+                <div class="premium-card book-card" *ngFor="let libro of g.items" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                    <div class="book-cover-container" style="height: 250px; width: 100%; background: #f1f5f9; cursor: pointer; position: relative;" (click)="verDetalles(libro)">
+                        <img [src]="libro.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'" 
+                             (error)="libro.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                        <span class="status-badge-overlay" [class.available]="getEjemplaresDisponibles(libro) > 0">
+                            {{ getEjemplaresDisponibles(libro) > 0 ? 'Disponible' : 'Prestado' }}
+                        </span>
+                    </div>
+                    <div style="padding: 1.25rem; flex: 1; display: flex; flex-direction: column;">
+                        <div class="book-title-row" style="font-weight: 700; margin-bottom: 0.5rem;">
+                            {{ libro.titulo }}
+                        </div>
+                        <div class="book-detail-row" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            <strong>Autores:</strong> {{ getAutoresStr(libro) }}
+                        </div>
+                        <div class="book-actions" style="margin-top: auto; padding-top: 1rem;">
+                            <button class="btn-primary-outline w-100" (click)="verDetalles(libro)">
+                                Ver detalles
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="books-list" *ngIf="viewMode === 'list'">
+                <div class="premium-card list-item" *ngFor="let libro of g.items" (click)="verDetalles(libro)">
+                    <div class="list-cover">
+                        <img [src]="libro.urlPortada || 'https://via.placeholder.com/100x150?text=No+Cover'" alt="Portada">
+                    </div>
+                    <div class="list-content">
+                        <div class="list-main-info">
+                            <h4>{{ libro.titulo }}</h4>
+                            <p class="list-authors">{{ getAutoresStr(libro) }}</p>
+                        </div>
+                        <div class="list-meta">
+                            <span class="meta-item"><i class='bx bx-purchase-tag'></i> {{ libro.genero?.nombre || 'General' }}</span>
+                            <span class="meta-item"><i class='bx bx-book-open'></i> {{ libro.formato }}</span>
+                            <span class="meta-item status" [class.available]="getEjemplaresDisponibles(libro) > 0">
+                                {{ getEjemplaresDisponibles(libro) > 0 ? 'Disponible' : 'No disponible' }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="list-actions" (click)="$event.stopPropagation()">
+                        <button class="icon-btn-circle" (click)="verDetalles(libro)" title="Ver detalles"><i class='bx bx-right-arrow-alt'></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <app-pagination
+            *ngIf="libros.length > 0"
+            [page]="page"
+            [size]="size"
+            [totalElements]="totalElements"
+            (pageChange)="onPageChange($event)"
+            (sizeChange)="onSizeChange($event)"
+        ></app-pagination>
+    </div>
+
+    <div *ngIf="!loading && libros.length === 0" class="no-data">
         No se encontraron libros{{ searchTerm ? ' con ese criterio' : '' }}.
     </div>
 
