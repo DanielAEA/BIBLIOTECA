@@ -3,9 +3,11 @@ set -e
 
 CONFIG_PATH="/usr/share/nginx/html/assets/config.json"
 
+BACKEND_HOST="${API_URL:-${BACKEND_URL:-${PUBLIC_API_URL:-${SERVER_URL:-https://ciberbook-backend-production.up.railway.app}}}}"
+
 cat <<EOF > "$CONFIG_PATH"
 {
-  "apiUrl": "${API_URL:-${BACKEND_URL:-${PUBLIC_API_URL:-${SERVER_URL:-}}}}"
+  "apiUrl": "${BACKEND_HOST}"
 }
 EOF
 
