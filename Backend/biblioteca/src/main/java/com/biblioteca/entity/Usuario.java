@@ -27,6 +27,11 @@ public class Usuario implements UserDetails {
 
     private String rol;
 
+    private String proveedor;
+
+    @Indexed
+    private String proveedorId;
+
     private LocalDateTime fechaRegistro = LocalDateTime.now();
 
     public Usuario() {
@@ -70,6 +75,22 @@ public class Usuario implements UserDetails {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public String getProveedorId() {
+        return proveedorId;
+    }
+
+    public void setProveedorId(String proveedorId) {
+        this.proveedorId = proveedorId;
     }
 
     public LocalDateTime getFechaRegistro() {

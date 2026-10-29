@@ -1,5 +1,6 @@
 package com.biblioteca.controller;
 
+import com.biblioteca.dto.SocialLoginRequest;
 import com.biblioteca.entity.Usuario;
 import com.biblioteca.service.AuthService;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping({"/auth", "/api/auth"})
 @CrossOrigin(origins = "*")
 public class AuthController {
 
@@ -40,8 +41,41 @@ public class AuthController {
             return ResponseEntity.ok(authService.login(email, request.getPassword()));
         } catch (Exception e) {
             logger.error("Error de login para {}: {}", request.getCorreo(), e.getMessage());
+            String errorMsg = e.getMessage() != null && e.getMessage().contains("social")
+                    ? e.getMessage()
+                    : "Credenciales incorrectas";
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Credenciales incorrectas"));
+                    .body(Map.of("error", errorMsg));
+        }
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<Object> loginGoogle(@RequestBody SocialLoginRequest request) {
+        try {
+            if (request == null || request.getIdToken() == null || request.getIdToken().isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "El token de Google es requerido"));
+            }
+            return ResponseEntity.ok(authService.loginGoogle(request.getIdToken()));
+        } catch (Exception e) {
+            logger.error("Error en autenticación Google: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error al autenticar con Google"));
+        }
+    }
+
+    @PostMapping("/microsoft")
+    public ResponseEntity<Object> loginMicrosoft(@RequestBody SocialLoginRequest request) {
+        try {
+            if (request == null || request.getIdToken() == null || request.getIdToken().isBlank()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "El token de Microsoft es requerido"));
+            }
+            return ResponseEntity.ok(authService.loginMicrosoft(request.getIdToken()));
+        } catch (Exception e) {
+            logger.error("Error en autenticación Microsoft: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", e.getMessage() != null ? e.getMessage() : "Error al autenticar con Microsoft"));
         }
     }
 

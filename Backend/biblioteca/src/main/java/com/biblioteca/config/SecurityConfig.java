@@ -3,6 +3,7 @@ package com.biblioteca.config;
 import com.biblioteca.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,91 +15,76 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
+        private final JwtAuthenticationFilter jwtAuthFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
-    }
+        public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+                this.jwtAuthFilter = jwtAuthFilter;
+        }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
-                        
-                        .requestMatchers("/auth/**", "/uploads/**", "/api/prestamos/debug-logs", "/api/stats/**", "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**", "/api/admin/regenerar-qr", "/api/libros/download-pdf/**").permitAll()
-                        
-                        
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/ejemplares/*").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*/qr").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/libros/*/ejemplares/*/qr").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/solicitudes/nueva").permitAll()
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http.csrf(AbstractHttpConfigurer::disable)
+                                .cors(t -> t.configurationSource(request -> {
+                                        CorsConfiguration config = new CorsConfiguration();
+                                        config.setAllowCredentials(true);
+                                        config.addAllowedOrigin("http://localhost:8080");
+                                        config.addAllowedOrigin("http://localhost:4000");
+                                        config.addAllowedOrigin("http://localhost:4200");
+                                        config.addAllowedOrigin("https://ciberbook-frontend-production.up.railway.app");
+                                        config.addAllowedHeader("*");
+                                        config.addAllowedMethod("*");
+                                        return config;
+                                }))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                                .requestMatchers("/auth/**", "/api/auth/**").permitAll()
+                                                .requestMatchers("/uploads/**", "/api/prestamos/debug-logs",
+                                                                "/api/stats/**",
+                                                                "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**",
+                                                                "/api/admin/regenerar-qr",
+                                                                "/api/libros/download-pdf/**",
+                                                                "/api/salas/**")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/libros").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/libros/*").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/ejemplares/*").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/libros/*/qr").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/libros/*/ejemplares/*/qr")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/solicitudes/nueva").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/prestamos/usuario/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.GET, "/api/prestamos/**").authenticated()
+                                                .requestMatchers(HttpMethod.GET, "/api/reservas-sala/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.GET, "/api/resenas/**").authenticated()
+                                                .requestMatchers(HttpMethod.POST, "/api/resenas/**",
+                                                                "/api/prestamos/**", "/api/reservas-sala/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.PUT, "/api/prestamos/**",
+                                                                "/api/reservas-sala/**", "/api/resenas/**")
+                                                .authenticated()
+                                                .requestMatchers("/api/**").hasRole("ADMIN")
+                                                .anyRequest().authenticated())
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                        
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, 
-                                "/api/libros/**", 
-                                "/api/autores/**", 
-                                "/api/editoriales/**", 
-                                "/api/generos/**", 
-                                "/api/ejemplares/**", 
-                                "/api/salas/**",
-                                "/api/resenas/**",
-                                "/api/prestamos/**",
-                                "/api/reservas-sala/**").authenticated()
-                        
-                        
-                        .requestMatchers(org.springframework.http.HttpMethod.POST,
-                                "/api/resenas/**",
-                                "/api/prestamos/**",
-                                "/api/reservas-sala/**").authenticated()
-                        .requestMatchers(org.springframework.http.HttpMethod.PUT,
-                                "/api/prestamos/**",
-                                "/api/reservas-sala/**",
-                                "/api/resenas/**").authenticated()
-                        
-                        
-                        .requestMatchers("/api/**").hasRole("ADMIN")
-                        
-                        
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                return http.build();
+        }
 
-        return http.build();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

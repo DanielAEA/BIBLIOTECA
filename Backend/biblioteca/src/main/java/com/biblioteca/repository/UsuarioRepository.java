@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Repository
 public interface UsuarioRepository extends MongoRepository<Usuario, String> {
     Usuario findByCorreo(String correo);
+    Usuario findByProveedorAndProveedorId(String proveedor, String proveedorId);
     long countByFechaRegistroBetween(LocalDateTime start, LocalDateTime end);
     Page<Usuario> findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(String nombre, String correo, Pageable pageable);
 }
