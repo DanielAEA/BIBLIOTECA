@@ -5,9 +5,7 @@ CONFIG_PATH="/usr/share/nginx/html/assets/config.json"
 
 cat <<EOF > "$CONFIG_PATH"
 {
-  "apiUrl": "${API_URL:-${BACKEND_URL:-}}",
-  "googleClientId": "${GOOGLE_CLIENT_ID:-}",
-  "microsoftClientId": "${MICROSOFT_CLIENT_ID:-}"
+  "apiUrl": "${API_URL:-${BACKEND_URL:-}}"
 }
 EOF
 

@@ -59,11 +59,6 @@
 
       
       <div class="action-buttons">
-        <button class="btn-primary" *ngIf="!isAdmin && libro.formato !== 'DIGITAL'"
-                (click)="reservarLibro()" [disabled]="getStockDisponible() === 0">
-          <i class='bx bx-book-reader'></i>
-          {{ getStockDisponible() > 0 ? 'Reservar Préstamo' : 'Sin ejemplares' }}
-        </button>
         <button class="btn-secondary" *ngIf="libro.tieneDigital" (click)="leerOnline()">
           <i class='bx bx-file'></i> Leer Online (PDF)
         </button>
@@ -75,19 +70,23 @@
   </div>
 
   
-  <div class="section-card" *ngIf="isAdmin">
+  <div class="section-card">
     <div class="section-header">
       <h3 class="section-title"><i class='bx bx-copy'></i> Ejemplares ({{ getTotalEjemplares() }})</h3>
-      <button class="btn-add" (click)="toggleEjemplarForm()">
+      <button class="btn-add" (click)="toggleEjemplarForm()" *ngIf="isAdmin">
         <i class='bx' [ngClass]="showEjemplarForm ? 'bx-x' : 'bx-plus'"></i>
         {{ showEjemplarForm ? 'Cancelar' : 'Agregar' }}
       </button>
     </div>
 
     
-    <div class="add-form" *ngIf="showEjemplarForm">
-      <div style="flex: 1;">
-        <input type="text" [(ngModel)]="nuevoCodigo" placeholder="Ej: LIB001" class="form-input" style="text-transform: uppercase;">
+    <div class="add-form" *ngIf="showEjemplarForm && isAdmin">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
+        <input type="text" [(ngModel)]="nuevoCodigo" placeholder="Código (Ej: LIB001)" class="form-input" style="text-transform: uppercase;">
+        <div style="display: flex; gap: 0.5rem;">
+          <input type="text" [(ngModel)]="nuevoBloque" placeholder="Bloque/Armario" class="form-input">
+          <input type="text" [(ngModel)]="nuevoEstante" placeholder="Estante/Balda" class="form-input">
+        </div>
         <small style="display:block; margin-top: 4px; color: var(--text-muted);">
           Siguiente sugerido: <strong>{{ nextSuggestedCode }}</strong>
         </small>
@@ -103,14 +102,21 @@
         <thead>
           <tr>
             <th>Código</th>
+            <th>Ubicación</th>
             <th>Estado</th>
             <th>Disponible</th>
-            <th>Acciones</th>
+            <th *ngIf="isAdmin">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let ej of libro.ejemplares">
             <td><code class="code-badge">{{ ej.codigo }}</code></td>
+            <td>
+              <span class="ubicacion-text" *ngIf="ej.bloque || ej.estante">
+                {{ ej.bloque }} {{ ej.estante ? '- ' + ej.estante : '' }}
+              </span>
+              <span class="ubicacion-text" *ngIf="!ej.bloque && !ej.estante">-</span>
+            </td>
             <td>
               <span class="status-badge" [class.status-disponible]="ej.estado === 'DISPONIBLE'" [class.status-prestado]="ej.estado !== 'DISPONIBLE'">
                 {{ ej.estado || 'DISPONIBLE' }}
@@ -121,7 +127,7 @@
                 {{ ej.disponible ? 'Sí' : 'No' }}
               </span>
             </td>
-            <td class="actions-cell">
+            <td class="actions-cell" *ngIf="isAdmin">
               <button class="icon-btn qr-btn" (click)="verQrEjemplar(ej)" title="Ver QR">
                 <i class='bx bx-qr'></i>
               </button>
@@ -134,7 +140,7 @@
       </table>
     </div>
     <p class="empty-message" *ngIf="!libro.ejemplares || libro.ejemplares.length === 0">
-      No hay ejemplares registrados. Agrega uno para comenzar.
+      No hay ejemplares registrados.
     </p>
   </div>
 

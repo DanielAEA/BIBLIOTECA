@@ -27,6 +27,8 @@ export class LibroDetalleComponent implements OnInit {
   
   showEjemplarForm = false;
   nuevoCodigo = '';
+  nuevoBloque = '';
+  nuevoEstante = '';
   addingEjemplar = false;
   nextSuggestedCode = '';
 
@@ -118,9 +120,16 @@ export class LibroDetalleComponent implements OnInit {
   addEjemplar() {
     if (!this.nuevoCodigo.trim()) return;
     this.addingEjemplar = true;
-    this.bookService.addEjemplar(this.libroId, { codigo: this.nuevoCodigo }).subscribe({
+    const payload = { 
+      codigo: this.nuevoCodigo,
+      bloque: this.nuevoBloque.trim() || undefined,
+      estante: this.nuevoEstante.trim() || undefined
+    };
+    this.bookService.addEjemplar(this.libroId, payload).subscribe({
       next: () => {
         this.nuevoCodigo = '';
+        this.nuevoBloque = '';
+        this.nuevoEstante = '';
         this.showEjemplarForm = false;
         this.addingEjemplar = false;
         this.loadLibro(); 

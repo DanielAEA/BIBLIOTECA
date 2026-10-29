@@ -20,35 +20,35 @@ if not exist "docker-images" mkdir docker-images
 
 REM Exportar imagen del frontend
 echo [2/4] Exportando imagen del frontend...
-docker save -o docker-images/biblioteca-frontend.tar biblioteca-frontend:latest
+docker save -o docker-images/ciberbook-frontend.tar daniel08escudero/ciberbook-frontend:latest
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR: Fallo al exportar imagen del frontend.
     pause
     exit /b 1
 )
-echo Frontend exportado: docker-images/biblioteca-frontend.tar
+echo Frontend exportado: docker-images/ciberbook-frontend.tar
 echo.
 
 REM Exportar imagen del backend
 echo [3/4] Exportando imagen del backend...
-docker save -o docker-images/biblioteca-backend.tar biblioteca-backend:latest
+docker save -o docker-images/ciberbook-backend.tar daniel08escudero/ciberbook-backend:latest
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR: Fallo al exportar imagen del backend.
     pause
     exit /b 1
 )
-echo Backend exportado: docker-images/biblioteca-backend.tar
+echo Backend exportado: docker-images/ciberbook-backend.tar
 echo.
 
-REM Exportar imagen de MySQL
-echo [4/4] Exportando imagen de MySQL...
-docker save -o docker-images/biblioteca-db.tar mysql:8.0
+REM Exportar imagen de MongoDB
+echo [4/4] Exportando imagen de MongoDB...
+docker save -o docker-images/mongodb.tar mongo:latest
 if %ERRORLEVEL% NEQ 0 (
-    echo ERROR: Fallo al exportar imagen de MySQL.
+    echo ERROR: Fallo al exportar imagen de MongoDB.
     pause
     exit /b 1
 )
-echo MySQL exportado: docker-images/biblioteca-db.tar
+echo MongoDB exportado: docker-images/mongodb.tar
 echo.
 
 echo ============================================
@@ -57,8 +57,8 @@ echo  Imagenes guardadas en: docker-images/
 echo ============================================
 echo.
 echo Para importar en otro equipo:
-echo   docker load -i docker-images/biblioteca-frontend.tar
-echo   docker load -i docker-images/biblioteca-backend.tar
-echo   docker load -i docker-images/biblioteca-db.tar
+echo   docker load -i docker-images/ciberbook-frontend.tar
+echo   docker load -i docker-images/ciberbook-backend.tar
+echo   docker load -i docker-images/mongodb.tar
 echo.
 pause

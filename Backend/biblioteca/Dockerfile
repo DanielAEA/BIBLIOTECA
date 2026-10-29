@@ -1,37 +1,17 @@
-# ============================================
-# Etapa 1: Compilar el proyecto con Maven
-# ============================================
-FROM maven:3.9-eclipse-temurin-17 AS build
-
+# Build stage
+FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
-
-# Copiar archivos de configuración de Maven primero (para cachear dependencias)
 COPY pom.xml .
-
-# Descargar dependencias (se cachea si pom.xml no cambia)
-RUN mvn dependency:go-offline -B
-
-# Copiar código fuente
+RUN mvn dependency:go-offline
 COPY src ./src
+RUN mvn package -DskipTests
 
-# Compilar el proyecto (sin ejecutar tests)
-RUN mvn clean package -DskipTests -B
-
-# ============================================
-# Etapa 2: Ejecutar la aplicación
-# ============================================
-FROM eclipse-temurin:17-jre
-
+# Run stage
+FROM eclipse-temurin:17-jre-focal
 WORKDIR /app
-
-# Copiar el JAR compilado desde la etapa anterior
 COPY --from=build /app/target/*.jar app.jar
-
-# Crear directorio para uploads
-RUN mkdir -p /app/uploads
-
-# Exponer puerto
+RUN mkdir ./uploads
+ENV SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/biblioteca
+ENV APP_BASE_URL=http://localhost:8080
 EXPOSE 8080
-
-# Ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]

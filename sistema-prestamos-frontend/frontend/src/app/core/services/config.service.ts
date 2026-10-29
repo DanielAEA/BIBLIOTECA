@@ -28,12 +28,4 @@ export class ConfigService {
     const url = (this.config?.frontUrl || environment.frontUrl || '').trim();
     return url.endsWith('/') ? url.slice(0, -1) : url;
   }
-
-  get googleClientId(): string {
-    return (this.config?.googleClientId || '').trim();
-  }
-
-  get microsoftClientId(): string {
-    return (this.config?.microsoftClientId || '').trim();
-  }
 }

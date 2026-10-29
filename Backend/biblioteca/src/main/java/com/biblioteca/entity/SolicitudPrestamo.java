@@ -13,6 +13,7 @@ public class SolicitudPrestamo {
     private String tituloLibro;
     private String nombreCliente;
     private String emailCliente;
+    private String usuarioUsername;
     private String estado;
     private String ejemplarId;
     private String codigoEjemplar;
@@ -27,6 +28,9 @@ public class SolicitudPrestamo {
 
     public String getEjemplarId() { return ejemplarId; }
     public void setEjemplarId(String ejemplarId) { this.ejemplarId = ejemplarId; }
+
+    public String getUsuarioUsername() { return usuarioUsername; }
+    public void setUsuarioUsername(String usuarioUsername) { this.usuarioUsername = usuarioUsername; }
 
     public String getCodigoEjemplar() { return codigoEjemplar; }
     public void setCodigoEjemplar(String codigoEjemplar) { this.codigoEjemplar = codigoEjemplar; }

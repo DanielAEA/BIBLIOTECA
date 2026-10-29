@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { SocialAuthService } from '../../services/social-auth.service';
 import { ThemeService } from '../../services/theme.service';
 
 @Component({
@@ -19,8 +18,6 @@ export class RegisterComponent implements AfterViewInit {
 
   registerForm: FormGroup;
   loading: boolean = false;
-  socialLoading: boolean = false;
-  socialProvider: 'google' | 'microsoft' | null = null;
   error: string | null = null;
   success: boolean = false;
   showPassword: boolean = false;
@@ -28,7 +25,6 @@ export class RegisterComponent implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private socialAuthService: SocialAuthService,
     private router: Router,
     public themeService: ThemeService
   ) {
@@ -71,73 +67,5 @@ export class RegisterComponent implements AfterViewInit {
         this.loading = false;
       }
     });
-  }
-
-  async signInWithGoogle(): Promise<void> {
-    if (this.loading || this.socialLoading) return;
-    this.socialLoading = true;
-    this.socialProvider = 'google';
-    this.error = null;
-
-    try {
-      const idToken = await this.socialAuthService.loginWithGoogle();
-      this.authService.loginGoogle(idToken).subscribe({
-        next: () => {
-          this.socialLoading = false;
-          this.socialProvider = null;
-          this.handleSocialSuccess();
-        },
-        error: (err) => {
-          this.socialLoading = false;
-          this.socialProvider = null;
-          this.error = err.error?.error || 'No se pudo registrar/iniciar sesión con Google.';
-        }
-      });
-    } catch (err: any) {
-      this.socialLoading = false;
-      this.socialProvider = null;
-      this.error = err.message || 'Error al conectar con Google.';
-    }
-  }
-
-  async signInWithMicrosoft(): Promise<void> {
-    if (this.loading || this.socialLoading) return;
-    this.socialLoading = true;
-    this.socialProvider = 'microsoft';
-    this.error = null;
-
-    try {
-      const idToken = await this.socialAuthService.loginWithMicrosoft();
-      this.authService.loginMicrosoft(idToken).subscribe({
-        next: () => {
-          this.socialLoading = false;
-          this.socialProvider = null;
-          this.handleSocialSuccess();
-        },
-        error: (err) => {
-          this.socialLoading = false;
-          this.socialProvider = null;
-          this.error = err.error?.error || 'No se pudo registrar/iniciar sesión con Microsoft.';
-        }
-      });
-    } catch (err: any) {
-      this.socialLoading = false;
-      this.socialProvider = null;
-      this.error = err.message || 'Error al conectar con Microsoft.';
-    }
-  }
-
-  private handleSocialSuccess(): void {
-    const payload = this.authService.getPayload();
-    if (!payload) return;
-
-    const roles = payload.roles ?? payload.authorities ?? [];
-    const role = roles[0];
-
-    if (role === 'ADMIN') {
-      this.router.navigateByUrl('/admin');
-    } else {
-      this.router.navigateByUrl('/cliente');
-    }
   }
 }

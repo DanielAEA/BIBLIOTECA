@@ -3,11 +3,16 @@ package com.biblioteca.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Map;
 
 public class ReservaSalaDTO {
     private String salaId;
     private String usuarioId;
     
+    
+    private Map<String, String> sala;
+    private Map<String, String> usuario;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaReserva;
     
@@ -20,11 +25,25 @@ public class ReservaSalaDTO {
     private String motivo;
 
     
-    public String getSalaId() { return salaId; }
+    public String getSalaId() { 
+        if (salaId != null) return salaId;
+        if (sala != null) return sala.get("id");
+        return null;
+    }
     public void setSalaId(String salaId) { this.salaId = salaId; }
 
-    public String getUsuarioId() { return usuarioId; }
+    public String getUsuarioId() { 
+        if (usuarioId != null) return usuarioId;
+        if (usuario != null) return usuario.get("id");
+        return null;
+    }
     public void setUsuarioId(String usuarioId) { this.usuarioId = usuarioId; }
+
+    public Map<String, String> getSala() { return sala; }
+    public void setSala(Map<String, String> sala) { this.sala = sala; }
+
+    public Map<String, String> getUsuario() { return usuario; }
+    public void setUsuario(Map<String, String> usuario) { this.usuario = usuario; }
 
     public LocalDate getFechaReserva() { return fechaReserva; }
     public void setFechaReserva(LocalDate fechaReserva) { this.fechaReserva = fechaReserva; }

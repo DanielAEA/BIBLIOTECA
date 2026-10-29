@@ -55,7 +55,12 @@ export class ReservarSalasComponent implements OnInit {
         if (!payload) return;
         const userId = payload.id || payload.sub;
         this.reservaSalaService.getByUsuario(userId).subscribe({
-            next: (r) => this.misReservas = r,
+            next: (r) => {
+                this.misReservas = r.map(reserva => ({
+                    ...reserva,
+                    sala: reserva.sala || this.salas.find(s => s.id === (reserva as any).salaId) || { nombre: 'Sala' }
+                }));
+            },
             error: (err: any) => console.error('Error cargando reservas:', err)
         });
     }
@@ -115,10 +120,25 @@ export class ReservarSalasComponent implements OnInit {
 
     generarHorarios() {
         this.horasDisponibles = [];
+        const now = new Date();
+        const selectedDate = this.reservaFecha ? new Date(this.reservaFecha + 'T00:00:00') : null;
+        const isToday = selectedDate && selectedDate.toDateString() === now.toDateString();
+
         for (let h = 8; h <= 18; h++) {
-            const hora = h < 10 ? `0${h}` : `${h}`;
-            this.horasDisponibles.push(`${hora}:00`);
-            this.horasDisponibles.push(`${hora}:30`);
+            for (let m of ['00', '30']) {
+                const horaStr = `${h < 10 ? '0' + h : h}:${m}`;
+                
+                if (isToday) {
+                    // Check if time is at least 1 hour in the future
+                    const candidateTime = new Date();
+                    candidateTime.setHours(h, parseInt(m), 0, 0);
+                    
+                    const minFutureTime = new Date(now.getTime() + 60 * 60 * 1000);
+                    if (candidateTime <= minFutureTime) continue;
+                }
+                
+                this.horasDisponibles.push(horaStr);
+            }
         }
     }
 

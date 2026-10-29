@@ -3,23 +3,29 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Libro } from './book.service';
+import { environment } from '../../environments/environment';
 
 export interface Ejemplar {
   id: string;
   codigo: string;
   disponible: boolean;
+  estado?: string;
+  bloque?: string;
+  estante?: string;
   libro: Libro;
 }
 
 export interface EjemplarPayload {
   codigo: string;
   disponible: boolean;
+  bloque?: string;
+  estante?: string;
   libro: { id: string };
 }
 
 @Injectable({ providedIn: 'root' })
 export class EjemplarService {
-  private baseUrl = '';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

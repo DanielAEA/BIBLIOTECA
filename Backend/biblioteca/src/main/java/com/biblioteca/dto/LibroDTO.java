@@ -88,12 +88,17 @@ public class LibroDTO {
         private String codigo;
         private Boolean disponible;
         private String estado;
-        public EjemplarDTO(String id, String codigo, Boolean disponible, String estado) {
+        private String bloque;
+        private String estante;
+        public EjemplarDTO(String id, String codigo, Boolean disponible, String estado, String bloque, String estante) {
             this.id = id; this.codigo = codigo; this.disponible = disponible; this.estado = estado;
+            this.bloque = bloque; this.estante = estante;
         }
         public String getId() { return id; }
         public String getCodigo() { return codigo; }
         public Boolean getDisponible() { return disponible; }
         public String getEstado() { return estado; }
+        public String getBloque() { return bloque; }
+        public String getEstante() { return estante; }
     }
 }

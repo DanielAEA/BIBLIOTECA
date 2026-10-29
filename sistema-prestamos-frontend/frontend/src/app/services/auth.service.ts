@@ -32,28 +32,6 @@ export class AuthService {
       );
   }
 
-  loginGoogle(idToken: string): Observable<void> {
-    return this.http
-      .post<LoginResponse>(`${this.baseUrl}/auth/google`, { idToken })
-      .pipe(
-        map((res) => {
-          localStorage.setItem(this.tokenKey, res.token);
-          this.userSubject.next(this.getPayload());
-        })
-      );
-  }
-
-  loginMicrosoft(idToken: string): Observable<void> {
-    return this.http
-      .post<LoginResponse>(`${this.baseUrl}/auth/microsoft`, { idToken })
-      .pipe(
-        map((res) => {
-          localStorage.setItem(this.tokenKey, res.token);
-          this.userSubject.next(this.getPayload());
-        })
-      );
-  }
-
   register(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/register`, userData);
   }

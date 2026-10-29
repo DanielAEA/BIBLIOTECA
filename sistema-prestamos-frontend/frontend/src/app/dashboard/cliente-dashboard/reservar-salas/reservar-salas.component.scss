@@ -1,201 +1,72 @@
 :host {
     display: block;
-    padding: 2rem; 
-}
-
-.premium-card {
-    padding: 2.5rem; 
-    border-radius: 24px;
+    padding: 1rem;
 }
 
 .salas-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); 
-    gap: 2rem; 
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .sala-card {
-    background: var(--bg-alt);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border: 1px solid var(--border-color);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-
-    &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.1);
-        background: var(--bg-card);
-    }
-}
-
-.sala-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.sala-card h3 {
-    margin: 0 0 0.5rem;
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    font-weight: 800;
-}
-
-.sala-desc {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    margin: 0 0 0.75rem;
-    min-height: 2.7rem;
-    
-    
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; 
-    line-clamp: 2;         
-    overflow: hidden;
-}
-
-.sala-meta {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1.5rem;
-}
+    padding: 1.75rem !important;
+    position: relative;
+    overflow: hidden;
 
-.meta-item {
-    font-size: 0.85rem;
-    color: var(--text-main);
-    font-weight: 600;
-}
-
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-top: 1rem;
-}
-
-.resena-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.resena-modal {
-    background: var(--bg-card);
-    border-radius: 24px;
-    padding: 2.5rem;
-    width: 95%;
-    max-width: 650px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border-color);
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.resena-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-
-    h3 {
-        margin: 0;
-        color: var(--text-dark);
-        font-weight: 800;
-        font-size: 1.5rem;
-        letter-spacing: -0.5px;
-    }
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: color 0.2s;
-
-    &:hover {
-        color: var(--text-dark);
-    }
-}
-
-.form-group {
-    margin-bottom: 1rem;
-
-    label {
-        display: block;
-        font-weight: 700;
-        margin-bottom: 0.65rem;
-        color: var(--text-dark);
-        font-size: 1rem;
+    .sala-icon {
+        font-size: 2.5rem;
+        color: #3b82f6;
+        margin-bottom: 1.25rem;
+        background: rgba(59, 130, 246, 0.1);
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    input,
-    textarea,
-    select {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        background: var(--bg-alt);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-family: inherit;
-        color: var(--text-main);
-        transition: all 0.3s ease;
-        outline: none;
-
-        &:focus {
-            background: var(--bg-card);
-            border-color: #475569;
-            box-shadow: 0 0 0 4px rgba(71, 85, 105, 0.1);
+    .sala-info {
+        flex: 1;
+        h3 { margin: 0 0 0.5rem 0; font-size: 1.35rem; color: var(--text-dark); }
+        .capacidad { font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; font-weight: 600; }
+        .descripcion { font-size: 0.9rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.5; }
+        
+        .sala-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            
+            .tag {
+                background: var(--bg-alt, #f1f5f9);
+                color: var(--text-main, #475569);
+                padding: 0.25rem 0.75rem;
+                border-radius: 6px;
+                font-size: 0.8rem;
+                font-weight: 700;
+            }
         }
     }
 
-    textarea {
-        resize: vertical;
-    }
-
-    option {
-        background-color: var(--bg-card);
-        color: var(--text-main);
+    .premium-button {
+        width: 100%;
     }
 }
 
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+.table-card {
+    margin-top: 1.5rem;
 }
 
-.form-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    
-    button {
-        flex: 1;
-    }
-}
-
-.badge-info {
-    background: rgba(67, 140, 255, 0.15);
-    color: #3b82f6;
-}
-
-.badge-warning {
-    background: rgba(255, 206, 32, 0.15);
-    color: var(--warning);
+.empty-msg {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 .loading,
@@ -206,16 +77,13 @@
     font-weight: 600;
 }
 
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
 @media (max-width: 480px) {
     .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .premium-card {
-        padding: 1rem;
-    }
-    
-    .resena-modal {
-        padding: 1rem;
+        flex-direction: column;
     }
 }

@@ -1,76 +1,39 @@
 services:
-  db:
+  mongodb:
     image: mongo:latest
-    container_name: biblioteca-db
-    restart: unless-stopped
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
-      - biblioteca-data:/data/db
-    networks:
-      - biblioteca-network
-    healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
+      - mongodb_data:/data/db
 
   backend:
     build:
       context: ./Backend/biblioteca
       dockerfile: Dockerfile
-    container_name: biblioteca-backend
-    restart: unless-stopped
-    environment:
-      SPRING_DATA_MONGODB_URI: mongodb://db:27017/biblioteca
-      NGROK_API_HOST: ngrok
+    image: daniel08escudero/ciberbook-backend:latest
+    container_name: ciberbook-backend
     ports:
       - "8080:8080"
-    volumes:
-      - biblioteca-uploads:/app/uploads
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/biblioteca
+      - APP_BASE_URL=http://localhost:8080
+      - APP_FRONT_URL=http://localhost:4200
     depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - biblioteca-network
+      - mongodb
+    volumes:
+      - ./uploads:/app/uploads
 
   frontend:
     build:
       context: ./sistema-prestamos-frontend/frontend
       dockerfile: Dockerfile
-    container_name: biblioteca-frontend
-    restart: unless-stopped
+    image: daniel08escudero/ciberbook-frontend:latest
+    container_name: ciberbook-frontend
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - backend
-    networks:
-      - biblioteca-network
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: biblioteca-ngrok
-    restart: unless-stopped
-    environment:
-      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN:-}
-    command:
-      - "http"
-      - "backend:8080"
-    ports:
-      - "4040:4040"
-    depends_on:
-      - frontend
-    networks:
-      - biblioteca-network
 
 volumes:
-  biblioteca-data:
-    name: biblioteca-mongodb-data
-  biblioteca-uploads:
-    name: biblioteca-uploads
-
-networks:
-  biblioteca-network:
-    name: biblioteca-network
-    driver: bridge
+  mongodb_data:

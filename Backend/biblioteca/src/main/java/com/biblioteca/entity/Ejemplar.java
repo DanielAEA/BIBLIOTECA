@@ -5,14 +5,18 @@ public class Ejemplar {
     private String codigo;
     private Boolean disponible = true;
     private String estado = "DISPONIBLE"; 
+    private String bloque;
+    private String estante;
 
     public Ejemplar() {}
 
-    public Ejemplar(String id, String codigo, Boolean disponible, String estado) {
+    public Ejemplar(String id, String codigo, Boolean disponible, String estado, String bloque, String estante) {
         this.id = id;
         this.codigo = codigo;
         this.disponible = disponible;
         this.estado = estado;
+        this.bloque = bloque;
+        this.estante = estante;
     }
 
     public String getId() { return id; }
@@ -26,4 +30,10 @@ public class Ejemplar {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+
+    public String getBloque() { return bloque; }
+    public void setBloque(String bloque) { this.bloque = bloque; }
+
+    public String getEstante() { return estante; }
+    public void setEstante(String estante) { this.estante = estante; }
 }
