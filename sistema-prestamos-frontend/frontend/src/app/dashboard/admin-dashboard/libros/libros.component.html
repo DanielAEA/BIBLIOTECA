@@ -156,7 +156,10 @@
       <!-- Grid View -->
       <div *ngIf="viewMode === 'grid'" class="books-grid"
         style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-        <div *ngFor="let b of g.items" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden;">
+        <div *ngFor="let b of g.items" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden; position: relative;" [class.row-selected]="selectedBookIds.has(b.id)">
+          <div style="position: absolute; top: 10px; left: 10px; z-index: 5; background: rgba(15, 23, 42, 0.75); border-radius: 6px; padding: 3px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+            <input type="checkbox" class="table-checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)" (click)="$event.stopPropagation()" aria-label="Seleccionar libro">
+          </div>
           <div class="book-cover-container" style="height: 200px; width: 100%; background: #f1f5f9; cursor: pointer;"
             (click)="verDetalles(b)">
             <img [src]="b.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'"

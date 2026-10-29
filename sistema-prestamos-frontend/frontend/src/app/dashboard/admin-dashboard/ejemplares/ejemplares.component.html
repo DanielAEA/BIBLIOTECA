@@ -1,6 +1,6 @@
 <div class="premium-container">
   <div class="premium-header">
-    <h2>Gestión de Ejemplares</h2>
+    <h2><i class='bx bx-grid-alt'></i> Gestión de Ejemplares</h2>
     <button class="premium-button" (click)="createEjemplar()">+ Nuevo Ejemplar</button>
   </div>
 
@@ -14,6 +14,16 @@
         <div class="form-group">
           <label>Código:</label>
           <input type="text" [(ngModel)]="ejemplarCodigo" name="codigo" required placeholder="Ej. LIB-001">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bloque / Armario:</label>
+            <input type="text" [(ngModel)]="ejemplarBloque" name="bloque" placeholder="Ej. Bloque A">
+          </div>
+          <div class="form-group">
+            <label>Estante / Balda:</label>
+            <input type="text" [(ngModel)]="ejemplarEstante" name="estante" placeholder="Ej. Estante 1">
+          </div>
         </div>
         <div class="form-group">
           <label>Libro:</label>
@@ -39,36 +49,45 @@
 
   <div *ngIf="loading" class="loading">Cargando ejemplares...</div>
 
-  <div class="premium-card" *ngIf="!loading && ejemplares.length > 0">
-    <div class="table-responsive">
-      <table class="premium-table large-text">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Código</th>
-            <th>Libro</th>
-            <th>Disponible</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let e of ejemplares">
-            <td>{{ e.id }}</td>
-            <td>{{ e.codigo }}</td>
-            <td>{{ e.libro.titulo }}</td>
-            <td>
-              <span class="premium-badge" [ngClass]="e.disponible ? 'badge-success' : 'badge-danger'">
+  <div class="bulk-actions" *ngIf="selectedEjemplarIds.size > 0">
+    <span class="selected-count">
+      <span class="badge-count">{{ selectedEjemplarIds.size }}</span> ejemplar(es) seleccionado(s)
+    </span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedEjemplares()">
+      <i class='bx bx-trash'></i> Eliminar seleccionados
+    </button>
+  </div>
+
+  <div *ngIf="!loading && ejemplares.length > 0">
+    <div class="bloque-section" *ngFor="let g of getEjemplaresAgrupados()">
+      <h3 class="bloque-title"><i class='bx bx-cabinet'></i> {{ g.bloque }}</h3>
+      <div class="grid-container">
+        <div class="ejemplar-card" *ngFor="let e of g.items" [class.row-selected]="selectedEjemplarIds.has(e.id)">
+          <div class="card-status" [ngClass]="e.disponible ? 'status-available' : 'status-busy'"></div>
+          <div class="card-content">
+            <div class="card-header" style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" class="table-checkbox" [checked]="selectedEjemplarIds.has(e.id)" (change)="toggleSelection(e.id)" aria-label="Seleccionar ejemplar">
+                <span class="codigo">{{ e.codigo }}</span>
+              </div>
+              <span class="ubicacion" *ngIf="e.estante">
+                <i class='bx bx-bookmark'></i> {{ e.estante }}
+              </span>
+            </div>
+            <h4 class="libro-titulo">{{ e.libro.titulo }}</h4>
+            <div class="card-footer">
+              <span class="badge" [ngClass]="e.disponible ? 'badge-success' : 'badge-danger'">
                 {{ e.disponible ? 'Disponible' : 'Prestado' }}
               </span>
-            </td>
-            <td>
-              <button class="btn-edit-premium sm" (click)="editEjemplar(e)">Editar</button>
-              <button class="btn-view-premium sm" (click)="verQr(e)" style="background: var(--success); color: white; margin: 0 0.5rem;">QR</button>
-              <button class="btn-delete-premium sm" (click)="deleteEjemplar(e)">Eliminar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <div class="actions">
+                <button class="icon-btn edit" (click)="editEjemplar(e)" title="Editar"><i class='bx bx-edit'></i></button>
+                <button class="icon-btn qr" (click)="verQr(e)" title="QR"><i class='bx bx-qr'></i></button>
+                <button class="icon-btn delete" (click)="deleteEjemplar(e)" title="Eliminar"><i class='bx bx-trash'></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

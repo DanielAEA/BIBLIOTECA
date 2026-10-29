@@ -18,10 +18,22 @@
 
     <div *ngIf="loading" class="loading">Cargando reseñas...</div>
 
+    <div class="bulk-actions" *ngIf="selectedResenaIds.size > 0">
+        <span class="selected-count">
+            <span class="badge-count">{{ selectedResenaIds.size }}</span> reseña(s) seleccionada(s)
+        </span>
+        <button class="btn-delete-bulk" (click)="deleteSelectedResenas()">
+            <i class='bx bx-trash'></i> Eliminar seleccionadas
+        </button>
+    </div>
+
     <div class="premium-card" *ngIf="!loading && resenas.length > 0">
         <table class="premium-table large-text">
             <thead>
                 <tr>
+                    <th style="width: 44px; text-align: center;">
+                        <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todas las reseñas">
+                    </th>
                     <th>Libro</th>
                     <th>Usuario</th>
                     <th>Calificación</th>
@@ -31,7 +43,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let r of resenas">
+                <tr *ngFor="let r of resenas" [class.row-selected]="selectedResenaIds.has(r.id)">
+                    <td style="width: 44px; text-align: center;">
+                        <input type="checkbox" class="table-checkbox" [checked]="selectedResenaIds.has(r.id)" (change)="toggleSelection(r.id)" aria-label="Seleccionar reseña">
+                    </td>
                     <td>{{ r.libro.titulo || 'N/A' }}</td>
                     <td>{{ r.usuario.nombre || r.usuario.correo || 'N/A' }}</td>
                     <td>

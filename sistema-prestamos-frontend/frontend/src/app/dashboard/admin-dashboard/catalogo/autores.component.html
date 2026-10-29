@@ -27,18 +27,33 @@
 
   <div *ngIf="loading" class="loading">Cargando autores...</div>
 
+  <div class="bulk-actions" *ngIf="selectedAutorIds.size > 0">
+    <span class="selected-count">
+      <span class="badge-count">{{ selectedAutorIds.size }}</span> autor(es) seleccionado(s)
+    </span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedAutores()">
+      <i class='bx bx-trash'></i> Eliminar seleccionados
+    </button>
+  </div>
+
   <div class="premium-card" *ngIf="!loading && autores.length > 0">
     <div class="table-responsive">
       <table class="premium-table large-text">
         <thead>
           <tr>
+            <th style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todos los autores">
+            </th>
             <th>ID</th>
             <th>Nombre</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let a of autores">
+          <tr *ngFor="let a of autores" [class.row-selected]="selectedAutorIds.has(a.id)">
+            <td style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedAutorIds.has(a.id)" (change)="toggleSelection(a.id)" aria-label="Seleccionar autor">
+            </td>
             <td>{{ a.id }}</td>
             <td>{{ a.nombre }}</td>
             <td>

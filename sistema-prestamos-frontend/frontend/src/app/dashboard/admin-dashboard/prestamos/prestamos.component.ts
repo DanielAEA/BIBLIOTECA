@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, finalize } from 'rxjs';
 import { LoanService, Prestamo, PrestamoPayload } from '../../../services/loan.service';
 import { UserService, Usuario } from '../../../services/user.service';
 import { EjemplarService, Ejemplar } from '../../../services/ejemplar.service';
@@ -20,6 +20,7 @@ export class PrestamosComponent implements OnInit, OnDestroy {
   Math = Math;
   
   prestamos: Prestamo[] = [];
+  selectedLoanIds = new Set<string>();
   users: Usuario[] = [];
   ejemplares: Ejemplar[] = [];
   
@@ -237,12 +238,66 @@ export class PrestamosComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.loanService.delete(prestamo.id).subscribe({
           next: () => {
+            this.selectedLoanIds.delete(prestamo.id);
             this.fetchLoans();
             Swal.fire('Eliminado', 'El préstamo ha sido eliminado.', 'success');
           },
           error: (err) => {
             console.error('Error al eliminar préstamo:', err);
             Swal.fire('Error', 'No se pudo eliminar el préstamo.', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedLoanIds.has(id)) {
+      this.selectedLoanIds.delete(id);
+    } else {
+      this.selectedLoanIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.prestamos.forEach(p => this.selectedLoanIds.add(p.id));
+    } else {
+      this.selectedLoanIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.prestamos.length > 0 && this.prestamos.every(p => this.selectedLoanIds.has(p.id));
+  }
+
+  deleteSelectedLoans() {
+    const count = this.selectedLoanIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} préstamo(s) seleccionado(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loadingLoans = true;
+        const requests = Array.from(this.selectedLoanIds).map(id => this.loanService.delete(id));
+        forkJoin(requests).pipe(finalize(() => this.loadingLoans = false)).subscribe({
+          next: () => {
+            this.selectedLoanIds.clear();
+            this.fetchLoans();
+            Swal.fire('¡Eliminados!', `${count} préstamo(s) eliminado(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting loans:', err);
+            this.selectedLoanIds.clear();
+            this.fetchLoans();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunos préstamos.', 'error');
           }
         });
       }

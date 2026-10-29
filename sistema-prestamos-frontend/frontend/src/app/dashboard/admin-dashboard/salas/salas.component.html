@@ -89,6 +89,15 @@
 
     <div *ngIf="loading" class="loading">Cargando salas...</div>
 
+    <div class="bulk-actions" *ngIf="selectedSalaIds.size > 0">
+        <span class="selected-count">
+            <span class="badge-count">{{ selectedSalaIds.size }}</span> sala(s) seleccionada(s)
+        </span>
+        <button class="btn-delete-bulk" (click)="deleteSelectedSalas()">
+            <i class='bx bx-trash'></i> Eliminar seleccionadas
+        </button>
+    </div>
+
     <div class="premium-card" *ngIf="!loading && salas.length > 0">
         <div class="premium-header">
             <h2>Gestión de Salas de Estudio</h2>
@@ -98,6 +107,9 @@
             <table class="premium-table large-text">
                 <thead>
                     <tr>
+                        <th style="width: 44px; text-align: center;">
+                            <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todas las salas">
+                        </th>
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Ubicación</th>
@@ -107,7 +119,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let s of salas">
+                    <tr *ngFor="let s of salas" [class.row-selected]="selectedSalaIds.has(s.id)">
+                        <td style="width: 44px; text-align: center;">
+                            <input type="checkbox" class="table-checkbox" [checked]="selectedSalaIds.has(s.id)" (change)="toggleSelection(s.id)" aria-label="Seleccionar sala">
+                        </td>
                         <td>{{ s.id }}</td>
                         <td>{{ s.nombre }}</td>
                         <td>{{ s.ubicacion }}</td>

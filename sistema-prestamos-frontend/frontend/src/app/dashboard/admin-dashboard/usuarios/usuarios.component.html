@@ -52,11 +52,23 @@
 
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
+  <div class="bulk-actions" *ngIf="selectedUserIds.size > 0">
+    <span class="selected-count">
+      <span class="badge-count">{{ selectedUserIds.size }}</span> usuario(s) seleccionado(s)
+    </span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedUsers()">
+      <i class='bx bx-trash'></i> Eliminar seleccionados
+    </button>
+  </div>
+
   <div class="premium-card" *ngIf="!loading && users.length > 0">
     <div class="table-responsive">
       <table class="premium-table large-text">
         <thead>
           <tr>
+            <th style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todos los usuarios">
+            </th>
             <th>ID</th>
             <th>Nombre</th>
             <th>Correo</th>
@@ -65,7 +77,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let u of users">
+          <tr *ngFor="let u of users" [class.row-selected]="selectedUserIds.has(u.id)">
+            <td style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedUserIds.has(u.id)" (change)="toggleSelection(u.id)" aria-label="Seleccionar usuario">
+            </td>
             <td>{{ u.id }}</td>
             <td>{{ u.nombre }}</td>
             <td>{{ u.correo }}</td>

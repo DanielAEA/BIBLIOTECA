@@ -27,18 +27,33 @@
 
   <div *ngIf="loading" class="loading">Cargando géneros...</div>
 
+  <div class="bulk-actions" *ngIf="selectedGeneroIds.size > 0">
+    <span class="selected-count">
+      <span class="badge-count">{{ selectedGeneroIds.size }}</span> género(s) seleccionado(s)
+    </span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedGeneros()">
+      <i class='bx bx-trash'></i> Eliminar seleccionados
+    </button>
+  </div>
+
   <div class="premium-card" *ngIf="!loading && generos.length > 0">
     <div class="table-responsive">
       <table class="premium-table large-text">
         <thead>
           <tr>
+            <th style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todos los géneros">
+            </th>
             <th>ID</th>
             <th>Nombre</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let g of generos">
+          <tr *ngFor="let g of generos" [class.row-selected]="selectedGeneroIds.has(g.id)">
+            <td style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedGeneroIds.has(g.id)" (change)="toggleSelection(g.id)" aria-label="Seleccionar género">
+            </td>
             <td>{{ g.id }}</td>
             <td>{{ g.nombre }}</td>
             <td>

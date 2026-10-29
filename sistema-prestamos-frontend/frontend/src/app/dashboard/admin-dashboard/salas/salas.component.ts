@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { SalaService, Sala, SalaPayload } from '../../../services/sala.service';
 import { ReservaSalaService, ReservaSala } from '../../../services/reserva-sala.service';
 import Swal from 'sweetalert2';
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class SalasComponent implements OnInit {
     salas: Sala[] = [];
+    selectedSalaIds = new Set<string>();
     reservas: ReservaSala[] = [];
     loading = false;
     showForm = false;
@@ -134,7 +135,7 @@ export class SalasComponent implements OnInit {
             text: `Deseas eliminar la sala "${sala.nombre}"`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
+            confirmButtonColor: '#ef4444',
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar'
@@ -142,12 +143,66 @@ export class SalasComponent implements OnInit {
             if (result.isConfirmed) {
                 this.salaService.delete(sala.id).subscribe({
                     next: () => {
+                        this.selectedSalaIds.delete(sala.id);
                         this.loadSalas();
                         Swal.fire('¡Eliminada!', 'La sala ha sido eliminada.', 'success');
                     },
                     error: (err) => {
                         console.error('Error al eliminar sala:', err);
                         Swal.fire('Error', 'No se pudo eliminar la sala', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    toggleSelection(id: string) {
+        if (this.selectedSalaIds.has(id)) {
+            this.selectedSalaIds.delete(id);
+        } else {
+            this.selectedSalaIds.add(id);
+        }
+    }
+
+    toggleAll(event: any) {
+        if (event.target.checked) {
+            this.salas.forEach(s => this.selectedSalaIds.add(s.id));
+        } else {
+            this.selectedSalaIds.clear();
+        }
+    }
+
+    isAllSelected(): boolean {
+        return this.salas.length > 0 && this.salas.every(s => this.selectedSalaIds.has(s.id));
+    }
+
+    deleteSelectedSalas() {
+        const count = this.selectedSalaIds.size;
+        if (count === 0) return;
+
+        Swal.fire({
+            title: '¿Eliminar seleccionados?',
+            text: `Se eliminarán ${count} sala(s) seleccionada(s).`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Sí, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.loading = true;
+                const requests = Array.from(this.selectedSalaIds).map(id => this.salaService.delete(id));
+                forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+                    next: () => {
+                        this.selectedSalaIds.clear();
+                        this.loadSalas();
+                        Swal.fire('¡Eliminadas!', `${count} sala(s) eliminada(s) correctamente.`, 'success');
+                    },
+                    error: (err) => {
+                        console.error('Error deleting salas:', err);
+                        this.selectedSalaIds.clear();
+                        this.loadSalas();
+                        Swal.fire('Error', 'Ocurrió un problema al eliminar algunas salas.', 'error');
                     }
                 });
             }

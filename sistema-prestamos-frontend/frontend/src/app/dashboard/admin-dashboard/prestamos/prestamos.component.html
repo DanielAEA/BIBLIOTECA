@@ -69,10 +69,22 @@
 
     <div *ngIf="errorLoans" class="error-message">{{ errorLoans }}</div>
 
+    <div class="bulk-actions" *ngIf="selectedLoanIds.size > 0">
+      <span class="selected-count">
+        <span class="badge-count">{{ selectedLoanIds.size }}</span> préstamo(s) seleccionado(s)
+      </span>
+      <button class="btn-delete-bulk" (click)="deleteSelectedLoans()">
+        <i class='bx bx-trash'></i> Eliminar seleccionados
+      </button>
+    </div>
+
     <div class="table-responsive" *ngIf="!loadingLoans && prestamos.length > 0">
       <table class="premium-table">
         <thead>
           <tr>
+            <th style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todos los préstamos">
+            </th>
             <th>Usuario</th>
             <th>Libro</th>
             <th>Ejemplar</th>
@@ -86,7 +98,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let p of prestamos" [class.overdue]="hasOverdue(p) && !p.devuelto">
+          <tr *ngFor="let p of prestamos" [class.overdue]="hasOverdue(p) && !p.devuelto" [class.row-selected]="selectedLoanIds.has(p.id)">
+            <td style="width: 44px; text-align: center;">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedLoanIds.has(p.id)" (change)="toggleSelection(p.id)" aria-label="Seleccionar préstamo">
+            </td>
             <td>{{ p.usuario.nombre || '-' }}</td>
             <td>{{ p.libro?.titulo || '-' }}</td>
             <td>{{ p.ejemplarCodigo }}</td>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { EjemplarService, Ejemplar, EjemplarPayload } from '../../../services/ejemplar.service';
 import { BookService, Libro } from '../../../services/book.service';
 import { ConfigService } from '../../../core/services/config.service';
@@ -16,10 +16,13 @@ import Swal from 'sweetalert2';
 })
 export class EjemplaresComponent implements OnInit {
   ejemplares: Ejemplar[] = [];
+  selectedEjemplarIds = new Set<string>();
   editingEjemplar: Ejemplar | null = null;
   showForm = false;
   ejemplarCodigo = '';
   ejemplarDisponible = true;
+  ejemplarBloque = '';
+  ejemplarEstante = '';
   selectedLibroId: string | null = null;
   libros: Libro[] = [];
   loading = false;
@@ -50,6 +53,19 @@ export class EjemplaresComponent implements OnInit {
     });
   }
 
+  getEjemplaresAgrupados() {
+    const groups: { [key: string]: Ejemplar[] } = {};
+    this.ejemplares.forEach(e => {
+      const b = e.bloque || 'General';
+      if (!groups[b]) groups[b] = [];
+      groups[b].push(e);
+    });
+    return Object.keys(groups).sort().map(key => ({
+      bloque: key,
+      items: groups[key]
+    }));
+  }
+
   loadLibros() {
     this.bookService.getAllBooks().subscribe({
       next: (libros) => (this.libros = libros),
@@ -61,6 +77,8 @@ export class EjemplaresComponent implements OnInit {
     this.editingEjemplar = null;
     this.ejemplarCodigo = '';
     this.ejemplarDisponible = true;
+    this.ejemplarBloque = '';
+    this.ejemplarEstante = '';
     this.selectedLibroId = null;
     this.showForm = true;
   }
@@ -69,6 +87,8 @@ export class EjemplaresComponent implements OnInit {
     this.editingEjemplar = { ...ejemplar };
     this.ejemplarCodigo = ejemplar.codigo;
     this.ejemplarDisponible = ejemplar.disponible;
+    this.ejemplarBloque = ejemplar.bloque || '';
+    this.ejemplarEstante = ejemplar.estante || '';
     this.selectedLibroId = ejemplar.libro.id;
     this.showForm = true;
   }
@@ -78,6 +98,8 @@ export class EjemplaresComponent implements OnInit {
     this.editingEjemplar = null;
     this.ejemplarCodigo = '';
     this.ejemplarDisponible = true;
+    this.ejemplarBloque = '';
+    this.ejemplarEstante = '';
     this.selectedLibroId = null;
   }
 
@@ -95,6 +117,8 @@ export class EjemplaresComponent implements OnInit {
     const payload: EjemplarPayload = {
       codigo: this.ejemplarCodigo.trim(),
       disponible: this.ejemplarDisponible,
+      bloque: this.ejemplarBloque.trim() || undefined,
+      estante: this.ejemplarEstante.trim() || undefined,
       libro: { id: this.selectedLibroId! }
     };
 
@@ -103,6 +127,8 @@ export class EjemplaresComponent implements OnInit {
         ...this.editingEjemplar,
         codigo: payload.codigo,
         disponible: payload.disponible,
+        bloque: payload.bloque,
+        estante: payload.estante,
         libro: this.libros.find(l => l.id === payload.libro.id)!
       };
       this.ejemplarService
@@ -163,12 +189,66 @@ export class EjemplaresComponent implements OnInit {
       if (result.isConfirmed) {
         this.ejemplarService.delete(ejemplar.id).subscribe({
           next: () => {
+            this.selectedEjemplarIds.delete(ejemplar.id);
             this.loadEjemplares();
             Swal.fire('¡Eliminado!', 'El ejemplar ha sido eliminado.', 'success');
           },
           error: (err) => {
             console.error('Error al eliminar ejemplar:', err);
             Swal.fire('Error', 'No se pudo eliminar el ejemplar', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedEjemplarIds.has(id)) {
+      this.selectedEjemplarIds.delete(id);
+    } else {
+      this.selectedEjemplarIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.ejemplares.forEach(e => this.selectedEjemplarIds.add(e.id));
+    } else {
+      this.selectedEjemplarIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.ejemplares.length > 0 && this.ejemplares.every(e => this.selectedEjemplarIds.has(e.id));
+  }
+
+  deleteSelectedEjemplares() {
+    const count = this.selectedEjemplarIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} ejemplar(es) seleccionado(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        const requests = Array.from(this.selectedEjemplarIds).map(id => this.ejemplarService.delete(id));
+        forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.selectedEjemplarIds.clear();
+            this.loadEjemplares();
+            Swal.fire('¡Eliminados!', `${count} ejemplar(es) eliminado(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting ejemplares:', err);
+            this.selectedEjemplarIds.clear();
+            this.loadEjemplares();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunos ejemplares.', 'error');
           }
         });
       }

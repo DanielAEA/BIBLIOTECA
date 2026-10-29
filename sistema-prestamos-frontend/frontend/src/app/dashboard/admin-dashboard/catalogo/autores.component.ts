@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { AuthorService, Autor } from '../../../services/author.service';
 import Swal from 'sweetalert2';
 
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 export class AutoresComponent implements OnInit {
 
   autores: Autor[] = [];
+  selectedAutorIds = new Set<string>();
   editingAutor: Autor | null = null;
   showForm = false;
   autorNombre = '';
@@ -142,6 +143,7 @@ export class AutoresComponent implements OnInit {
 
         this.authorService.delete(autor.id).subscribe({
           next: () => {
+            this.selectedAutorIds.delete(autor.id);
             this.loadAutores();
 
             Swal.fire({
@@ -160,6 +162,59 @@ export class AutoresComponent implements OnInit {
 
       }
 
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedAutorIds.has(id)) {
+      this.selectedAutorIds.delete(id);
+    } else {
+      this.selectedAutorIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.autores.forEach(a => this.selectedAutorIds.add(a.id));
+    } else {
+      this.selectedAutorIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.autores.length > 0 && this.autores.every(a => this.selectedAutorIds.has(a.id));
+  }
+
+  deleteSelectedAutores() {
+    const count = this.selectedAutorIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} autor(es) seleccionado(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        const requests = Array.from(this.selectedAutorIds).map(id => this.authorService.delete(id));
+        forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.selectedAutorIds.clear();
+            this.loadAutores();
+            Swal.fire('¡Eliminados!', `${count} autor(es) eliminado(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting autores:', err);
+            this.selectedAutorIds.clear();
+            this.loadAutores();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunos autores.', 'error');
+          }
+        });
+      }
     });
   }
 

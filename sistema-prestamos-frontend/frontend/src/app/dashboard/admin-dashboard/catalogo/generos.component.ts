@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { GeneroService, Genero } from '../../../services/genero.service';
 import Swal from 'sweetalert2';
 
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 export class GenerosComponent implements OnInit {
 
   generos: Genero[] = [];
+  selectedGeneroIds = new Set<string>();
   editingGenero: Genero | null = null;
   showForm = false;
   generoNombre = '';
@@ -142,6 +143,7 @@ export class GenerosComponent implements OnInit {
 
         this.generoService.delete(genero.id).subscribe({
           next: () => {
+            this.selectedGeneroIds.delete(genero.id);
             this.loadGeneros();
 
             Swal.fire({
@@ -160,6 +162,59 @@ export class GenerosComponent implements OnInit {
 
       }
 
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedGeneroIds.has(id)) {
+      this.selectedGeneroIds.delete(id);
+    } else {
+      this.selectedGeneroIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.generos.forEach(g => this.selectedGeneroIds.add(g.id));
+    } else {
+      this.selectedGeneroIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.generos.length > 0 && this.generos.every(g => this.selectedGeneroIds.has(g.id));
+  }
+
+  deleteSelectedGeneros() {
+    const count = this.selectedGeneroIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} género(s) seleccionado(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        const requests = Array.from(this.selectedGeneroIds).map(id => this.generoService.delete(id));
+        forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.selectedGeneroIds.clear();
+            this.loadGeneros();
+            Swal.fire('¡Eliminados!', `${count} género(s) eliminado(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting generos:', err);
+            this.selectedGeneroIds.clear();
+            this.loadGeneros();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunos géneros.', 'error');
+          }
+        });
+      }
     });
   }
 

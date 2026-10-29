@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription, debounceTime, distinctUntilChanged, finalize } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, finalize, forkJoin } from 'rxjs';
 import { UserService, Usuario, UsuarioCreatePayload, UsuarioUpdatePayload } from '../../../services/user.service';
 import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 export class UsuariosComponent implements OnInit, OnDestroy {
 
   users: Usuario[] = [];
+  selectedUserIds = new Set<string>();
   loading = true;
   error: string | null = null;
   editingUser: Usuario | null = null;
@@ -202,8 +203,62 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.userService.deleteUser(user.id).subscribe({
           next: () => {
+            this.selectedUserIds.delete(user.id);
             this.loadUsers();
             Swal.fire('¡Eliminado!', 'Usuario eliminado.', 'success');
+          }
+        });
+      }
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedUserIds.has(id)) {
+      this.selectedUserIds.delete(id);
+    } else {
+      this.selectedUserIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.users.forEach(u => this.selectedUserIds.add(u.id));
+    } else {
+      this.selectedUserIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.users.length > 0 && this.users.every(u => this.selectedUserIds.has(u.id));
+  }
+
+  deleteSelectedUsers() {
+    const count = this.selectedUserIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionados?',
+      text: `Se eliminarán ${count} usuario(s) seleccionado(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        const requests = Array.from(this.selectedUserIds).map(id => this.userService.deleteUser(id));
+        forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.selectedUserIds.clear();
+            this.loadUsers();
+            Swal.fire('¡Eliminados!', `${count} usuario(s) eliminado(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting users:', err);
+            this.selectedUserIds.clear();
+            this.loadUsers();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunos usuarios.', 'error');
           }
         });
       }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
 import Swal from 'sweetalert2';
 
@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 })
 export class EditorialesComponent implements OnInit {
   editoriales: Editorial[] = [];
+  selectedEditorialIds = new Set<string>();
   editingEditorial: Editorial | null = null;
   showForm = false;
   editorialNombre = '';
@@ -130,6 +131,7 @@ export class EditorialesComponent implements OnInit {
       if (result.isConfirmed) {
         this.editorialService.delete(editorial.id).subscribe({
           next: () => {
+            this.selectedEditorialIds.delete(editorial.id);
             this.loadEditoriales();
             Swal.fire({
               title: '¡Eliminado!',
@@ -142,6 +144,59 @@ export class EditorialesComponent implements OnInit {
           error: (err) => {
             console.error('Error al eliminar editorial:', err);
             Swal.fire('Error', 'No se pudo eliminar la editorial', 'error');
+          }
+        });
+      }
+    });
+  }
+
+  toggleSelection(id: string) {
+    if (this.selectedEditorialIds.has(id)) {
+      this.selectedEditorialIds.delete(id);
+    } else {
+      this.selectedEditorialIds.add(id);
+    }
+  }
+
+  toggleAll(event: any) {
+    if (event.target.checked) {
+      this.editoriales.forEach(e => this.selectedEditorialIds.add(e.id));
+    } else {
+      this.selectedEditorialIds.clear();
+    }
+  }
+
+  isAllSelected(): boolean {
+    return this.editoriales.length > 0 && this.editoriales.every(e => this.selectedEditorialIds.has(e.id));
+  }
+
+  deleteSelectedEditoriales() {
+    const count = this.selectedEditorialIds.size;
+    if (count === 0) return;
+
+    Swal.fire({
+      title: '¿Eliminar seleccionadas?',
+      text: `Se eliminarán ${count} editorial(es) seleccionada(s).`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Sí, eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.loading = true;
+        const requests = Array.from(this.selectedEditorialIds).map(id => this.editorialService.delete(id));
+        forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
+          next: () => {
+            this.selectedEditorialIds.clear();
+            this.loadEditoriales();
+            Swal.fire('¡Eliminadas!', `${count} editorial(es) eliminada(s) correctamente.`, 'success');
+          },
+          error: (err) => {
+            console.error('Error deleting editoriales:', err);
+            this.selectedEditorialIds.clear();
+            this.loadEditoriales();
+            Swal.fire('Error', 'Ocurrió un problema al eliminar algunas editoriales.', 'error');
           }
         });
       }

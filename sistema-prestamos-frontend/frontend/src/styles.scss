@@ -279,7 +279,11 @@ body {
         background: rgba(2, 132, 199, 0.08) !important;
         color: #0284c7 !important;
         border: 1px solid rgba(2, 132, 199, 0.45) !important;
-        padding: 0.65rem 1.4rem;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        box-sizing: border-box !important;
+        padding: 0 1.4rem !important;
         font-size: 0.92rem;
         border-radius: 10px;
         box-shadow: none !important;
@@ -405,7 +409,11 @@ body.dark-theme {
         box-shadow: 0 0 10px rgba(0, 229, 255, 0.1) !important;
         font-weight: 600 !important;
         font-size: 0.92rem !important;
-        padding: 0.65rem 1.4rem !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        box-sizing: border-box !important;
+        padding: 0 1.4rem !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -623,7 +631,11 @@ body.dark-theme {
     color: #0284c7;
     border: 1px solid rgba(2, 132, 199, 0.45);
     border-radius: 10px;
-    padding: 0.65rem 1.4rem;
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+    box-sizing: border-box;
+    padding: 0 1.4rem;
     font-weight: 600;
     font-size: 0.92rem;
     cursor: pointer;
@@ -1032,4 +1044,130 @@ body.dark-theme {
             width: 100%;
         }
     }
+}
+
+.search-box {
+  display: inline-flex;
+  align-items: center;
+
+  .search-input,
+  input.search-input,
+  input[type="text"].search-input,
+  .premium-input.search-input {
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+    box-sizing: border-box !important;
+    min-width: 280px;
+    padding: 0 1.1rem !important;
+    border-radius: 10px !important;
+    font-size: 0.92rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    border: 1px solid var(--border-color, rgba(0, 229, 255, 0.25));
+    background: var(--bg-card);
+    color: var(--text-dark, #ffffff);
+    transition: all 0.25s ease;
+
+    &:focus {
+      outline: none !important;
+      border-color: #00e5ff !important;
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.3) !important;
+    }
+  }
+}
+
+.table-checkbox {
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer;
+  accent-color: #00e5ff;
+  vertical-align: middle;
+  margin: 0 auto;
+  display: block;
+}
+
+.bulk-actions {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 0.75rem 1.4rem;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+  animation: bulkSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .selected-count {
+    font-weight: 700;
+    color: var(--text-dark, #ffffff);
+    font-size: 0.92rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    .badge-count {
+      background: rgba(0, 229, 255, 0.15);
+      color: #00e5ff;
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      padding: 0.15rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+  }
+
+  .btn-delete-bulk {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f87171;
+    height: 38px;
+    padding: 0 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+
+    i {
+      font-size: 1.1rem;
+    }
+
+    &:hover:not(:disabled) {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes bulkSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+tr.row-selected {
+  background: rgba(0, 229, 255, 0.06) !important;
 }
