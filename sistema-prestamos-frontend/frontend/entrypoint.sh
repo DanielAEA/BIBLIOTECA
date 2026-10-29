@@ -5,7 +5,7 @@ CONFIG_PATH="/usr/share/nginx/html/assets/config.json"
 
 cat <<EOF > "$CONFIG_PATH"
 {
-  "apiUrl": "${API_URL:-${BACKEND_URL:-}}"
+  "apiUrl": "${API_URL:-${BACKEND_URL:-${PUBLIC_API_URL:-${SERVER_URL:-}}}}"
 }
 EOF
 
