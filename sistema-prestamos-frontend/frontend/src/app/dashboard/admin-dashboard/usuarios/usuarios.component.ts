@@ -192,20 +192,29 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(user: Usuario) {
+    const userName = user?.nombre || user?.correo || (user?.id ? `ID: ${user.id}` : 'usuario con datos nulos');
     Swal.fire({
       title: '¿Estás seguro?',
-      text: `Deseas eliminar al usuario ${user.nombre}`,
+      text: `Deseas eliminar al ${userName}`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
       confirmButtonText: 'Sí, eliminar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.userService.deleteUser(user.id).subscribe({
+        const idToDelete = user?.id || 'null';
+        this.userService.deleteUser(idToDelete).subscribe({
           next: () => {
-            this.selectedUserIds.delete(user.id);
+            if (user?.id) {
+              this.selectedUserIds.delete(user.id);
+            }
             this.loadUsers();
-            Swal.fire('¡Eliminado!', 'Usuario eliminado.', 'success');
+            Swal.fire('¡Eliminado!', 'Usuario eliminado correctamente.', 'success');
+          },
+          error: (err) => {
+            console.error('Error al eliminar usuario:', err);
+            Swal.fire('Error', err?.error?.message || 'No se pudo eliminar el usuario.', 'error');
           }
         });
       }
@@ -222,14 +231,14 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   toggleAll(event: any) {
     if (event.target.checked) {
-      this.users.forEach(u => this.selectedUserIds.add(u.id));
+      this.users.forEach(u => this.selectedUserIds.add(u.id || 'null'));
     } else {
       this.selectedUserIds.clear();
     }
   }
 
   isAllSelected(): boolean {
-    return this.users.length > 0 && this.users.every(u => this.selectedUserIds.has(u.id));
+    return this.users.length > 0 && this.users.every(u => this.selectedUserIds.has(u.id || 'null'));
   }
 
   deleteSelectedUsers() {
@@ -247,7 +256,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
-        const requests = Array.from(this.selectedUserIds).map(id => this.userService.deleteUser(id));
+        const requests = Array.from(this.selectedUserIds).map(id => this.userService.deleteUser(id || 'null'));
         forkJoin(requests).pipe(finalize(() => this.loading = false)).subscribe({
           next: () => {
             this.selectedUserIds.clear();

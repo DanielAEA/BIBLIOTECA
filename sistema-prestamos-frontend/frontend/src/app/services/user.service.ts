@@ -56,7 +56,10 @@ export class UserService {
     return this.http.put<Usuario>(`${this.baseUrl}/api/usuarios/${id}`, usuario);
   }
 
-  deleteUser(id: string): Observable<void> {
+  deleteUser(id?: string): Observable<void> {
+    if (!id || id === 'null' || id === 'undefined') {
+      return this.http.delete<void>(`${this.baseUrl}/api/usuarios`);
+    }
     return this.http.delete<void>(`${this.baseUrl}/api/usuarios/${id}`);
   }
 

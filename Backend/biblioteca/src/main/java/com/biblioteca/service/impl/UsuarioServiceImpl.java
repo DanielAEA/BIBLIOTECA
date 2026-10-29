@@ -14,10 +14,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final org.springframework.data.mongodb.core.MongoTemplate mongoTemplate;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this(usuarioRepository, passwordEncoder, null);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
+                              org.springframework.data.mongodb.core.MongoTemplate mongoTemplate) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @SuppressWarnings("null")
@@ -75,7 +83,33 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void eliminar(@NonNull String id) {
-        usuarioRepository.deleteById(Objects.requireNonNull(id));
+    public void eliminar(String id) {
+        if (id == null || id.trim().isEmpty() || id.equalsIgnoreCase("null") || id.equalsIgnoreCase("undefined")) {
+            if (mongoTemplate != null) {
+                mongoTemplate.remove(new org.springframework.data.mongodb.core.query.Query(
+                    new org.springframework.data.mongodb.core.query.Criteria().orOperator(
+                        org.springframework.data.mongodb.core.query.Criteria.where("_id").is(null),
+                        org.springframework.data.mongodb.core.query.Criteria.where("_id").is("null"),
+                        org.springframework.data.mongodb.core.query.Criteria.where("correo").is(null),
+                        org.springframework.data.mongodb.core.query.Criteria.where("nombre").is(null)
+                    )
+                ), Usuario.class);
+            }
+            return;
+        }
+
+        try {
+            usuarioRepository.deleteById(id);
+        } catch (Exception ignored) {
+        }
+
+        try {
+            if (mongoTemplate != null && org.bson.types.ObjectId.isValid(id)) {
+                mongoTemplate.remove(new org.springframework.data.mongodb.core.query.Query(
+                    org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new org.bson.types.ObjectId(id))
+                ), Usuario.class);
+            }
+        } catch (Exception ignored) {
+        }
     }
 }

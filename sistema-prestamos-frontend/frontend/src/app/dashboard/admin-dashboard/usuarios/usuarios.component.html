@@ -77,13 +77,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let u of users" [class.row-selected]="selectedUserIds.has(u.id)">
+          <tr *ngFor="let u of users" [class.row-selected]="selectedUserIds.has(u.id || 'null')">
             <td style="width: 44px; text-align: center;">
-              <input type="checkbox" class="table-checkbox" [checked]="selectedUserIds.has(u.id)" (change)="toggleSelection(u.id)" aria-label="Seleccionar usuario">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedUserIds.has(u.id || 'null')" (change)="toggleSelection(u.id || 'null')" aria-label="Seleccionar usuario">
             </td>
-            <td>{{ u.id }}</td>
-            <td>{{ u.nombre }}</td>
-            <td>{{ u.correo }}</td>
+            <td><code>{{ u.id || 'N/A' }}</code></td>
+            <td>{{ u.nombre || '(Sin nombre)' }}</td>
+            <td>{{ u.correo || '(Sin correo)' }}</td>
             <td>{{ getRoleName(u) }}</td>
             <td>
               <div style="display: flex; gap: 8px;">

@@ -12,5 +12,5 @@ public interface UsuarioService {
     List<Usuario> listar();
     Page<Usuario> listarPaginado(Pageable pageable, String search);
     Usuario actualizar(@NonNull String id, @NonNull Usuario usuario);
-    void eliminar(@NonNull String id);
+    void eliminar(String id);
 }

@@ -57,11 +57,19 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable @NonNull String id) {
+    public org.springframework.http.ResponseEntity<?> eliminar(@PathVariable(required = false) String id) {
         usuarioService.eliminar(id);
+        return org.springframework.http.ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public org.springframework.http.ResponseEntity<?> eliminarNulls() {
+        usuarioService.eliminar("null");
+        return org.springframework.http.ResponseEntity.ok().build();
     }
 
     private UsuarioDTO convertToDTO(Usuario usuario) {
+        if (usuario == null) return null;
         return new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getCorreo(), usuario.getRol());
     }
 }
