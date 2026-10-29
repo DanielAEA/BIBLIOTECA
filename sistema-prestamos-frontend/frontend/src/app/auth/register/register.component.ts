@@ -15,7 +15,7 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class RegisterComponent implements AfterViewInit {
 
-  @ViewChild('emailInput') emailInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('nombreInput') nombreInput?: ElementRef<HTMLInputElement>;
 
   registerForm: FormGroup;
   loading: boolean = false;
@@ -41,7 +41,7 @@ export class RegisterComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.emailInput?.nativeElement?.focus();
+      this.nombreInput?.nativeElement?.focus();
     }, 150);
   }
 

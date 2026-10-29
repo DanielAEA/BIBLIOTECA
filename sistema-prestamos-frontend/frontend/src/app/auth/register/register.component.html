@@ -82,6 +82,7 @@
               <div class="input-wrapper" [class.has-error]="registerForm.get('nombre')?.touched && registerForm.get('nombre')?.invalid">
                 <i class="input-icon bx bx-user"></i>
                 <input
+                  #nombreInput
                   id="reg-nombre"
                   formControlName="nombre"
                   type="text"
@@ -103,13 +104,11 @@
               <div class="input-wrapper" [class.has-error]="registerForm.get('correo')?.touched && registerForm.get('correo')?.invalid">
                 <i class="input-icon bx bx-envelope"></i>
                 <input
-                  #emailInput
                   id="reg-email"
                   formControlName="correo"
                   type="email"
                   placeholder="ejemplo@correo.com"
-                  autocomplete="email"
-                  autofocus>
+                  autocomplete="email">
               </div>
               <div *ngIf="registerForm.get('correo')?.touched && registerForm.get('correo')?.errors?.['required']" class="form-error">
                 <i class="bx bx-error-circle"></i>
