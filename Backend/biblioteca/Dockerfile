@@ -11,7 +11,6 @@ FROM eclipse-temurin:17-jre-focal
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 RUN mkdir ./uploads
-ENV SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/biblioteca
 ENV APP_BASE_URL=http://localhost:8080
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
