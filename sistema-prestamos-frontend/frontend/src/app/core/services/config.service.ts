@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,18 @@ export class ConfigService {
   }
 
   get apiUrl(): string {
-    return this.config?.apiUrl || 'http://localhost:8080';
+    return environment.apiUrl;
   }
 
   get frontUrl(): string {
-    return this.config?.frontUrl || 'http://localhost:4200';
+    return environment.frontUrl;
+  }
+
+  get googleClientId(): string {
+    return this.config?.googleClientId || '';
+  }
+
+  get microsoftClientId(): string {
+    return this.config?.microsoftClientId || '';
   }
 }

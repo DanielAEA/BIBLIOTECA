@@ -1,1 +1,5 @@
-{"apiUrl": "/api"}
+{
+  "apiUrl": "/api",
+  "googleClientId": "",
+  "microsoftClientId": ""
+}
