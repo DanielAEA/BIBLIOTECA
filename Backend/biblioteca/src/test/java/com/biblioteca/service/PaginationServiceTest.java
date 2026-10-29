@@ -130,13 +130,13 @@ class PaginationServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         PageResponse<LibroDTO> mockResponse = PageResponse.of(Collections.emptyList(), 0, 10, 0);
 
-        when(libroRepository.findLibrosPaginados(pageable, "quijote", null, null, null, null))
+        when(libroRepository.findLibrosPaginados(pageable, "quijote", null, null, null, null, null, null))
                 .thenReturn(mockResponse);
 
-        PageResponse<LibroDTO> result = libroService.listarPaginado(pageable, "quijote", null, null, null, null);
+        PageResponse<LibroDTO> result = libroService.listarPaginado(pageable, "quijote", null, null, null, null, null, null);
 
         assertNotNull(result);
-        verify(libroRepository, times(1)).findLibrosPaginados(pageable, "quijote", null, null, null, null);
+        verify(libroRepository, times(1)).findLibrosPaginados(pageable, "quijote", null, null, null, null, null, null);
     }
 
     @Test

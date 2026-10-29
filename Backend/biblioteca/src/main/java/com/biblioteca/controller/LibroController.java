@@ -102,13 +102,15 @@ public class LibroController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String autor,
             @RequestParam(required = false) String genero,
+            @RequestParam(required = false) String editorial,
+            @RequestParam(required = false) String formato,
             @RequestParam(required = false) String bloque,
             @RequestParam(required = false) String armario) {
         if (page != null) {
             int pageNum = Math.max(0, page);
             int pageSize = (size != null && size > 0) ? Math.min(size, 100) : 10;
             org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(pageNum, pageSize);
-            return ResponseEntity.ok(libroService.listarPaginado(pageable, search, autor, genero, bloque, armario));
+            return ResponseEntity.ok(libroService.listarPaginado(pageable, search, autor, genero, editorial, formato, bloque, armario));
         }
         List<LibroDTO> allBooks = libroService.listar().stream().map(this::convertToDTO).collect(Collectors.toList());
         return ResponseEntity.ok(allBooks);

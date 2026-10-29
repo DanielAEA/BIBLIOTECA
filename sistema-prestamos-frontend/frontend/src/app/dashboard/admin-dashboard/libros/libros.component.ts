@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { finalize, forkJoin } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, finalize, forkJoin } from 'rxjs';
 import { BookService, Libro, LibroPayload } from '../../../services/book.service';
 import { AuthorService, Autor } from '../../../services/author.service';
 import { EditorialService, Editorial } from '../../../services/editorial.service';
@@ -20,7 +20,7 @@ import { BookCoverUploadComponent } from './book-cover-upload.component';
   templateUrl: './libros.component.html',
   styleUrls: ['./libros.component.scss']
 })
-export class LibrosComponent implements OnInit {
+export class LibrosComponent implements OnInit, OnDestroy {
 
   books: Libro[] = [];
   page: number = 0;
@@ -52,37 +52,45 @@ export class LibrosComponent implements OnInit {
   viewMode: 'grid' | 'list' = 'grid';
   selectedBookIds: Set<string> = new Set();
 
+  // Filters & Search
+  searchTerm: string = '';
+  filterGenero: string = '';
+  filterEditorial: string = '';
+  filterFormato: string = '';
+  filterBloque: string = '';
+  filterArmario: string = '';
+  private searchSubject = new Subject<string>();
+  private searchSub?: Subscription;
+
   setViewMode(mode: 'grid' | 'list') {
     this.viewMode = mode;
     this.selectedBookIds.clear();
   }
 
-  getBooksAgrupadosPorBloque() {
-    const groups: { [key: string]: Libro[] } = {};
-    this.books.forEach(libro => {
-      const bloques = new Set<string>();
-      libro.ejemplares?.forEach((e: any) => {
-        if (e.bloque) bloques.add(e.bloque);
-      });
-
-      if (bloques.size === 0) {
-        const b = 'General';
-        if (!groups[b]) groups[b] = [];
-        groups[b].push(libro);
-      } else {
-        bloques.forEach(b => {
-          if (!groups[b]) groups[b] = [];
-          if (!groups[b].some(l => l.id === libro.id)) {
-            groups[b].push(libro);
-          }
-        });
-      }
+  getUbicaciones(libro: Libro): { bloque: string; estante?: string }[] {
+    if (!libro.ejemplares || libro.ejemplares.length === 0) return [];
+    const map = new Map<string, Set<string>>();
+    libro.ejemplares.forEach((e: any) => {
+      const b = (e.bloque || '').trim() || 'General';
+      if (!map.has(b)) map.set(b, new Set());
+      if (e.estante?.trim()) map.get(b)!.add(e.estante.trim());
     });
+    const result: { bloque: string; estante?: string }[] = [];
+    map.forEach((estantes, bloque) => {
+      result.push({
+        bloque,
+        estante: estantes.size > 0 ? Array.from(estantes).sort().join(', ') : undefined
+      });
+    });
+    return result;
+  }
 
-    return Object.keys(groups).sort().map(key => ({
-      bloque: key,
-      items: groups[key]
-    }));
+  getUbicacionSummary(libro: Libro): string {
+    const ubs = this.getUbicaciones(libro);
+    if (ubs.length === 0) {
+      return libro.formato === 'DIGITAL' ? 'Digital' : 'Sin asignar';
+    }
+    return ubs.map(u => u.estante ? `${u.bloque} · Estante ${u.estante}` : u.bloque).join(' | ');
   }
 
   constructor(
@@ -100,9 +108,53 @@ export class LibrosComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
       this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+      this.searchTerm = params['search'] || '';
+      this.filterGenero = params['genero'] || '';
+      this.filterEditorial = params['editorial'] || '';
+      this.filterFormato = params['formato'] || '';
+      this.filterBloque = params['bloque'] || '';
+      this.filterArmario = params['armario'] || '';
       this.loadBooks();
     });
+
+    this.searchSub = this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.page = 0;
+      this.searchTerm = term;
+      this.updateQueryParams();
+    });
+
     this.loadMetadata();
+  }
+
+  ngOnDestroy() {
+    this.searchSub?.unsubscribe();
+  }
+
+  onSearchInput(value: string) {
+    this.searchSubject.next(value);
+  }
+
+  onFilterChange() {
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.filterGenero = '';
+    this.filterEditorial = '';
+    this.filterFormato = '';
+    this.filterBloque = '';
+    this.filterArmario = '';
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.searchTerm || this.filterGenero || this.filterEditorial || this.filterFormato || this.filterBloque || this.filterArmario);
   }
 
   onPageChange(newPage: number) {
@@ -117,17 +169,37 @@ export class LibrosComponent implements OnInit {
   }
 
   private updateQueryParams() {
+    const queryParams: any = {
+      page: this.page,
+      size: this.size
+    };
+    if (this.searchTerm.trim()) queryParams.search = this.searchTerm.trim();
+    if (this.filterGenero) queryParams.genero = this.filterGenero;
+    if (this.filterEditorial) queryParams.editorial = this.filterEditorial;
+    if (this.filterFormato) queryParams.formato = this.filterFormato;
+    if (this.filterBloque) queryParams.bloque = this.filterBloque;
+    if (this.filterArmario) queryParams.armario = this.filterArmario;
+
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page: this.page, size: this.size },
-      queryParamsHandling: 'merge'
+      queryParams,
+      queryParamsHandling: ''
     });
   }
 
   loadBooks() {
     this.loading = true;
     this.error = null;
-    this.bookService.getBooksPaginated(this.page, this.size).subscribe({
+    const filters = {
+      search: this.searchTerm,
+      genero: this.filterGenero,
+      editorial: this.filterEditorial,
+      formato: this.filterFormato,
+      bloque: this.filterBloque,
+      armario: this.filterArmario
+    };
+
+    this.bookService.getBooksPaginated(this.page, this.size, filters).subscribe({
       next: (response) => {
         this.books = response.content || [];
         this.page = response.page;

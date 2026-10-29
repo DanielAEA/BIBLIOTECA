@@ -1,7 +1,19 @@
 <div class="premium-container">
   <div class="premium-header">
     <h2>Gestión de Géneros</h2>
-    <button class="premium-button" (click)="createGenero()">+ Nuevo Género</button>
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+      <div class="search-box">
+        <input
+          type="text"
+          class="premium-input search-input"
+          placeholder="Buscar género por nombre..."
+          [ngModel]="searchTerm"
+          (ngModelChange)="onSearchInput($event)"
+          aria-label="Buscar géneros"
+        />
+      </div>
+      <button class="premium-button" (click)="createGenero()">+ Nuevo Género</button>
+    </div>
   </div>
 
   <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
@@ -64,9 +76,17 @@
         </tbody>
       </table>
     </div>
+
+    <app-pagination
+      [page]="page"
+      [size]="size"
+      [totalElements]="totalElements"
+      (pageChange)="onPageChange($event)"
+      (sizeChange)="onSizeChange($event)"
+    ></app-pagination>
   </div>
 
   <div *ngIf="!loading && generos.length === 0" class="no-data">
-    No hay géneros registrados.
+    {{ searchTerm ? 'No se encontraron géneros con esa búsqueda.' : 'No hay géneros registrados.' }}
   </div>
 </div>

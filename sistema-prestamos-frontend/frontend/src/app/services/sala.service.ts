@@ -1,7 +1,9 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+
+import { PageResponse } from '../shared/pagination/pagination.component';
 
 export interface Sala {
     id: string;
@@ -29,6 +31,17 @@ export class SalaService {
 
     getAll(): Observable<Sala[]> {
         return this.http.get<Sala[]>(`${this.baseUrl}/api/salas`);
+    }
+
+    getPaginated(page: number = 0, size: number = 10, search?: string, activa?: boolean): Observable<PageResponse<Sala>> {
+        let params: any = { page, size };
+        if (search?.trim()) {
+            params.search = search.trim();
+        }
+        if (activa !== undefined && activa !== null) {
+            params.activa = activa;
+        }
+        return this.http.get<PageResponse<Sala>>(`${this.baseUrl}/api/salas`, { params });
     }
 
     getActivas(): Observable<Sala[]> {

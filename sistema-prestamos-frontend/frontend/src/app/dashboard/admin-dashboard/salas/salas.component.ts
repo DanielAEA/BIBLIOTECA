@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { finalize, forkJoin } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, finalize, forkJoin } from 'rxjs';
 import { SalaService, Sala, SalaPayload } from '../../../services/sala.service';
 import { ReservaSalaService, ReservaSala } from '../../../services/reserva-sala.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-salas',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, PaginationComponent],
     templateUrl: './salas.component.html',
     styleUrls: ['./salas.component.scss']
 })
-export class SalasComponent implements OnInit {
+export class SalasComponent implements OnInit, OnDestroy {
     salas: Sala[] = [];
     selectedSalaIds = new Set<string>();
     reservas: ReservaSala[] = [];
@@ -23,30 +25,114 @@ export class SalasComponent implements OnInit {
     editingSala: Sala | null = null;
     submitting = false;
 
-    
     salaNombre = '';
     salaDescripcion = '';
     salaCapacidad: number | null = null;
     salaUbicacion = '';
     salaActiva = true;
 
-    
     selectedSala: Sala | null = null;
+
+    page: number = 0;
+    size: number = 10;
+    totalElements: number = 0;
+    searchTerm: string = '';
+    activaFilter: string = ''; // '' | 'true' | 'false'
+
+    private searchSubject = new Subject<string>();
+    private searchSub?: Subscription;
 
     constructor(
         private salaService: SalaService,
-        private reservaSalaService: ReservaSalaService
+        private reservaSalaService: ReservaSalaService,
+        private route: ActivatedRoute,
+        private router: Router
     ) { }
 
     ngOnInit() {
-        this.loadSalas();
+        this.route.queryParams.subscribe(params => {
+            this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
+            this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+            this.searchTerm = params['search'] || '';
+            this.activaFilter = params['activa'] !== undefined ? params['activa'] : '';
+            this.loadSalas();
+        });
+
+        this.searchSub = this.searchSubject.pipe(
+            debounceTime(300),
+            distinctUntilChanged()
+        ).subscribe(term => {
+            this.page = 0;
+            this.searchTerm = term;
+            this.updateQueryParams();
+        });
+    }
+
+    ngOnDestroy() {
+        this.searchSub?.unsubscribe();
+    }
+
+    onSearchInput(value: string) {
+        this.searchSubject.next(value);
+    }
+
+    onFilterChange() {
+        this.page = 0;
+        this.updateQueryParams();
+    }
+
+    clearFilters() {
+        this.searchTerm = '';
+        this.activaFilter = '';
+        this.page = 0;
+        this.updateQueryParams();
+    }
+
+    hasActiveFilters(): boolean {
+        return !!(this.searchTerm || this.activaFilter);
+    }
+
+    onPageChange(newPage: number) {
+        this.page = newPage;
+        this.updateQueryParams();
+    }
+
+    onSizeChange(newSize: number) {
+        this.size = newSize;
+        this.page = 0;
+        this.updateQueryParams();
+    }
+
+    private updateQueryParams() {
+        const queryParams: any = {
+            page: this.page,
+            size: this.size
+        };
+        if (this.searchTerm.trim()) {
+            queryParams.search = this.searchTerm.trim();
+        }
+        if (this.activaFilter !== '') {
+            queryParams.activa = this.activaFilter;
+        }
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams,
+            queryParamsHandling: ''
+        });
     }
 
     loadSalas() {
         this.loading = true;
-        this.salaService.getAll().subscribe({
-            next: (salas) => {
-                this.salas = salas;
+        let activa: boolean | undefined = undefined;
+        if (this.activaFilter === 'true') activa = true;
+        else if (this.activaFilter === 'false') activa = false;
+
+        this.salaService.getPaginated(this.page, this.size, this.searchTerm, activa).subscribe({
+            next: (response) => {
+                this.salas = response.content || [];
+                this.page = response.page;
+                this.size = response.size;
+                this.totalElements = response.totalElements;
                 this.loading = false;
             },
             error: (err) => {

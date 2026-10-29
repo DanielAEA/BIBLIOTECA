@@ -41,6 +41,14 @@ public class AutorServiceImpl implements AutorService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<Autor> listarPaginado(org.springframework.data.domain.Pageable pageable, String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            return autorRepository.findByNombreContainingIgnoreCase(search.trim(), pageable);
+        }
+        return autorRepository.findAll(pageable);
+    }
+
+    @Override
     public Autor actualizar(@NonNull String id, @NonNull Autor autor) {
         Autor existente = autorRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Autor no encontrado"));

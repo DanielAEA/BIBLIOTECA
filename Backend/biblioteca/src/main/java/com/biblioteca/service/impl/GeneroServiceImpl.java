@@ -41,6 +41,14 @@ public class GeneroServiceImpl implements GeneroService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<Genero> listarPaginado(org.springframework.data.domain.Pageable pageable, String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            return generoRepository.findByNombreContainingIgnoreCase(search.trim(), pageable);
+        }
+        return generoRepository.findAll(pageable);
+    }
+
+    @Override
     public Genero actualizar(@NonNull String id, @NonNull Genero genero) {
         Genero existente = generoRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Género no encontrado"));

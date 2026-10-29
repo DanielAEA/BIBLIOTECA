@@ -14,15 +14,57 @@
     </div>
   </div>
 
-  <div class="bulk-actions" *ngIf="selectedBookIds.size > 0">
-    <span class="selected-count">{{ selectedBookIds.size }} items seleccionados</span>
-    <button class="btn-delete-bulk" (click)="deleteSelectedBooks()">
-      Eliminar seleccionados
+  <div class="filters-toolbar">
+    <div class="filter-group search-filter">
+      <i class='bx bx-search search-icon'></i>
+      <input
+        type="text"
+        class="premium-input search-input"
+        placeholder="Buscar por título, autor, ISBN..."
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchInput($event)"
+        aria-label="Buscar libros"
+      />
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="filterGenero" (change)="onFilterChange()" aria-label="Filtrar por género">
+        <option value="">Todos los géneros</option>
+        <option *ngFor="let g of generos" [value]="g.nombre">{{ g.nombre }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="filterEditorial" (change)="onFilterChange()" aria-label="Filtrar por editorial">
+        <option value="">Todas las editoriales</option>
+        <option *ngFor="let e of editorials" [value]="e.nombre">{{ e.nombre }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="filterFormato" (change)="onFilterChange()" aria-label="Filtrar por formato">
+        <option value="">Todos los formatos</option>
+        <option value="FISICO">Solo Físico</option>
+        <option value="DIGITAL">Solo Digital</option>
+        <option value="AMBOS">Ambos (Físico y Digital)</option>
+      </select>
+    </div>
+
+    <div class="filter-group location-filter">
+      <input
+        type="text"
+        class="premium-input"
+        placeholder="Bloque o Estante..."
+        [(ngModel)]="filterBloque"
+        (ngModelChange)="onSearchInput($event)"
+        aria-label="Filtrar por bloque o estante"
+      />
+    </div>
+
+    <button *ngIf="hasActiveFilters()" class="btn-clear-filters" (click)="clearFilters()" title="Limpiar todos los filtros">
+      <i class='bx bx-x'></i> Limpiar
     </button>
   </div>
-
-  <div *ngIf="loading" class="loading">Cargando libros...</div>
-  <div *ngIf="error" class="error-message">{{ error }}</div>
 
   <div class="modal-overlay" *ngIf="(showEditForm || showCreateForm) && editingBook" (click)="cancelEdit()">
     <div class="modal-container-enhanced" (click)="$event.stopPropagation()">
@@ -147,74 +189,150 @@
     <span>Cargando libros...</span>
   </div>
 
+  <div *ngIf="error" class="error-message">{{   <div class="bulk-actions" *ngIf="selectedBookIds.size > 0">
+    <span class="selected-count">{{ selectedBookIds.size }} libro(s) seleccionado(s)</span>
+    <button class="btn-delete-bulk" (click)="deleteSelectedBooks()">
+      <i class='bx bx-trash'></i> Eliminar seleccionados
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Cargando libros...</span>
+  </div>
+
   <div *ngIf="error" class="error-message">{{ error }}</div>
 
   <div *ngIf="!loading && !error">
-    <div class="bloque-section" *ngFor="let g of getBooksAgrupadosPorBloque()">
-      <h3 class="bloque-title"><i class='bx bx-cabinet'></i> {{ g.bloque }}</h3>
+    <!-- Grid View -->
+    <div *ngIf="viewMode === 'grid' && books.length > 0" class="books-grid-modern">
+      <div *ngFor="let b of books" class="book-card-modern" [class.row-selected]="selectedBookIds.has(b.id)">
+        <div class="card-cover-wrapper" (click)="verDetalles(b)">
+          <div class="card-top-overlay" (click)="$event.stopPropagation()">
+            <label class="checkbox-pill">
+              <input type="checkbox" class="table-checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)" aria-label="Seleccionar libro">
+            </label>
+            <span class="format-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-fisico' : b.formato === 'DIGITAL' ? 'badge-digital' : 'badge-ambos'">
+              {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
+            </span>
+          </div>
 
-      <!-- Grid View -->
-      <div *ngIf="viewMode === 'grid'" class="books-grid"
-        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-        <div *ngFor="let b of g.items" class="premium-card" style="margin-bottom: 0; padding: 0; overflow: hidden; position: relative;" [class.row-selected]="selectedBookIds.has(b.id)">
-          <div style="position: absolute; top: 10px; left: 10px; z-index: 5; background: rgba(15, 23, 42, 0.75); border-radius: 6px; padding: 3px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-            <input type="checkbox" class="table-checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)" (click)="$event.stopPropagation()" aria-label="Seleccionar libro">
+          <img [src]="b.urlPortada || 'https://via.placeholder.com/220x300?text=Sin+Portada'"
+               (error)="b.urlPortada = 'https://via.placeholder.com/220x300?text=Sin+Portada'"
+               class="card-cover-img"
+               alt="Portada de {{ b.titulo }}"
+               loading="lazy" />
+        </div>
+
+        <div class="card-content">
+          <!-- Prominent Shelf / Location Badge -->
+          <div class="shelf-location-chip" [class.unassigned]="getUbicaciones(b).length === 0">
+            <i class='bx bx-cabinet'></i>
+            <span class="shelf-text" title="{{ getUbicacionSummary(b) }}">{{ getUbicacionSummary(b) }}</span>
           </div>
-          <div class="book-cover-container" style="height: 200px; width: 100%; background: #f1f5f9; cursor: pointer;"
-            (click)="verDetalles(b)">
-            <img [src]="b.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'"
-              (error)="b.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
-              style="width: 100%; height: 100%; object-fit: cover;">
+
+          <h3 class="card-title" (click)="verDetalles(b)" title="{{ b.titulo }}">{{ b.titulo }}</h3>
+
+          <div class="card-author">
+            <i class='bx bx-user'></i>
+            <span>{{ getAuthorsString(b) }}</span>
           </div>
-          <div style="padding: 1rem;">
-            <div class="book-title" style="font-size: 1rem; margin-bottom: 0.5rem;">{{ b.titulo }}</div>
-            <div style="display: flex; gap: 0.3rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
-              <button class="btn-view-premium sm" style="flex: 1; padding: 0.4rem;" (click)="verDetalles(b)">Ver</button>
-              <button class="btn-edit-premium sm" style="flex: 1; padding: 0.4rem;" (click)="editBook(b)">Editar</button>
-              <button class="btn-delete-premium sm" style="flex: 1; padding: 0.4rem;" (click)="deleteBook(b)">Eliminar</button>
+
+          <div class="card-meta-chips">
+            <span class="chip-genre" *ngIf="b.genero?.nombre">
+              <i class='bx bx-purchase-tag-alt'></i> {{ b.genero?.nombre }}
+            </span>
+            <span class="chip-editorial" *ngIf="b.editorial?.nombre">
+              <i class='bx bx-buildings'></i> {{ b.editorial?.nombre }}
+            </span>
+          </div>
+
+          <div class="card-footer-info">
+            <div class="stock-indicator" [class.in-stock]="b.stockDisponible > 0" [class.out-of-stock]="b.stockDisponible <= 0">
+              <span class="status-dot"></span>
+              <span class="stock-text" *ngIf="b.stockDisponible > 0">{{ b.stockDisponible }} disp.</span>
+              <span class="stock-text" *ngIf="b.stockDisponible <= 0">Agotado</span>
             </div>
+            <span class="isbn-code" *ngIf="b.isbn">ISBN: {{ b.isbn }}</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn-read-sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)" title="Leer digital">
+              <i class='bx bx-book-reader'></i> Leer
+            </button>
+            <button class="btn-action-sm btn-view" (click)="verDetalles(b)" title="Ver detalles">
+              <i class='bx bx-show'></i> Ver
+            </button>
+            <button class="btn-action-sm btn-edit" (click)="editBook(b)" title="Editar libro">
+              <i class='bx bx-edit'></i>
+            </button>
+            <button class="btn-action-sm btn-delete" (click)="deleteBook(b)" title="Eliminar libro">
+              <i class='bx bx-trash'></i>
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- List View (Inside Block) -->
-      <div *ngIf="viewMode === 'list'" class="list-view-container">
-        <div class="premium-card table-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+    <!-- List View -->
+    <div *ngIf="viewMode === 'list' && books.length > 0" class="list-view-container">
+      <div class="premium-card table-card" style="padding: 0; overflow: hidden; margin-bottom: 2rem;">
+        <div class="table-responsive">
           <table class="premium-table">
             <thead>
               <tr>
                 <th style="width: 50px; text-align: center;">
-                  <input type="checkbox" (change)="toggleAll($event)" [checked]="selectedBookIds.size === books.length && books.length > 0">
+                  <input type="checkbox" (change)="toggleAll($event)" [checked]="selectedBookIds.size === books.length && books.length > 0" aria-label="Seleccionar todos">
                 </th>
                 <th>Portada</th>
-                <th>Título</th>
+                <th>Título / ISBN</th>
                 <th>Autor(es)</th>
+                <th>Género / Editorial</th>
                 <th>Formato</th>
+                <th>Ubicación / Estante</th>
+                <th>Disponibilidad</th>
                 <th style="text-align: right;">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let b of g.items" [class.selected]="selectedBookIds.has(b.id)">
+              <tr *ngFor="let b of books" [class.selected]="selectedBookIds.has(b.id)">
                 <td style="text-align: center;">
-                  <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)">
+                  <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)" aria-label="Seleccionar libro">
                 </td>
                 <td>
                   <img [src]="b.urlPortada || 'https://via.placeholder.com/40x60?text=S/P'" 
-                       style="width: 40px; height: 60px; object-fit: cover; border-radius: 4px;">
+                       (error)="b.urlPortada = 'https://via.placeholder.com/40x60?text=S/P'"
+                       style="width: 44px; height: 60px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);"
+                       alt="Portada">
                 </td>
                 <td>
                   <div style="font-weight: 700; color: var(--text-dark);">{{ b.titulo }}</div>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">ISBN: {{ b.isbn || 'N/A' }}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);" *ngIf="b.isbn">ISBN: {{ b.isbn }}</div>
                 </td>
                 <td>{{ getAuthorsString(b) }}</td>
                 <td>
-                  <span class="premium-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-info' : 'badge-success'">
+                  <div style="font-weight: 600;">{{ b.genero?.nombre || 'General' }}</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">{{ b.editorial?.nombre || 'Sin editorial' }}</div>
+                </td>
+                <td>
+                  <span class="premium-badge" [ngClass]="b.formato === 'FISICO' ? 'badge-info' : b.formato === 'DIGITAL' ? 'badge-success' : 'badge-warning'">
                     {{ b.formato === 'FISICO' ? 'Físico' : b.formato === 'DIGITAL' ? 'Digital' : 'Ambos' }}
                   </span>
                 </td>
+                <td>
+                  <span class="location-pill" [class.unassigned]="getUbicaciones(b).length === 0">
+                    <i class='bx bx-cabinet'></i> {{ getUbicacionSummary(b) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="stock-indicator" [class.in-stock]="b.stockDisponible > 0" [class.out-of-stock]="b.stockDisponible <= 0">
+                    <span class="status-dot"></span>
+                    <span class="stock-text">{{ b.stockDisponible > 0 ? (b.stockDisponible + ' disp.') : 'Agotado' }}</span>
+                  </div>
+                </td>
                 <td style="text-align: right;">
                   <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-                    <button class="btn-read-premium sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)">Leer</button>
+                    <button class="btn-read-premium sm" *ngIf="b.tieneDigital" (click)="leerOnline(b)" title="Leer digital">Leer</button>
                     <button class="btn-view-premium sm" (click)="verDetalles(b)">Ver</button>
                     <button class="btn-edit-premium sm" (click)="editBook(b)">Editar</button>
                     <button class="btn-delete-premium sm" (click)="deleteBook(b)">Eliminar</button>
@@ -237,7 +355,14 @@
     ></app-pagination>
 
     <div *ngIf="books.length === 0" class="no-books">
-      No hay libros registrados.
+      <i class='bx bx-search-alt' style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+      <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem;">No se encontraron libros</div>
+      <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+        {{ hasActiveFilters() ? 'Prueba ajustando los filtros de búsqueda.' : 'No hay libros registrados en el sistema.' }}
+      </div>
+      <button *ngIf="hasActiveFilters()" class="premium-button sm" (click)="clearFilters()">
+        Limpiar filtros
+      </button>
     </div>
   </div>
 </div>

@@ -11,6 +11,9 @@ public interface LibroService {
     com.biblioteca.dto.PageResponse<com.biblioteca.dto.LibroDTO> listarPaginado(
             org.springframework.data.domain.Pageable pageable,
             String search, String autor, String genero, String bloque, String armario);
+    com.biblioteca.dto.PageResponse<com.biblioteca.dto.LibroDTO> listarPaginado(
+            org.springframework.data.domain.Pageable pageable,
+            String search, String autor, String genero, String editorial, String formato, String bloque, String armario);
     Libro actualizar(@NonNull String id, @NonNull Libro libro);
     void eliminar(@NonNull String id);
     void eliminarVarios(@NonNull List<String> ids);

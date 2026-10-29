@@ -41,6 +41,14 @@ public class EditorialServiceImpl implements EditorialService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<Editorial> listarPaginado(org.springframework.data.domain.Pageable pageable, String search) {
+        if (search != null && !search.trim().isEmpty()) {
+            return editorialRepository.findByNombreContainingIgnoreCase(search.trim(), pageable);
+        }
+        return editorialRepository.findAll(pageable);
+    }
+
+    @Override
     public Editorial actualizar(@NonNull String id, @NonNull Editorial editorial) {
         Editorial existente = editorialRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Editorial no encontrada"));

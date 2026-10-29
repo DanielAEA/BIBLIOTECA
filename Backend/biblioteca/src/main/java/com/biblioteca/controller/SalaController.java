@@ -21,8 +21,20 @@ public class SalaController {
     }
 
     @GetMapping
-    public List<Sala> listar() {
-        return salaService.listar();
+    public org.springframework.http.ResponseEntity<?> listar(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Boolean activa) {
+        if (page != null) {
+            int pageNum = Math.max(0, page);
+            int pageSize = (size != null && size > 0) ? Math.min(size, 100) : 10;
+            org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(
+                    pageNum, pageSize, org.springframework.data.domain.Sort.by("nombre").ascending());
+            org.springframework.data.domain.Page<Sala> paginado = salaService.listarPaginado(pageable, search, activa);
+            return org.springframework.http.ResponseEntity.ok(com.biblioteca.dto.PageResponse.from(paginado));
+        }
+        return org.springframework.http.ResponseEntity.ok(salaService.listar());
     }
 
     @GetMapping("/activas")

@@ -39,6 +39,20 @@ public class SalaServiceImpl implements SalaService {
     }
 
     @Override
+    public org.springframework.data.domain.Page<Sala> listarPaginado(org.springframework.data.domain.Pageable pageable, String search, Boolean activa) {
+        boolean hasSearch = search != null && !search.trim().isEmpty();
+        if (hasSearch && activa != null) {
+            return salaRepository.findByActivaAndNombreContainingIgnoreCase(activa, search.trim(), pageable);
+        } else if (hasSearch) {
+            String term = search.trim();
+            return salaRepository.findByNombreContainingIgnoreCaseOrUbicacionContainingIgnoreCase(term, term, pageable);
+        } else if (activa != null) {
+            return salaRepository.findByActiva(activa, pageable);
+        }
+        return salaRepository.findAll(pageable);
+    }
+
+    @Override
     public Sala actualizar(@NonNull String id, @NonNull Sala sala) {
         Sala existente = salaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Sala no encontrada"));

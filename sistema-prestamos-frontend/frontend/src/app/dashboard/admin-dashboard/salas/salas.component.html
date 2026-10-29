@@ -1,5 +1,26 @@
 <div class="salas-container">
 
+    <div class="premium-header">
+        <h2>Gestión de Salas de Estudio</h2>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <div class="search-box">
+                <input
+                    type="text"
+                    class="premium-input search-input"
+                    placeholder="Buscar sala por nombre o ubicación..."
+                    [ngModel]="searchTerm"
+                    (ngModelChange)="onSearchInput($event)"
+                    aria-label="Buscar salas"
+                />
+            </div>
+            <select class="premium-select" [(ngModel)]="activaFilter" (change)="onFilterChange()" aria-label="Filtrar por estado" style="height: 44px; min-width: 150px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-alt); color: var(--text-main); padding: 0 1rem;">
+                <option value="">Todas</option>
+                <option value="true">Activas</option>
+                <option value="false">Inactivas</option>
+            </select>
+            <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
+        </div>
+    </div>
     
     <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
         <div class="modal-container" (click)="$event.stopPropagation()">
@@ -99,10 +120,6 @@
     </div>
 
     <div class="premium-card" *ngIf="!loading && salas.length > 0">
-        <div class="premium-header">
-            <h2>Gestión de Salas de Estudio</h2>
-            <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
-        </div>
         <div class="table-responsive">
             <table class="premium-table large-text">
                 <thead>
@@ -141,9 +158,17 @@
                 </tbody>
             </table>
         </div>
+
+        <app-pagination
+            [page]="page"
+            [size]="size"
+            [totalElements]="totalElements"
+            (pageChange)="onPageChange($event)"
+            (sizeChange)="onSizeChange($event)"
+        ></app-pagination>
     </div>
 
     <div *ngIf="!loading && salas.length === 0" class="no-data">
-        No hay salas registradas. Crea una nueva sala para empezar.
+        {{ hasActiveFilters() ? 'No se encontraron salas con los filtros actuales.' : 'No hay salas registradas. Crea una nueva sala para empezar.' }}
     </div>
 </div>

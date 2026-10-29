@@ -1,7 +1,9 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+
+import { PageResponse } from '../shared/pagination/pagination.component';
 
 export interface Genero {
   id: string;
@@ -17,6 +19,14 @@ export class GeneroService {
 
   getAll(): Observable<Genero[]> {
     return this.http.get<Genero[]>(`${this.baseUrl}/api/generos`);
+  }
+
+  getPaginated(page: number = 0, size: number = 10, search?: string): Observable<PageResponse<Genero>> {
+    let params: any = { page, size };
+    if (search?.trim()) {
+      params.search = search.trim();
+    }
+    return this.http.get<PageResponse<Genero>>(`${this.baseUrl}/api/generos`, { params });
   }
 
   getById(id: string): Observable<Genero> {

@@ -67,6 +67,8 @@ export class BookService {
       if (filters.search?.trim()) params.search = filters.search.trim();
       if (filters.autor?.trim()) params.autor = filters.autor.trim();
       if (filters.genero?.trim()) params.genero = filters.genero.trim();
+      if (filters.editorial?.trim()) params.editorial = filters.editorial.trim();
+      if (filters.formato?.trim()) params.formato = filters.formato.trim();
       if (filters.bloque?.trim()) params.bloque = filters.bloque.trim();
       if (filters.armario?.trim()) params.armario = filters.armario.trim();
     }

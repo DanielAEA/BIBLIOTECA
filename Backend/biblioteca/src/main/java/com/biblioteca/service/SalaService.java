@@ -9,6 +9,7 @@ public interface SalaService {
     Sala obtenerPorId(@NonNull String id);
     List<Sala> listar();
     List<Sala> listarActivas();
+    org.springframework.data.domain.Page<Sala> listarPaginado(org.springframework.data.domain.Pageable pageable, String search, Boolean activa);
     Sala actualizar(@NonNull String id, @NonNull Sala sala);
     void eliminar(@NonNull String id);
 }

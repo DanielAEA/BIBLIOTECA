@@ -24,6 +24,11 @@ public class LibroRepositoryImpl implements LibroRepositoryCustom {
 
     @Override
     public PageResponse<LibroDTO> findLibrosPaginados(Pageable pageable, String search, String autor, String genero, String bloque, String armario) {
+        return findLibrosPaginados(pageable, search, autor, genero, null, null, bloque, armario);
+    }
+
+    @Override
+    public PageResponse<LibroDTO> findLibrosPaginados(Pageable pageable, String search, String autor, String genero, String editorial, String formato, String bloque, String armario) {
         List<AggregationOperation> operations = new ArrayList<>();
 
         operations.add(lookup("autores", "autores", "_id", "autores_docs"));
@@ -55,6 +60,14 @@ public class LibroRepositoryImpl implements LibroRepositoryCustom {
 
         if (genero != null && !genero.trim().isEmpty()) {
             criteriaList.add(Criteria.where("genero_docs.nombre").regex(genero.trim(), "i"));
+        }
+
+        if (editorial != null && !editorial.trim().isEmpty()) {
+            criteriaList.add(Criteria.where("editorial_docs.nombre").regex(editorial.trim(), "i"));
+        }
+
+        if (formato != null && !formato.trim().isEmpty() && !formato.equalsIgnoreCase("TODOS")) {
+            criteriaList.add(Criteria.where("formato").is(formato.trim().toUpperCase()));
         }
 
         if (bloque != null && !bloque.trim().isEmpty()) {
