@@ -14,25 +14,26 @@ export class ConfigService {
   public async loadConfig(): Promise<void> {
     try {
       this.config = await firstValueFrom(this.http.get('/assets/config.json'));
-      console.log('Configuración cargada exitosamente:', this.config);
-    } catch (error) {
-      console.error('Error cargando la configuración (assets/config.json). Se usará URL por defecto.', error);
+    } catch {
+      this.config = {};
     }
   }
 
   get apiUrl(): string {
-    return environment.apiUrl;
+    const url = (this.config?.apiUrl || environment.apiUrl || '').trim();
+    return url.endsWith('/') ? url.slice(0, -1) : url;
   }
 
   get frontUrl(): string {
-    return environment.frontUrl;
+    const url = (this.config?.frontUrl || environment.frontUrl || '').trim();
+    return url.endsWith('/') ? url.slice(0, -1) : url;
   }
 
   get googleClientId(): string {
-    return this.config?.googleClientId || '';
+    return (this.config?.googleClientId || '').trim();
   }
 
   get microsoftClientId(): string {
-    return this.config?.microsoftClientId || '';
+    return (this.config?.microsoftClientId || '').trim();
   }
 }

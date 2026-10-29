@@ -9,6 +9,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,13 @@ public class OidcTokenValidatorService {
     private ConfigurableJWTProcessor<SecurityContext> microsoftProcessor;
 
     public OidcTokenValidatorService() {
+    }
+
+    @PostConstruct
+    public void validateConfiguration() {
+        if (googleClientId == null || googleClientId.trim().isEmpty()) {
+            throw new IllegalStateException("Error de configuración: La variable de entorno GOOGLE_CLIENT_ID es obligatoria y no está configurada.");
+        }
     }
 
     public void setGoogleClientId(String googleClientId) {

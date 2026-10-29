@@ -12,15 +12,21 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
         private final JwtAuthenticationFilter jwtAuthFilter;
+
+        @Value("${ALLOWED_ORIGINS:${app.cors.allowed-origins:http://localhost:4200}}")
+        private String allowedOrigins;
 
         public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
                 this.jwtAuthFilter = jwtAuthFilter;
@@ -32,10 +38,18 @@ public class SecurityConfig {
                                 .cors(t -> t.configurationSource(request -> {
                                         CorsConfiguration config = new CorsConfiguration();
                                         config.setAllowCredentials(true);
-                                        config.addAllowedOrigin("http://localhost:8080");
-                                        config.addAllowedOrigin("http://localhost:4000");
-                                        config.addAllowedOrigin("http://localhost:4200");
-                                        config.addAllowedOrigin("https://ciberbook-frontend-production.up.railway.app");
+                                        if (allowedOrigins != null && !allowedOrigins.trim().isEmpty()) {
+                                                Arrays.stream(allowedOrigins.split(","))
+                                                                .map(String::trim)
+                                                                .filter(s -> !s.isEmpty())
+                                                                .forEach(origin -> {
+                                                                        if (origin.contains("*")) {
+                                                                                config.addAllowedOriginPattern(origin);
+                                                                        } else {
+                                                                                config.addAllowedOrigin(origin);
+                                                                        }
+                                                                });
+                                        }
                                         config.addAllowedHeader("*");
                                         config.addAllowedMethod("*");
                                         return config;
