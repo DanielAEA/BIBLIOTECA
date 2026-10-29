@@ -9,8 +9,8 @@ cat <<EOF > "$CONFIG_PATH"
 }
 EOF
 
-if [ -n "$PORT" ]; then
-  sed -i "s/listen 80;/listen $PORT;/g" /etc/nginx/conf.d/default.conf
+if [ -n "$PORT" ] && [ "$PORT" != "80" ]; then
+  sed -i "s/listen 8080;/listen $PORT;/g" /etc/nginx/conf.d/default.conf
 fi
 
 sed -i 's/error_log .* notice;/error_log \/var\/log\/nginx\/error.log warn;/g' /etc/nginx/nginx.conf
