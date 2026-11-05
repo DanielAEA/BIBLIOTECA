@@ -1,4 +1,4 @@
-services:
+﻿services:
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -6,6 +6,20 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - ciberbook-network
+
+  ciberbook-predictivo:
+    build:
+      context: ./microservicio-predictivo
+      dockerfile: Dockerfile
+    image: daniel08escudero/ciberbook-predictivo:latest
+    container_name: ciberbook-predictivo
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - ciberbook-network
 
   backend:
     build:
@@ -21,8 +35,11 @@ services:
       - APP_FRONT_URL=http://localhost:4200
     depends_on:
       - mongodb
+      - ciberbook-predictivo
     volumes:
       - ./uploads:/app/uploads
+    networks:
+      - ciberbook-network
 
   frontend:
     build:
@@ -34,6 +51,12 @@ services:
       - "80:80"
     depends_on:
       - backend
+    networks:
+      - ciberbook-network
+
+networks:
+  ciberbook-network:
+    driver: bridge
 
 volumes:
   mongodb_data:

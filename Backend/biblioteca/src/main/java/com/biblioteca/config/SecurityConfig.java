@@ -59,6 +59,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/auth/**", "/api/auth/**").permitAll()
                                                 .requestMatchers("/uploads/**", "/api/prestamos/debug-logs",
                                                                 "/api/stats/**",
+                                                                "/api/predicciones/**",
                                                                 "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**",
                                                                 "/api/admin/regenerar-qr",
                                                                 "/api/libros/download-pdf/**",
