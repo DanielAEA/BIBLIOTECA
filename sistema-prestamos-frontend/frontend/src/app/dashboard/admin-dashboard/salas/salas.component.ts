@@ -38,6 +38,8 @@ export class SalasComponent implements OnInit, OnDestroy {
     totalElements: number = 0;
     searchTerm: string = '';
     activaFilter: string = ''; // '' | 'true' | 'false'
+    capacidadFilter: string = '';
+    sortOrder: string = 'asc';
 
     private searchSubject = new Subject<string>();
     private searchSub?: Subscription;
@@ -79,17 +81,21 @@ export class SalasComponent implements OnInit, OnDestroy {
     onFilterChange() {
         this.page = 0;
         this.updateQueryParams();
+        this.loadSalas();
     }
 
     clearFilters() {
         this.searchTerm = '';
         this.activaFilter = '';
+        this.capacidadFilter = '';
+        this.sortOrder = 'asc';
         this.page = 0;
         this.updateQueryParams();
+        this.loadSalas();
     }
 
     hasActiveFilters(): boolean {
-        return !!(this.searchTerm || this.activaFilter);
+        return !!(this.searchTerm || this.activaFilter || this.capacidadFilter || this.sortOrder !== 'asc');
     }
 
     onPageChange(newPage: number) {
@@ -129,7 +135,24 @@ export class SalasComponent implements OnInit, OnDestroy {
 
         this.salaService.getPaginated(this.page, this.size, this.searchTerm, activa).subscribe({
             next: (response) => {
-                this.salas = response.content || [];
+                let list = response.content || [];
+                if (this.capacidadFilter === '1-4') {
+                    list = list.filter(s => s.capacidad && s.capacidad <= 4);
+                } else if (this.capacidadFilter === '5-10') {
+                    list = list.filter(s => s.capacidad && s.capacidad >= 5 && s.capacidad <= 10);
+                } else if (this.capacidadFilter === '10+') {
+                    list = list.filter(s => s.capacidad && s.capacidad > 10);
+                }
+                if (this.sortOrder === 'cap_desc') {
+                    list = list.sort((a, b) => (b.capacidad || 0) - (a.capacidad || 0));
+                } else if (this.sortOrder === 'cap_asc') {
+                    list = list.sort((a, b) => (a.capacidad || 0) - (b.capacidad || 0));
+                } else if (this.sortOrder === 'desc') {
+                    list = list.sort((a, b) => (b.nombre || '').localeCompare(a.nombre || ''));
+                } else {
+                    list = list.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                }
+                this.salas = list;
                 this.page = response.page;
                 this.size = response.size;
                 this.totalElements = response.totalElements;

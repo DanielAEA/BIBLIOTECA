@@ -1171,3 +1171,104 @@ body.dark-theme {
 tr.row-selected {
   background: rgba(0, 229, 255, 0.06) !important;
 }
+/* ============================================================
+   GLOBAL FILTERS TOOLBAR SYSTEM
+   ============================================================ */
+.filters-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  box-sizing: border-box;
+
+  .filter-group {
+    position: relative;
+    flex: 1 1 140px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    &.search-filter {
+      flex: 2 1 200px;
+      min-width: 0;
+
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        pointer-events: none;
+      }
+
+      .search-input {
+        padding-left: 2.5rem;
+      }
+    }
+  }
+
+  .premium-input,
+  .premium-select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 44px;
+    padding: 0.65rem 1rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-main);
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    outline: none;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #0284c7;
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+      background: var(--bg-card);
+    }
+  }
+
+  .premium-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 2.2rem;
+  }
+
+  .btn-clear-filters {
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: #ef4444;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+  }
+}

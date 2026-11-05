@@ -2,24 +2,51 @@
 
     <div class="premium-header">
         <h2>Gestión de Salas de Estudio</h2>
-        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <div class="search-box">
-                <input
-                    type="text"
-                    class="premium-input search-input"
-                    placeholder="Buscar sala por nombre o ubicación..."
-                    [ngModel]="searchTerm"
-                    (ngModelChange)="onSearchInput($event)"
-                    aria-label="Buscar salas"
-                />
-            </div>
-            <select class="premium-select" [(ngModel)]="activaFilter" (change)="onFilterChange()" aria-label="Filtrar por estado" style="height: 44px; min-width: 150px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-alt); color: var(--text-main); padding: 0 1rem;">
-                <option value="">Todas</option>
-                <option value="true">Activas</option>
-                <option value="false">Inactivas</option>
-            </select>
-            <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
+        <button class="premium-button" (click)="createSala()">+ Nueva Sala</button>
+    </div>
+
+    <div class="filters-toolbar">
+        <div class="filter-group search-filter">
+            <i class='bx bx-search search-icon'></i>
+            <input
+                type="text"
+                class="premium-input search-input"
+                placeholder="Buscar sala por nombre o ubicación..."
+                [ngModel]="searchTerm"
+                (ngModelChange)="onSearchInput($event)"
+                aria-label="Buscar salas"
+            />
         </div>
+
+        <div class="filter-group">
+            <select class="premium-select" [(ngModel)]="activaFilter" (change)="onFilterChange()" aria-label="Filtrar por estado">
+                <option value="">Todos los estados</option>
+                <option value="true">Solo Activas</option>
+                <option value="false">Solo Inactivas</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <select class="premium-select" [(ngModel)]="capacidadFilter" (change)="onFilterChange()" aria-label="Filtrar por capacidad">
+                <option value="">Cualquier capacidad</option>
+                <option value="1-4">Pequeña (1 a 4 pers.)</option>
+                <option value="5-10">Mediana (5 a 10 pers.)</option>
+                <option value="10+">Grande (más de 10 pers.)</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <select class="premium-select" [(ngModel)]="sortOrder" (change)="onFilterChange()" aria-label="Ordenar salas">
+                <option value="asc">Nombre: A - Z</option>
+                <option value="desc">Nombre: Z - A</option>
+                <option value="cap_desc">Mayor Capacidad</option>
+                <option value="cap_asc">Menor Capacidad</option>
+            </select>
+        </div>
+
+        <button *ngIf="hasActiveFilters()" class="btn-clear-filters" (click)="clearFilters()" title="Limpiar todos los filtros">
+            <i class='bx bx-x'></i> Limpiar
+        </button>
     </div>
     
     <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">

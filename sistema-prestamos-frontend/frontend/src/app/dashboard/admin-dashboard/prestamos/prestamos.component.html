@@ -4,6 +4,54 @@
     <button class="premium-button" (click)="showLoanForm = true">+ Registrar Préstamo</button>
   </div>
 
+  <div class="filters-toolbar">
+    <div class="filter-group search-filter">
+      <i class='bx bx-search search-icon'></i>
+      <input
+        type="text"
+        class="premium-input search-input"
+        placeholder="Buscar por usuario o correo..."
+        [(ngModel)]="loanFilters.usuario"
+        (ngModelChange)="onFilterTextInput()"
+        aria-label="Buscar por usuario"
+      />
+    </div>
+
+    <div class="filter-group">
+      <input
+        type="text"
+        class="premium-input"
+        placeholder="Buscar por libro..."
+        [(ngModel)]="loanFilters.libro"
+        (ngModelChange)="onFilterTextInput()"
+        aria-label="Buscar por libro"
+      />
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="loanFilters.estado" (change)="onFilterChange()" aria-label="Filtrar por estado">
+        <option value="">Todos los estados</option>
+        <option value="PENDIENTE">Pendiente</option>
+        <option value="APROBADO">Aprobado</option>
+        <option value="PRESTADO">Prestado / En curso</option>
+        <option value="DEVUELTO">Devuelto</option>
+        <option value="RECHAZADO">Rechazado</option>
+        <option value="VENCIDO">Vencido</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="loanFilters.soloConMulta" (change)="onFilterChange()" aria-label="Filtrar por multas">
+        <option [ngValue]="false">Todas las multas</option>
+        <option [ngValue]="true">Solo con multa</option>
+      </select>
+    </div>
+
+    <button *ngIf="hasActiveFilters()" class="btn-clear-filters" (click)="clearFilters()" title="Limpiar todos los filtros">
+      <i class='bx bx-x'></i> Limpiar
+    </button>
+  </div>
+
   <div class="modal-overlay" *ngIf="showLoanForm" (click)="showLoanForm = false">
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">

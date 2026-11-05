@@ -27,6 +27,9 @@ export class EditorialesComponent implements OnInit, OnDestroy {
   size: number = 10;
   totalElements: number = 0;
   searchTerm: string = '';
+  sortOrder: string = 'asc';
+  filterLetter: string = '';
+  alphabet: string[] = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','?','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
   private searchSubject = new Subject<string>();
   private searchSub?: Subscription;
@@ -57,6 +60,24 @@ export class EditorialesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.searchSub?.unsubscribe();
+  }
+
+  
+  onFilterChange() {
+    this.loadEditoriales();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.searchTerm || this.filterLetter || this.sortOrder !== 'asc');
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.filterLetter = '';
+    this.sortOrder = 'asc';
+    this.page = 0;
+    this.updateQueryParams();
+    this.loadEditoriales();
   }
 
   onSearchInput(value: string) {
@@ -93,7 +114,16 @@ export class EditorialesComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.editorialService.getPaginated(this.page, this.size, this.searchTerm).subscribe({
       next: (response) => {
-        this.editoriales = response.content || [];
+        let list = response.content || [];
+        if (this.filterLetter) {
+          list = list.filter(e => (e.nombre || '').trim().toUpperCase().startsWith(this.filterLetter));
+        }
+        if (this.sortOrder === 'desc') {
+          list = list.sort((a, b) => (b.nombre || '').localeCompare(a.nombre || ''));
+        } else {
+          list = list.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+        }
+        this.editoriales = list;
         this.page = response.page;
         this.size = response.size;
         this.totalElements = response.totalElements;

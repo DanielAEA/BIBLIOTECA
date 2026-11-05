@@ -1,19 +1,39 @@
 <div class="premium-container">
   <div class="premium-header">
     <h2>Gestión de Géneros</h2>
-    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-      <div class="search-box">
-        <input
-          type="text"
-          class="premium-input search-input"
-          placeholder="Buscar género por nombre..."
-          [ngModel]="searchTerm"
-          (ngModelChange)="onSearchInput($event)"
-          aria-label="Buscar géneros"
-        />
-      </div>
-      <button class="premium-button" (click)="createGenero()">+ Nuevo Género</button>
+    <button class="premium-button" (click)="createGenero()">+ Nuevo Género</button>
+  </div>
+
+  <div class="filters-toolbar">
+    <div class="filter-group search-filter">
+      <i class='bx bx-search search-icon'></i>
+      <input
+        type="text"
+        class="premium-input search-input"
+        placeholder="Buscar género por nombre..."
+        [ngModel]="searchTerm"
+        (ngModelChange)="onSearchInput($event)"
+        aria-label="Buscar géneros"
+      />
     </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="sortOrder" (change)="onFilterChange()" aria-label="Ordenar géneros">
+        <option value="asc">Orden: A - Z</option>
+        <option value="desc">Orden: Z - A</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <select class="premium-select" [(ngModel)]="filterLetter" (change)="onFilterChange()" aria-label="Filtrar por letra">
+        <option value="">Todas las letras iniciales</option>
+        <option *ngFor="let l of alphabet" [value]="l">Empieza por: {{ l }}</option>
+      </select>
+    </div>
+
+    <button *ngIf="hasActiveFilters()" class="btn-clear-filters" (click)="clearFilters()" title="Limpiar todos los filtros">
+      <i class='bx bx-x'></i> Limpiar
+    </button>
   </div>
 
   <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">

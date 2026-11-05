@@ -184,12 +184,7 @@
     </div>
   </div>
 
-  <div *ngIf="loading" class="loading-state">
-    <div class="spinner" aria-hidden="true"></div>
-    <span>Cargando libros...</span>
-  </div>
-
-  <div *ngIf="error" class="error-message">{{   <div class="bulk-actions" *ngIf="selectedBookIds.size > 0">
+  <div class="bulk-actions" *ngIf="selectedBookIds.size > 0">
     <span class="selected-count">{{ selectedBookIds.size }} libro(s) seleccionado(s)</span>
     <button class="btn-delete-bulk" (click)="deleteSelectedBooks()">
       <i class='bx bx-trash'></i> Eliminar seleccionados
@@ -217,8 +212,8 @@
             </span>
           </div>
 
-          <img [src]="b.urlPortada || 'https://via.placeholder.com/220x300?text=Sin+Portada'"
-               (error)="b.urlPortada = 'https://via.placeholder.com/220x300?text=Sin+Portada'"
+          <img [src]="b.urlPortada || 'assets/default-cover.svg'"
+               (error)="b.urlPortada = 'assets/default-cover.svg'"
                class="card-cover-img"
                alt="Portada de {{ b.titulo }}"
                loading="lazy" />
@@ -300,8 +295,8 @@
                   <input type="checkbox" [checked]="selectedBookIds.has(b.id)" (change)="toggleSelection(b.id)" aria-label="Seleccionar libro">
                 </td>
                 <td>
-                  <img [src]="b.urlPortada || 'https://via.placeholder.com/40x60?text=S/P'" 
-                       (error)="b.urlPortada = 'https://via.placeholder.com/40x60?text=S/P'"
+                  <img [src]="b.urlPortada || 'assets/default-cover.svg'" 
+                       (error)="b.urlPortada = 'assets/default-cover.svg'"
                        style="width: 44px; height: 60px; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15);"
                        alt="Portada">
                 </td>

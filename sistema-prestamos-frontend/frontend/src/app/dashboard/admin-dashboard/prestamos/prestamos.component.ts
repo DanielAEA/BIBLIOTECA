@@ -94,6 +94,22 @@ export class PrestamosComponent implements OnInit, OnDestroy {
     this.updateQueryParams();
   }
 
+  hasActiveFilters(): boolean {
+    return !!(this.loanFilters.usuario || this.loanFilters.libro || this.loanFilters.codigo || this.loanFilters.estado || this.loanFilters.soloConMulta);
+  }
+
+  clearFilters() {
+    this.loanFilters = {
+      usuario: '',
+      libro: '',
+      codigo: '',
+      estado: '',
+      soloConMulta: false
+    };
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
   onPageChange(newPage: number) {
     this.page = newPage;
     this.updateQueryParams();

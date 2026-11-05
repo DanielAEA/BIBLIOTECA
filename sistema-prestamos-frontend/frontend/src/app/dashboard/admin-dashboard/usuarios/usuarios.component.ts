@@ -28,6 +28,8 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   size: number = 10;
   totalElements: number = 0;
   searchTerm: string = '';
+  filterRol: string = '';
+  sortOrder: string = 'asc';
 
   private searchSubject = new Subject<string>();
   private searchSub?: Subscription;
@@ -69,6 +71,23 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.searchSubject.next(value);
   }
 
+  onFilterChange() {
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.searchTerm || this.filterRol || (this.sortOrder && this.sortOrder !== 'asc'));
+  }
+
+  clearFilters() {
+    this.searchTerm = '';
+    this.filterRol = '';
+    this.sortOrder = 'asc';
+    this.page = 0;
+    this.updateQueryParams();
+  }
+
   onPageChange(newPage: number) {
     this.page = newPage;
     this.updateQueryParams();
@@ -97,7 +116,16 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.error = null;
     this.userService.getUsersPaginated(this.page, this.size, this.searchTerm).subscribe({
       next: (response) => {
-        this.users = response.content || [];
+        let list = response.content || [];
+        if (this.filterRol) {
+          list = list.filter(u => (u.rol || '').toUpperCase() === this.filterRol.toUpperCase());
+        }
+        if (this.sortOrder === 'desc') {
+          list = list.sort((a, b) => b.nombre.localeCompare(a.nombre));
+        } else {
+          list = list.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        }
+        this.users = list;
         this.page = response.page;
         this.size = response.size;
         this.totalElements = response.totalElements;
