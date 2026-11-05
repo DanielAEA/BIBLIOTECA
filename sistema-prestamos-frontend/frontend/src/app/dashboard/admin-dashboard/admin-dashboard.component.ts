@@ -24,7 +24,7 @@ export class AdminSidebarComponent {
     { name: 'Editoriales', path: '/admin/editoriales', icon: 'bx-buildings' },
     { name: 'Géneros', path: '/admin/generos', icon: 'bx-purchase-tag' },
     { name: 'Salas', path: '/admin/salas', icon: 'bx-door-open' },
-    { name: 'Modelo Predictivo', path: '/admin/prediccion', icon: 'bx-brain' }
+    { name: 'Proyecciones', path: '/admin/prediccion', icon: 'bx-trending-up' }
   ];
 
   constructor(

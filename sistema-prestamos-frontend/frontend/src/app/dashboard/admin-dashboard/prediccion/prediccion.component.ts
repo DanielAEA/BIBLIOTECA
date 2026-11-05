@@ -24,7 +24,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   previoValor: number = 44;
   prom3Valor: number = 38.0;
 
-  // Categorías del modelo
+  // Categorías del catálogo
   categorias: string[] = [
     'Historia',
     'Novela',
@@ -64,7 +64,6 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Ejecutar predicción inicial de prueba
     this.ejecutarPrediccion();
   }
 
@@ -79,6 +78,12 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.themeSub?.unsubscribe();
     this.chartInstance?.destroy();
+  }
+
+  get variacionPorcentual(): number {
+    if (!this.prom3Valor || !this.resultado) return 0;
+    const diff = ((this.resultado.prediccion_prestamos - this.prom3Valor) / this.prom3Valor) * 100;
+    return Math.round(diff * 10) / 10;
   }
 
   ejecutarPrediccion(): void {
@@ -99,8 +104,8 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => this.renderizarGrafica(), 50);
       },
       error: (err) => {
-        console.error('Error al consultar microservicio predictivo:', err);
-        this.errorMensaje = err?.error?.detail || err?.message || 'No se pudo conectar con el microservicio predictivo.';
+        console.error('Error al consultar cálculo de demanda:', err);
+        this.errorMensaje = err?.error?.detail || err?.message || 'No se pudo conectar con el servicio de cálculo.';
         this.loading = false;
       }
     });
@@ -133,7 +138,11 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     const colorTexto = isDark ? '#94a3b8' : '#475569';
     const colorGrid = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
 
-    const labels = ['Promedio (3 Meses)', 'Mes Anterior (Previo)', `Proyección IA (${this.getNombreMes(this.resultado.mes)})`];
+    const labels = [
+      'Promedio (3 Meses)',
+      'Mes Anterior',
+      `Demanda Esperada (${this.getNombreMes(this.resultado.mes)})`
+    ];
     const dataValues = [this.prom3Valor, this.previoValor, this.resultado.prediccion_prestamos];
 
     this.chartInstance = new Chart(ctx, {
@@ -142,19 +151,19 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
         labels: labels,
         datasets: [
           {
-            label: 'Demanda de Préstamos',
+            label: 'Circulación de Ejemplares',
             data: dataValues,
             backgroundColor: [
-              'rgba(148, 163, 184, 0.5)',
-              'rgba(2, 132, 199, 0.65)',
-              isDark ? '#00e5ff' : '#0284c7'
+              'rgba(148, 163, 184, 0.45)',
+              'rgba(2, 132, 199, 0.55)',
+              isDark ? 'rgba(56, 189, 248, 0.85)' : '#0284c7'
             ],
             borderColor: [
               '#94a3b8',
               '#0284c7',
               isDark ? '#38bdf8' : '#0369a1'
             ],
-            borderWidth: 2,
+            borderWidth: 1.5,
             borderRadius: 8,
             barPercentage: 0.5
           }

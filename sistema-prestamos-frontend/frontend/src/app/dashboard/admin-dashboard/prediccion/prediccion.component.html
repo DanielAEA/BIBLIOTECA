@@ -1,45 +1,41 @@
 <div class="prediccion-container">
   
-  <!-- Hero / Header -->
+  <!-- Encabezado del Módulo -->
   <div class="premium-header">
     <div class="header-titles">
-      <div class="badge-ai">
-        <span class="pulsing-dot"></span>
-        <span>MACHINE LEARNING ENGINE</span>
-      </div>
-      <h2>Modelo Predictivo de Préstamos</h2>
-      <p class="subtitle">Anticipa la demanda de libros por categoría literaria y mes con el modelo de IA de CiberBook.</p>
+      <h2>Proyección de Demanda de Préstamos</h2>
+      <p class="subtitle">Herramienta analítica para planificar la circulación de ejemplares y estimar la demanda mensual por categoría literaria.</p>
     </div>
 
-    <!-- Presets rápidos -->
+    <!-- Escenarios Frecuentes -->
     <div class="preset-pills">
-      <span class="preset-label">Escenarios Rápidos:</span>
+      <span class="preset-label">Escenarios Frecuentes:</span>
       <button type="button" class="pill-btn" (click)="cargarPreset('Novela', 10, 72, 67.7)">
-        <i class='bx bx-book-bookmark'></i> Alta Demanda (Novela)
+        <i class='bx bx-book-bookmark'></i> Alta Circulación (Novela)
       </button>
       <button type="button" class="pill-btn" (click)="cargarPreset('Académico', 3, 25, 25.0)">
-        <i class='bx bx-graduation'></i> Inicio Semestre (Académico)
+        <i class='bx bx-graduation'></i> Temporada Semestral (Académico)
       </button>
       <button type="button" class="pill-btn" (click)="cargarPreset('Historia', 5, 44, 38.0)">
-        <i class='bx bx-history'></i> Demanda Media (Historia)
+        <i class='bx bx-history'></i> Demanda Regular (Historia)
       </button>
     </div>
   </div>
 
   <div class="grid-content">
     
-    <!-- Formulario Interactivo de Parámetros -->
+    <!-- Formulario de Parámetros de Análisis -->
     <div class="premium-card form-card">
       <div class="card-head">
         <i class='bx bx-slider-alt icon-head'></i>
-        <h3>Variables de Entrada</h3>
+        <h3>Parámetros de Cálculo</h3>
       </div>
 
       <form (ngSubmit)="ejecutarPrediccion()" class="predict-form">
         
         <div class="form-row">
           <div class="form-group">
-            <label for="mes">Mes a proyectar</label>
+            <label for="mes">Mes a Proyectar</label>
             <div class="input-wrapper">
               <i class='bx bx-calendar'></i>
               <select id="mes" name="mes" [(ngModel)]="mesSeleccionado" class="premium-select">
@@ -61,7 +57,7 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="previo">Préstamos Mes Anterior (previo)</label>
+            <label for="previo">Préstamos Mes Anterior</label>
             <div class="input-wrapper">
               <i class='bx bx-history'></i>
               <input id="previo" type="number" min="0" max="500" name="previo" [(ngModel)]="previoValor" class="premium-input" placeholder="Ej: 44" required />
@@ -69,7 +65,7 @@
           </div>
 
           <div class="form-group">
-            <label for="prom3">Promedio 3 Meses Móvil (prom3)</label>
+            <label for="prom3">Promedio Últimos 3 Meses</label>
             <div class="input-wrapper">
               <i class='bx bx-trending-up'></i>
               <input id="prom3" type="number" step="0.1" min="0" max="500" name="prom3" [(ngModel)]="prom3Valor" class="premium-input" placeholder="Ej: 38.0" required />
@@ -78,25 +74,26 @@
         </div>
 
         <button type="submit" class="btn-predict" [disabled]="loading">
-          <i class='bx bx-chip' *ngIf="!loading"></i>
+          <i class='bx bx-bar-chart-alt-2' *ngIf="!loading"></i>
           <span class="spinner-sm" *ngIf="loading"></span>
-          <span>{{ loading ? 'Calculando Inferencia...' : 'Calcular Demanda Estimada' }}</span>
+          <span>{{ loading ? 'Calculando Proyección...' : 'Calcular Demanda Estimada' }}</span>
         </button>
       </form>
 
-      <!-- Microservicio Status Card -->
-      <div class="microservice-info">
-        <div class="info-row">
-          <span class="label">Microservicio:</span>
-          <span class="val">FastAPI + Scikit-Learn (Docker)</span>
+      <!-- Indicador de Rotación Práctico para la Biblioteca -->
+      <div class="planning-note" *ngIf="resultado">
+        <div class="note-icon">
+          <i class='bx bx-bulb'></i>
         </div>
-        <div class="info-row">
-          <span class="label">Modelo cargado:</span>
-          <span class="val badge-model">modelo_ciberbook.joblib</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Algoritmo:</span>
-          <span class="val">Regresión Lineal Multivariable</span>
+        <div class="note-content">
+          <span class="note-title">Criterio de Gestión de Inventario</span>
+          <p class="note-desc">
+            {{ variacionPorcentual > 15 
+                ? 'Se estima un incremento en la rotación de esta categoría. Se recomienda verificar disponibilidad de ejemplares en estantería física y digital.' 
+                : (variacionPorcentual < -15 
+                    ? 'Se proyecta una menor afluencia estacional. Período óptimo para mantenimiento, catalogación y reordenamiento de sala.' 
+                    : 'La demanda esperada se alinea con el volumen promedio de circulación habitual.') }}
+          </p>
         </div>
       </div>
     </div>
@@ -105,7 +102,7 @@
     <div class="premium-card result-card">
       <div class="card-head">
         <i class='bx bx-line-chart icon-head'></i>
-        <h3>Proyección de Demanda</h3>
+        <h3>Estimación de Circulación</h3>
       </div>
 
       <!-- Error State -->
@@ -114,27 +111,29 @@
         <span>{{ errorMensaje }}</span>
       </div>
 
-      <!-- Métricas Destacadas -->
+      <!-- Métricas Claras de Gestión -->
       <div class="metric-ribbon" *ngIf="resultado">
         <div class="metric-box primary">
-          <span class="metric-label">Préstamos Estimados</span>
+          <span class="metric-label">Demanda Estimada</span>
           <div class="metric-value">
             <span>{{ resultado.prediccion_prestamos }}</span>
-            <small>unidades</small>
+            <small>préstamos</small>
           </div>
           <span class="metric-sub">Mes de {{ getNombreMes(resultado.mes) }}</span>
         </div>
 
         <div class="metric-box">
-          <span class="metric-label">Valor Continuo</span>
-          <div class="metric-value small">{{ resultado.valor_continuo }}</div>
-          <span class="metric-sub">Salida del modelo</span>
+          <span class="metric-label">Tendencia Esperada</span>
+          <div class="metric-value small" [class.positive]="variacionPorcentual > 0" [class.negative]="variacionPorcentual < 0">
+            {{ variacionPorcentual > 0 ? '+' : '' }}{{ variacionPorcentual }}%
+          </div>
+          <span class="metric-sub">vs. promedio trimestral</span>
         </div>
 
         <div class="metric-box">
           <span class="metric-label">Categoría</span>
           <div class="metric-value small">{{ resultado.categoria }}</div>
-          <span class="metric-sub">One-Hot Encoding activo</span>
+          <span class="metric-sub">Comportamiento estacional</span>
         </div>
       </div>
 
