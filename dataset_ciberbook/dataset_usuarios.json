@@ -1,1354 +1,122 @@
 [
   {
     "_id": {
-      "$oid": "8c5e81124ce325a48a2f2baf"
+      "$oid": "bf9580024519c53f8517738b"
     },
-    "nombre": "Natalia Reyes Salazar",
-    "correo": "natalia.reyes@ciberbook.edu.co",
+    "nombre": "Marcela Rojas Reyes",
+    "correo": "marcela.rojas@hotmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-07-27T05:00:00.000Z"
+      "$date": "2024-04-26T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "0fdf78244540acc1f2431263"
+      "$oid": "6d32628a70e849d3859c2f27"
     },
-    "nombre": "Rodrigo Vargas Pérez",
-    "correo": "rodrigo.vargas@outlook.com",
+    "nombre": "Federico Pineda Flores",
+    "correo": "federico.pineda@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-07-23T05:00:00.000Z"
+      "$date": "2025-06-15T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "859d06b4e805fb07f293aeed"
+      "$oid": "b4fdd57c6b715b626ac803b0"
     },
-    "nombre": "Juan Camilo Ríos Benítez",
-    "correo": "juancamilo.rios@hotmail.com",
+    "nombre": "Santiago Reyes Vargas",
+    "correo": "santiago.reyes@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-08-09T05:00:00.000Z"
+      "$date": "2026-07-17T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "474793fef02e2953b6ff8569"
+      "$oid": "efef3cff388dbd472a7bdfc5"
     },
-    "nombre": "David Jaramillo Castro",
-    "correo": "david.jaramillo@yahoo.com",
+    "nombre": "Natalia Silva Castillo",
+    "correo": "natalia.silva@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-01-20T05:00:00.000Z"
+      "$date": "2024-10-14T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "4e975697815ad924a04dff5b"
+      "$oid": "3e4bad8e57e54fff9cc8587c"
     },
-    "nombre": "Catalina Pérez Vargas",
-    "correo": "catalina.perez@hotmail.com",
+    "nombre": "Sebastián Flores Cruz",
+    "correo": "sebastian.flores@hotmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2024-09-19T05:00:00.000Z"
+      "$date": "2025-04-07T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "b4c3d6dfcf8238364a27f173"
+      "$oid": "e2b4ed3224bea648fcbc0650"
     },
-    "nombre": "Verónica Vásquez Pérez",
-    "correo": "veronica.vasquez@ciberbook.edu.co",
+    "nombre": "Elena Ríos Pérez",
+    "correo": "elena.rios@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-05-12T05:00:00.000Z"
+      "$date": "2025-05-14T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "9f1080b40c81db022488d236"
+      "$oid": "b1ffff291e9aa99e8b00aefc"
     },
-    "nombre": "Luciana González Muñoz",
-    "correo": "luciana.gonzalez@yahoo.com",
+    "nombre": "Federico Gutiérrez Benítez",
+    "correo": "federico.gutierrez@hotmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-11-20T05:00:00.000Z"
+      "$date": "2024-11-18T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "47fb72276de1079fb4348993"
+      "$oid": "d976545aadf5ab4e8dafb7ae"
     },
-    "nombre": "Lucas Salazar Flores",
-    "correo": "lucas.salazar@ciberbook.edu.co",
+    "nombre": "Andrés Bermúdez Ortiz",
+    "correo": "andres.bermudez@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-04-02T05:00:00.000Z"
+      "$date": "2026-01-04T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "ca24e3339a36c6341a6ce7a8"
+      "$oid": "bc0ca22eef0ff545ca8e515b"
     },
-    "nombre": "Andrés Echeverry Duque",
-    "correo": "andres.echeverry@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-01-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "0dc39bbd0a5c2944075bf3fa"
-    },
-    "nombre": "Jorge Álvarez Ríos",
-    "correo": "jorge.alvarez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-05-21T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "32b536426472a579f2a9a895"
-    },
-    "nombre": "Alejandra Cardona Ospina",
-    "correo": "alejandra.cardona@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-03-24T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "772c6bd97e13492887e4306a"
-    },
-    "nombre": "Mateo Jaramillo Flores",
-    "correo": "mateo.jaramillo@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-07-20T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "e63d207164c9efa462da24f9"
-    },
-    "nombre": "Adriana Jiménez Ríos",
-    "correo": "adriana.jimenez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-12-14T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "33381a3133ef24adf7264f36"
-    },
-    "nombre": "Rosa Echeverry Benítez",
-    "correo": "rosa.echeverry@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-07-24T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "38f93ad52626d57c83a79e24"
-    },
-    "nombre": "Sara González Álvarez",
-    "correo": "sara.gonzalez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "8fad30d10c8890a4662e6a8d"
-    },
-    "nombre": "Andrés Ortiz González",
-    "correo": "andres.ortiz@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-16T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "db4d90079776611add32e39e"
-    },
-    "nombre": "Paulina Castillo Vargas",
-    "correo": "paulina.castillo@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-05-07T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "42343539f0ad60a2b1f2cb39"
-    },
-    "nombre": "Lucas Jaramillo Echeverry",
-    "correo": "lucas.jaramillo@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-02-18T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "888c1f9a11899f7ed0caf899"
-    },
-    "nombre": "Gonzalo Muñoz Restrepo",
-    "correo": "gonzalo.munoz@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-04-29T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "2252968dbd78921c0098079e"
-    },
-    "nombre": "Juan Pablo Vásquez Navarro",
-    "correo": "juanpablo.vasquez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-03-06T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "d748ff92613f81ee8a6e3e86"
-    },
-    "nombre": "Sara Pérez Álvarez",
-    "correo": "sara.perez@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-08-18T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "c6a699da8ebdc514c8bb7823"
-    },
-    "nombre": "Rosa Benítez Ramírez",
-    "correo": "rosa.benitez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-05-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "809c486579a58cf5c3889582"
-    },
-    "nombre": "Verónica Giraldo Cruz",
-    "correo": "veronica.giraldo@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-16T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "01055de0cab5e7ad5820762f"
-    },
-    "nombre": "Iván Mendoza Rojas",
-    "correo": "ivan.mendoza@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-01-22T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "9f58ed74b501db1de6926be8"
-    },
-    "nombre": "Gonzalo Gutiérrez Muñoz",
-    "correo": "gonzalo.gutierrez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-04-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "76d199e12307a101a3afa354"
-    },
-    "nombre": "Vanessa Rojas Londoño",
-    "correo": "vanessa.rojas@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-07-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "404dc176edb6605e96feeb61"
-    },
-    "nombre": "Andrés Castillo Duque",
-    "correo": "andres.castillo@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-10-21T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "098dbe7f160e4880c4111edd"
-    },
-    "nombre": "Mateo Álvarez Arango",
-    "correo": "mateo.alvarez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-10-19T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "27b50ba243a33a9db96c6e5c"
-    },
-    "nombre": "Cristian Henao Muñoz",
-    "correo": "cristian.henao@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-04-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "176e14bddd545682b69ce7b1"
-    },
-    "nombre": "Manuel Londoño Flores",
-    "correo": "manuel.londono@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-04-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "aa41f91314bd11005a64b088"
-    },
-    "nombre": "Gonzalo Arango Ospina",
-    "correo": "gonzalo.arango@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-03-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "764d93cc8c4820daeafeb134"
-    },
-    "nombre": "Guillermo Castillo Correa",
-    "correo": "guillermo.castillo@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-04-12T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "37a25a8c31bf718024bf8375"
-    },
-    "nombre": "Gustavo Salazar González",
-    "correo": "gustavo.salazar@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-11-24T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "97b71e3ce14e8a834eb48666"
-    },
-    "nombre": "Álvaro Rodríguez Giraldo",
-    "correo": "alvaro.rodriguez@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-11-08T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6dbc37c828af4ed534c4e508"
-    },
-    "nombre": "Cristian Benítez Herrera",
-    "correo": "cristian.benitez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-11-03T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "8845eb41f5333e4ddc6201c5"
-    },
-    "nombre": "Mauricio Echeverry Ortiz",
-    "correo": "mauricio.echeverry@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-02-19T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "0c23f405ed24b3f173668ca9"
-    },
-    "nombre": "Juan Pablo Salazar Quintero",
-    "correo": "juanpablo.salazar@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-05-02T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "da10197e02ca76e80b58317b"
-    },
-    "nombre": "Valentina Zuluaga González",
-    "correo": "valentina.zuluaga@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-07-08T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "15e3dd644b694ec53f9c3c01"
-    },
-    "nombre": "Álvaro Valencia Bermúdez",
-    "correo": "alvaro.valencia@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-04-06T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "a9e10e2d948f6500cc355c21"
-    },
-    "nombre": "Diana Ospina Gutiérrez",
-    "correo": "diana.ospina@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-22T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "30c3df5878dd2d8fbec599fe"
-    },
-    "nombre": "Miguel Ángel Gutiérrez Giraldo",
-    "correo": "miguelangel.gutierrez@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-12-07T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "4d01ea61c1bd453f1340a287"
-    },
-    "nombre": "Luciana Navarro Echeverry",
-    "correo": "luciana.navarro@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-11-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6dbab655fb41de8f99eb1f07"
-    },
-    "nombre": "Elena Cardona Silva",
-    "correo": "elena.cardona@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-06-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "92281c50250490e2f90d7e86"
-    },
-    "nombre": "Nicolás Quintero Londoño",
-    "correo": "nicolas.quintero@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-01-20T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "f40a8cdd6c51dd1aa83ca7ba"
-    },
-    "nombre": "Iván Martínez Benítez",
-    "correo": "ivan.martinez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-08-01T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "771af7f7da1d11c0ae7fe7d5"
-    },
-    "nombre": "Iván Martínez Giraldo",
-    "correo": "ivan.martinez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "e655d97099440659470a8abc"
-    },
-    "nombre": "Andrés Navarro Martínez",
-    "correo": "andres.navarro@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-09-04T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "5cf91bcdf0a0bfe0fc526fa0"
-    },
-    "nombre": "Paulina Herrera Vásquez",
-    "correo": "paulina.herrera@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-05T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6b0350073404d5a8eb2afc91"
-    },
-    "nombre": "Óscar Pineda Ospina",
-    "correo": "oscar.pineda@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-05-22T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "277cb20e136088ebd34921b9"
-    },
-    "nombre": "Elena Navarro Correa",
-    "correo": "elena.navarro@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-13T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "be655f2feabedf37ebeabc82"
-    },
-    "nombre": "Hugo Bermúdez Vargas",
-    "correo": "hugo.bermudez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-01-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "a25f83eca1a9a830be0da2dc"
-    },
-    "nombre": "Claudia Henao Jaramillo",
-    "correo": "claudia.henao@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-28T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "c8d3acb5b7a1f143883a1f27"
-    },
-    "nombre": "Manuela Gutiérrez Giraldo",
-    "correo": "manuela.gutierrez@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-16T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "8d384744c725617f2077bed8"
-    },
-    "nombre": "Camilo Pérez Navarro",
-    "correo": "camilo.perez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-01-01T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "b53ebcd620fd901f39ec34f8"
-    },
-    "nombre": "Cristian Benítez Zuluaga",
-    "correo": "cristian.benitez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-10-12T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "d360ba326fab4e73306ff8f3"
-    },
-    "nombre": "Manuela Reyes Ríos",
-    "correo": "manuela.reyes@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-27T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "f376195b2b5390c887d056e9"
-    },
-    "nombre": "Vicente Londoño Flores",
-    "correo": "vicente.londono@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-03-24T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "7c1c80d05e89af16a4f162cb"
-    },
-    "nombre": "Javier Navarro Castaño",
-    "correo": "javier.navarro@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-05-29T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "00f06acd97c49b2e4f7dfca0"
-    },
-    "nombre": "Esteban Torres Jiménez",
-    "correo": "esteban.torres@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-10-08T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "651e2c507a301fcf41b845c9"
-    },
-    "nombre": "Nicolás Cardona Ramírez",
-    "correo": "nicolas.cardona@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-06-03T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "b3dfc21d3cdc68e28170a38a"
-    },
-    "nombre": "Manuela Bermúdez Castaño",
-    "correo": "manuela.bermudez@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-07-11T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "5df031c1796bb211a939ab3a"
-    },
-    "nombre": "Santiago Zuluaga Montoya",
-    "correo": "santiago.zuluaga@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-04T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6d5ff4be5c8a303dbe483c05"
-    },
-    "nombre": "Andrés Benítez Ortiz",
-    "correo": "andres.benitez@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-02-22T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "0cd9199b5c5065885bbe591f"
-    },
-    "nombre": "Vanessa Silva Pineda",
-    "correo": "vanessa.silva@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-05-30T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "f4453b95debaff47a97658e1"
-    },
-    "nombre": "Gabriela Giraldo Reyes",
-    "correo": "gabriela.giraldo@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-03-05T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "3938e547f6b54bfe08404a85"
-    },
-    "nombre": "Vicente Salazar Vargas",
-    "correo": "vicente.salazar@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-03-29T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "faf3ca29c70e44eac931d8c4"
-    },
-    "nombre": "Camilo Castillo Torres",
-    "correo": "camilo.castillo@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-02-04T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "ba9109140e5dc7cc8d881f15"
-    },
-    "nombre": "Verónica Giraldo Silva",
-    "correo": "veronica.giraldo@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-12-15T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "7e97d5e604c67ed06fbbab35"
-    },
-    "nombre": "Felipe Quintero González",
-    "correo": "felipe.quintero@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-11-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "a3c1d14f859778fed856aa92"
-    },
-    "nombre": "Valentina Cruz Montoya",
-    "correo": "valentina.cruz@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-12-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "8b7c485b2612f2aa8e6189bf"
-    },
-    "nombre": "Gabriela Montoya Morales",
-    "correo": "gabriela.montoya@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-04-20T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "624207c705c17793c18c33da"
-    },
-    "nombre": "Diego Ortiz Londoño",
-    "correo": "diego.ortiz@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-03-18T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "708fad590d84e4d98efbfa6c"
-    },
-    "nombre": "Juan David Navarro Vásquez",
-    "correo": "juandavid.navarro@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-01-12T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "e2ae22724bd6065d96e377bb"
-    },
-    "nombre": "Juan Camilo Álvarez Vargas",
-    "correo": "juancamilo.alvarez@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-08-26T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "9a3893c3f187b86224936dbc"
-    },
-    "nombre": "Gabriela Arango Torres",
-    "correo": "gabriela.arango@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-06-28T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "7e03a1271612c181a76c7d1b"
-    },
-    "nombre": "Julián Jiménez Ospina",
-    "correo": "julian.jimenez@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-07-13T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "de7f95e08a9f19b77fca9a68"
-    },
-    "nombre": "Paola Cardona Duque",
-    "correo": "paola.cardona@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-06-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "78fc211f5abd540cafb33781"
-    },
-    "nombre": "Juan Camilo Castro Jiménez",
-    "correo": "juancamilo.castro@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-04-02T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "9c5d1511ff2fe81a99a33013"
-    },
-    "nombre": "Camila Benítez Arango",
-    "correo": "camila.benitez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-02-18T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "57c139342fb73d348cd53484"
-    },
-    "nombre": "Juan Pablo Montoya Castaño",
-    "correo": "juanpablo.montoya@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-07-16T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "a3c813a39f3012ab0b7cfb69"
-    },
-    "nombre": "Mariana Castillo Restrepo",
-    "correo": "mariana.castillo@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-03-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "9dd775bb66ecb42def1340e0"
-    },
-    "nombre": "Federico González Martínez",
-    "correo": "federico.gonzalez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-30T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "5cee3181c321b31d33b79621"
-    },
-    "nombre": "Isabella Castaño Ortiz",
-    "correo": "isabella.castano@yahoo.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-04-13T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "5de2cd0a473b91d0bf0cf9fb"
-    },
-    "nombre": "Juliana Zapata Castillo",
-    "correo": "juliana.zapata@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-09-19T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6365c544d3e2b2db1feb293b"
-    },
-    "nombre": "Santiago Duque Herrera",
-    "correo": "santiago.duque@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-05-21T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "d51ef8e60d712b479faa8ea3"
-    },
-    "nombre": "Esteban Zapata Sánchez",
-    "correo": "esteban.zapata@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-10-08T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "c4a587873fd9d97ab420f4e8"
-    },
-    "nombre": "Alejandro Sánchez Herrera",
-    "correo": "alejandro.sanchez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-12-16T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "3420f39f5f1cb10e43dd3693"
-    },
-    "nombre": "Laura Salazar Zapata",
-    "correo": "laura.salazar@outlook.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-06-25T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "27e43249ec3a2564e726ece4"
-    },
-    "nombre": "Isabella Rojas Ríos",
-    "correo": "isabella.rojas@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-03-11T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "67e620060e4d616786a787d0"
-    },
-    "nombre": "Carmen Navarro Jiménez",
-    "correo": "carmen.navarro@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-12-25T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "0caef6cca0ffe97095fe5e3f"
-    },
-    "nombre": "Ricardo Zuluaga Pineda",
-    "correo": "ricardo.zuluaga@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-07-09T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "26867f944b50e54e10ae2095"
-    },
-    "nombre": "Carmen Salazar Vásquez",
-    "correo": "carmen.salazar@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2024-01-23T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "cde01bdfe8dc6e3d58a2155e"
-    },
-    "nombre": "Nicolás Álvarez Rodríguez",
-    "correo": "nicolas.alvarez@gmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2026-06-02T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "a9e1b977cd33c572cdae4ea6"
-    },
-    "nombre": "Natalia Álvarez Morales",
-    "correo": "natalia.alvarez@ciberbook.edu.co",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-08-01T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "6ea45fd9f41cfda1ada1933a"
-    },
-    "nombre": "David Zuluaga Sánchez",
-    "correo": "david.zuluaga@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-01-18T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "0e2f560d6c8f21df41ede862"
-    },
-    "nombre": "Carmen Restrepo Bermúdez",
-    "correo": "carmen.restrepo@hotmail.com",
-    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
-    "rol": "CLIENTE",
-    "proveedor": "LOCAL",
-    "fechaRegistro": {
-      "$date": "2025-04-19T05:00:00.000Z"
-    },
-    "_class": "com.biblioteca.entity.Usuario"
-  },
-  {
-    "_id": {
-      "$oid": "3f985f0718d169965e0cd850"
-    },
-    "nombre": "Patricia Arango Montoya",
-    "correo": "patricia.arango@ciberbook.edu.co",
+    "nombre": "Verónica Jaramillo Ramírez",
+    "correo": "veronica.jaramillo@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
@@ -1359,10 +127,262 @@
   },
   {
     "_id": {
-      "$oid": "866ba956bd6939fb4ba5f88d"
+      "$oid": "af04fb9813c8f6a9f220a022"
     },
-    "nombre": "Javier Montoya Quintero",
-    "correo": "javier.montoya@gmail.com",
+    "nombre": "Lucía Zapata Pineda",
+    "correo": "lucia.zapata@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-07-18T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "8a999bb020dde74a8cab4deb"
+    },
+    "nombre": "Manuel Pineda Zuluaga",
+    "correo": "manuel.pineda@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-03-25T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "71f543c3ea07d4795f0e02dd"
+    },
+    "nombre": "Nicolás Pineda Mejía",
+    "correo": "nicolas.pineda@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-05-04T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "2f633190b40902bf6984ff4e"
+    },
+    "nombre": "David Herrera Jiménez",
+    "correo": "david.herrera@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-03-31T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "f70fe56f4aea1e1322676968"
+    },
+    "nombre": "Laura Rodríguez Henao",
+    "correo": "laura.rodriguez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-09-24T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "2055866a80ddcb2efa30a38d"
+    },
+    "nombre": "Tatiana Herrera González",
+    "correo": "tatiana.herrera@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-09-21T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "00e7e66c43e332fd1afb7b41"
+    },
+    "nombre": "Vicente González Navarro",
+    "correo": "vicente.gonzalez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-02T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "c8ea878e792ef93fe9e98311"
+    },
+    "nombre": "Isabella Álvarez Quintero",
+    "correo": "isabella.alvarez@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-09-22T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "24da90601e41658cae05726f"
+    },
+    "nombre": "Samuel Martínez Álvarez",
+    "correo": "samuel.martinez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-05-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "5da9b7d43a07804a5c0698fc"
+    },
+    "nombre": "Miguel Ángel Benítez Valencia",
+    "correo": "miguelangel.benitez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-06-13T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "ba5510f37ff6041c4bd119dc"
+    },
+    "nombre": "Marcela Benítez Correa",
+    "correo": "marcela.benitez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-08-20T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "4a188fa3533ddc18e131fbd3"
+    },
+    "nombre": "Cristian Jaramillo Torres",
+    "correo": "cristian.jaramillo@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-06-05T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "97a328a6ef17b8cbe12f3d0a"
+    },
+    "nombre": "Ana María Castillo Martínez",
+    "correo": "anamaria.castillo@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-03-31T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e2c69d87eb1cdaf496e9f7d8"
+    },
+    "nombre": "Tatiana Zapata Ortiz",
+    "correo": "tatiana.zapata@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-01T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "9a91c3d7deaa634e458b789b"
+    },
+    "nombre": "Gonzalo Álvarez Zuluaga",
+    "correo": "gonzalo.alvarez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-06-12T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "aa29b2daf847a786d25b39c4"
+    },
+    "nombre": "Andrea Quintero Navarro",
+    "correo": "andrea.quintero@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-06-16T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "df63b5a8e3d3a0a067c81b4f"
+    },
+    "nombre": "Vicente Arango Muñoz",
+    "correo": "vicente.arango@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-05-10T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "7cab7825fe34d62785785309"
+    },
+    "nombre": "Silvia Mejía Pérez",
+    "correo": "silvia.mejia@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-04-16T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "9e3e48bf51f74f8b50246a53"
+    },
+    "nombre": "Patricia Duque Mendoza",
+    "correo": "patricia.duque@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
@@ -1373,309 +393,1289 @@
   },
   {
     "_id": {
-      "$oid": "684acb7a762b6271e6044a8e"
+      "$oid": "0d24475c37880cd220f9eca0"
     },
-    "nombre": "Claudia Castillo Muñoz",
-    "correo": "claudia.castillo@gmail.com",
+    "nombre": "Paola Jiménez Silva",
+    "correo": "paola.jimenez@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-08-20T05:00:00.000Z"
+      "$date": "2026-02-02T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "48e4548faa7ba88201c0b3fd"
+      "$oid": "361f37d461f4467eef822e8d"
     },
-    "nombre": "Daniela Montoya Correa",
-    "correo": "daniela.montoya@gmail.com",
+    "nombre": "Vicente Duque Reyes",
+    "correo": "vicente.duque@gmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2024-05-27T05:00:00.000Z"
+      "$date": "2025-01-10T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "7e6e5aa0768fbc3ab5963d9b"
+      "$oid": "9726de42ae34e57dd87f9ec6"
     },
-    "nombre": "Santiago Correa Ortiz",
-    "correo": "santiago.correa@outlook.com",
+    "nombre": "Diana Giraldo Salazar",
+    "correo": "diana.giraldo@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-08-16T05:00:00.000Z"
+      "$date": "2024-04-21T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "49c56ad6805020eb79c28ec4"
+      "$oid": "c01dea7eba7374dc0d8491b0"
     },
-    "nombre": "Laura Montoya Benítez",
-    "correo": "laura.montoya@outlook.com",
+    "nombre": "Sebastián Rodríguez Torres",
+    "correo": "sebastian.rodriguez@gmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2024-01-21T05:00:00.000Z"
+      "$date": "2025-09-22T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "118be4bbcd8bc97d72ef8401"
+      "$oid": "d4433e96609872e67844a19c"
     },
-    "nombre": "Alejandra Londoño Cruz",
-    "correo": "alejandra.londono@outlook.com",
+    "nombre": "Victoria Arango Silva",
+    "correo": "victoria.arango@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2024-07-02T05:00:00.000Z"
+      "$date": "2025-05-22T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "6327b3e1f5e3153ddf00c9d5"
+      "$oid": "6b866be9af818aaffe9e8699"
     },
-    "nombre": "Valeria Morales Castaño",
-    "correo": "valeria.morales@hotmail.com",
+    "nombre": "Alejandra Castaño Rodríguez",
+    "correo": "alejandra.castano@hotmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-07-24T05:00:00.000Z"
+      "$date": "2025-10-07T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "48d8737bfd13124af8d9f403"
+      "$oid": "b2d922fc25f0d6d8564717f6"
     },
-    "nombre": "Mauricio Castaño Montoya",
-    "correo": "mauricio.castano@outlook.com",
+    "nombre": "Hugo González Vargas",
+    "correo": "hugo.gonzalez@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-01-14T05:00:00.000Z"
+      "$date": "2025-08-06T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "00a73832e904260e2644e1e6"
+      "$oid": "778b658b99b1fe5994411f63"
     },
-    "nombre": "Mauricio Salazar Rodríguez",
-    "correo": "mauricio.salazar@hotmail.com",
+    "nombre": "Paulina Londoño Cardona",
+    "correo": "paulina.londono@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-02-03T05:00:00.000Z"
+      "$date": "2024-02-16T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "3762c615cdcf6a4edda2ab9e"
+      "$oid": "adab54f880b03e0c6c53ff84"
     },
-    "nombre": "Samuel Montoya Pineda",
-    "correo": "samuel.montoya@hotmail.com",
+    "nombre": "Diego Jaramillo Rojas",
+    "correo": "diego.jaramillo@gmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-01-06T05:00:00.000Z"
+      "$date": "2024-10-10T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "b9896274972a0f749bdb0d04"
+      "$oid": "6ffb5f8c172edfb94dd3c51c"
     },
-    "nombre": "Manuela Martínez Jiménez",
-    "correo": "manuela.martinez@yahoo.com",
+    "nombre": "Tatiana Echeverry Duque",
+    "correo": "tatiana.echeverry@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-06-05T05:00:00.000Z"
+      "$date": "2024-07-28T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "12d20b0d7011033f7e6a5883"
+      "$oid": "61d7c4baac633cdf43468c8d"
     },
-    "nombre": "Elena Londoño Cardona",
-    "correo": "elena.londono@ciberbook.edu.co",
+    "nombre": "Carlos Arango Flores",
+    "correo": "carlos.arango@hotmail.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-01-30T05:00:00.000Z"
+      "$date": "2025-10-12T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "68465670d314cd932ffb30ba"
+      "$oid": "e25e1e68c15862e9efefbc16"
     },
-    "nombre": "Elena Vásquez Pérez",
-    "correo": "elena.vasquez@outlook.com",
+    "nombre": "Luciana Ospina Vásquez",
+    "correo": "luciana.ospina@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-03-18T05:00:00.000Z"
+      "$date": "2024-11-22T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "90397cda270e353a435a166f"
+      "$oid": "7ab21bbc41778c95cb00a517"
     },
-    "nombre": "Gabriel Flores Zapata",
-    "correo": "gabriel.flores@outlook.com",
+    "nombre": "Alejandra Ospina Ramírez",
+    "correo": "alejandra.ospina@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-07-25T05:00:00.000Z"
+      "$date": "2025-05-06T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "a5d4c486ddd22fb065dad969"
+      "$oid": "5162b81d9437f037f275ba36"
     },
-    "nombre": "Gabriela Mejía Vásquez",
-    "correo": "gabriela.mejia@ciberbook.edu.co",
+    "nombre": "Javier Gómez Londoño",
+    "correo": "javier.gomez@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2024-06-27T05:00:00.000Z"
+      "$date": "2025-09-06T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "5625e4c9d9c7f3d3463b7544"
+      "$oid": "fe0000731cdec413d1be7e7f"
     },
-    "nombre": "Carlos Benítez Reyes",
-    "correo": "carlos.benitez@gmail.com",
+    "nombre": "Iván Castro Gutiérrez",
+    "correo": "ivan.castro@outlook.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-07-31T05:00:00.000Z"
+      "$date": "2026-03-10T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "26d552c95520a2f8925e1070"
+      "$oid": "1daa61ca9b6810223f66a05d"
     },
-    "nombre": "Felipe Cardona Gómez",
-    "correo": "felipe.cardona@ciberbook.edu.co",
+    "nombre": "Victoria Pérez Navarro",
+    "correo": "victoria.perez@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-02-01T05:00:00.000Z"
+      "$date": "2025-07-09T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "16260f4eb9efb9a608d4f24a"
+      "$oid": "b6092132832aaf1652d7ec9a"
     },
-    "nombre": "Carmen Benítez Álvarez",
-    "correo": "carmen.benitez@outlook.com",
+    "nombre": "Marcela Rodríguez Benítez",
+    "correo": "marcela.rodriguez@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-11-04T05:00:00.000Z"
+      "$date": "2024-04-28T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "9b421aeaa81c1c2e46e49cce"
+      "$oid": "8a93de0da0489c3562e354b2"
     },
-    "nombre": "Santiago Álvarez Gutiérrez",
-    "correo": "santiago.alvarez@gmail.com",
+    "nombre": "Guillermo Ospina Jiménez",
+    "correo": "guillermo.ospina@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-08-01T05:00:00.000Z"
+      "$date": "2025-11-03T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "2e3417c5c303abf858f5f04d"
+      "$oid": "3062074acf1da2f04abcf1f8"
     },
-    "nombre": "Carmen Castro Quintero",
-    "correo": "carmen.castro@yahoo.com",
+    "nombre": "Esteban González Herrera",
+    "correo": "esteban.gonzalez@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2025-02-02T05:00:00.000Z"
+      "$date": "2025-08-30T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "ec4d5a1e63cefe59f0ee092a"
+      "$oid": "d37ad3c88cee18ee9ef06224"
     },
-    "nombre": "Iván Sánchez Gómez",
-    "correo": "ivan.sanchez@gmail.com",
+    "nombre": "Tatiana Jaramillo Herrera",
+    "correo": "tatiana.jaramillo@yahoo.com",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-04-04T05:00:00.000Z"
+      "$date": "2025-09-24T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "56e43e4fac16d8f3e8f24c55"
+      "$oid": "95dd045e9452bcb4db86558e"
     },
-    "nombre": "Verónica Cruz Restrepo",
-    "correo": "veronica.cruz@yahoo.com",
+    "nombre": "Juan David Reyes Ospina",
+    "correo": "juandavid.reyes@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-04-14T05:00:00.000Z"
+      "$date": "2025-04-11T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   },
   {
     "_id": {
-      "$oid": "17451c83f96a9496e5c1699d"
+      "$oid": "5f31b19f247ef82b73979f63"
     },
-    "nombre": "Rodrigo Vargas Ortiz",
-    "correo": "rodrigo.vargas@yahoo.com",
+    "nombre": "Andrea Bermúdez Benítez",
+    "correo": "andrea.bermudez@ciberbook.edu.co",
     "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
     "rol": "CLIENTE",
     "proveedor": "LOCAL",
     "fechaRegistro": {
-      "$date": "2026-05-05T05:00:00.000Z"
+      "$date": "2025-08-23T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "5ee5b66a29e9f7ef2cc6bc3f"
+    },
+    "nombre": "Leonardo Rodríguez Benítez",
+    "correo": "leonardo.rodriguez@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-06-10T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "76fede8daba72d07a62fabd2"
+    },
+    "nombre": "Andrés Salazar Muñoz",
+    "correo": "andres.salazar@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-09-22T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "1efcfa79bf6810b869facaba"
+    },
+    "nombre": "Hugo Navarro Pineda",
+    "correo": "hugo.navarro@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-11-07T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e7c90fb59ffba97af87b7dd7"
+    },
+    "nombre": "Diana Rodríguez Correa",
+    "correo": "diana.rodriguez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-02-22T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "568e87cef0aea4c3e356b175"
+    },
+    "nombre": "Gabriel Martínez Benítez",
+    "correo": "gabriel.martinez@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-03-14T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "c093fc6860f8a7734b21e6d9"
+    },
+    "nombre": "Silvia Ortiz Valencia",
+    "correo": "silvia.ortiz@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-04-25T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "6102ad0d9279209623eeaebe"
+    },
+    "nombre": "Gabriel Pérez Herrera",
+    "correo": "gabriel.perez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-11-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "da21959f34290eb9886f9ecf"
+    },
+    "nombre": "Felipe Quintero Gómez",
+    "correo": "felipe.quintero@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-07-01T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "5cdf059329cf5a91a9c29773"
+    },
+    "nombre": "Mariana Giraldo Vásquez",
+    "correo": "mariana.giraldo@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-02-18T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "31a6e76847f2dccae116d3b7"
+    },
+    "nombre": "Gonzalo Correa Henao",
+    "correo": "gonzalo.correa@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-09T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "3da21828ad3753ebf2e0803f"
+    },
+    "nombre": "Claudia González Jiménez",
+    "correo": "claudia.gonzalez@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-04-02T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "d29e51bfc922d479260932a8"
+    },
+    "nombre": "Julián Bermúdez Flores",
+    "correo": "julian.bermudez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-02-11T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "31e8db2b32ac1f2fa1dbfa90"
+    },
+    "nombre": "Daniela Herrera Rodríguez",
+    "correo": "daniela.herrera@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-05-21T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "71719c611d804710d945a811"
+    },
+    "nombre": "Lucía Correa Morales",
+    "correo": "lucia.correa@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-25T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "509f3401d01783ce516762c3"
+    },
+    "nombre": "Carlos Benítez Ramírez",
+    "correo": "carlos.benitez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-04-30T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "052ed0f7003ae7d7a03698d1"
+    },
+    "nombre": "Laura Castaño Sánchez",
+    "correo": "laura.castano@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-02-18T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "5029ee1f4fabbf4073977e48"
+    },
+    "nombre": "Samuel Cruz Navarro",
+    "correo": "samuel.cruz@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-04-25T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "1089869f8fd7a36889bcacad"
+    },
+    "nombre": "Rosa Londoño Castillo",
+    "correo": "rosa.londono@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-07-06T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "d2e5c8fc47fe6b27f2a1a7f5"
+    },
+    "nombre": "Jaime Mendoza Jaramillo",
+    "correo": "jaime.mendoza@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-11-15T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "a69bc608555f010c395f589e"
+    },
+    "nombre": "Ana María Torres Ospina",
+    "correo": "anamaria.torres@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-02-17T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "b19f21cfffb050b23e72aebf"
+    },
+    "nombre": "Mateo Morales Arango",
+    "correo": "mateo.morales@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-06-08T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "44a4481adcde36dd6aab0ec6"
+    },
+    "nombre": "Ximena Duque Cruz",
+    "correo": "ximena.duque@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-26T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "268697f1b0a210c6e12a73d6"
+    },
+    "nombre": "Isabella Herrera Silva",
+    "correo": "isabella.herrera@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-02-21T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "d3e2d3d59d1d61d2903547f2"
+    },
+    "nombre": "Marcela Ospina Cardona",
+    "correo": "marcela.ospina@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-07-21T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "15131fbd9e75146c5df5e68f"
+    },
+    "nombre": "Alejandro Ramírez Restrepo",
+    "correo": "alejandro.ramirez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-10-09T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "bd9c8bff7dbe5ef3cf9b2aff"
+    },
+    "nombre": "Rodrigo Cardona Pérez",
+    "correo": "rodrigo.cardona@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-12-24T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "7273bae591705c30d883b0f0"
+    },
+    "nombre": "Daniel Cardona Ospina",
+    "correo": "daniel.cardona@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-07-05T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "3429511c7391b0b381794e01"
+    },
+    "nombre": "Federico Pineda Arango",
+    "correo": "federico.pineda1@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-01-02T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "49f90b0da392004e813f4398"
+    },
+    "nombre": "Andrea Mendoza Quintero",
+    "correo": "andrea.mendoza@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-09-11T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "903b195f2f3e0d4d1d77bf57"
+    },
+    "nombre": "Cristian Valencia Gómez",
+    "correo": "cristian.valencia@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-07-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "9ab5828490dfd958ea8b96b1"
+    },
+    "nombre": "Rodrigo Ortiz Rojas",
+    "correo": "rodrigo.ortiz@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-10-05T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "be01322f4b5b3c20a7f14fd7"
+    },
+    "nombre": "María José Bermúdez Torres",
+    "correo": "mariajose.bermudez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-05-29T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "f597f407794aab9be44c9558"
+    },
+    "nombre": "Jorge Ríos Montoya",
+    "correo": "jorge.rios@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-11-23T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "3620244f225dc2603e9d717a"
+    },
+    "nombre": "Santiago Herrera Torres",
+    "correo": "santiago.herrera@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-03-11T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "a97c7ab562e651fc3153d63a"
+    },
+    "nombre": "Sara Ortiz Vásquez",
+    "correo": "sara.ortiz@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-05-06T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "db08e37a27c9e40ec8b029d2"
+    },
+    "nombre": "Daniela Gómez Navarro",
+    "correo": "daniela.gomez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-05-14T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "4bac1508a7e6e49f751fcbce"
+    },
+    "nombre": "Camila Rodríguez Ramírez",
+    "correo": "camila.rodriguez@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-03-11T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e40311a494b642e1b40628e7"
+    },
+    "nombre": "Elena Muñoz Navarro",
+    "correo": "elena.munoz@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-05-07T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "abd330bc48885fcd3009ef24"
+    },
+    "nombre": "Hugo Henao Morales",
+    "correo": "hugo.henao@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-04-12T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "b96b21c27cf4ca22c2fbc997"
+    },
+    "nombre": "Ana María Londoño Reyes",
+    "correo": "anamaria.londono@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-11-01T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "023ac0d738490d7fbb4c3077"
+    },
+    "nombre": "Nicolás Benítez Ríos",
+    "correo": "nicolas.benitez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-01-08T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "ec7ae58f96774746126a143c"
+    },
+    "nombre": "Diego Henao Castillo",
+    "correo": "diego.henao@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-01-02T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "665f217547c481974eea0dce"
+    },
+    "nombre": "Verónica Correa Quintero",
+    "correo": "veronica.correa@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-04-05T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "ccf0eeadacca29c1fc14ed00"
+    },
+    "nombre": "Claudia Pineda Castro",
+    "correo": "claudia.pineda@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-03-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "dc1493dc4bc5d6c3afd4cef5"
+    },
+    "nombre": "Diana Castaño Zapata",
+    "correo": "diana.castano@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-04-14T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "6be2e83a18969d1c0d6fa65c"
+    },
+    "nombre": "Juan Camilo Henao Muñoz",
+    "correo": "juancamilo.henao@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-05-06T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "0388b7cb4e58678c86de1f76"
+    },
+    "nombre": "Álvaro Herrera Valencia",
+    "correo": "alvaro.herrera@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-12-29T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "2a9e86e0130950247ef09978"
+    },
+    "nombre": "Sara Salazar Valencia",
+    "correo": "sara.salazar@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-06-14T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "4cf65dac04004b4ae70ef45f"
+    },
+    "nombre": "Ricardo Martínez Navarro",
+    "correo": "ricardo.martinez@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-08-04T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "7dedad5c7cd771a438c657ad"
+    },
+    "nombre": "Lucas Morales Cardona",
+    "correo": "lucas.morales@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-07-31T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "f41ff7c18886c7077bd1cfa5"
+    },
+    "nombre": "Leonardo Arango Duque",
+    "correo": "leonardo.arango@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-07-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "d9d70c1e2294d5fc18d367c2"
+    },
+    "nombre": "Carlos Rodríguez Cardona",
+    "correo": "carlos.rodriguez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-05-07T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "3c47c790f7d37b2e4e71d8c4"
+    },
+    "nombre": "Carolina Jaramillo Reyes",
+    "correo": "carolina.jaramillo@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-10-27T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "a5353df3818163933987a9fc"
+    },
+    "nombre": "Óscar Quintero Ortiz",
+    "correo": "oscar.quintero@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-12-15T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "2969d24b400eac396988157d"
+    },
+    "nombre": "Ana María Castaño Correa",
+    "correo": "anamaria.castano@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "b518f98f2baf7d30040a2fbb"
+    },
+    "nombre": "Alejandro Morales Henao",
+    "correo": "alejandro.morales@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-12-04T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "c7ff0710382544f589411904"
+    },
+    "nombre": "Tomás Zapata Navarro",
+    "correo": "tomas.zapata@yahoo.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-12-15T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "9dc299e05fedaa351a99c472"
+    },
+    "nombre": "Iván Martínez Cruz",
+    "correo": "ivan.martinez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-03-17T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "79f9e891ad9fc3afd7c84847"
+    },
+    "nombre": "Tatiana Montoya Morales",
+    "correo": "tatiana.montoya@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-05-15T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e2b4c54998fa22141c09953a"
+    },
+    "nombre": "Álvaro Gutiérrez Ospina",
+    "correo": "alvaro.gutierrez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-11-08T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "d9ccae991c66a426ed4219c7"
+    },
+    "nombre": "Andrea Montoya Londoño",
+    "correo": "andrea.montoya@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-01-18T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "dcc18d62c72b0bf4e80c1b6f"
+    },
+    "nombre": "Andrés Rojas Salazar",
+    "correo": "andres.rojas@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-09-03T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "bb2b7144974cd66efef6f6a8"
+    },
+    "nombre": "Óscar Vargas Vásquez",
+    "correo": "oscar.vargas@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-08-08T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "a678d0eb3381cb011befc726"
+    },
+    "nombre": "Álvaro Benítez Sánchez",
+    "correo": "alvaro.benitez@ciberbook.edu.co",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-09-07T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "3321e3f2e1865e30df3da5f7"
+    },
+    "nombre": "Natalia Rodríguez Ríos",
+    "correo": "natalia.rodriguez@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-12-16T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e4965e985a6a039f3cd0c442"
+    },
+    "nombre": "Nataly Ospina Valencia",
+    "correo": "nataly.ospina@hotmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2025-08-18T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "b8b075c3ca2ca1846791de11"
+    },
+    "nombre": "Camilo Arango Navarro",
+    "correo": "camilo.arango@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-05-13T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "50429f758908f5eb57021bba"
+    },
+    "nombre": "Juliana Castaño Zuluaga",
+    "correo": "juliana.castano@outlook.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-04-03T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "e572ccca03e7633806cd64b8"
+    },
+    "nombre": "Laura Pineda Giraldo",
+    "correo": "laura.pineda@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2024-11-19T05:00:00.000Z"
+    },
+    "_class": "com.biblioteca.entity.Usuario"
+  },
+  {
+    "_id": {
+      "$oid": "015f7b4aff99fa673ba8b1b3"
+    },
+    "nombre": "Jaime Pérez Castro",
+    "correo": "jaime.perez@gmail.com",
+    "password": "$2a$10$pCz6IFd.jnqJU9M/XoqHTuBLyqiWpj2ELIDr33jeTeC1Z2cLVLFNq",
+    "rol": "CLIENTE",
+    "proveedor": "LOCAL",
+    "fechaRegistro": {
+      "$date": "2026-06-06T05:00:00.000Z"
     },
     "_class": "com.biblioteca.entity.Usuario"
   }
