@@ -1,0 +1,1346 @@
+[
+  {
+    "_id": {
+      "$oid": "268791199afd1744262b86d9"
+    },
+    "nombre": "Miguel de Cervantes Saavedra",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "3899e5786f00562c2849b80e"
+    },
+    "nombre": "Franz Kafka",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "5575111978f7c088d7db65f4"
+    },
+    "nombre": "Antoine de Saint-Exupéry",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7a33f0de992bb77836aaa264"
+    },
+    "nombre": "Oscar Wilde",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7a96baad0ad43839e25e0608"
+    },
+    "nombre": "Mary Shelley",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "061beb5eca7e1a6c29a67eab"
+    },
+    "nombre": "Bram Stoker",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "639bd366b74c1bc937780712"
+    },
+    "nombre": "Sun Tzu",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "99dbe6251f1a00254d65da23"
+    },
+    "nombre": "Homero",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f8651e6999afe26a912c1c0a"
+    },
+    "nombre": "Dante Alighieri",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4a74cb5ff4b1b2131f4b2b4f"
+    },
+    "nombre": "Julio Verne",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "10212a49e93ae990daed25e8"
+    },
+    "nombre": "Arthur Conan Doyle",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8c5a0b78b3a1517ac3d8ca67"
+    },
+    "nombre": "Nicolás Maquiavelo",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f58397c40a3bf2da6f97ede6"
+    },
+    "nombre": "Jane Austen",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "446f12471e890646d9354ab1"
+    },
+    "nombre": "Robert Louis Stevenson",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7ce4d3d502e418adff65a958"
+    },
+    "nombre": "Federico García Lorca",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "6d8483d20c44e9ccefc2bee2"
+    },
+    "nombre": "J. K. Rowling",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "853e65cb5e02d23ad8ca5844"
+    },
+    "nombre": "Robert T. Kiyosaki",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f34d4d25a0f90f3410b30af3"
+    },
+    "nombre": "James Clear",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9334f2699f175bd2d7868b94"
+    },
+    "nombre": "Robert Greene",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "de1e0b133c87d8d52968ee58"
+    },
+    "nombre": "Napoleon Hill",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "331358d88269e3d91e548293"
+    },
+    "nombre": "Colleen Hoover",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "97ab488fa0dedc617a47d075"
+    },
+    "nombre": "Bible",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4fcd0f512da59d0fa137240d"
+    },
+    "nombre": "孙武 (Sun Tzu)",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a0cbc4ba7eddc83fda46d5a3"
+    },
+    "nombre": "George Orwell",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "19227064b22efec34e0e265b"
+    },
+    "nombre": "Emily Brontë",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "03aadf693db564ef30dc1def"
+    },
+    "nombre": "Mark Manson",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "0dd1608af9405497423081ae"
+    },
+    "nombre": "Dale Carnegie",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "0a21a5cef2ee72c9a173d0b0"
+    },
+    "nombre": "Lewis Carroll",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4fffeb494a96a7a4f31b25a3"
+    },
+    "nombre": "Louisa May Alcott",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d8429b199acdda7d8151e0b2"
+    },
+    "nombre": "George R. R. Martin",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8f1fdddd70f2141cedd57947"
+    },
+    "nombre": "Fiódor Dostoievski",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9373dffe9dad4da17f864fb9"
+    },
+    "nombre": "F. Scott Fitzgerald",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a70d3dfd6a02ce7225c06ae7"
+    },
+    "nombre": "William Shakespeare",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1e1a0eba7080d90f8cf13141"
+    },
+    "nombre": "J.R.R. Tolkien",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f8618d6de0ebe78826912541"
+    },
+    "nombre": "Paulo Coelho",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "98f18e407e233eb6b4f55889"
+    },
+    "nombre": "Joseph Murphy",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "957ce6ad64c2ba649cdce5c3"
+    },
+    "nombre": "Stephen King",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "51d6160e5a378c4025088421"
+    },
+    "nombre": "Aldous Huxley",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "5b376e40ae88f977b7390708"
+    },
+    "nombre": "Mark Twain",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "34248839fb890b6dadd0546b"
+    },
+    "nombre": "Niccolò Machiavelli",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "05e9c75b727541116bec3204"
+    },
+    "nombre": "Harper Lee",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "0a657e1c744ed6fe1766e346"
+    },
+    "nombre": "Suzanne Collins",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "46280f08f06bf8b805f04a3e"
+    },
+    "nombre": "Charles Dickens",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c9a513fb2c606e7b1d75723b"
+    },
+    "nombre": "Marcus Aurelius",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9e77fa11e05a49c16ba10f0b"
+    },
+    "nombre": "L. Frank Baum",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "50c7afb0431bad03a0abea30"
+    },
+    "nombre": "Albert Camus",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "0964da2d9c486d38c9ac73f0"
+    },
+    "nombre": "Herman Melville",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c5db7eac45fb362bb23f112b"
+    },
+    "nombre": "E. L. James",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9927d9f5d21f6c54d3504367"
+    },
+    "nombre": "H. G. Wells",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "15ada0095bab8863e5feed34"
+    },
+    "nombre": "Frances Hodgson Burnett",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "08338199670a210d256a93c1"
+    },
+    "nombre": "Nathaniel Hawthorne",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c005d13949f9f32a7679d4c0"
+    },
+    "nombre": "Morgan Housel",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f66037b1a8c37141121d9340"
+    },
+    "nombre": "Ray Bradbury",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "cfb2254681d348adba03b377"
+    },
+    "nombre": "Jeff Kinney",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e6bf7687e85e871c2747980f"
+    },
+    "nombre": "Charlotte Brontë",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9a3fe838cb23840bcbbbd2d4"
+    },
+    "nombre": "Stephenie Meyer",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7fb4e8a364004302bc25ae99"
+    },
+    "nombre": "Rick Riordan",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "df577840f9a3732d709e455c"
+    },
+    "nombre": "Stephen R. Covey",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "81c4e6067db1e76b9ea7dee1"
+    },
+    "nombre": "E. B. White",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "22217e04f4a015d690fe6417"
+    },
+    "nombre": "George S. Clason",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e9b14a7fafbcb4639ff3d3bd"
+    },
+    "nombre": "Lucy Maud Montgomery",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "dde2364d7d1ba523004453d7"
+    },
+    "nombre": "Leo Tolstoy",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "018aa8f8db1d6a4b2a4c0b2e"
+    },
+    "nombre": "Frank Herbert",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "b7ed6c8e99cd7efb5f694e82"
+    },
+    "nombre": "Vladimir Nabokov",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "19b89fbc5f425e29d0fa0cf5"
+    },
+    "nombre": "Yuval Noah Harari",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "eec0db3b7774322722c0af7c"
+    },
+    "nombre": "Ὅμηρος",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "2e4cd1c91eeece7d8a0e4053"
+    },
+    "nombre": "Dan Brown",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "cd650e6f47ab170400b53260"
+    },
+    "nombre": "Alexandre Dumas",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7d973f4c8573f26eb5401887"
+    },
+    "nombre": "Vatsyāyana",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ba77116b1be9697cee5c244c"
+    },
+    "nombre": "Anne Frank",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "2fe0896b3cc430e472a9f48f"
+    },
+    "nombre": "Jonathan Swift",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "32c26a6d2f2b41d7f759ba5a"
+    },
+    "nombre": "Roald Dahl",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "cfd764b8e1be31b575c5158f"
+    },
+    "nombre": "Jack London",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "529be630683e40283cb5f0c4"
+    },
+    "nombre": "Sarah J. Maas",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "374a4c71a52b9206965b655e"
+    },
+    "nombre": "William Golding",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c1765848e52cc27c2a276079"
+    },
+    "nombre": "Daniel Defoe",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a52a9db0a5700921319a117f"
+    },
+    "nombre": "Viktor Emil Frankl",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "962452fcf2e5473f076ffc93"
+    },
+    "nombre": "J. D. Salinger",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "09f3bbcd7143b0828481c784"
+    },
+    "nombre": "Margaret Atwood",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c93515b1f895f04405331a5f"
+    },
+    "nombre": "Ernest Hemingway",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1f49a28a0bac59452bcaf1bc"
+    },
+    "nombre": "Norman Vincent Peale",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "3fe6bba2661c5543d86ea8f2"
+    },
+    "nombre": "John Steinbeck",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "00fb77b1f521c116fb428df1"
+    },
+    "nombre": "John Green",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9b5f30b4a217e6f87470bc66"
+    },
+    "nombre": "Agatha Christie",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f7e4c11bbc310ac785fce18d"
+    },
+    "nombre": "Christopher Paolini",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "33b48938532cba1001d3dd18"
+    },
+    "nombre": "Umberto Eco",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "b545e0ee76e8a408b25ebccb"
+    },
+    "nombre": "Chuck Palahniuk",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "60e3e49c4bd4b4b022e80a66"
+    },
+    "nombre": "Kiera Cass",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "6f5ee9e6b38d026e5b3071cf"
+    },
+    "nombre": "Gilbert Keith Chesterton",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e38e522a384a81125f68df3b"
+    },
+    "nombre": "Juan Rulfo",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "44e104cc9a67fe41249316ea"
+    },
+    "nombre": "Jenny Han",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ad3e17d768d1c499c72ed422"
+    },
+    "nombre": "Shirley Jackson",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "bbd01f5f0874c9f2d40e0aaa"
+    },
+    "nombre": "Richard Bach",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9e895ec34d232041340038e8"
+    },
+    "nombre": "C. S. Lewis",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "deca5d781d55152906faa395"
+    },
+    "nombre": "Robert Jordan",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c8a8db68078c1186475d719f"
+    },
+    "nombre": "Patrick Rothfuss",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "306043b1ff5365d321acdb22"
+    },
+    "nombre": "Stefan Zweig",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ea868385ee25523ff51a1fa1"
+    },
+    "nombre": "Isabel Allende",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "89e30b76b555f37a3a535c4f"
+    },
+    "nombre": "Gillian Flynn",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1724792cdd98d58eec350209"
+    },
+    "nombre": "Khaled Hosseini",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ed548bf78cb71f21a3aa0610"
+    },
+    "nombre": "Günter Grass",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9b0af79be73166efabfceb74"
+    },
+    "nombre": "Markus Zusak",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7208077adf4102ea90ba40a0"
+    },
+    "nombre": "Isaac Asimov",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "aecf303a295a4c42590cc9d2"
+    },
+    "nombre": "Lois Lowry",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "563ce114869842c69fa05528"
+    },
+    "nombre": "刘慈欣",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "91537d5af83b7f9a1f12f012"
+    },
+    "nombre": "Brandon Sanderson",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8212e6667389f29b494fe337"
+    },
+    "nombre": "Gail Honeyman",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7db15a53e52ff87e9cbab54f"
+    },
+    "nombre": "Bill Martin Jr.",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a7b2fd60e708f6a715754062"
+    },
+    "nombre": "Mo Willems",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d2212d432689238b88b2453f"
+    },
+    "nombre": "Robin S. Sharma",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e4efdb057b9e68b7388a9184"
+    },
+    "nombre": "Jostein Gaarder",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "639088261a0e1196250914d6"
+    },
+    "nombre": "Gabriel García Márquez",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "3f4002a9c115d431feab8f52"
+    },
+    "nombre": "Kim Stanley Robinson",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "25bcb1f1cc77e8a1f48a3220"
+    },
+    "nombre": "Anonymous",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "b7b6c68532c630340809ef75"
+    },
+    "nombre": "Anthony Burgess",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8ea9b4ad9a7ffc29abe747b2"
+    },
+    "nombre": "Jules Verne",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d9294ba8a445f01fbdcc4ea6"
+    },
+    "nombre": "Orson Scott Card",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f29b53fd5421ad7de12d20cc"
+    },
+    "nombre": "Ursula K. Le Guin",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ef7e8f153606709cc84a24b7"
+    },
+    "nombre": "V.C. Andrews",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7cb8be0d4ad6bb73c7afde73"
+    },
+    "nombre": "村上春樹",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "dde903ec74fb3c822d2fac63"
+    },
+    "nombre": "Cruz Martínez de la Torre",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d9bc17efe473285e0ad16c46"
+    },
+    "nombre": "Pepe Maestro",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f588d81be995020655a95679"
+    },
+    "nombre": "Ricardo Monasterio",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9df0d8b9a2ef4822f1824284"
+    },
+    "nombre": "Sociedad Espiritista Americana — Sección Bogotá",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "afe41cf3b96a6ec9f3b706c3"
+    },
+    "nombre": "Robert Jammes",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9afc34f57a30610afd4cae78"
+    },
+    "nombre": "Sol Arráez",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d25f112bab21743ca51add3b"
+    },
+    "nombre": "Clive Cussler",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e38f95fa98c7cb6309459780"
+    },
+    "nombre": "Michael Ende",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "7af04b277bccc3f6d7658775"
+    },
+    "nombre": "Jonathan Stroud",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "82c75f8c4ddda6a98bcbcbc5"
+    },
+    "nombre": "Enid Blyton",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "cca0b00be89f2f8a76c28710"
+    },
+    "nombre": "Yann Martel",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9766f4f09ebd12bbf072c19c"
+    },
+    "nombre": "Norton Juster",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "32d96bb22a247353c7db717a"
+    },
+    "nombre": "Elisabetta Dami",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ca6c229c0777a13f107fcb4e"
+    },
+    "nombre": "James Fenimore Cooper",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "29ebf83352bff81bbe412111"
+    },
+    "nombre": "Kate DiCamillo",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "05de8ac1b798a4e195566672"
+    },
+    "nombre": "Gregory David Roberts",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f40cf1da7cf64cc453387cea"
+    },
+    "nombre": "David Baldacci",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "2ab6617bda98b8a13c367061"
+    },
+    "nombre": "Noah Gordon",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e0f19f71852b2ad32b5a00ed"
+    },
+    "nombre": "Sid Fleischman",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "99029125a212099f12449931"
+    },
+    "nombre": "Hergé",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "471922ddfc8b05e55bc6f831"
+    },
+    "nombre": "Edgar Rice Burroughs",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "791a27c1f9208ba4c0dcc78f"
+    },
+    "nombre": "Sidney Sheldon",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "04bae215fe5a391944f07104"
+    },
+    "nombre": "Brandon Mull",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "92988885343ebe012e0cb914"
+    },
+    "nombre": "Arturo Pérez-Reverte",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d27b913e0b1ecb4aad5630f0"
+    },
+    "nombre": "Michelle Paver",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "0d63cc36f7603b50082e9926"
+    },
+    "nombre": "Rosa Montero",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "fda65743b6e2e14826d32ec1"
+    },
+    "nombre": "Michael Crichton",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8619627900424dffc311c6de"
+    },
+    "nombre": "Cornelia Funke",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "607ed7953d081320a143dbb7"
+    },
+    "nombre": "Plato",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "596fd4f9c0f08e4499cbb977"
+    },
+    "nombre": "Friedrich Nietzsche",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "bf356df823c4d80f738d68b1"
+    },
+    "nombre": "Don Miguel Ruiz",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "73d658462d6f6c31485f7802"
+    },
+    "nombre": "Simon Blackburn",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8a41259d69029514d0adc780"
+    },
+    "nombre": "Stephen Hawking",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "50dfc2a708acecc5c8cfaead"
+    },
+    "nombre": "Søren Kierkegaard",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "db1a3a3edc3471eb96f66ec8"
+    },
+    "nombre": "Karl Marx",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "d578ef85ed2d91bb42215c21"
+    },
+    "nombre": "John Dewey",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "6209e3d7b9ea579520ee09a3"
+    },
+    "nombre": "Aristotle",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1bb288a409ce794f7ca71cc8"
+    },
+    "nombre": "Martin Heidegger",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "acf0a285fc13454802bca5aa"
+    },
+    "nombre": "Thomas Hobbes",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f1ac21dad882bb0861603d4c"
+    },
+    "nombre": "Ἡρόδοτος",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "9813a71951278ebb41f15080"
+    },
+    "nombre": "Thomas S. Kuhn",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4224e8d03a97b88bdf299037"
+    },
+    "nombre": "Moses Maimonides",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "71eee880d72c1dc60bdf54eb"
+    },
+    "nombre": "Jean-Jacques Rousseau",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f28353dd85b93e858b1db822"
+    },
+    "nombre": "Michael Talbot",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1bd6083d96b753828108dfb3"
+    },
+    "nombre": "Michael J. Sandel",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ecb8d53358128179f912c641"
+    },
+    "nombre": "Susan Sontag",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "ce2bfd75a1f7498184d60f54"
+    },
+    "nombre": "Roger Penrose",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "abbad46df84d2c8c41762344"
+    },
+    "nombre": "Randy Pausch",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "61f9ab635dbadf3fbf04c1d1"
+    },
+    "nombre": "Bertrand Russell",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "86a21fc8a83a83ca5ab0a3b8"
+    },
+    "nombre": "Miguel de Unamuno",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "2a7d087dd6a87957ffde4a7f"
+    },
+    "nombre": "Will Buckingham",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "8d9895a7fe7537bbe5399447"
+    },
+    "nombre": "Ernesto Sabato",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "19b0a533452e60ecb7ab0929"
+    },
+    "nombre": "Joslein Gaarder",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "bbe9015723f1e1015b12ae5d"
+    },
+    "nombre": "Bryan Magee",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "66e34a1ce845395e350d1432"
+    },
+    "nombre": "Rachel Naomi Remen",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "f0fbcf37a1b1100545397d74"
+    },
+    "nombre": "Peter Green",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "daeb31607856681c96e40ea0"
+    },
+    "nombre": "Isaiah Berlin",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "03838f6321735921f9050d34"
+    },
+    "nombre": "Confucius",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "beda5a64956fab3dbc359857"
+    },
+    "nombre": "S. E. Frost",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "21af34e5168a25a17592b14f"
+    },
+    "nombre": "Charles-Louis de Secondat baron de La Brède et de Montesquieu",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4d671b17ecf19d7edff44a10"
+    },
+    "nombre": "Gao Xingjian",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a04994274f9e555b1e575ca6"
+    },
+    "nombre": "Fernando Savater",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "cb0e03bb61fcea2f8b8dbaf0"
+    },
+    "nombre": "Louis Pauwels",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "a3c89c187ab810ee47399ff9"
+    },
+    "nombre": "Theophrastus",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "e1f01c6bbbbed1ae3c78c04d"
+    },
+    "nombre": "Noam Chomsky",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "3a210b50476f04c9d06c2fe4"
+    },
+    "nombre": "Alain De Botton",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "aa56b32421b81cefb7ade54b"
+    },
+    "nombre": "Georg Wilhelm Friedrich Hegel",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "13a31748b478baf107ecedb4"
+    },
+    "nombre": "Michael Guillen",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "78790a78c200ea345317f771"
+    },
+    "nombre": "Gilles Deleuze",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "1e43d5362de86b3968f556df"
+    },
+    "nombre": "David Van Reybrouck",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "c66e48dbd956f9c2be463694"
+    },
+    "nombre": "William Buhlman",
+    "_class": "com.biblioteca.entity.Autor"
+  },
+  {
+    "_id": {
+      "$oid": "4b991bf9fa1021cbb06365a4"
+    },
+    "nombre": "Sir John Richard Hicks",
+    "_class": "com.biblioteca.entity.Autor"
+  }
+]

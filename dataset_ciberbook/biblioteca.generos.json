@@ -1,0 +1,142 @@
+[
+  {
+    "_id": {
+      "$oid": "ede752efabfe63ec72e54086"
+    },
+    "nombre": "Novela",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "18d8e8801c699d976372b1cf"
+    },
+    "nombre": "Ficción Absurda",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "c9eeeb0a5dc2e8840a0ab8a8"
+    },
+    "nombre": "Fábula Filosófica",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "30efeb576fc0bb5229c87e56"
+    },
+    "nombre": "Terror / Gótico",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "30ab1d64309902780cafb38f"
+    },
+    "nombre": "Ciencia Ficción",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "e602319371930b1faa9ba60e"
+    },
+    "nombre": "Filosofía",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "a570d4647de35181529a4ca1"
+    },
+    "nombre": "Aventura",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "334c9099d29ba938324969d5"
+    },
+    "nombre": "Poesía",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "fee6e2a97e5ade4b0f79250f"
+    },
+    "nombre": "Misterio / Policial",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "b5a27a98fd0f7f910da93305"
+    },
+    "nombre": "Novela Romántica",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "eccb8c39ac18e7b82295772c"
+    },
+    "nombre": "Rich people",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "e572bc4b8b41f802c6068e96"
+    },
+    "nombre": "Habit",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "c23ce569b59d56131bebb911"
+    },
+    "nombre": "Historia",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "739ef52da634600278ad3d39"
+    },
+    "nombre": "Selfrealization",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "0eb3623d2575277dd0034aa9"
+    },
+    "nombre": "Fantasía",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "3aa8fe055400cad63a08922d"
+    },
+    "nombre": "Teatro",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "f698ae29c8c89ee853740fcd"
+    },
+    "nombre": "Money",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "0ff066d5dc4933c6fc78cf83"
+    },
+    "nombre": "Arte clásico",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "4dd22cccdc3619782797f1ef"
+    },
+    "nombre": "Cuentos",
+    "_class": "com.biblioteca.entity.Genero"
+  },
+  {
+    "_id": {
+      "$oid": "96f7aeb98a8093276b623248"
+    },
+    "nombre": "Reprints Publications",
+    "_class": "com.biblioteca.entity.Genero"
+  }
+]

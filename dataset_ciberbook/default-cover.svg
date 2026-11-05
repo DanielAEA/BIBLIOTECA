@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" width="400" height="600">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="50%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+
+    <!-- Glowing Sphere Overlay -->
+    <radialGradient id="glow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#06b6d4" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Spine 3D Lighting -->
+    <linearGradient id="spineLighting" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+      <stop offset="2%" stop-color="#ffffff" stop-opacity="0.04" />
+      <stop offset="5%" stop-color="#000000" stop-opacity="0.35" />
+      <stop offset="8%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="12%" stop-color="#000000" stop-opacity="0.1" />
+      <stop offset="97%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.45" />
+    </linearGradient>
+
+    <!-- Accent Gradient -->
+    <linearGradient id="cyanIndigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Cover -->
+  <rect width="400" height="600" rx="16" fill="url(#bgGrad)" />
+  <rect width="400" height="600" rx="16" fill="url(#glow)" />
+
+  <!-- Subtle Cyber Tech Grid Pattern -->
+  <g opacity="0.08" stroke="#38bdf8" stroke-width="1">
+    <line x1="50" y1="0" x2="50" y2="600" />
+    <line x1="120" y1="0" x2="120" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="280" y1="0" x2="280" y2="600" />
+    <line x1="350" y1="0" x2="350" y2="600" />
+    <line x1="0" y1="100" x2="400" y2="100" />
+    <line x1="0" y1="200" x2="400" y2="200" />
+    <line x1="0" y1="300" x2="400" y2="300" />
+    <line x1="0" y1="400" x2="400" y2="400" />
+    <line x1="0" y1="500" x2="400" y2="500" />
+  </g>
+
+  <!-- Decorative Border Frame -->
+  <rect x="36" y="36" width="328" height="528" rx="10" fill="none" stroke="url(#cyanIndigo)" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="8 6" />
+
+  <!-- Top Category Tag -->
+  <g transform="translate(200, 110)">
+    <rect x="-80" y="-14" width="160" height="28" rx="14" fill="#1e293b" fill-opacity="0.75" stroke="#38bdf8" stroke-opacity="0.4" stroke-width="1" />
+    <text text-anchor="middle" y="5" font-family="'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" letter-spacing="3" fill="#38bdf8">EDICIÓN DIGITAL</text>
+  </g>
+
+  <!-- Central Glowing Icon -->
+  <g transform="translate(200, 260)">
+    <!-- Outer Glow Ring -->
+    <circle r="65" fill="#38bdf8" fill-opacity="0.06" />
+    <circle r="52" fill="#6366f1" fill-opacity="0.1" stroke="url(#cyanIndigo)" stroke-width="2" stroke-opacity="0.6" />
+    
+    <!-- Open Book Vector Emblem -->
+    <path d="M-28 -14 C-16 -20 -4 -16 0 -10 C4 -16 16 -20 28 -14 L28 18 C16 12 4 16 0 22 C-4 16 -16 12 -28 18 Z" 
+          fill="none" stroke="url(#cyanIndigo)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M0 -10 L0 22" stroke="#38bdf8" stroke-width="2.5" />
+    <!-- Radiating Stars -->
+    <circle cx="0" cy="-28" r="2.5" fill="#38bdf8" />
+    <circle cx="-38" cy="2" r="1.5" fill="#818cf8" />
+    <circle cx="38" cy="2" r="1.5" fill="#818cf8" />
+  </g>
+
+  <!-- Bottom Brand Title -->
+  <g transform="translate(200, 420)">
+    <text text-anchor="middle" font-family="'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="900" letter-spacing="4" fill="#ffffff">CIBERBOOK</text>
+    <text text-anchor="middle" y="28" font-family="'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="500" letter-spacing="2" fill="#94a3b8">BIBLIOTECA DIGITAL</text>
+    
+    <!-- Decorative underline -->
+    <line x1="-50" y1="46" x2="50" y2="46" stroke="url(#cyanIndigo)" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- 3D Spine and Page Highlights -->
+  <rect width="400" height="600" rx="16" fill="url(#spineLighting)" pointer-events="none" />
+</svg>

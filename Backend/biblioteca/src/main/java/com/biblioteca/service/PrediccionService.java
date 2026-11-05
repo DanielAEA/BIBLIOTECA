@@ -55,8 +55,23 @@ public class PrediccionService {
         String catNombre = (categoria != null && !categoria.trim().isEmpty()) ? categoria.trim() : "Historia";
 
         try {
-            // 1. Buscar géneros coincidentes en MongoDB
-            Pattern pattern = Pattern.compile(".*" + Pattern.quote(catNombre) + ".*", Pattern.CASE_INSENSITIVE);
+            // 1. Buscar géneros coincidentes en MongoDB con mapeo inteligente
+            String regexKeywords = Pattern.quote(catNombre);
+            if ("Académico".equalsIgnoreCase(catNombre) || "Academico".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Académico|Academico|Técnico|Tecnico|Ciencia|Nonfiction";
+            } else if ("Historia".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Historia|Filosofía|Filosofia|Épica|Epica|Estrategia";
+            } else if ("Biografía".equalsIgnoreCase(catNombre) || "Biografia".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Biografía|Biografia|Crónica|Cronica|Ensayo|Terremotos";
+            } else if ("Fantasía".equalsIgnoreCase(catNombre) || "Fantasia".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Fantasía|Fantasia|Fantasy|Fábula|Fabula|Gótico|Gotico|Harry_Potter|Ents";
+            } else if ("Novela".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Novela|Fiction|Romance|Cuentos";
+            } else if ("Ciencia Ficción".equalsIgnoreCase(catNombre) || "Ciencia Ficcion".equalsIgnoreCase(catNombre)) {
+                regexKeywords = "Ciencia Ficción|Ciencia Ficcion";
+            }
+
+            Pattern pattern = Pattern.compile(".*(" + regexKeywords + ").*", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
             List<Genero> generos = mongoTemplate.find(new Query(Criteria.where("nombre").regex(pattern)), Genero.class);
             List<String> genIds = generos.stream().map(Genero::getId).filter(Objects::nonNull).collect(Collectors.toList());
 

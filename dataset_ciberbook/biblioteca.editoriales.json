@@ -1,0 +1,1878 @@
+[
+  {
+    "_id": {
+      "$oid": "7ee3fb39d0a884994983b876"
+    },
+    "nombre": "Real Academia Española",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "07239161e7508bc7a0b8a353"
+    },
+    "nombre": "Alianza Editorial",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b519df6ef3d53f72620dcefb"
+    },
+    "nombre": "Reynal & Hitchcock",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0dc3ee191fe4e684f58db38c"
+    },
+    "nombre": "Lippincott's",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5f279c8d0d61566ed115e907"
+    },
+    "nombre": "Lackington",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d408cb492ad7a73c8dc8ea5c"
+    },
+    "nombre": "Constable",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "543f61f8ecfea07233b2032b"
+    },
+    "nombre": "Clásicos Universales",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f3860dde7ed2189bb5fd3c90"
+    },
+    "nombre": "Gredos",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4c9fbbaa290d3bde6807b56b"
+    },
+    "nombre": "Cátedra",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f7194e30a0d46e42c137e3fe"
+    },
+    "nombre": "Hetzel",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d2b8abe5136d85216211deda"
+    },
+    "nombre": "George Newnes",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9f3528b6cbb626a6c26fad3c"
+    },
+    "nombre": "Ward",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6713471facfe72f6919a47e8"
+    },
+    "nombre": "Antonio Blado",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6ef408d207b9c102da73f625"
+    },
+    "nombre": "T. Egerton",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f7fa28d90885721b5e9392a1"
+    },
+    "nombre": "Cassell & Co.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f32b4a75466ea9b2304e8e94"
+    },
+    "nombre": "Longmans",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2ed2644cf80d100aca41916f"
+    },
+    "nombre": "Revista de Occidente",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f0824fa21591971aa5ae0f23"
+    },
+    "nombre": "Magnum Easy Eye Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d495e24ef48c3b47be339363"
+    },
+    "nombre": "Mun-hag Sucheob Publishing Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f607ad6dfe884b595676dc9a"
+    },
+    "nombre": "First Borders Edition 2009",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a1a43ad91f518491c7493af6"
+    },
+    "nombre": "James clear",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9d991e2116454cbb940e37d3"
+    },
+    "nombre": "ALISIO",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "848ada098fb075f16e6b9968"
+    },
+    "nombre": "Martino Fine Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "59279f202190a019dea6b94b"
+    },
+    "nombre": "ccrv",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "30409b8128b24c9125063fc5"
+    },
+    "nombre": "WATCHTOWER BIBLE AND TRACT SOCIETY OF NE",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "bb4cc1af339d31323b04bf16"
+    },
+    "nombre": "Namya Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "91823a57206cd07123fae81f"
+    },
+    "nombre": "NAL",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5d1bd60efdd470b3be572f1d"
+    },
+    "nombre": "Văn mwoi",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b3c9dff771af538a30a4e6ba"
+    },
+    "nombre": "Harper Collins",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "512de00f0ffc9f611a26459a"
+    },
+    "nombre": "rzbook",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "817b16a21ae4f13f6bf4647f"
+    },
+    "nombre": "Tundra Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c8834749146a2081dae61846"
+    },
+    "nombre": "Chatterley Press International",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "ad42ad02e8d34f69af4e9ecc"
+    },
+    "nombre": "Classic Textbooks",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f1e845f4ee69d73342b5e1ef"
+    },
+    "nombre": "Gigamesh",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "15be3fd493fb719ffce6608e"
+    },
+    "nombre": "Rupa",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "630fbdf1ec5cdef21f4a4ff8"
+    },
+    "nombre": "Cornelsen",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5168d9c8af7574523508485f"
+    },
+    "nombre": "Bed Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "156606671a84e48f135b73c9"
+    },
+    "nombre": "MC",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "35b5ceb7e28a716d499ff9c2"
+    },
+    "nombre": "Mavibulut Yayinlari",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5d111f59350ef6dba12d42fc"
+    },
+    "nombre": "BORDERS CLASSICS",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "34e8f83701e64bad54feda52"
+    },
+    "nombre": "Naxos Audio Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3c3f0ad69aa2f76db1875e81"
+    },
+    "nombre": "Published for the proprietors by W. Simp",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e2b2d083c4cd0c45b5374d6d"
+    },
+    "nombre": "Астролябія",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9f2727965b25a9983cd0e530"
+    },
+    "nombre": "Amazon?",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0a9759f39374f1fc090320ab"
+    },
+    "nombre": "Gallimard - Educa Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f307c6d513ef410b87862b66"
+    },
+    "nombre": "Drzewo Babel",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a941b5dc35638d2894686d9a"
+    },
+    "nombre": "Bantam",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5e480eb804559d72d292f0e4"
+    },
+    "nombre": "France Loisirs",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "870405a0297d91b7b52f7d0b"
+    },
+    "nombre": "Nobi Nobi",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "cfec58e262d3bd65127ce6e7"
+    },
+    "nombre": "HarperPerennial",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c698818a5141559d0a110943"
+    },
+    "nombre": "Empúries",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "fe76fb264e38797122178a01"
+    },
+    "nombre": "Thomas Nelson & Sons Ltd.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "976cd57bd69630047da6d828"
+    },
+    "nombre": "Mentor",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c608068763fe9c394dbf6601"
+    },
+    "nombre": "McClelland & Stewart Limited",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "19884c8160854fc038b9ee3f"
+    },
+    "nombre": "Unieboek | Het Spectrum",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2c22e6bacf91a9e716e328de"
+    },
+    "nombre": "1st World Library Literary Society",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "11957bf7bd4ac28423585e8e"
+    },
+    "nombre": "Teubner",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b68e41db202620353436a95c"
+    },
+    "nombre": "Moskovskiĭ rabochi",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "740271825efc62b8c26cff7e"
+    },
+    "nombre": "Tai hai chu ban she",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "88b8813f17dfb488acca3078"
+    },
+    "nombre": "W. W. Norton and Co.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "71a3d42c874be9e6fecd13a1"
+    },
+    "nombre": "Desconocido",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "51402404133e6b57fe3cbede"
+    },
+    "nombre": "Bloomsbury Children's Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "671ac94886bc4bf66952c221"
+    },
+    "nombre": "Plaza & Janes Editories",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "86dfc16d6305f645a619e116"
+    },
+    "nombre": "Sunset Productions",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "146a4455c9d367defea02e96"
+    },
+    "nombre": "Clarendon press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9be7eb8cac679d87c33f9ab8"
+    },
+    "nombre": "Candlewick Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "62b617cdc0effafe9dea3ee5"
+    },
+    "nombre": "scholastic",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6c46f978c9922c6c0a378e18"
+    },
+    "nombre": "Cassell",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c4ae4627e8dc46407d72cda1"
+    },
+    "nombre": "VALOR",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "af692aabb92df8e699d92fe8"
+    },
+    "nombre": "Wheeler Pub Inc",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6f037b36542446c1b074051e"
+    },
+    "nombre": "E. P. Dutton & co.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "87ef6c4e8f91940d6a980f20"
+    },
+    "nombre": "POCHE JEUNESSE",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6d003414fcffdcfe221dca82"
+    },
+    "nombre": "SALAMANDRA (PUBLICACIONES Y EDICIONES SA",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5c925d6e6c3ce9c6047ad181"
+    },
+    "nombre": "Puffin",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2ee0a379bb039a35ae58acc5"
+    },
+    "nombre": "R. Bentley",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "09c78596e8c6dba1596778c0"
+    },
+    "nombre": "SIMON & SCHUSTER",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "aca1206bd775541004ae5783"
+    },
+    "nombre": "Book on Demand Ltd.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8e9c0c3c6382be9c2d3e68f4"
+    },
+    "nombre": "Harper & Row",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f2bbe1285fbd52781ec3d8c1"
+    },
+    "nombre": "Maple Spring Publishing",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b520f2937309571944ca888e"
+    },
+    "nombre": "Sanage Publishing",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "7a4cc9b6169f1c05ed2245cb"
+    },
+    "nombre": "Mao tou ying chu ban she chu ban",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "73a76edcb903a5af9de4fce4"
+    },
+    "nombre": "Books onTape",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "65b1533ef5f6523144729943"
+    },
+    "nombre": "Helbling Verlag GmbH",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1e409617ec885d449a71257c"
+    },
+    "nombre": "AST",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "92d03dc98c61c038a8c4b3f2"
+    },
+    "nombre": "Self-Published",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8a5864e316e098ddc75089b3"
+    },
+    "nombre": "E Typographeo Academico",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a6b9a6ffddf9d3ddc801299d"
+    },
+    "nombre": "Anchor",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "bbc4ebcf5a06658e930bba33"
+    },
+    "nombre": "Bound to Stay Bound Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "7f99a7564aa0d50444812285"
+    },
+    "nombre": "Turtleback Books Publishing",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "37b70414a9db87e821416427"
+    },
+    "nombre": "Lancer",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "643af8fb92b5aede9c376ca2"
+    },
+    "nombre": "printed by James Knox",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e1d79b627961f08187605d3f"
+    },
+    "nombre": "Can Yayınları",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "fa6355c63a1e5f655042306c"
+    },
+    "nombre": "Follett Digital Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b4a5d7aad11fff9e4b1d6e49"
+    },
+    "nombre": "Bloomsbury USA",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4531800bf16aa489959a4791"
+    },
+    "nombre": "D.C. Heath & co.",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "34c4882999aa193909dd259d"
+    },
+    "nombre": "Libros del Zorro Rojo",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9a57c361cb6d4c400a0292d0"
+    },
+    "nombre": "Minotauro",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "00e6e4d3c0c8b2851390fe4c"
+    },
+    "nombre": "Dutton & Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0826a7c4a6284fbc691b667a"
+    },
+    "nombre": "HarperCollins Publishers",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4eb01628fdd2b8d715c6c285"
+    },
+    "nombre": "Verlag für Jugend und Volk",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d8b289d0b281ae2aaef1d7d2"
+    },
+    "nombre": "Editora do Autor",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "fe8468be5a83c42a2983c23d"
+    },
+    "nombre": "Henry Holt & Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "982b1d1a4beff715f38adcd5"
+    },
+    "nombre": "Itchy Coo",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "af78fe8cafa4676945c42c6d"
+    },
+    "nombre": "Macmillan Collector's Library",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "91174c0b2e343aeadb2c9311"
+    },
+    "nombre": "Spire Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "00ba2c3c459792da7753be9e"
+    },
+    "nombre": "Vicens Vives",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a7fe879375579b0dba2a03b7"
+    },
+    "nombre": "Bukowy Las",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d7693dda0265cff642925d79"
+    },
+    "nombre": "Public Domain",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f749465e2a32339759fd4f5e"
+    },
+    "nombre": "Sampson Low",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e667c89c6f61bf302d43cce4"
+    },
+    "nombre": "Atlantik",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "81033e0c3bbacd65de1dd980"
+    },
+    "nombre": "Donald M. Grant",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "90731c7720e8ae8a412a9f62"
+    },
+    "nombre": "Roca - Consignacion",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4c02c5d2978739261a2ca7b3"
+    },
+    "nombre": "Chun guang chu ban she",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4b4b22bc18b1622bfc2bdac6"
+    },
+    "nombre": "dtv",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "ad3b13708d096e5468d1b152"
+    },
+    "nombre": "Arrow Books Ltd",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1bfdee51269460b2661d98a1"
+    },
+    "nombre": "Mai tian chu ban",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e12717e5795616a7468747da"
+    },
+    "nombre": "Zysk i S-ka",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "cda17c45ab8d8eb21e5668e9"
+    },
+    "nombre": "Digireads.com",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "29fc6dc58d777b0f3d798feb"
+    },
+    "nombre": "HarperTeen",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b12590754ef86bf051b86a25"
+    },
+    "nombre": "Baumhaus Verlag GmbH",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5fd262a1b0b5f610dfe33bef"
+    },
+    "nombre": "Bompiani",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "abdb56a14559f06556137b49"
+    },
+    "nombre": "weekly",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "19fa6e1f5aebfe3c63778bcc"
+    },
+    "nombre": "Parlando Edition Christian Brückner",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3ffb485490a04a2459b440bd"
+    },
+    "nombre": "Protea Boekhuis",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "bc301d40cea29ae62591b690"
+    },
+    "nombre": "Wagenbach",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "41bcb49f45f1e834dc5a879c"
+    },
+    "nombre": "Lindelöws bokförlag",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0190bdd0ac0cbf2d2849c365"
+    },
+    "nombre": "TopSeller",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6125ac27613256d826dd4d65"
+    },
+    "nombre": "Demco Media",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "863638b51e3cc362489aebfc"
+    },
+    "nombre": "Dezgay Çap u Biławkirdinewey Aras",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4876ecea1ba894e9cc17fe8a"
+    },
+    "nombre": "Galaxy",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f81b3759bf1217c2d4b0cd27"
+    },
+    "nombre": "Orbit",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f77af111a90f33edc98aef5a"
+    },
+    "nombre": "Goldmann",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "ba62863c9584c52668c618c0"
+    },
+    "nombre": "Dwarsligger®",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "814348c809f5a2c0a8747520"
+    },
+    "nombre": "Grim Oak Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "696c76a9544f204488dcda48"
+    },
+    "nombre": "Hachette Colletions",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "9cddee5ee441ad2236273e95"
+    },
+    "nombre": "Librairie Generale",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "60b0ec3e285485109b21d4ce"
+    },
+    "nombre": "Círculo de Lectores",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "05b606a6e7aebdebbdb33c41"
+    },
+    "nombre": "Plaza & Janes",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "73437fd1ccbe492460897b29"
+    },
+    "nombre": "Random House Audio",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "353b952da1378f0a68291f79"
+    },
+    "nombre": "Penguin Books Ltd (UK)",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a40ce8288a2778f70c468935"
+    },
+    "nombre": "FollettBound Platinum",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "49cc4a7da90a320fd3c80908"
+    },
+    "nombre": "RBA",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e9247faf071403558163ec8f"
+    },
+    "nombre": "Vintage Books USA",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "01d92adf83835c05dec85bbd"
+    },
+    "nombre": "Ren min wen xue",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3a511a26bac58af9f9651f96"
+    },
+    "nombre": "Jin ri shi jie she",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e251230df5f06f171db6b962"
+    },
+    "nombre": "Gallimard Education",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e304c3ba59b92d1493e8118b"
+    },
+    "nombre": "‎Tor Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c14e7e705b7b72f387edd826"
+    },
+    "nombre": "Ediciones B",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "cfdf325f73a634aedef2da7a"
+    },
+    "nombre": "UNIEBOEK | HET SPECTRUM",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a3308e45e1c31f367b11d1c5"
+    },
+    "nombre": "Audiolib",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "33d63fd46b06a1a76216b7ef"
+    },
+    "nombre": "Roca Editorial",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0bd90770180261cd254d163f"
+    },
+    "nombre": "Mantra Lingua",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a0937fd33331c414cb826807"
+    },
+    "nombre": "Scholastic Canada",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "63d8585c6b39ff7822cdc18f"
+    },
+    "nombre": "Vintage Español",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "dbaba28e8a02a5f54dffee30"
+    },
+    "nombre": "Zemorah-Bitan",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b81acca123e8c084135a48df"
+    },
+    "nombre": "harper colins",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "380c80d42c046d610273ba42"
+    },
+    "nombre": "Montena",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "dfb26ee83953a83eb52fb0bd"
+    },
+    "nombre": "Penguin Modern Classics",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5e4f355a29cb9428c4f21fe5"
+    },
+    "nombre": "Editorial Benei Noaj",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2877c3bbf1b1d2f644f4b2aa"
+    },
+    "nombre": "Hua wen chu ban she",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "07e4afd9eae817587a341602"
+    },
+    "nombre": "Corsair",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "67f384bd0925e88510935e5c"
+    },
+    "nombre": "vintage books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "077489f57df2dc0791705934"
+    },
+    "nombre": "Norstedts Pocket",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5c57df08c30914f4184a8ba1"
+    },
+    "nombre": "Sine nomine",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3e2e5d3d770c7aee2080f5c8"
+    },
+    "nombre": "Pavillons Poche ROBERT LAFFONT",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "71aa81dbe4ce10f0d3392066"
+    },
+    "nombre": "Scholastic Incorporated",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "434a7af69e6c0e14fbc02605"
+    },
+    "nombre": "EDB FICCION",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d37a21c2075a7c9c3371c0db"
+    },
+    "nombre": "Grafton Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d1ec93072adc47cfecaa80b5"
+    },
+    "nombre": "Cactus",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "ec10f5a13dbae21d45546a79"
+    },
+    "nombre": "Doubleday",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8a764bf619e3e8a703ec34fe"
+    },
+    "nombre": "Knopf Doubleday Publishing Group",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4a1c08deb9b05d258c67bdc5"
+    },
+    "nombre": "en la Imprenta de Sancha...",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2aa214ca8a1065c65354ad2b"
+    },
+    "nombre": "Editorial Universitaria Ramón Areces",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e5fb953d9740a26f8916eca3"
+    },
+    "nombre": "Edelvives",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "268787f1a5e1b79170a603f6"
+    },
+    "nombre": "Impr. de M.P. Montoya",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "60bfd04621d69a4e710716fa"
+    },
+    "nombre": "Darling Heights",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f8d3ca44a0d1f69106a4e41d"
+    },
+    "nombre": "Castalia Publishing Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6a673dfdbf28efefbd6e204b"
+    },
+    "nombre": "Susaeta",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0f6c515cc7c93195fc1745d5"
+    },
+    "nombre": "Harper",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3141659a277acdc43c96e120"
+    },
+    "nombre": "Allen Lane",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c8733be53848f753d5e9691f"
+    },
+    "nombre": "Corgi Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d1a3791b4d84e32de9ab8e19"
+    },
+    "nombre": "Juventud",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d04c06f804a1df678a764bd8"
+    },
+    "nombre": "Audible Studios on Brilliance Audio",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "df3523626a23c3c6af7974a1"
+    },
+    "nombre": "Bullseye Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "440bff2665eaf3ef102d0468"
+    },
+    "nombre": "Random House Mondadori",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "aa552cd001f7fcd3c3db5b31"
+    },
+    "nombre": "Destino",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c18211f562d760d53c330bbe"
+    },
+    "nombre": "Fitzgerald Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b79148d5a889ae385a0aa9c3"
+    },
+    "nombre": "The Macmillan Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8dfb2625439e5b00a19f618b"
+    },
+    "nombre": "Walker Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3ae0e1a65d4fd2e3dec6749a"
+    },
+    "nombre": "Blackstone Audiobooks",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2704cd1faf0a28bca1110f6f"
+    },
+    "nombre": "Chivers Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c14c31c4940a59f77571dd54"
+    },
+    "nombre": "Macmillan",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "684fee443981c41996e2ae49"
+    },
+    "nombre": "CORPUS",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "08b454d9257d3116a0ed1029"
+    },
+    "nombre": "Arco",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "26bdf5a4a65bb507ab7dce5f"
+    },
+    "nombre": "Harpercollins Childrens Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a35db1804f1930988168771e"
+    },
+    "nombre": "Rayo",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5807b016927301dfe872ae30"
+    },
+    "nombre": "Ballantine Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a9fc139b9d0252bc06a4d71b"
+    },
+    "nombre": "Routledge",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e17e06b4ea72d416afd82d76"
+    },
+    "nombre": "Dove Entertainment Inc",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8c5fb3907d1797abb2e8f12d"
+    },
+    "nombre": "Simon & Schuster",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "823ab6509ec6b7b4c299b346"
+    },
+    "nombre": "Plaza & Janes Editores",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6a74a29aa31fae0a417a1b4c"
+    },
+    "nombre": "ISIS Large Print Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f94e27165bd84fbfcd68445d"
+    },
+    "nombre": "El país",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "771b1825b4387eb63e91aeea"
+    },
+    "nombre": "HarperLargePrint",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "027ac86741f23f2969a7b08a"
+    },
+    "nombre": "Plaza & Janes Editories Sa",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "80b987b8395d583127037d66"
+    },
+    "nombre": "Award Publications",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1df097f704a7794fd656c1dc"
+    },
+    "nombre": "Orion Children's Books (an Imprint of Th",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "32702b81c98abdf7af4e1f16"
+    },
+    "nombre": "Les Éditions de Minuit",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a91d361fb1bf180c00940846"
+    },
+    "nombre": "Piemme",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1aed1b81791d66d218f3d1e0"
+    },
+    "nombre": "Yuan-liou Publishing Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "e8bb35fdb5f16cc79bfa9028"
+    },
+    "nombre": "Random House",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1e659493d47def949c595164"
+    },
+    "nombre": "Muza SA",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "629913ae44cd424e12e70c7d"
+    },
+    "nombre": "Joy Street",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "853778a74da6ec4c86a23d8f"
+    },
+    "nombre": "Tandem Library",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "3ab097c1b8adb83db874e194"
+    },
+    "nombre": "Xin lei chu ban she",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "cc9c3bcf9de83251487564e3"
+    },
+    "nombre": "Pinnacle Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f47acb1aca8815a28daa75d7"
+    },
+    "nombre": "Insel Verlag",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d8700defdb60bc49c4a0c628"
+    },
+    "nombre": "JointAssociation of Classical Teachers",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a97b9fb87fcb82f80f5491ac"
+    },
+    "nombre": "Paidós",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "348c697ae88d9a0acdae2cc1"
+    },
+    "nombre": "New Millennium",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f6b2649a61948cf8b94a9de9"
+    },
+    "nombre": "Alianza",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "eca4badbc5793a62357ba8b9"
+    },
+    "nombre": "Simon & Brown",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a66d9ec16f1723979acbf90d"
+    },
+    "nombre": "C.H. Kerr & Company",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "80df97c64c57788e537de8b5"
+    },
+    "nombre": "Editorial Losada",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b5917ac9fb29d7bf356f9d11"
+    },
+    "nombre": "W. Scott",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "322ce95b77e04c5b97fbc9f7"
+    },
+    "nombre": "Aschendorff",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b96d4c40fe700cb58769adf6"
+    },
+    "nombre": "Socie te  d'E dition Les Belles Lettres",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "7155d01e8b3f0417316891ee"
+    },
+    "nombre": "Adler's Foreign Books Inc",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "27fa862a4e9fa78b7914ed90"
+    },
+    "nombre": "John LaneCompany",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "8bccd2fa82dcdf7c0598cb68"
+    },
+    "nombre": "G. Routledge & sons",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "19bf24d9a1b83fbe9decec21"
+    },
+    "nombre": "UTET",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "34313f2adfdd42b82b295b74"
+    },
+    "nombre": "Whittaker and co. [etc.]",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "204fab2cbd006f6aac680b8c"
+    },
+    "nombre": "The University of Chicago Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d3a8679ca75b255c504269df"
+    },
+    "nombre": "www.bnpublishing.com",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "139826adfacb058e1a090673"
+    },
+    "nombre": "Austral",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5d28e59aa2e8e7b598c2a791"
+    },
+    "nombre": "Grafton",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f5ca246d9b1e2c19b59252fa"
+    },
+    "nombre": "Debate",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2dd1ad5e950895e1f04719a1"
+    },
+    "nombre": "Picador",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "218655f01ef69666b346028b"
+    },
+    "nombre": "Grupo Editorial Planeta",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "c0bcfcd5276e2b91594fca5c"
+    },
+    "nombre": "Spektrum Akademischer Verlag",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0709d3738869d1a79be94ffc"
+    },
+    "nombre": "Hyperion",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1535d213c47ca6c07968af0e"
+    },
+    "nombre": "Tomlin Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "810cd80e36ca1a45a7568d9f"
+    },
+    "nombre": "Teologia Polityczna",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "1dab7bb8b76d66701b71ec12"
+    },
+    "nombre": "Losada",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d1d3d4880913e7cef7b6c3b8"
+    },
+    "nombre": "Dorling Kindersley",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "98372227569545da4354681c"
+    },
+    "nombre": "Editorial Sudamericana",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "5fe2ea99c6f4291570e9f720"
+    },
+    "nombre": "Booket",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "d1689e3b816fb79c5467ec44"
+    },
+    "nombre": "Grupo Anaya Comercial",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "2d5c9bc8b9f3686c5f3a4f6b"
+    },
+    "nombre": "DK",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "0c77aeeae02ba3b06c213eec"
+    },
+    "nombre": "Phoenix Audio",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "ba6c9ae64cbc93853ba25390"
+    },
+    "nombre": "Penguin",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "70b5d37fe7e5702cbe58f3e4"
+    },
+    "nombre": "Oxford University Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a5f8d448aded6dc67a659d34"
+    },
+    "nombre": "Philosophical Library; [distributed by B",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "7c718686823143effac958c9"
+    },
+    "nombre": "printed by A. Donaldson",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "6e5ed6679df6a7e282946f74"
+    },
+    "nombre": "J.M. Meulenhoff",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4762f6532fb31bccdc045139"
+    },
+    "nombre": "Klostermann",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "a294007bd225a6064f932992"
+    },
+    "nombre": "Editorial Ariel",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "725bc413fe66e1f9473a04ba"
+    },
+    "nombre": "CreateSpace Independent Publishing Platf",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "cd806fcb6299c1a75986aae4"
+    },
+    "nombre": "Ex Regio typographeo",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "02daad0d8b7d3f79071957b2"
+    },
+    "nombre": "Tulika Books",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "10a9d50e75f8a9ae8ee896be"
+    },
+    "nombre": "Vintage eBooks",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "f14dead2467cafde50d633d3"
+    },
+    "nombre": "F. Meiner",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "700619d931078f05e02fb18d"
+    },
+    "nombre": "Abacus",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "4e6b3f33c4b31d38ba414a95"
+    },
+    "nombre": "Athlone Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "b2258c981b53fe29d40b7d18"
+    },
+    "nombre": "社会科学文献出版社",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "7215857ddb63e40dc7db34bf"
+    },
+    "nombre": "Odonian Press",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "64831fc639d039be7eb0888e"
+    },
+    "nombre": "Editorial Sirio",
+    "_class": "com.biblioteca.entity.Editorial"
+  },
+  {
+    "_id": {
+      "$oid": "40d2343ac7c38f62758546fa"
+    },
+    "nombre": "Orbis",
+    "_class": "com.biblioteca.entity.Editorial"
+  }
+]
