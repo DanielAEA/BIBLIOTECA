@@ -45,8 +45,9 @@
         cursor: pointer;
         transition: all 0.2s ease;
 
-        &:hover {
-          background: rgba(2, 132, 199, 0.1);
+        &:hover,
+        &.active {
+          background: rgba(2, 132, 199, 0.12);
           border-color: #0284c7;
           color: #0284c7;
           transform: translateY(-1px);
@@ -138,8 +139,7 @@
           pointer-events: none;
         }
 
-        .premium-select,
-        .premium-input {
+        .premium-select {
           width: 100%;
           padding: 0.65rem 0.85rem 0.65rem 2.5rem;
           background: var(--bg-alt);
@@ -171,7 +171,7 @@
     }
 
     .btn-predict {
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
       width: 100%;
       display: inline-flex;
       align-items: center;
@@ -213,8 +213,63 @@
     }
   }
 
+  .db-stats-panel {
+    margin-top: 1.25rem;
+    padding: 1.15rem;
+    background: var(--bg-alt);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+
+    .panel-header {
+      margin-bottom: 0.85rem;
+
+      .source-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #0284c7;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+
+        i {
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .db-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+
+      .db-stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+
+        .db-label {
+          font-size: 0.75rem;
+          color: var(--text-muted);
+        }
+
+        .db-val {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: var(--text-main);
+        }
+
+        .db-sub {
+          font-size: 0.7rem;
+          color: var(--text-muted);
+        }
+      }
+    }
+  }
+
   .planning-note {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     padding: 1rem 1.15rem;
     background: rgba(2, 132, 199, 0.06);
     border: 1px solid rgba(2, 132, 199, 0.2);

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { PrediccionService, PrediccionRequest, PrediccionResponse } from '../../../services/prediccion.service';
+import { GeneroService, Genero } from '../../../services/genero.service';
 import { ThemeService } from '../../../services/theme.service';
 
 Chart.register(...registerables);
@@ -18,16 +19,14 @@ Chart.register(...registerables);
 export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('predictChart') predictChartRef!: ElementRef<HTMLCanvasElement>;
 
-  // Form Model
-  mesSeleccionado: number = 5;
-  categoriaSeleccionada: string = 'Historia';
-  previoValor: number = 44;
-  prom3Valor: number = 38.0;
+  // Selección automática (sin digitación manual)
+  categoriaSeleccionada: string = 'Novela';
+  mesSeleccionado: number = (new Date().getMonth() + 2 > 12) ? 1 : new Date().getMonth() + 2;
 
-  // Categorías del catálogo
+  // Lista de categorías sincronizada con el catálogo
   categorias: string[] = [
-    'Historia',
     'Novela',
+    'Historia',
     'Fantasía',
     'Ciencia Ficción',
     'Biografía',
@@ -60,11 +59,31 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private prediccionService: PrediccionService,
+    private generoService: GeneroService,
     public themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
+    // Cargar géneros reales de la base de datos si están disponibles
+    this.cargarGenerosBd();
+    // Ejecutar proyección inicial automática conectada a MongoDB
     this.ejecutarPrediccion();
+  }
+
+  cargarGenerosBd(): void {
+    this.generoService.getAll().subscribe({
+      next: (generosBd: Genero[]) => {
+        if (generosBd && generosBd.length > 0) {
+          const nombresBd = generosBd.map(g => g.nombre).filter(n => !!n);
+          // Combinar y eliminar duplicados manteniendo el orden preferente
+          const conjunto = new Set([...this.categorias, ...nombresBd]);
+          this.categorias = Array.from(conjunto);
+        }
+      },
+      error: () => {
+        // En caso de demora de red, mantiene la lista de categorías base
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -81,8 +100,8 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get variacionPorcentual(): number {
-    if (!this.prom3Valor || !this.resultado) return 0;
-    const diff = ((this.resultado.prediccion_prestamos - this.prom3Valor) / this.prom3Valor) * 100;
+    if (!this.resultado || !this.resultado.prom3 || this.resultado.prom3 === 0) return 0;
+    const diff = ((this.resultado.prediccion_prestamos - this.resultado.prom3) / this.resultado.prom3) * 100;
     return Math.round(diff * 10) / 10;
   }
 
@@ -90,11 +109,10 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loading = true;
     this.errorMensaje = null;
 
+    // Solo enviamos categoría y mes; MongoDB calcula automáticamente el previo y el promedio
     const payload: PrediccionRequest = {
-      mes: Number(this.mesSeleccionado),
       categoria: this.categoriaSeleccionada,
-      previo: Number(this.previoValor),
-      prom3: Number(this.prom3Valor)
+      mes: Number(this.mesSeleccionado)
     };
 
     this.prediccionService.obtenerPrediccion(payload).subscribe({
@@ -111,11 +129,8 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  cargarPreset(categoria: string, mes: number, previo: number, prom3: number): void {
-    this.categoriaSeleccionada = categoria;
-    this.mesSeleccionado = mes;
-    this.previoValor = previo;
-    this.prom3Valor = prom3;
+  seleccionarCategoria(cat: string): void {
+    this.categoriaSeleccionada = cat;
     this.ejecutarPrediccion();
   }
 
@@ -138,12 +153,16 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     const colorTexto = isDark ? '#94a3b8' : '#475569';
     const colorGrid = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
 
+    const valorProm3 = this.resultado.prom3 ?? 0;
+    const valorPrevio = this.resultado.previo ?? 0;
+    const valorPrediccion = this.resultado.prediccion_prestamos;
+
     const labels = [
-      'Promedio (3 Meses)',
-      'Mes Anterior',
-      `Demanda Esperada (${this.getNombreMes(this.resultado.mes)})`
+      'Promedio Trimestral (BD)',
+      'Mes Anterior (BD)',
+      `Demanda Proyectada (${this.getNombreMes(this.resultado.mes)})`
     ];
-    const dataValues = [this.prom3Valor, this.previoValor, this.resultado.prediccion_prestamos];
+    const dataValues = [valorProm3, valorPrevio, valorPrediccion];
 
     this.chartInstance = new Chart(ctx, {
       type: 'bar',
@@ -178,7 +197,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           tooltip: {
             callbacks: {
-              label: (item) => ` ${item.raw} préstamos estimados`
+              label: (item) => ` ${item.raw} préstamos`
             }
           }
         },

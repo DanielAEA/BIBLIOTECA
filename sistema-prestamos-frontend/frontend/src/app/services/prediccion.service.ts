@@ -1,13 +1,13 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface PrediccionRequest {
-  mes: number;
   categoria: string;
-  previo: number;
-  prom3: number;
+  mes?: number;
+  previo?: number;
+  prom3?: number;
 }
 
 export interface PrediccionResponse {
@@ -15,6 +15,11 @@ export interface PrediccionResponse {
   categoria: string;
   prediccion_prestamos: number;
   valor_continuo: number;
+  previo?: number;
+  prom3?: number;
+  total_historico_db?: number;
+  libros_disponibles_db?: number;
+  origen_datos?: string;
   status: string;
 }
 

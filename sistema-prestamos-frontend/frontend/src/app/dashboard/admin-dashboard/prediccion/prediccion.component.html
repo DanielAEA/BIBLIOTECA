@@ -4,89 +4,105 @@
   <div class="premium-header">
     <div class="header-titles">
       <h2>Proyección de Demanda de Préstamos</h2>
-      <p class="subtitle">Herramienta analítica para planificar la circulación de ejemplares y estimar la demanda mensual por categoría literaria.</p>
+      <p class="subtitle">Estimación automática de circulación calculada directamente con el historial de préstamos y ejemplares de CiberBook.</p>
     </div>
 
-    <!-- Escenarios Frecuentes -->
+    <!-- Categorías Rápidas -->
     <div class="preset-pills">
-      <span class="preset-label">Escenarios Frecuentes:</span>
-      <button type="button" class="pill-btn" (click)="cargarPreset('Novela', 10, 72, 67.7)">
-        <i class='bx bx-book-bookmark'></i> Alta Circulación (Novela)
-      </button>
-      <button type="button" class="pill-btn" (click)="cargarPreset('Académico', 3, 25, 25.0)">
-        <i class='bx bx-graduation'></i> Temporada Semestral (Académico)
-      </button>
-      <button type="button" class="pill-btn" (click)="cargarPreset('Historia', 5, 44, 38.0)">
-        <i class='bx bx-history'></i> Demanda Regular (Historia)
+      <span class="preset-label">Categorías:</span>
+      <button *ngFor="let cat of categorias.slice(0, 6)" 
+              type="button" 
+              class="pill-btn" 
+              [class.active]="categoriaSeleccionada === cat"
+              (click)="seleccionarCategoria(cat)">
+        <i class='bx bx-book-bookmark'></i> {{ cat }}
       </button>
     </div>
   </div>
 
   <div class="grid-content">
     
-    <!-- Formulario de Parámetros de Análisis -->
+    <!-- Parámetros de Consulta Conectados a MongoDB -->
     <div class="premium-card form-card">
       <div class="card-head">
-        <i class='bx bx-slider-alt icon-head'></i>
-        <h3>Parámetros de Cálculo</h3>
+        <i class='bx bx-filter-alt icon-head'></i>
+        <h3>Consulta de Demanda</h3>
       </div>
 
       <form (ngSubmit)="ejecutarPrediccion()" class="predict-form">
         
         <div class="form-row">
           <div class="form-group">
-            <label for="mes">Mes a Proyectar</label>
-            <div class="input-wrapper">
-              <i class='bx bx-calendar'></i>
-              <select id="mes" name="mes" [(ngModel)]="mesSeleccionado" class="premium-select">
-                <option *ngFor="let m of meses" [value]="m.num">{{ m.num }} - {{ m.nombre }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
             <label for="categoria">Categoría Literaria</label>
             <div class="input-wrapper">
               <i class='bx bx-purchase-tag-alt'></i>
-              <select id="categoria" name="categoria" [(ngModel)]="categoriaSeleccionada" class="premium-select">
+              <select id="categoria" name="categoria" [(ngModel)]="categoriaSeleccionada" (change)="ejecutarPrediccion()" class="premium-select">
                 <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
               </select>
             </div>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="previo">Préstamos Mes Anterior</label>
-            <div class="input-wrapper">
-              <i class='bx bx-history'></i>
-              <input id="previo" type="number" min="0" max="500" name="previo" [(ngModel)]="previoValor" class="premium-input" placeholder="Ej: 44" required />
-            </div>
-          </div>
 
           <div class="form-group">
-            <label for="prom3">Promedio Últimos 3 Meses</label>
+            <label for="mes">Mes a Proyectar</label>
             <div class="input-wrapper">
-              <i class='bx bx-trending-up'></i>
-              <input id="prom3" type="number" step="0.1" min="0" max="500" name="prom3" [(ngModel)]="prom3Valor" class="premium-input" placeholder="Ej: 38.0" required />
+              <i class='bx bx-calendar'></i>
+              <select id="mes" name="mes" [(ngModel)]="mesSeleccionado" (change)="ejecutarPrediccion()" class="premium-select">
+                <option *ngFor="let m of meses" [value]="m.num">{{ m.num }} - {{ m.nombre }}</option>
+              </select>
             </div>
           </div>
         </div>
 
         <button type="submit" class="btn-predict" [disabled]="loading">
-          <i class='bx bx-bar-chart-alt-2' *ngIf="!loading"></i>
+          <i class='bx bx-refresh' *ngIf="!loading"></i>
           <span class="spinner-sm" *ngIf="loading"></span>
-          <span>{{ loading ? 'Calculando Proyección...' : 'Calcular Demanda Estimada' }}</span>
+          <span>{{ loading ? 'Consultando Base de Datos...' : 'Actualizar Proyección' }}</span>
         </button>
       </form>
 
-      <!-- Indicador de Rotación Práctico para la Biblioteca -->
+      <!-- Panel de Datos Extraídos Directamente de MongoDB -->
+      <div class="db-stats-panel" *ngIf="resultado">
+        <div class="panel-header">
+          <div class="source-tag">
+            <i class='bx bx-data'></i>
+            <span>Historial Real en Base de Datos</span>
+          </div>
+        </div>
+
+        <div class="db-stats-grid">
+          <div class="db-stat-item">
+            <span class="db-label">Préstamos Mes Anterior</span>
+            <span class="db-val">{{ (resultado.previo || 0) | number:'1.0-0' }}</span>
+            <span class="db-sub">Registrados en BD</span>
+          </div>
+
+          <div class="db-stat-item">
+            <span class="db-label">Promedio Último Trimestre</span>
+            <span class="db-val">{{ (resultado.prom3 || 0) | number:'1.1-1' }}</span>
+            <span class="db-sub">Media mensual BD</span>
+          </div>
+
+          <div class="db-stat-item">
+            <span class="db-label">Títulos en Catálogo</span>
+            <span class="db-val">{{ resultado.libros_disponibles_db || 0 }}</span>
+            <span class="db-sub">Libros de este género</span>
+          </div>
+
+          <div class="db-stat-item">
+            <span class="db-label">Préstamos Acumulados</span>
+            <span class="db-val">{{ resultado.total_historico_db || 0 }}</span>
+            <span class="db-sub">Total histórico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Criterio Práctico para la Biblioteca -->
       <div class="planning-note" *ngIf="resultado">
         <div class="note-icon">
           <i class='bx bx-bulb'></i>
         </div>
         <div class="note-content">
-          <span class="note-title">Criterio de Gestión de Inventario</span>
+          <span class="note-title">Recomendación para la Biblioteca</span>
           <p class="note-desc">
             {{ variacionPorcentual > 15 
                 ? 'Se estima un incremento en la rotación de esta categoría. Se recomienda verificar disponibilidad de ejemplares en estantería física y digital.' 
@@ -114,7 +130,7 @@
       <!-- Métricas Claras de Gestión -->
       <div class="metric-ribbon" *ngIf="resultado">
         <div class="metric-box primary">
-          <span class="metric-label">Demanda Estimada</span>
+          <span class="metric-label">Demanda Proyectada</span>
           <div class="metric-value">
             <span>{{ resultado.prediccion_prestamos }}</span>
             <small>préstamos</small>
@@ -133,7 +149,7 @@
         <div class="metric-box">
           <span class="metric-label">Categoría</span>
           <div class="metric-value small">{{ resultado.categoria }}</div>
-          <span class="metric-sub">Comportamiento estacional</span>
+          <span class="metric-sub">Análisis estacional</span>
         </div>
       </div>
 
