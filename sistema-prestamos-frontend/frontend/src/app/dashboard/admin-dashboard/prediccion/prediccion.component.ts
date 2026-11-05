@@ -24,14 +24,14 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   previoValor: number = 44;
   prom3Valor: number = 38.0;
 
-  // Categor?as del modelo
+  // Categorías del modelo
   categorias: string[] = [
     'Historia',
     'Novela',
-    'Fantas?a',
-    'Ciencia Ficci?n',
-    'Biograf?a',
-    'Acad?mico'
+    'Fantasía',
+    'Ciencia Ficción',
+    'Biografía',
+    'Académico'
   ];
 
   meses = [
@@ -64,7 +64,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Ejecutar predicci?n inicial de prueba
+    // Ejecutar predicción inicial de prueba
     this.ejecutarPrediccion();
   }
 
@@ -133,7 +133,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     const colorTexto = isDark ? '#94a3b8' : '#475569';
     const colorGrid = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
 
-    const labels = ['Promedio (3 Meses)', 'Mes Anterior (Previo)', `Proyecci?n IA (${this.getNombreMes(this.resultado.mes)})`];
+    const labels = ['Promedio (3 Meses)', 'Mes Anterior (Previo)', `Proyección IA (${this.getNombreMes(this.resultado.mes)})`];
     const dataValues = [this.prom3Valor, this.previoValor, this.resultado.prediccion_prestamos];
 
     this.chartInstance = new Chart(ctx, {
@@ -142,7 +142,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
         labels: labels,
         datasets: [
           {
-            label: 'Demanda de Pr?stamos',
+            label: 'Demanda de Préstamos',
             data: dataValues,
             backgroundColor: [
               'rgba(148, 163, 184, 0.5)',
@@ -169,7 +169,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           tooltip: {
             callbacks: {
-              label: (item) => ` ${item.raw} pr?stamos estimados`
+              label: (item) => ` ${item.raw} préstamos estimados`
             }
           }
         },

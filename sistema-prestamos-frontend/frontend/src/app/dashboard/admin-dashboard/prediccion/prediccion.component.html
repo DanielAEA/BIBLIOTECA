@@ -7,18 +7,18 @@
         <span class="pulsing-dot"></span>
         <span>MACHINE LEARNING ENGINE</span>
       </div>
-      <h2>Modelo Predictivo de Pr?stamos</h2>
-      <p class="subtitle">Anticipa la demanda de libros por categor?a literaria y mes con el modelo de IA de CiberBook.</p>
+      <h2>Modelo Predictivo de Préstamos</h2>
+      <p class="subtitle">Anticipa la demanda de libros por categoría literaria y mes con el modelo de IA de CiberBook.</p>
     </div>
 
-    <!-- Presets r?pidos -->
+    <!-- Presets rápidos -->
     <div class="preset-pills">
-      <span class="preset-label">Escenarios R?pidos:</span>
+      <span class="preset-label">Escenarios Rápidos:</span>
       <button type="button" class="pill-btn" (click)="cargarPreset('Novela', 10, 72, 67.7)">
         <i class='bx bx-book-bookmark'></i> Alta Demanda (Novela)
       </button>
-      <button type="button" class="pill-btn" (click)="cargarPreset('Acad?mico', 3, 25, 25.0)">
-        <i class='bx bx-graduation'></i> Inicio Semestre (Acad?mico)
+      <button type="button" class="pill-btn" (click)="cargarPreset('Académico', 3, 25, 25.0)">
+        <i class='bx bx-graduation'></i> Inicio Semestre (Académico)
       </button>
       <button type="button" class="pill-btn" (click)="cargarPreset('Historia', 5, 44, 38.0)">
         <i class='bx bx-history'></i> Demanda Media (Historia)
@@ -28,7 +28,7 @@
 
   <div class="grid-content">
     
-    <!-- Formulario Interactivo de Par?metros -->
+    <!-- Formulario Interactivo de Parámetros -->
     <div class="premium-card form-card">
       <div class="card-head">
         <i class='bx bx-slider-alt icon-head'></i>
@@ -49,7 +49,7 @@
           </div>
 
           <div class="form-group">
-            <label for="categoria">Categor?a Literaria</label>
+            <label for="categoria">Categoría Literaria</label>
             <div class="input-wrapper">
               <i class='bx bx-purchase-tag-alt'></i>
               <select id="categoria" name="categoria" [(ngModel)]="categoriaSeleccionada" class="premium-select">
@@ -61,7 +61,7 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="previo">Pr?stamos Mes Anterior (previo)</label>
+            <label for="previo">Préstamos Mes Anterior (previo)</label>
             <div class="input-wrapper">
               <i class='bx bx-history'></i>
               <input id="previo" type="number" min="0" max="500" name="previo" [(ngModel)]="previoValor" class="premium-input" placeholder="Ej: 44" required />
@@ -69,7 +69,7 @@
           </div>
 
           <div class="form-group">
-            <label for="prom3">Promedio 3 Meses M?vil (prom3)</label>
+            <label for="prom3">Promedio 3 Meses Móvil (prom3)</label>
             <div class="input-wrapper">
               <i class='bx bx-trending-up'></i>
               <input id="prom3" type="number" step="0.1" min="0" max="500" name="prom3" [(ngModel)]="prom3Valor" class="premium-input" placeholder="Ej: 38.0" required />
@@ -95,17 +95,17 @@
           <span class="val badge-model">modelo_ciberbook.joblib</span>
         </div>
         <div class="info-row">
-          <span class="label">Endpoint interno:</span>
-          <span class="val code">http://ciberbook-predictivo:8000/predecir</span>
+          <span class="label">Algoritmo:</span>
+          <span class="val">Regresión Lineal Multivariable</span>
         </div>
       </div>
     </div>
 
-    <!-- Resultados y Gr?fica -->
+    <!-- Resultados y Gráfica -->
     <div class="premium-card result-card">
       <div class="card-head">
         <i class='bx bx-line-chart icon-head'></i>
-        <h3>Proyecci?n de Demanda</h3>
+        <h3>Proyección de Demanda</h3>
       </div>
 
       <!-- Error State -->
@@ -114,10 +114,10 @@
         <span>{{ errorMensaje }}</span>
       </div>
 
-      <!-- M?tricas Destacadas -->
+      <!-- Métricas Destacadas -->
       <div class="metric-ribbon" *ngIf="resultado">
         <div class="metric-box primary">
-          <span class="metric-label">Pr?stamos Estimados</span>
+          <span class="metric-label">Préstamos Estimados</span>
           <div class="metric-value">
             <span>{{ resultado.prediccion_prestamos }}</span>
             <small>unidades</small>
@@ -132,13 +132,13 @@
         </div>
 
         <div class="metric-box">
-          <span class="metric-label">Categor?a</span>
+          <span class="metric-label">Categoría</span>
           <div class="metric-value small">{{ resultado.categoria }}</div>
           <span class="metric-sub">One-Hot Encoding activo</span>
         </div>
       </div>
 
-      <!-- Gr?fica de Proyecci?n -->
+      <!-- Gráfica de Proyección -->
       <div class="chart-wrapper">
         <canvas #predictChart></canvas>
       </div>

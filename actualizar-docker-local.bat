@@ -51,8 +51,9 @@ echo.
 docker compose ps
 echo.
 echo Accesos locales:
-echo  - Frontend: http://localhost:80
-echo  - Backend:  http://localhost:8080
+echo  - Frontend:   http://localhost:80
+echo  - Backend:    http://localhost:8080
+echo  - Predictivo: http://localhost:8000/docs (Swagger UI)
 echo.
 echo Comandos utiles:
 echo  - Ver logs en vivo:     docker compose logs -f

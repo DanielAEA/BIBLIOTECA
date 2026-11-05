@@ -7,8 +7,8 @@
   
   <div class="hero-section">
     <div class="cover-container">
-      <img [src]="libro.urlPortada || 'https://via.placeholder.com/300x450?text=Sin+Portada'"
-           (error)="libro.urlPortada = 'https://via.placeholder.com/300x450?text=Error'"
+      <img [src]="libro.urlPortada || 'assets/default-cover.svg'"
+           (error)="libro.urlPortada = 'assets/default-cover.svg'"
            alt="Portada" class="cover-img">
     </div>
 

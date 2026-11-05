@@ -112,7 +112,9 @@ public class LibroController {
             org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(pageNum, pageSize);
             return ResponseEntity.ok(libroService.listarPaginado(pageable, search, autor, genero, editorial, formato, bloque, armario));
         }
-        List<LibroDTO> allBooks = libroService.listar().stream().map(this::convertToDTO).collect(Collectors.toList());
+        // Optimización: usar agregación con lookup para evitar consultas N+1
+        org.springframework.data.domain.Pageable unpaged = org.springframework.data.domain.PageRequest.of(0, 1000);
+        List<LibroDTO> allBooks = libroService.listarPaginado(unpaged, search, autor, genero, editorial, formato, bloque, armario).getContent();
         return ResponseEntity.ok(allBooks);
     }
 

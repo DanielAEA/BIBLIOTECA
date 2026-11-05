@@ -554,3 +554,62 @@
 
   h2 { color: var(--text-dark, #1e293b); margin: 0; }
 }
+
+
+/* ========================================================
+   ESTILOS PROFESIONALES DE PORTADA 3D - DETALLE DE LIBRO
+   ======================================================== */
+.cover-container {
+  flex-shrink: 0;
+  width: 250px !important;
+  height: 375px !important;
+  border-radius: 16px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #0b1120 !important;
+  box-shadow: 0 24px 45px -10px rgba(0, 0, 0, 0.28), 0 0 25px rgba(99, 102, 241, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+
+  &:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 30px 55px -12px rgba(0, 0, 0, 0.35), 0 0 30px rgba(99, 102, 241, 0.25) !important;
+  }
+
+  .cover-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  /* Efecto 3D de lomo y pliegue de libro realista */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 32px;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.28) 0%, 
+      rgba(255, 255, 255, 0.05) 15%, 
+      rgba(0, 0, 0, 0.45) 45%, 
+      rgba(255, 255, 255, 0.18) 75%, 
+      rgba(0, 0, 0, 0.08) 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Viñeta de curvatura y profundidad */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+}

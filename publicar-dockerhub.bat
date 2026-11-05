@@ -6,6 +6,7 @@ echo ========================================================
 echo   Actualizar y Publicar Imagenes en Docker Hub
 echo   - daniel08escudero/ciberbook-backend:latest
 echo   - daniel08escudero/ciberbook-frontend:latest
+echo   - daniel08escudero/ciberbook-predictivo:latest
 echo ========================================================
 echo.
 
@@ -63,14 +64,25 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
+echo -> Subiendo microservicio predictivo: daniel08escudero/ciberbook-predictivo:latest...
+docker push daniel08escudero/ciberbook-predictivo:latest
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Fallo al subir la imagen del microservicio predictivo.
+    pause
+    exit /b 1
+)
+
+echo.
 echo ========================================================
 echo   IMAGENES ACTUALIZADAS CON EXITO EN DOCKER HUB
 echo ========================================================
-echo  Backend:  https://hub.docker.com/r/daniel08escudero/ciberbook-backend
-echo  Frontend: https://hub.docker.com/r/daniel08escudero/ciberbook-frontend
+echo  Backend:     https://hub.docker.com/r/daniel08escudero/ciberbook-backend
+echo  Frontend:    https://hub.docker.com/r/daniel08escudero/ciberbook-frontend
+echo  Predictivo:  https://hub.docker.com/r/daniel08escudero/ciberbook-predictivo
 echo.
 echo Para descargarlas o usarlas en otro equipo:
 echo   docker pull daniel08escudero/ciberbook-backend:latest
 echo   docker pull daniel08escudero/ciberbook-frontend:latest
+echo   docker pull daniel08escudero/ciberbook-predictivo:latest
 echo ========================================================
 pause

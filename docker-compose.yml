@@ -1,4 +1,4 @@
-﻿services:
+services:
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -33,6 +33,7 @@
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/biblioteca
       - APP_BASE_URL=http://localhost:8080
       - APP_FRONT_URL=http://localhost:4200
+      - APP_PREDICTIVO_URL=http://ciberbook-predictivo:8000/predecir
     depends_on:
       - mongodb
       - ciberbook-predictivo
