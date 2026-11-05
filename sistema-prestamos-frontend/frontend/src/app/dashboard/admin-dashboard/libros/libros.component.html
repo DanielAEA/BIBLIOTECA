@@ -344,6 +344,7 @@
       *ngIf="books.length > 0"
       [page]="page"
       [size]="size"
+      [pageSizeOptions]="[12, 24, 36, 48]"
       [totalElements]="totalElements"
       (pageChange)="onPageChange($event)"
       (sizeChange)="onSizeChange($event)"

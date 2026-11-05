@@ -24,7 +24,7 @@ export class LibrosComponent implements OnInit, OnDestroy {
 
   books: Libro[] = [];
   page: number = 0;
-  size: number = 10;
+  size: number = 12;
   totalElements: number = 0;
   authors: Autor[] = [];
   editorials: Editorial[] = [];
@@ -107,7 +107,8 @@ export class LibrosComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.page = params['page'] !== undefined ? Math.max(0, parseInt(params['page'], 10) || 0) : 0;
-      this.size = params['size'] !== undefined ? Math.max(1, parseInt(params['size'], 10) || 10) : 10;
+      const rawSize = parseInt(params['size'], 10);
+      this.size = (rawSize && rawSize !== 10) ? Math.max(1, rawSize) : 12;
       this.searchTerm = params['search'] || '';
       this.filterGenero = params['genero'] || '';
       this.filterEditorial = params['editorial'] || '';

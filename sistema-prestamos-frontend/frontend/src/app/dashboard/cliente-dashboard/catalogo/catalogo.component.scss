@@ -502,3 +502,133 @@
 .resena-date {
     color: #9ca3af;
 }
+
+/* ========================================================
+   ESTILOS PROFESIONALES DE PORTADAS Y TARJETAS DE LIBROS
+   ======================================================== */
+.book-card {
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    background: var(--bg-card, #ffffff);
+    border: 1px solid var(--border-color, rgba(226, 232, 240, 0.8));
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+
+    &:hover {
+        transform: translateY(-8px) scale(1.01) !important;
+        box-shadow: 0 22px 36px -10px rgba(0, 0, 0, 0.16), 0 0 20px rgba(99, 102, 241, 0.15) !important;
+        border-color: rgba(99, 102, 241, 0.4) !important;
+
+        .book-cover-container img {
+            transform: scale(1.06);
+        }
+    }
+}
+
+.book-cover-container {
+    height: 280px !important;
+    width: 100%;
+    background: #0b1120 !important;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+        display: block;
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Efecto 3D de lomo y pliegue de libro realista */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 26px;
+        background: linear-gradient(90deg, 
+            rgba(255, 255, 255, 0.28) 0%, 
+            rgba(255, 255, 255, 0.05) 15%, 
+            rgba(0, 0, 0, 0.45) 45%, 
+            rgba(255, 255, 255, 0.16) 75%, 
+            rgba(0, 0, 0, 0.06) 100%
+        );
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    /* Viñeta de curvatura y profundidad */
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%);
+        z-index: 1;
+        pointer-events: none;
+    }
+}
+
+.status-badge-overlay {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 0.38rem 0.85rem !important;
+    border-radius: 20px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase;
+    background: rgba(239, 68, 68, 0.9) !important;
+    color: white !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.25s ease;
+
+    i { font-size: 0.9rem; }
+
+    &.available {
+        background: rgba(16, 185, 129, 0.95) !important;
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
+    }
+
+    &.digital {
+        background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%) !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.45) !important;
+        border-color: rgba(255, 255, 255, 0.5) !important;
+    }
+}
+
+.list-cover {
+    width: 72px !important;
+    height: 104px !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+    position: relative;
+    background: #0b1120;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0; left: 0;
+        width: 12px;
+        background: linear-gradient(90deg, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.35) 100%);
+        pointer-events: none;
+    }
+}

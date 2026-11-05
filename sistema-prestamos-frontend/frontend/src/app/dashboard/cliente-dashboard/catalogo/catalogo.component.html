@@ -29,8 +29,8 @@
             <div class="books-grid" *ngIf="viewMode === 'grid'">
                 <div class="premium-card book-card" *ngFor="let libro of g.items" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
                     <div class="book-cover-container" style="height: 250px; width: 100%; background: #f1f5f9; cursor: pointer; position: relative;" (click)="verDetalles(libro)">
-                        <img [src]="libro.urlPortada || 'https://via.placeholder.com/200x300?text=Sin+Portada'" 
-                             (error)="libro.urlPortada = 'https://via.placeholder.com/200x300?text=Error+Imagen'"
+                        <img [src]="libro.urlPortada || 'assets/default-cover.svg'" 
+                             (error)="libro.urlPortada = 'assets/default-cover.svg'"
                              style="width: 100%; height: 100%; object-fit: cover;">
                         <span class="status-badge-overlay" [class.available]="getEjemplaresDisponibles(libro) > 0">
                             {{ getEjemplaresDisponibles(libro) > 0 ? 'Disponible' : 'Prestado' }}
@@ -56,7 +56,7 @@
             <div class="books-list" *ngIf="viewMode === 'list'">
                 <div class="premium-card list-item" *ngFor="let libro of g.items" (click)="verDetalles(libro)">
                     <div class="list-cover">
-                        <img [src]="libro.urlPortada || 'https://via.placeholder.com/100x150?text=No+Cover'" alt="Portada">
+                        <img [src]="libro.urlPortada || 'assets/default-cover.svg'" alt="Portada">
                     </div>
                     <div class="list-content">
                         <div class="list-main-info">
@@ -82,6 +82,7 @@
             *ngIf="libros.length > 0"
             [page]="page"
             [size]="size"
+            [pageSizeOptions]="[12, 24, 36, 48]"
             [totalElements]="totalElements"
             (pageChange)="onPageChange($event)"
             (sizeChange)="onSizeChange($event)"
