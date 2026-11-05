@@ -20,7 +20,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -35,11 +37,27 @@ public class PrediccionService {
     private final RestTemplate restTemplate;
     private final MongoTemplate mongoTemplate;
 
+    // Disyuntor rápido (circuit breaker) para evitar esperas cuando el microservicio externo no responde
+    private volatile long lastExternalFailure = 0L;
+    private static final long COOLDOWN_FAILURE_MS = 60_000L; // 1 minuto de enfriamiento
+
+    // Caché en memoria para métricas históricas de categorías (TTL 5 minutos)
+    private static class CacheItem {
+        final MetricasDb metricas;
+        final long expiresAt;
+        CacheItem(MetricasDb m, long ttlMs) {
+            this.metricas = m;
+            this.expiresAt = System.currentTimeMillis() + ttlMs;
+        }
+    }
+    private final Map<String, CacheItem> cacheMetricas = new ConcurrentHashMap<>();
+    private static final long CACHE_TTL_MS = 5 * 60 * 1000L;
+
     public PrediccionService(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(3000);
-        factory.setReadTimeout(4000);
+        factory.setConnectTimeout(400); // Conexión ultra-rápida (máx 400ms)
+        factory.setReadTimeout(600);    // Lectura ultra-rápida (máx 600ms)
         this.restTemplate = new RestTemplate(factory);
     }
 
@@ -51,11 +69,19 @@ public class PrediccionService {
     }
 
     public MetricasDb calcularMetricasDesdeDb(String categoria) {
-        MetricasDb m = new MetricasDb();
         String catNombre = (categoria != null && !categoria.trim().isEmpty()) ? categoria.trim() : "Historia";
+        String catKey = catNombre.toLowerCase();
+
+        // 0. Comprobar caché en memoria (tiempo de respuesta: 0 ms)
+        CacheItem cached = cacheMetricas.get(catKey);
+        if (cached != null && System.currentTimeMillis() < cached.expiresAt) {
+            return cached.metricas;
+        }
+
+        MetricasDb m = new MetricasDb();
 
         try {
-            // 1. Buscar géneros coincidentes en MongoDB con mapeo inteligente
+            // 1. Buscar géneros coincidentes en MongoDB con mapeo inteligente y proyección de campos
             String regexKeywords = Pattern.quote(catNombre);
             if ("Académico".equalsIgnoreCase(catNombre) || "Academico".equalsIgnoreCase(catNombre)) {
                 regexKeywords = "Académico|Academico|Técnico|Tecnico|Ciencia|Nonfiction";
@@ -72,10 +98,12 @@ public class PrediccionService {
             }
 
             Pattern pattern = Pattern.compile(".*(" + regexKeywords + ").*", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
-            List<Genero> generos = mongoTemplate.find(new Query(Criteria.where("nombre").regex(pattern)), Genero.class);
+            Query qGeneros = new Query(Criteria.where("nombre").regex(pattern));
+            qGeneros.fields().include("_id");
+            List<Genero> generos = mongoTemplate.find(qGeneros, Genero.class);
             List<String> genIds = generos.stream().map(Genero::getId).filter(Objects::nonNull).collect(Collectors.toList());
 
-            // 2. Buscar libros correspondientes en MongoDB
+            // 2. Buscar libros correspondientes con solo proyección de _id
             Criteria critLibro;
             if (!genIds.isEmpty()) {
                 critLibro = new Criteria().orOperator(
@@ -87,11 +115,13 @@ public class PrediccionService {
                 critLibro = new Criteria();
             }
 
-            List<Libro> libros = mongoTemplate.find(new Query(critLibro), Libro.class);
+            Query qLibros = new Query(critLibro);
+            qLibros.fields().include("_id");
+            List<Libro> libros = mongoTemplate.find(qLibros, Libro.class);
             m.librosDisponibles = (long) libros.size();
             List<String> libroIds = libros.stream().map(Libro::getId).filter(Objects::nonNull).collect(Collectors.toList());
 
-            // 3. Buscar préstamos asociados en MongoDB
+            // 3. Conteos directos en MongoDB mediante índices (sin descargar documentos por la red)
             Criteria critPrestamo;
             if (!libroIds.isEmpty()) {
                 critPrestamo = new Criteria().orOperator(
@@ -103,21 +133,23 @@ public class PrediccionService {
                 critPrestamo = new Criteria();
             }
 
-            List<Prestamo> prestamos = mongoTemplate.find(new Query(critPrestamo), Prestamo.class);
-            m.totalHistorico = (long) prestamos.size();
+            m.totalHistorico = mongoTemplate.count(new Query(critPrestamo), "prestamos");
 
-            // Calcular préstamos del mes inmediatamente anterior y de los últimos 3 meses
             LocalDateTime ahora = LocalDateTime.now();
             LocalDateTime unMesAtras = ahora.minusMonths(1);
             LocalDateTime tresMesesAtras = ahora.minusMonths(3);
 
-            long count1Mes = prestamos.stream()
-                    .filter(p -> p.getFechaPrestamo() != null && p.getFechaPrestamo().isAfter(unMesAtras))
-                    .count();
+            Query q1Mes = new Query(new Criteria().andOperator(
+                    critPrestamo,
+                    Criteria.where("fechaPrestamo").gte(unMesAtras)
+            ));
+            long count1Mes = mongoTemplate.count(q1Mes, "prestamos");
 
-            long count3Meses = prestamos.stream()
-                    .filter(p -> p.getFechaPrestamo() != null && p.getFechaPrestamo().isAfter(tresMesesAtras))
-                    .count();
+            Query q3Mes = new Query(new Criteria().andOperator(
+                    critPrestamo,
+                    Criteria.where("fechaPrestamo").gte(tresMesesAtras)
+            ));
+            long count3Meses = mongoTemplate.count(q3Mes, "prestamos");
 
             if (count1Mes > 0) {
                 m.previo = (double) count1Mes;
@@ -132,6 +164,10 @@ public class PrediccionService {
                 m.previo = Math.round(base);
                 m.prom3 = Math.round(base * 0.9 * 10.0) / 10.0;
             }
+
+            // Guardar en caché
+            cacheMetricas.put(catKey, new CacheItem(m, CACHE_TTL_MS));
+
         } catch (Exception e) {
             log.error("Error al consultar métricas desde MongoDB para categoría {}: {}", catNombre, e.getMessage());
             m.previo = 20.0;
@@ -174,18 +210,23 @@ public class PrediccionService {
 
         PrediccionDTO.Response finalResponse = null;
 
-        try {
-            ResponseEntity<PrediccionDTO.Response> response = restTemplate.postForEntity(
-                    predictUrl,
-                    entity,
-                    PrediccionDTO.Response.class
-            );
-            if (response.getBody() != null) {
-                log.info("Inferencia exitosa desde microservicio predictivo externo.");
-                finalResponse = response.getBody();
+        // Comprobación de disyuntor: si el microservicio falló recientemente, no esperar por timeout
+        boolean enEnfriamiento = (System.currentTimeMillis() - lastExternalFailure) < COOLDOWN_FAILURE_MS;
+        if (!enEnfriamiento && predictUrl != null && !predictUrl.trim().isEmpty() && !predictUrl.contains("disabled")) {
+            try {
+                ResponseEntity<PrediccionDTO.Response> response = restTemplate.postForEntity(
+                        predictUrl,
+                        entity,
+                        PrediccionDTO.Response.class
+                );
+                if (response.getBody() != null) {
+                    finalResponse = response.getBody();
+                }
+            } catch (Exception ex) {
+                lastExternalFailure = System.currentTimeMillis();
+                log.warn("Microservicio externo no disponible en {} ({}). Disyuntor activado: usando cálculo local ultra-rápido por {}s.",
+                        predictUrl, ex.getMessage(), COOLDOWN_FAILURE_MS / 1000);
             }
-        } catch (Exception ex) {
-            log.warn("Microservicio externo no disponible en {} ({}). Aplicando motor de reserva local.", predictUrl, ex.getMessage());
         }
 
         if (finalResponse == null) {
