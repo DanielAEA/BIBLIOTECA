@@ -1,0 +1,150 @@
+<div class="prediccion-container">
+  
+  <!-- Hero / Header -->
+  <div class="premium-header">
+    <div class="header-titles">
+      <div class="badge-ai">
+        <span class="pulsing-dot"></span>
+        <span>MACHINE LEARNING ENGINE</span>
+      </div>
+      <h2>Modelo Predictivo de Pr?stamos</h2>
+      <p class="subtitle">Anticipa la demanda de libros por categor?a literaria y mes con el modelo de IA de CiberBook.</p>
+    </div>
+
+    <!-- Presets r?pidos -->
+    <div class="preset-pills">
+      <span class="preset-label">Escenarios R?pidos:</span>
+      <button type="button" class="pill-btn" (click)="cargarPreset('Novela', 10, 72, 67.7)">
+        <i class='bx bx-book-bookmark'></i> Alta Demanda (Novela)
+      </button>
+      <button type="button" class="pill-btn" (click)="cargarPreset('Acad?mico', 3, 25, 25.0)">
+        <i class='bx bx-graduation'></i> Inicio Semestre (Acad?mico)
+      </button>
+      <button type="button" class="pill-btn" (click)="cargarPreset('Historia', 5, 44, 38.0)">
+        <i class='bx bx-history'></i> Demanda Media (Historia)
+      </button>
+    </div>
+  </div>
+
+  <div class="grid-content">
+    
+    <!-- Formulario Interactivo de Par?metros -->
+    <div class="premium-card form-card">
+      <div class="card-head">
+        <i class='bx bx-slider-alt icon-head'></i>
+        <h3>Variables de Entrada</h3>
+      </div>
+
+      <form (ngSubmit)="ejecutarPrediccion()" class="predict-form">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mes">Mes a proyectar</label>
+            <div class="input-wrapper">
+              <i class='bx bx-calendar'></i>
+              <select id="mes" name="mes" [(ngModel)]="mesSeleccionado" class="premium-select">
+                <option *ngFor="let m of meses" [value]="m.num">{{ m.num }} - {{ m.nombre }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categor?a Literaria</label>
+            <div class="input-wrapper">
+              <i class='bx bx-purchase-tag-alt'></i>
+              <select id="categoria" name="categoria" [(ngModel)]="categoriaSeleccionada" class="premium-select">
+                <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="previo">Pr?stamos Mes Anterior (previo)</label>
+            <div class="input-wrapper">
+              <i class='bx bx-history'></i>
+              <input id="previo" type="number" min="0" max="500" name="previo" [(ngModel)]="previoValor" class="premium-input" placeholder="Ej: 44" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prom3">Promedio 3 Meses M?vil (prom3)</label>
+            <div class="input-wrapper">
+              <i class='bx bx-trending-up'></i>
+              <input id="prom3" type="number" step="0.1" min="0" max="500" name="prom3" [(ngModel)]="prom3Valor" class="premium-input" placeholder="Ej: 38.0" required />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-predict" [disabled]="loading">
+          <i class='bx bx-chip' *ngIf="!loading"></i>
+          <span class="spinner-sm" *ngIf="loading"></span>
+          <span>{{ loading ? 'Calculando Inferencia...' : 'Calcular Demanda Estimada' }}</span>
+        </button>
+      </form>
+
+      <!-- Microservicio Status Card -->
+      <div class="microservice-info">
+        <div class="info-row">
+          <span class="label">Microservicio:</span>
+          <span class="val">FastAPI + Scikit-Learn (Docker)</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Modelo cargado:</span>
+          <span class="val badge-model">modelo_ciberbook.joblib</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Endpoint interno:</span>
+          <span class="val code">http://ciberbook-predictivo:8000/predecir</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resultados y Gr?fica -->
+    <div class="premium-card result-card">
+      <div class="card-head">
+        <i class='bx bx-line-chart icon-head'></i>
+        <h3>Proyecci?n de Demanda</h3>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMensaje" class="error-box">
+        <i class='bx bx-error-circle'></i>
+        <span>{{ errorMensaje }}</span>
+      </div>
+
+      <!-- M?tricas Destacadas -->
+      <div class="metric-ribbon" *ngIf="resultado">
+        <div class="metric-box primary">
+          <span class="metric-label">Pr?stamos Estimados</span>
+          <div class="metric-value">
+            <span>{{ resultado.prediccion_prestamos }}</span>
+            <small>unidades</small>
+          </div>
+          <span class="metric-sub">Mes de {{ getNombreMes(resultado.mes) }}</span>
+        </div>
+
+        <div class="metric-box">
+          <span class="metric-label">Valor Continuo</span>
+          <div class="metric-value small">{{ resultado.valor_continuo }}</div>
+          <span class="metric-sub">Salida del modelo</span>
+        </div>
+
+        <div class="metric-box">
+          <span class="metric-label">Categor?a</span>
+          <div class="metric-value small">{{ resultado.categoria }}</div>
+          <span class="metric-sub">One-Hot Encoding activo</span>
+        </div>
+      </div>
+
+      <!-- Gr?fica de Proyecci?n -->
+      <div class="chart-wrapper">
+        <canvas #predictChart></canvas>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

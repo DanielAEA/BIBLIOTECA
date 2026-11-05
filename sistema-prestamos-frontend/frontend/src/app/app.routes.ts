@@ -47,6 +47,7 @@ export const routes: Routes = [
       { path: 'resenas', component: ResenasComponent },
       { path: 'salas', component: SalasComponent },
       { path: 'estadisticas', component: EstadisticasComponent },
+      { path: 'prediccion', loadComponent: () => import('./dashboard/admin-dashboard/prediccion/prediccion.component').then(m => m.PrediccionComponent) },
       { path: '', redirectTo: 'estadisticas', pathMatch: 'full' }
     ]
   },
