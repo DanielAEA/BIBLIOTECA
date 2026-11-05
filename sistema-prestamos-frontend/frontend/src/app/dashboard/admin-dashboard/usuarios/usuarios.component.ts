@@ -73,7 +73,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   onFilterChange() {
     this.page = 0;
-    this.updateQueryParams();
+    this.loadUsers();
   }
 
   hasActiveFilters(): boolean {
@@ -86,6 +86,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     this.sortOrder = 'asc';
     this.page = 0;
     this.updateQueryParams();
+    this.loadUsers();
   }
 
   onPageChange(newPage: number) {
@@ -118,7 +119,16 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       next: (response) => {
         let list = response.content || [];
         if (this.filterRol) {
-          list = list.filter(u => (u.rol || '').toUpperCase() === this.filterRol.toUpperCase());
+          list = list.filter(u => {
+            const r = (u.rol || '').toUpperCase();
+            if (this.filterRol === 'ADMIN') {
+              return r === 'ADMIN' || r === 'ROLE_ADMIN' || r === 'ADMINISTRADOR';
+            }
+            if (this.filterRol === 'CLIENTE') {
+              return r === 'CLIENTE' || r === 'ROLE_CLIENTE';
+            }
+            return r === this.filterRol.toUpperCase();
+          });
         }
         if (this.sortOrder === 'desc') {
           list = list.sort((a, b) => b.nombre.localeCompare(a.nombre));
@@ -303,6 +313,9 @@ export class UsuariosComponent implements OnInit, OnDestroy {
   }
 
   getRoleName(user: Usuario): string {
-    return user.rol || 'Sin rol';
+    const r = (user.rol || '').toUpperCase();
+    if (r === 'ADMIN' || r === 'ROLE_ADMIN' || r === 'ADMINISTRADOR') return 'ADMIN';
+    if (r === 'CLIENTE' || r === 'ROLE_CLIENTE') return 'CLIENTE';
+    return user.rol || 'CLIENTE';
   }
 }
