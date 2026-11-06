@@ -6,7 +6,7 @@
 
 .landing-page {
   position: relative;
-  background-color: var(--bg-main, #0b1437);
+  background-color: var(--bg-main, #000000);
   color: var(--text-main, #e2e8f0);
   min-height: 100vh;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -46,9 +46,10 @@
   right: 0;
   z-index: 999;
   padding: 0.9rem 1.5rem;
-  background: #0b1437;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #27272a;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
   transition: all 0.3s ease;
 }
 

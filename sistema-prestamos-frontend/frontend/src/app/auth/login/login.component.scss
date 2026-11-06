@@ -659,23 +659,24 @@
 
 .auth-wrapper.dark-theme,
 :host-context(.dark-theme) .auth-wrapper {
-  background-color: #060d26;
+  background-color: #000000;
   color: #e2e8f0;
 
   .ambient-glow {
-    opacity: 0.22;
+    opacity: 0.1;
   }
 
   .auth-logo-side {
-    border-right: 1px solid rgba(0, 229, 255, 0.22);
+    background: #09090b;
+    border-right: 1px solid #27272a;
 
     @media (max-width: 820px) {
-      border-bottom: 1px solid rgba(0, 229, 255, 0.22);
+      border-bottom: 1px solid #27272a;
     }
   }
 
   .auth-form-side {
-    background: #0b1437;
+    background: #000000;
   }
 
   .auth-top-nav {
@@ -683,19 +684,19 @@
       color: #94a3b8;
 
       &:hover {
-        color: #00e5ff;
-        background: rgba(0, 229, 255, 0.08);
+        color: #38bdf8;
+        background: #18181b;
       }
     }
 
     .theme-toggle-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: #00e5ff;
+      background: #121215;
+      border: 1px solid #27272a;
+      color: #e4e4e7;
 
       &:hover {
-        background: rgba(0, 229, 255, 0.15);
-        border-color: #00e5ff;
+        background: #18181b;
+        border-color: #3f3f46;
       }
     }
   }
@@ -726,39 +727,39 @@
     }
 
     .input-wrapper {
-      background: #08102b;
-      border: 1.5px solid rgba(0, 229, 255, 0.25);
+      background: #121215;
+      border: 1.5px solid #27272a;
 
       .input-icon {
-        color: #64748b;
+        color: #71717a;
       }
 
       input {
         color: #ffffff;
 
         &::placeholder {
-          color: #64748b;
+          color: #71717a;
         }
       }
 
       .password-toggle {
-        color: #94a3b8;
+        color: #a1a1aa;
 
         &:hover {
-          color: #00e5ff;
+          color: #ffffff;
         }
 
         &:focus-visible {
-          outline: 2px solid #00e5ff;
+          outline: 2px solid #38bdf8;
         }
       }
 
       &:focus-within {
-        border-color: #00e5ff;
-        box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.25);
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
 
         .input-icon {
-          color: #00e5ff;
+          color: #38bdf8;
         }
       }
 
@@ -778,74 +779,73 @@
   }
 
   .auth-button {
-    background: rgba(15, 23, 42, 0.65);
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
     color: #ffffff;
-    border: 1px solid rgba(0, 229, 255, 0.45);
+    border: none;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
     font-weight: 600;
 
     &:hover:not(:disabled) {
-      background: rgba(0, 229, 255, 0.18);
-      border-color: #00e5ff;
-      box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+      background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
       transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
       color: #ffffff;
     }
 
     &:focus-visible {
-      outline: 2px solid #00e5ff;
+      outline: 2px solid #38bdf8;
       outline-offset: 2px;
     }
 
     .spinner-inline {
       border: 2px solid rgba(255, 255, 255, 0.3);
-      border-top-color: #00e5ff;
+      border-top-color: #ffffff;
     }
   }
 
   .social-divider {
-    color: #94a3b8;
+    color: #71717a;
 
     &::before,
     &::after {
-      background: rgba(255, 255, 255, 0.12);
+      background: #27272a;
     }
   }
 
   .btn-social {
-    background: rgba(255, 255, 255, 0.04);
+    background: #121215;
     color: #f1f5f9;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border: 1px solid #27272a;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(0, 229, 255, 0.5);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 229, 255, 0.15);
+      background: #18181b;
+      border-color: #3f3f46;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
       color: #ffffff;
       transform: translateY(-1px);
     }
 
     &:focus-visible {
-      outline: 2px solid #00e5ff;
+      outline: 2px solid #38bdf8;
     }
   }
 
   .auth-footer {
     p {
-      color: #94a3b8;
+      color: #a1a1aa;
     }
 
     a {
-      color: #00e5ff;
+      color: #38bdf8;
 
       &:hover {
-        color: #38d6ff;
+        color: #7dd3fc;
       }
 
       &:focus-visible {
-        outline: 2px solid #00e5ff;
+        outline: 2px solid #38bdf8;
       }
     }
   }

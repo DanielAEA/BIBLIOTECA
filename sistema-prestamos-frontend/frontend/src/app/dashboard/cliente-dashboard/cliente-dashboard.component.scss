@@ -147,16 +147,16 @@
 
   :host-context(.dark-theme) &,
   .dark-theme & {
-    background: #091024;
-    border-right: 1px solid rgba(0, 229, 255, 0.12);
+    background: #000000;
+    border-right: 1px solid #27272a;
 
     .logo-details {
       .brand-logo {
         .logo-mark {
-          background: linear-gradient(135deg, rgba(0, 229, 255, 0.15) 0%, rgba(2, 132, 199, 0.25) 100%);
-          border-color: rgba(0, 229, 255, 0.4);
-          box-shadow: 0 0 15px rgba(0, 229, 255, 0.25);
-          color: #00e5ff;
+          background: #18181b;
+          border-color: #27272a;
+          box-shadow: none;
+          color: #38bdf8;
         }
 
         .brand-text {
@@ -164,26 +164,26 @@
             color: #ffffff;
 
             .highlight {
-              color: #00e5ff;
-              text-shadow: 0 0 14px rgba(0, 229, 255, 0.6);
+              color: #38bdf8;
+              text-shadow: none;
             }
           }
 
           .brand-sub {
-            color: #94a3b8;
+            color: #a1a1aa;
           }
         }
       }
 
       .btn-toggle-sidebar {
-        background: rgba(15, 23, 42, 0.65);
-        border: 1px solid rgba(0, 229, 255, 0.35);
-        color: #00e5ff;
+        background: #18181b;
+        border: 1px solid #27272a;
+        color: #f4f4f5;
 
         &:hover {
-          background: rgba(0, 229, 255, 0.2);
-          border-color: #00e5ff;
-          box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+          background: #27272a;
+          border-color: #3f3f46;
+          box-shadow: none;
         }
       }
     }
@@ -431,42 +431,42 @@
   .dark-theme & {
     .nav-list {
       .menu-label {
-        color: #00e5ff;
-        opacity: 0.85;
+        color: #71717a;
+        opacity: 1;
       }
 
       li {
         .tooltip {
-          background: #0c1427;
-          border-color: rgba(0, 229, 255, 0.3);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          background: #18181b;
+          border-color: #27272a;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
           color: #ffffff;
         }
 
         a {
           .links_name,
           i {
-            color: #94a3b8;
+            color: #a1a1aa;
           }
 
           &:hover {
-            background: rgba(0, 229, 255, 0.08);
-            border-color: rgba(0, 229, 255, 0.25);
+            background: #18181b;
+            border-color: #27272a;
 
             .links_name,
             i {
-              color: #00e5ff;
+              color: #ffffff;
             }
           }
 
           &.active {
-            background: linear-gradient(135deg, rgba(0, 229, 255, 0.16) 0%, rgba(2, 132, 199, 0.22) 100%);
-            border-color: rgba(0, 229, 255, 0.45);
-            box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+            background: #18181b;
+            border-color: #27272a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 
             &::before {
-              background: #00e5ff;
-              box-shadow: 0 0 8px #00e5ff;
+              background: #0284c7;
+              box-shadow: 0 0 8px #0284c7;
             }
 
             .links_name {
@@ -474,8 +474,8 @@
             }
 
             i {
-              color: #00e5ff;
-              text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+              color: #38bdf8;
+              text-shadow: none;
             }
           }
         }
@@ -483,15 +483,15 @@
     }
 
     .profile {
-      background: rgba(15, 23, 42, 0.85);
-      border-color: rgba(0, 229, 255, 0.25);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+      background: #09090b;
+      border-color: #27272a;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 
       .profile-details {
         .avatar {
-          background: linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);
-          color: #070d1e;
-          box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+          background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+          color: #ffffff;
+          box-shadow: none;
         }
 
         .name_job {
@@ -500,18 +500,18 @@
           }
 
           .job {
-            color: #00e5ff;
+            color: #38bdf8;
           }
         }
       }
 
       #log_out {
-        color: #94a3b8;
+        color: #a1a1aa;
 
         &:hover {
           color: #f87171;
           background: rgba(239, 68, 68, 0.15);
-          filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+          filter: none;
         }
       }
     }
@@ -521,34 +521,34 @@
 :host-context(.dark-theme),
 .dark-theme {
   .main-wrapper {
-    background: #070d1e;
+    background: #000000;
   }
 
   .topbar {
-    background: rgba(7, 13, 30, 0.85);
-    border-bottom: 1px solid rgba(0, 229, 255, 0.12);
+    background: rgba(0, 0, 0, 0.85);
+    border-bottom: 1px solid #27272a;
 
     .page-info {
       h1 {
         color: #ffffff;
-        text-shadow: 0 0 20px rgba(0, 229, 255, 0.25);
+        text-shadow: none;
       }
 
       p {
-        color: #94a3b8;
+        color: #a1a1aa;
       }
     }
 
     .theme-toggle-btn {
-      background: rgba(15, 23, 42, 0.65);
-      border-color: rgba(0, 229, 255, 0.35);
-      color: #00e5ff;
-      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      background: #18181b;
+      border-color: #27272a;
+      color: #e4e4e7;
+      box-shadow: none;
 
       &:hover {
-        background: rgba(0, 229, 255, 0.15);
-        border-color: #00e5ff;
-        box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+        background: #27272a;
+        border-color: #3f3f46;
+        box-shadow: none;
       }
     }
   }
