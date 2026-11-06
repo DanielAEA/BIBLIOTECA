@@ -26,6 +26,11 @@ public class StatsController {
         return Map.of("mongoUri", mongoUri);
     }
 
+    @GetMapping("/dashboard")
+    public Map<String, Object> getDashboardFull() {
+        return statsService.getDashboardFull();
+    }
+
     @GetMapping("/summary")
     public Map<String, Object> getSummary() {
         return statsService.getSummary();

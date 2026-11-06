@@ -79,26 +79,32 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.themeSubscription?.unsubscribe();
   }
 
-  // Unified Data Fetching with forkJoin
+  // Unified Data Fetching with fallback
   public fetchAllChartsData(): void {
     this.loading = true;
     this.error = false;
     this.dataReady = false;
     this.destroyCharts();
 
-    forkJoin({
-      summary: this.statsService.getSummary(),
-      debtors: this.statsService.getDebtors(),
-      expirations: this.statsService.getUpcomingExpirations(),
-      books: this.statsService.getMostBorrowedBooks(),
-      genres: this.statsService.getLoansByGenre(),
-      fines: this.statsService.getFinesStats(),
-      authors: this.statsService.getMostBorrowedAuthors(),
-      punctuality: this.statsService.getPunctualityRate(),
-      trends: this.statsService.getLoansByMonth(),
-      status: this.statsService.getLoansByStatus(),
-      dist: this.statsService.getInventoryDistribution()
-    }).subscribe({
+    // 1. Intentar primero el endpoint consolidado ultra-rápido /api/stats/dashboard
+    this.statsService.getDashboardFull().pipe(
+      catchError(err => {
+        console.warn('Dashboard unificado no disponible o con retraso, recurriendo a carga paralela resiliente...', err);
+        return forkJoin({
+          summary: this.statsService.getSummary().pipe(catchError(() => of({}))),
+          debtors: this.statsService.getDebtors().pipe(catchError(() => of([]))),
+          expirations: this.statsService.getUpcomingExpirations().pipe(catchError(() => of([]))),
+          books: this.statsService.getMostBorrowedBooks().pipe(catchError(() => of([]))),
+          genres: this.statsService.getLoansByGenre().pipe(catchError(() => of([]))),
+          fines: this.statsService.getFinesStats().pipe(catchError(() => of([]))),
+          authors: this.statsService.getMostBorrowedAuthors().pipe(catchError(() => of([]))),
+          punctuality: this.statsService.getPunctualityRate().pipe(catchError(() => of(null))),
+          trends: this.statsService.getLoansByMonth().pipe(catchError(() => of([]))),
+          status: this.statsService.getLoansByStatus().pipe(catchError(() => of([]))),
+          dist: this.statsService.getInventoryDistribution().pipe(catchError(() => of(null)))
+        });
+      })
+    ).subscribe({
       next: (results) => {
         this.applyData(results);
         this.dataReady = true;
@@ -143,7 +149,7 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroyCharts();
 
     const isDark = document.body.classList.contains('dark-theme');
-    const primaryColor = isDark ? '#00e5ff' : '#0284c7';
+    const primaryColor = isDark ? '#38bdf8' : '#0284c7';
 
     // Chart 1: Popular Books
     if (this.mostBorrowedBooks.length > 0) 
@@ -180,8 +186,8 @@ export class EstadisticasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getChartOptions(overrideOptions: any = {}) {
     const isDark = document.body.classList.contains('dark-theme');
-    const textColor = isDark ? '#cbd5e1' : '#475569';
-    const gridColor = isDark ? 'rgba(0, 229, 255, 0.12)' : 'rgba(0, 0, 0, 0.06)';
+    const textColor = isDark ? '#a1a1aa' : '#475569';
+    const gridColor = isDark ? '#27272a' : 'rgba(0, 0, 0, 0.06)';
 
     return {
       responsive: true,

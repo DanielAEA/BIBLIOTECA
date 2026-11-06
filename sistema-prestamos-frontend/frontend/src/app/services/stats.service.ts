@@ -9,6 +9,10 @@ export class StatsService {
 
   constructor(private http: HttpClient) {}
 
+  getDashboardFull(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/api/stats/dashboard`);
+  }
+
   getSummary(): Observable<any> {
     return this.http.get(`${this.baseUrl}/api/stats/summary`);
   }
