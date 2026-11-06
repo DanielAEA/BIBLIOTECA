@@ -200,7 +200,7 @@ public class PrediccionService {
         request.setPrevio(previo);
         request.setProm3(prom3);
 
-        log.info("Calculando proyección para categoría '{}' en mes {} utilizando datos de MongoDB: previo={}, prom3={}, totalHistorico={}",
+        log.info("Calculando estimación para categoría '{}' en mes {} utilizando datos de MongoDB: previo={}, prom3={}, totalHistorico={}",
                 categoria, mes, previo, prom3, metricasDb.totalHistorico);
 
         HttpHeaders headers = new HttpHeaders();

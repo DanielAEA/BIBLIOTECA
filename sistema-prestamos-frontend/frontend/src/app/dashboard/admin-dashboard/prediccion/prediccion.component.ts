@@ -66,7 +66,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     // Cargar géneros reales de la base de datos si están disponibles
     this.cargarGenerosBd();
-    // Ejecutar proyección inicial automática conectada a MongoDB
+    // Ejecutar estimación inicial automática conectada a MongoDB
     this.ejecutarPrediccion();
   }
 
@@ -160,7 +160,7 @@ export class PrediccionComponent implements OnInit, AfterViewInit, OnDestroy {
     const labels = [
       'Promedio Trimestral (BD)',
       'Mes Anterior (BD)',
-      `Demanda Proyectada (${this.getNombreMes(this.resultado.mes)})`
+      `Demanda Estimada (${this.getNombreMes(this.resultado.mes)})`
     ];
     const dataValues = [valorProm3, valorPrevio, valorPrediccion];
 

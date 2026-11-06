@@ -3,7 +3,7 @@
   <!-- Encabezado del Módulo -->
   <div class="premium-header">
     <div class="header-titles">
-      <h2>Proyección de Demanda de Préstamos</h2>
+      <h2>Estimación de Demanda de Préstamos</h2>
       <p class="subtitle">Estimación automática de circulación calculada directamente con el historial de préstamos y ejemplares de CiberBook.</p>
     </div>
 
@@ -43,7 +43,7 @@
           </div>
 
           <div class="form-group">
-            <label for="mes">Mes a Proyectar</label>
+            <label for="mes">Mes a Estimar</label>
             <div class="input-wrapper">
               <i class='bx bx-calendar'></i>
               <select id="mes" name="mes" [(ngModel)]="mesSeleccionado" (change)="ejecutarPrediccion()" class="premium-select">
@@ -56,7 +56,7 @@
         <button type="submit" class="btn-predict" [disabled]="loading">
           <i class='bx bx-refresh' *ngIf="!loading"></i>
           <span class="spinner-sm" *ngIf="loading"></span>
-          <span>{{ loading ? 'Consultando Base de Datos...' : 'Actualizar Proyección' }}</span>
+          <span>{{ loading ? 'Consultando Base de Datos...' : 'Actualizar Estimación' }}</span>
         </button>
       </form>
 
@@ -107,7 +107,7 @@
             {{ variacionPorcentual > 15 
                 ? 'Se estima un incremento en la rotación de esta categoría. Se recomienda verificar disponibilidad de ejemplares en estantería física y digital.' 
                 : (variacionPorcentual < -15 
-                    ? 'Se proyecta una menor afluencia estacional. Período óptimo para mantenimiento, catalogación y reordenamiento de sala.' 
+                    ? 'Se estima una menor afluencia estacional. Período óptimo para mantenimiento, catalogación y reordenamiento de sala.' 
                     : 'La demanda esperada se alinea con el volumen promedio de circulación habitual.') }}
           </p>
         </div>
@@ -130,7 +130,7 @@
       <!-- Métricas Claras de Gestión -->
       <div class="metric-ribbon" *ngIf="resultado">
         <div class="metric-box primary">
-          <span class="metric-label">Demanda Proyectada</span>
+          <span class="metric-label">Demanda Estimada</span>
           <div class="metric-value">
             <span>{{ resultado.prediccion_prestamos }}</span>
             <small>préstamos</small>
@@ -153,7 +153,7 @@
         </div>
       </div>
 
-      <!-- Gráfica de Proyección -->
+      <!-- Gráfica de Estimación -->
       <div class="chart-wrapper">
         <canvas #predictChart></canvas>
       </div>
