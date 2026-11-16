@@ -42,28 +42,65 @@
     margin-bottom: 1rem;
 }
 
+.ejemplar-codigo {
+    color: var(--text-muted, #64748b);
+    font-size: 0.8rem;
+}
+
 .overdue-row {
     background-color: #fff1f2 !important;
-}
 
-body.dark-theme .overdue-row {
-    background-color: rgba(220, 38, 38, 0.1) !important;
-    
     td {
-        color: #f87171 !important;
-        border-bottom-color: rgba(255, 255, 255, 0.05) !important;
-        
-        small { color: #fca5a5 !important; }
-        strong { color: #ffffff !important; }
+        color: #991b1b !important;
+        border-bottom-color: #fecdd3 !important;
+
+        strong {
+            color: #881337 !important;
+        }
+
+        .ejemplar-codigo, small {
+            color: #be123c !important;
+        }
     }
 
-    .premium-badge.badge-danger {
-        background-color: #7f1d1d !important;
-        color: #fca5a5 !important;
+    &:hover td {
+        background-color: #ffe4e6 !important;
     }
 }
 
-.dark-theme {
+:host-context(body.dark-theme),
+:host-context(.dark-theme) {
+    .ejemplar-codigo {
+        color: var(--text-muted, #a1a1aa);
+    }
+
+    .overdue-row {
+        background-color: rgba(239, 68, 68, 0.12) !important;
+        
+        td {
+            background-color: transparent !important;
+            color: #fca5a5 !important;
+            border-bottom-color: rgba(239, 68, 68, 0.2) !important;
+            
+            .ejemplar-codigo, small { 
+                color: #f87171 !important; 
+            }
+            strong { 
+                color: #ffffff !important; 
+            }
+        }
+
+        &:hover td {
+            background-color: rgba(239, 68, 68, 0.2) !important;
+        }
+
+        .premium-badge.badge-danger {
+            background-color: rgba(239, 68, 68, 0.25) !important;
+            color: #fca5a5 !important;
+            border: 1px solid rgba(239, 68, 68, 0.4) !important;
+        }
+    }
+
     .premium-card {
         background: var(--bg-card) !important;
     }
@@ -75,6 +112,10 @@ body.dark-theme .overdue-row {
     }
 
     h2, h3, strong { color: var(--text-dark) !important; }
+    
+    .text-danger {
+        color: #f87171 !important;
+    }
 }
 
 .text-danger {

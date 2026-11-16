@@ -31,7 +31,7 @@
                     <tr *ngFor="let p of getActiveLoans()" [class.overdue-row]="hasOverdue(p)">
                         <td>
                             <strong>{{ getLibroTitulo(p) }}</strong><br>
-                            <small style="color:#6b7280">{{ getEjemplarCodigo(p) }}</small>
+                            <small class="ejemplar-codigo">{{ getEjemplarCodigo(p) }}</small>
                         </td>
                         <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
                         <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>

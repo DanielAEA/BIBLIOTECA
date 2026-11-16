@@ -555,6 +555,28 @@ body.dark-theme {
         tr:hover td {
             background: rgba(255, 255, 255, 0.03) !important;
         }
+
+        tr.overdue-row, tr.overdue {
+            background-color: rgba(239, 68, 68, 0.12) !important;
+
+            td {
+                background-color: transparent !important;
+                color: #fca5a5 !important;
+                border-bottom-color: rgba(239, 68, 68, 0.2) !important;
+
+                strong {
+                    color: #ffffff !important;
+                }
+
+                small, .ejemplar-codigo {
+                    color: #f87171 !important;
+                }
+            }
+
+            &:hover td {
+                background-color: rgba(239, 68, 68, 0.2) !important;
+            }
+        }
     }
 
     .form-group {
@@ -805,6 +827,13 @@ body.dark-theme {
         thead th { background: var(--bg-alt) !important; color: var(--text-muted) !important; }
         tbody td { border-bottom-color: var(--border-color) !important; color: var(--text-main) !important; }
         tbody tr:hover td { background: var(--bg-alt) !important; }
+        tbody tr.overdue-row td, tbody tr.overdue td {
+            background-color: transparent !important;
+            color: #fca5a5 !important;
+        }
+        tbody tr.overdue-row:hover td, tbody tr.overdue:hover td {
+            background-color: rgba(239, 68, 68, 0.2) !important;
+        }
     }
 }
 
