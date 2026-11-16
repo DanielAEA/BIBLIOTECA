@@ -41,15 +41,17 @@
                         <th>Sala</th>
                         <th>Fecha</th>
                         <th>Horario</th>
+                        <th>Motivo</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let r of misReservas">
-                        <td>{{ r.sala?.nombre || 'Sala' }}</td>
+                        <td><strong>{{ r.sala?.nombre || getSalaName(r.sala?.id || '') }}</strong></td>
                         <td>{{ r.fechaReserva | date:'dd/MM/yyyy' }}</td>
-                        <td>{{ r.horaInicio }} - {{ r.horaFin }}</td>
+                        <td>{{ formatHora(r.horaInicio) }} - {{ formatHora(r.horaFin) }}</td>
+                        <td>{{ r.motivo || 'Estudio' }}</td>
                         <td>
                             <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">
                                 {{ r.estado }}
@@ -77,35 +79,43 @@
 
             <form (ngSubmit)="submitReserva()" class="premium-form">
                 <div class="form-group">
-                    <label>Fecha:</label>
+                    <label>Fecha de Reserva:</label>
                     <input type="date" [(ngModel)]="reservaFecha" name="fecha" required (change)="onFechaChange()" [min]="getTodayDate()">
+                    <small *ngIf="loadingHorarios" class="text-muted" style="display: block; margin-top: 0.35rem;">
+                        <i class='bx bx-loader-alt bx-spin'></i> Consultando disponibilidad de horarios...
+                    </small>
                 </div>
 
-                <div class="form-row" style="display: flex; gap: 1rem;">
+                <div *ngIf="selectedDateNoSlots" class="alert-no-slots">
+                    <i class='bx bx-info-circle'></i>
+                    <span>{{ selectedDateNoSlotsMessage }}</span>
+                </div>
+
+                <div class="form-row" *ngIf="!selectedDateNoSlots" style="display: flex; gap: 1rem;">
                     <div class="form-group" style="flex: 1;">
                         <label>Hora Inicio:</label>
-                        <select [(ngModel)]="reservaHoraInicio" name="horaInicio" required (change)="onHoraInicioChange()" [disabled]="!reservaFecha">
-                            <option value="">Selecciona...</option>
+                        <select [(ngModel)]="reservaHoraInicio" name="horaInicio" required (change)="onHoraInicioChange()" [disabled]="loadingHorarios || !horasDisponibles.length">
+                            <option value="">{{ loadingHorarios ? 'Cargando...' : 'Selecciona una hora...' }}</option>
                             <option *ngFor="let h of horasDisponibles" [value]="h">{{ h }}</option>
                         </select>
                     </div>
                     <div class="form-group" style="flex: 1;">
                         <label>Hora Fin:</label>
-                        <select [(ngModel)]="reservaHoraFin" name="horaFin" required [disabled]="!reservaHoraInicio">
-                            <option value="">Selecciona...</option>
+                        <select [(ngModel)]="reservaHoraFin" name="horaFin" required [disabled]="!reservaHoraInicio || !horasFinDisponibles.length">
+                            <option value="">Selecciona fin...</option>
                             <option *ngFor="let h of horasFinDisponibles" [value]="h">{{ h }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Motivo / Descripción:</label>
-                    <textarea [(ngModel)]="reservaMotivo" name="motivo" rows="2" placeholder="Ej: Trabajo grupal de programación..."></textarea>
+                    <label>Motivo / Propósito:</label>
+                    <textarea [(ngModel)]="reservaMotivo" name="motivo" rows="2" placeholder="Ej: Estudio individual, trabajo final de grado, programación..."></textarea>
                 </div>
 
                 <div class="form-actions">
                     <button type="button" class="premium-button premium-button-alt" (click)="cancelForm()">Cancelar</button>
-                    <button type="submit" class="premium-button" [disabled]="submitting">
+                    <button type="submit" class="premium-button" [disabled]="submitting || selectedDateNoSlots || !reservaHoraInicio || !reservaHoraFin">
                         {{ submitting ? 'Procesando...' : 'Confirmar Reserva' }}
                     </button>
                 </div>

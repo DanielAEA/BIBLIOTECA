@@ -115,7 +115,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let r of reservas">
-                            <td>{{ r.usuario.nombre || r.usuario.correo || 'N/A' }}</td>
+                            <td>{{ r.usuario?.nombre || r.usuario?.correo || 'Usuario' }}</td>
                             <td>{{ r.fechaReserva }}</td>
                             <td>{{ r.horaInicio }}</td>
                             <td>{{ r.horaFin }}</td>
@@ -124,7 +124,7 @@
                                 <span class="premium-badge" [ngClass]="getEstadoBadgeClass(r.estado)">{{ r.estado }}</span>
                             </td>
                             <td>
-                                <button *ngIf="r.estado === 'CONFIRMADA'" class="btn-delete-premium sm"
+                                <button *ngIf="r.estado === 'CONFIRMADA' || r.estado === 'PENDIENTE'" class="btn-delete-premium sm"
                                     (click)="cancelarReserva(r)">Cancelar</button>
                             </td>
                         </tr>

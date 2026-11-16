@@ -84,6 +84,11 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.PUT, "/api/prestamos/**",
                                                                 "/api/reservas-sala/**", "/api/resenas/**")
                                                 .authenticated()
+                                                .requestMatchers(HttpMethod.PATCH, "/api/reservas-sala/**",
+                                                                "/api/prestamos/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.DELETE, "/api/reservas-sala/**")
+                                                .authenticated()
                                                 .requestMatchers("/api/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated())
                                 .sessionManagement(session -> session

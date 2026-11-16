@@ -17,6 +17,7 @@ export class ReservarSalasComponent implements OnInit {
     salas: Sala[] = [];
     misReservas: ReservaSala[] = [];
     loading = false;
+    loadingHorarios = false;
 
     showForm = false;
     selectedSalaId: string | null = null;
@@ -25,6 +26,9 @@ export class ReservarSalasComponent implements OnInit {
     reservaHoraFin = '';
     reservaMotivo = '';
     submitting = false;
+
+    selectedDateNoSlots = false;
+    selectedDateNoSlotsMessage = '';
 
     horasDisponibles: string[] = [];
     horasFinDisponibles: string[] = [];
@@ -39,14 +43,19 @@ export class ReservarSalasComponent implements OnInit {
     ngOnInit() {
         this.loadSalas();
         this.loadMisReservas();
-        this.generarHorarios();
     }
 
     loadSalas() {
         this.loading = true;
         this.salaService.getActivas().subscribe({
-            next: (salas) => { this.salas = salas; this.loading = false; },
-            error: () => { this.loading = false; }
+            next: (salas) => {
+                this.salas = (salas || []).filter(s => s.activa !== false);
+                this.loading = false;
+            },
+            error: (err) => {
+                console.error('Error cargando salas activas:', err);
+                this.loading = false;
+            }
         });
     }
 
@@ -56,30 +65,48 @@ export class ReservarSalasComponent implements OnInit {
         const userId = payload.id || payload.sub;
         this.reservaSalaService.getByUsuario(userId).subscribe({
             next: (r) => {
-                this.misReservas = r.map(reserva => ({
+                this.misReservas = (r || []).map(reserva => ({
                     ...reserva,
-                    sala: reserva.sala || this.salas.find(s => s.id === (reserva as any).salaId) || { nombre: 'Sala' }
+                    sala: reserva.sala || this.salas.find(s => s.id === (reserva as any).salaId) || { id: '', nombre: 'Sala de Estudio' }
                 }));
             },
-            error: (err: any) => console.error('Error cargando reservas:', err)
+            error: (err: any) => console.error('Error cargando mis reservas:', err)
         });
     }
 
     openReservaForm(sala: Sala) {
         this.selectedSalaId = sala.id;
-        this.reservaFecha = '';
+        this.reservaFecha = this.getTodayDate();
         this.reservaHoraInicio = '';
         this.reservaHoraFin = '';
         this.reservaMotivo = '';
         this.reservasActivas = [];
-        this.generarHorarios();
         this.showForm = true;
+        this.onFechaChange();
     }
 
     cancelForm() {
         this.showForm = false;
         this.selectedSalaId = null;
         this.reservasActivas = [];
+        this.selectedDateNoSlots = false;
+        this.selectedDateNoSlotsMessage = '';
+    }
+
+    formatHora(hora: any): string {
+        if (!hora) return '';
+        if (typeof hora === 'string') return hora.substring(0, 5);
+        if (Array.isArray(hora) && hora.length >= 2) {
+            const h = String(hora[0]).padStart(2, '0');
+            const m = String(hora[1] || 0).padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        if (typeof hora === 'object' && hora.hour !== undefined) {
+            const h = String(hora.hour).padStart(2, '0');
+            const m = String(hora.minute || 0).padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        return String(hora).substring(0, 5);
     }
 
     onFechaChange() {
@@ -88,57 +115,83 @@ export class ReservarSalasComponent implements OnInit {
         this.reservaHoraFin = '';
         this.horasFinDisponibles = [];
         this.generarHorarios();
-        
-        if (!this.selectedSalaId || !this.reservaFecha) return;
-        
-        this.loading = true;
+
+        if (!this.selectedSalaId || !this.reservaFecha || this.selectedDateNoSlots) return;
+
+        this.loadingHorarios = true;
         this.reservaSalaService.getBySalaYFecha(this.selectedSalaId, this.reservaFecha).subscribe({
             next: (reservas) => {
-                this.reservasActivas = reservas.filter(r => r.estado !== 'CANCELADA');
+                this.reservasActivas = (reservas || []).filter(r => r.estado !== 'CANCELADA');
                 this.filtrarHorariosOcupados();
-                this.loading = false;
+                this.loadingHorarios = false;
             },
             error: (err) => {
                 console.error('Error cargando reservas de la fecha', err);
-                this.loading = false;
+                this.loadingHorarios = false;
             }
         });
     }
 
     filtrarHorariosOcupados() {
+        if (!this.horasDisponibles.length) return;
+
         this.horasDisponibles = this.horasDisponibles.filter(hora => {
             for (const r of this.reservasActivas) {
-                const exInicio = r.horaInicio.substring(0, 5);
-                const exFin = r.horaFin.substring(0, 5);
-                if (hora >= exInicio && hora < exFin) {
-                    return false; 
+                const exInicio = this.formatHora(r.horaInicio);
+                const exFin = this.formatHora(r.horaFin);
+                if (exInicio && exFin && hora >= exInicio && hora < exFin) {
+                    return false;
                 }
             }
             return true;
         });
+
+        if (this.horasDisponibles.length === 0 && !this.selectedDateNoSlots) {
+            this.selectedDateNoSlots = true;
+            this.selectedDateNoSlotsMessage = 'Todos los horarios de atención para esta fecha se encuentran ocupados en esta sala. Por favor selecciona otra fecha u otra sala.';
+        }
     }
 
     generarHorarios() {
         this.horasDisponibles = [];
+        this.selectedDateNoSlots = false;
+        this.selectedDateNoSlotsMessage = '';
+
+        if (!this.reservaFecha) return;
+
         const now = new Date();
-        const selectedDate = this.reservaFecha ? new Date(this.reservaFecha + 'T00:00:00') : null;
-        const isToday = selectedDate && selectedDate.toDateString() === now.toDateString();
+        const parts = this.reservaFecha.split('-').map(v => parseInt(v, 10));
+        if (parts.length < 3) return;
+
+        const selectedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+        const todayDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+        if (selectedDate < todayDate) {
+            this.selectedDateNoSlots = true;
+            this.selectedDateNoSlotsMessage = 'No puedes realizar reservas en fechas pasadas.';
+            return;
+        }
+
+        const isToday = selectedDate.getTime() === todayDate.getTime();
 
         for (let h = 8; h <= 18; h++) {
-            for (let m of ['00', '30']) {
+            for (const m of ['00', '30']) {
                 const horaStr = `${h < 10 ? '0' + h : h}:${m}`;
-                
+
                 if (isToday) {
-                    // Check if time is at least 1 hour in the future
-                    const candidateTime = new Date();
-                    candidateTime.setHours(h, parseInt(m), 0, 0);
-                    
-                    const minFutureTime = new Date(now.getTime() + 60 * 60 * 1000);
+                    const candidateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, parseInt(m, 10), 0, 0);
+                    // 15 minutes ahead buffer
+                    const minFutureTime = new Date(now.getTime() + 15 * 60 * 1000);
                     if (candidateTime <= minFutureTime) continue;
                 }
-                
+
                 this.horasDisponibles.push(horaStr);
             }
+        }
+
+        if (isToday && this.horasDisponibles.length === 0) {
+            this.selectedDateNoSlots = true;
+            this.selectedDateNoSlotsMessage = 'El horario de atención es de 08:00 a 19:00. Ya no quedan turnos disponibles para el día de hoy; por favor reserva a partir de mañana.';
         }
     }
 
@@ -146,18 +199,18 @@ export class ReservarSalasComponent implements OnInit {
         this.horasFinDisponibles = [];
         this.reservaHoraFin = '';
         if (!this.reservaHoraInicio) return;
-        
-        let [hStr, mStr] = this.reservaHoraInicio.split(':');
+
+        const [hStr, mStr] = this.reservaHoraInicio.split(':');
         let h = parseInt(hStr, 10);
         let m = parseInt(mStr, 10);
-        
+
         m += 30;
         if (m === 60) {
             h++;
             m = 0;
         }
 
-        let maxOpciones = 2;
+        const maxOpciones = 4; // allow blocks up to 2 hours
         let opcionesAgregadas = 0;
 
         while ((h < 19 || (h === 19 && m === 0)) && opcionesAgregadas < maxOpciones) {
@@ -167,8 +220,8 @@ export class ReservarSalasComponent implements OnInit {
 
             let cruzaReserva = false;
             for (const r of this.reservasActivas) {
-                const exInicio = r.horaInicio.substring(0, 5);
-                if (exInicio > this.reservaHoraInicio && exInicio < horaCandidata) {
+                const exInicio = this.formatHora(r.horaInicio);
+                if (exInicio && exInicio >= this.reservaHoraInicio && exInicio < horaCandidata) {
                     cruzaReserva = true;
                     break;
                 }
@@ -186,44 +239,51 @@ export class ReservarSalasComponent implements OnInit {
             }
             opcionesAgregadas++;
         }
+
+        if (this.horasFinDisponibles.length > 0) {
+            this.reservaHoraFin = this.horasFinDisponibles[0];
+        }
     }
 
     getSalaName(id: string): string {
-        return this.salas.find(s => s.id === id)?.nombre || 'Sala';
+        return this.salas.find(s => s.id === id)?.nombre || 'Sala de Estudio';
     }
 
     submitReserva() {
         if (!this.selectedSalaId || !this.reservaFecha || !this.reservaHoraInicio || !this.reservaHoraFin) {
-            Swal.fire('Atencion', 'Completa todos los campos obligatorios.', 'warning');
+            Swal.fire('Atención', 'Completa todos los campos obligatorios.', 'warning');
             return;
         }
 
         if (this.reservaHoraInicio < '08:00' || this.reservaHoraFin > '19:00') {
-            Swal.fire('Atencion', 'Las reservas solo están permitidas entre las 08:00 y las 19:00.', 'warning');
+            Swal.fire('Atención', 'Las reservas solo están permitidas entre las 08:00 y las 19:00.', 'warning');
             return;
         }
 
         if (this.reservaHoraInicio >= this.reservaHoraFin) {
-            Swal.fire('Atencion', 'La hora de fin debe ser posterior a la hora de inicio.', 'warning');
+            Swal.fire('Atención', 'La hora de fin debe ser posterior a la hora de inicio.', 'warning');
             return;
         }
 
         for (const existente of this.reservasActivas) {
-            const exInicio = existente.horaInicio.substring(0, 5); 
-            const exFin = existente.horaFin.substring(0, 5);
+            const exInicio = this.formatHora(existente.horaInicio);
+            const exFin = this.formatHora(existente.horaFin);
 
-            if (this.reservaHoraInicio < exFin && this.reservaHoraFin > exInicio) {
+            if (exInicio && exFin && this.reservaHoraInicio < exFin && this.reservaHoraFin > exInicio) {
                 Swal.fire({
                     title: 'Horario no disponible',
                     text: `La sala ya está ocupada desde las ${exInicio} hasta las ${exFin}. Por favor, selecciona otro horario.`,
-                    icon: 'error'
+                    icon: 'warning'
                 });
                 return;
             }
         }
 
         const payload = this.authService.getPayload();
-        if (!payload) return;
+        if (!payload) {
+            Swal.fire('Sesión requerida', 'Debes iniciar sesión para realizar una reserva.', 'warning');
+            return;
+        }
 
         this.submitting = true;
         this.reservaSalaService.create({
@@ -232,38 +292,51 @@ export class ReservarSalasComponent implements OnInit {
             fechaReserva: this.reservaFecha,
             horaInicio: this.reservaHoraInicio,
             horaFin: this.reservaHoraFin,
-            motivo: this.reservaMotivo
+            motivo: this.reservaMotivo ? this.reservaMotivo.trim() : 'Estudio'
         }).subscribe({
             next: () => {
                 this.submitting = false;
                 this.cancelForm();
                 this.loadMisReservas();
-                Swal.fire({ title: 'Reservada!', text: 'Tu sala ha sido reservada.', icon: 'success', timer: 2000, showConfirmButton: false });
+                Swal.fire({
+                    title: '¡Reservada!',
+                    text: 'Tu sala ha sido reservada con éxito.',
+                    icon: 'success',
+                    timer: 2200,
+                    showConfirmButton: false
+                });
             },
             error: (err: any) => {
                 this.submitting = false;
-                Swal.fire('Error', err.error?.error || 'No se pudo reservar la sala', 'error');
+                console.error('Error al reservar sala:', err);
+                const msg = err.error?.error || err.message || 'No se pudo reservar la sala';
+                Swal.fire('Error', msg, 'error');
             }
         });
     }
 
     cancelarReserva(reserva: ReservaSala) {
         Swal.fire({
-            title: 'Cancelar reserva?',
-            text: 'Esta accion no se puede deshacer',
+            title: '¿Cancelar reserva?',
+            text: 'Esta acción no se puede deshacer.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Si, cancelar',
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, cancelar',
             cancelButtonText: 'No'
         }).then((result) => {
             if (result.isConfirmed) {
                 this.reservaSalaService.cambiarEstado(reserva.id, 'CANCELADA').subscribe({
                     next: () => {
                         this.loadMisReservas();
-                        Swal.fire('Cancelada', 'Tu reserva ha sido cancelada.', 'success');
+                        Swal.fire('¡Cancelada!', 'Tu reserva ha sido cancelada exitosamente.', 'success');
                     },
-                    error: () => Swal.fire('Error', 'No se pudo cancelar la reserva', 'error')
+                    error: (err: any) => {
+                        console.error('Error al cancelar reserva:', err);
+                        const msg = err.error?.error || 'No se pudo cancelar la reserva';
+                        Swal.fire('Error', msg, 'error');
+                    }
                 });
             }
         });
@@ -279,6 +352,10 @@ export class ReservarSalasComponent implements OnInit {
     }
 
     getTodayDate(): string {
-        return new Date().toISOString().split('T')[0];
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 }
