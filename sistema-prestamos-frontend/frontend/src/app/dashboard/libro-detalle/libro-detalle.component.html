@@ -102,6 +102,7 @@
         <thead>
           <tr>
             <th>Código</th>
+            <th>Código QR</th>
             <th>Ubicación</th>
             <th>Estado</th>
             <th>Disponible</th>
@@ -111,6 +112,11 @@
         <tbody>
           <tr *ngFor="let ej of libro.ejemplares">
             <td><code class="code-badge">{{ ej.codigo }}</code></td>
+            <td>
+              <button class="btn-qr-pill" (click)="verQrEjemplar(ej)" title="Ver, descargar e imprimir código QR">
+                <i class='bx bx-qr-scan'></i> Ver QR
+              </button>
+            </td>
             <td>
               <span class="ubicacion-text" *ngIf="ej.bloque || ej.estante">
                 {{ ej.bloque }} {{ ej.estante ? '- ' + ej.estante : '' }}
@@ -128,9 +134,6 @@
               </span>
             </td>
             <td class="actions-cell" *ngIf="isAdmin">
-              <button class="icon-btn qr-btn" (click)="verQrEjemplar(ej)" title="Ver QR">
-                <i class='bx bx-qr'></i>
-              </button>
               <button class="icon-btn delete-btn" (click)="deleteEjemplar(ej)" title="Eliminar">
                 <i class='bx bx-trash'></i>
               </button>

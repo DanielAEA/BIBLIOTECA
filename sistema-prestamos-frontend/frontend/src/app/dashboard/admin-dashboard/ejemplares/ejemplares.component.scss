@@ -153,3 +153,44 @@
     i { color: #3b82f6; }
   }
 }
+
+
+:host-context(.dark-theme) {
+  .ejemplar-card {
+    background: #09090b;
+    border-color: #27272a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+    &:hover {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  .card-header .codigo {
+    background: #18181b;
+    color: #f4f4f5;
+  }
+
+  .card-header .ubicacion {
+    color: #a1a1aa;
+  }
+
+  .libro-titulo {
+    color: #ffffff;
+  }
+
+  .card-footer {
+    border-top-color: #27272a;
+  }
+
+  .bloque-section .bloque-title {
+    color: #ffffff;
+    border-bottom-color: #27272a;
+  }
+
+  .icon-btn {
+    &.edit:hover { background: rgba(59, 130, 246, 0.15); }
+    &.qr:hover { background: rgba(16, 185, 129, 0.15); }
+    &.delete:hover { background: rgba(239, 68, 68, 0.15); }
+  }
+}

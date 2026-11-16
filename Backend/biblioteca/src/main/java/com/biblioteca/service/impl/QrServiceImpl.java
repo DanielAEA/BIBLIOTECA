@@ -18,15 +18,16 @@ public class QrServiceImpl implements QrService {
 
     private static final Logger logger = LoggerFactory.getLogger(QrServiceImpl.class);
 
-    @Value("${app.base-url:http://localhost:8080}")
-    private String baseUrl;
+    @Value("${app.front.url:${APP_FRONT_URL:https://ciberbook-frontend-production.up.railway.app}}")
+    private String frontUrl;
 
     @Override
     public byte[] generarQr(@NonNull String id, boolean esEjemplar) {
         try {
-            String url = baseUrl.endsWith("/")
-                    ? baseUrl.substring(0, baseUrl.length() - 1)
-                    : baseUrl;
+            String url = frontUrl != null && !frontUrl.trim().isEmpty() ? frontUrl.trim() : "https://ciberbook-frontend-production.up.railway.app";
+            if (url.endsWith("/")) {
+                url = url.substring(0, url.length() - 1);
+            }
 
             String path = esEjemplar ? "/solicitar-ejemplar/" : "/solicitar/";
             String text = url + path + id;

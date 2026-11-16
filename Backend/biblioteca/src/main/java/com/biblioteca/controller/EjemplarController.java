@@ -18,9 +18,11 @@ import java.util.Optional;
 public class EjemplarController {
 
     private final LibroRepository libroRepository;
+    private final com.biblioteca.service.QrService qrService;
 
-    public EjemplarController(LibroRepository libroRepository) {
+    public EjemplarController(LibroRepository libroRepository, com.biblioteca.service.QrService qrService) {
         this.libroRepository = libroRepository;
+        this.qrService = qrService;
     }
 
     @GetMapping
@@ -38,6 +40,7 @@ public class EjemplarController {
                     ejMap.put("estado", e.getEstado());
                     ejMap.put("bloque", e.getBloque());
                     ejMap.put("estante", e.getEstante());
+                    ejMap.put("urlQr", "/api/ejemplares/" + e.getId() + "/qr");
                     
                     Map<String, Object> libMap = new HashMap<>();
                     libMap.put("id", libro.getId());
@@ -65,6 +68,7 @@ public class EjemplarController {
                         ejMap.put("estado", e.getEstado());
                         ejMap.put("bloque", e.getBloque());
                         ejMap.put("estante", e.getEstante());
+                        ejMap.put("urlQr", "/api/ejemplares/" + e.getId() + "/qr");
                         
                         Map<String, Object> libMap = new HashMap<>();
                         libMap.put("id", libro.getId());
@@ -75,6 +79,17 @@ public class EjemplarController {
                     }
                 }
             }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/qr")
+    public ResponseEntity<byte[]> getQr(@PathVariable String id) {
+        byte[] qrBytes = qrService.generarQr(id, true);
+        if (qrBytes != null) {
+            return ResponseEntity.ok()
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, org.springframework.http.MediaType.IMAGE_PNG_VALUE)
+                    .body(qrBytes);
         }
         return ResponseEntity.notFound().build();
     }

@@ -41,6 +41,7 @@ export const routes: Routes = [
       { path: 'usuarios', component: UsuariosComponent },
       { path: 'libros', component: LibrosComponent },
       { path: 'libros/:id', loadComponent: () => import('./dashboard/libro-detalle/libro-detalle.component').then(m => m.LibroDetalleComponent) },
+      { path: 'ejemplares', loadComponent: () => import('./dashboard/admin-dashboard/ejemplares/ejemplares.component').then(m => m.EjemplaresComponent) },
       { path: 'autores', component: AutoresComponent },
       { path: 'editoriales', component: EditorialesComponent },
       { path: 'generos', component: GenerosComponent },

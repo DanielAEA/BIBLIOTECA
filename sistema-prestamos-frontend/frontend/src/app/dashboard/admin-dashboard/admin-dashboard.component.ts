@@ -20,6 +20,7 @@ export class AdminSidebarComponent {
     { name: 'Préstamos', path: '/admin/prestamos', icon: 'bx-transfer' },
     { name: 'Usuarios', path: '/admin/usuarios', icon: 'bx-group' },
     { name: 'Libros', path: '/admin/libros', icon: 'bx-book' },
+    { name: 'Ejemplares', path: '/admin/ejemplares', icon: 'bx-grid-alt' },
     { name: 'Autores', path: '/admin/autores', icon: 'bx-user-pin' },
     { name: 'Editoriales', path: '/admin/editoriales', icon: 'bx-buildings' },
     { name: 'Géneros', path: '/admin/generos', icon: 'bx-purchase-tag' },

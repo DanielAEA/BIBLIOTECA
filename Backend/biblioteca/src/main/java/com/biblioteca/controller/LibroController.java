@@ -262,7 +262,14 @@ public class LibroController {
                     .filter(e -> Boolean.TRUE.equals(e.getDisponible()))
                     .count();
             ejemplarDTOs = libro.getEjemplares().stream()
-                    .map(e -> new LibroDTO.EjemplarDTO(e.getId(), e.getCodigo(), e.getDisponible(), e.getEstado(), e.getBloque(), e.getEstante()))
+                    .map(e -> new LibroDTO.EjemplarDTO(
+                            e.getId(),
+                            e.getCodigo(),
+                            e.getDisponible(),
+                            e.getEstado(),
+                            e.getBloque(),
+                            e.getEstante(),
+                            "/api/libros/" + libro.getId() + "/ejemplares/" + e.getId() + "/qr"))
                     .collect(Collectors.toList());
         }
 

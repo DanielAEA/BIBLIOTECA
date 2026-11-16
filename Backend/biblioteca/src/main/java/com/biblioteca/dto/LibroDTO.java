@@ -90,15 +90,28 @@ public class LibroDTO {
         private String estado;
         private String bloque;
         private String estante;
+        private String urlQr;
+
         public EjemplarDTO(String id, String codigo, Boolean disponible, String estado, String bloque, String estante) {
-            this.id = id; this.codigo = codigo; this.disponible = disponible; this.estado = estado;
-            this.bloque = bloque; this.estante = estante;
+            this(id, codigo, disponible, estado, bloque, estante, null);
         }
+
+        public EjemplarDTO(String id, String codigo, Boolean disponible, String estado, String bloque, String estante, String urlQr) {
+            this.id = id;
+            this.codigo = codigo;
+            this.disponible = disponible;
+            this.estado = estado;
+            this.bloque = bloque;
+            this.estante = estante;
+            this.urlQr = urlQr;
+        }
+
         public String getId() { return id; }
         public String getCodigo() { return codigo; }
         public Boolean getDisponible() { return disponible; }
         public String getEstado() { return estado; }
         public String getBloque() { return bloque; }
         public String getEstante() { return estante; }
+        public String getUrlQr() { return urlQr; }
     }
 }

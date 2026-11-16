@@ -257,24 +257,111 @@ export class EjemplaresComponent implements OnInit {
 
   verQr(ejemplar: Ejemplar) {
     const apiBase = this.configService.apiUrl;
-    
-    const qrImgUrl = `${apiBase}/qr/qr-ejemplar-${ejemplar.id}.png`;
+    const cleanApi = apiBase.endsWith('/') ? apiBase.slice(0, -1) : apiBase;
+    const qrImgUrl = `${cleanApi}/api/ejemplares/${ejemplar.id}/qr`;
+    const solicitUrl = `/solicitar-ejemplar/${ejemplar.id}`;
+    const libroTitulo = ejemplar.libro?.titulo || 'Libro';
+    const ubicacion = [ejemplar.bloque, ejemplar.estante].filter(Boolean).join(' - ') || 'Biblioteca Central';
     
     Swal.fire({
-      title: `QR - Ejemplar ${ejemplar.codigo}`,
+      title: `Código QR • ${ejemplar.codigo}`,
       html: `
-        <div style="text-align: center;">
-          <img src="${qrImgUrl}" alt="QR Code" style="width:250px;height:250px;margin:0 auto;display:block;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-          <p style="margin-top:1.5rem;color:#475569;font-weight:500;">Libro: <i>${ejemplar.libro.titulo}</i></p>
-          <p style="margin-top:0.5rem;color:#64748b;font-size:0.9rem;">Código QR del ejemplar para identificación</p>
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+          <div style="background: #ffffff; padding: 14px; border-radius: 16px; border: 2px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.08); display: inline-block;">
+            <img src="${qrImgUrl}" alt="QR Code ${ejemplar.codigo}" 
+                 style="width:220px;height:220px;display:block;border-radius:8px;"
+                 onerror="this.style.display='none'; document.getElementById('qr-error-box-ej').style.display='block';">
+            <div id="qr-error-box-ej" style="display:none; color: #ef4444; font-size: 0.85rem; padding: 1.5rem; width: 220px;">
+              <i class='bx bx-error-circle' style="font-size: 2.5rem; margin-bottom: 0.5rem; display: block;"></i>
+              No se pudo cargar el código QR.
+            </div>
+          </div>
+          <div style="margin-top: 0.25rem;">
+            <strong style="font-size: 1.05rem; color: inherit; display: block;">${libroTitulo}</strong>
+            <span style="font-size: 0.85rem; color: #64748b; display: block; margin-top: 2px;">
+              Ubicación: <strong>${ubicacion}</strong> • Estado: <strong>${ejemplar.disponible ? 'Disponible' : 'Prestado'}</strong>
+            </span>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
+            <button id="btn-descargar-qr-ej" class="swal2-styled" style="background:#0284c7;color:#fff;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none;">
+              <i class='bx bx-download'></i> Descargar QR
+            </button>
+            <button id="btn-imprimir-qr-ej" class="swal2-styled" style="background:#059669;color:#fff;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none;">
+              <i class='bx bx-printer'></i> Imprimir Etiqueta
+            </button>
+            <a href="${solicitUrl}" target="_blank" class="swal2-styled" style="background:#475569;color:#fff;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;text-decoration:none;cursor:pointer;">
+              <i class='bx bx-link-external'></i> Probar Enlace
+            </a>
+          </div>
         </div>
       `,
       showCloseButton: true,
       showConfirmButton: false,
-      width: 450,
+      width: 480,
       padding: '2rem',
-      background: '#ffffff',
-      color: '#1e293b'
+      didOpen: () => {
+        const btnDescargar = document.getElementById('btn-descargar-qr-ej');
+        if (btnDescargar) {
+          btnDescargar.addEventListener('click', () => {
+            this.descargarQr(qrImgUrl, `QR-${ejemplar.codigo}.png`);
+          });
+        }
+        const btnImprimir = document.getElementById('btn-imprimir-qr-ej');
+        if (btnImprimir) {
+          btnImprimir.addEventListener('click', () => {
+            this.imprimirEtiqueta(libroTitulo, ejemplar.codigo, ubicacion, qrImgUrl);
+          });
+        }
+      }
     });
+  }
+
+  descargarQr(url: string, filename: string) {
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      })
+      .catch(() => window.open(url, '_blank'));
+  }
+
+  imprimirEtiqueta(libroTitulo: string, ejemplarCodigo: string, ubicacion: string, qrUrl: string) {
+    const w = window.open('', '_blank', 'width=500,height=550');
+    if (!w) return;
+    w.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Etiqueta QR - ${ejemplarCodigo}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 95vh; margin: 0; background: #fff; }
+            .sticker { width: 300px; border: 2px dashed #0284c7; border-radius: 12px; padding: 20px; text-align: center; box-sizing: border-box; }
+            .header { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #0284c7; font-weight: 800; margin-bottom: 10px; }
+            .qr-img { width: 170px; height: 170px; display: block; margin: 0 auto 10px; }
+            .codigo { font-family: monospace; font-size: 18px; font-weight: 800; background: #f1f5f9; padding: 4px 12px; border-radius: 6px; display: inline-block; margin-bottom: 6px; color: #0f172a; }
+            .titulo { font-size: 13px; font-weight: 700; color: #0f172a; margin: 4px 0; max-height: 38px; overflow: hidden; }
+            .ubicacion { font-size: 11px; color: #64748b; margin-top: 4px; }
+            @media print {
+              body { background: transparent; }
+              .sticker { border: 1px solid #94a3b8; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="sticker">
+            <div class="header">CiberBook • Biblioteca</div>
+            <img src="${qrUrl}" class="qr-img" alt="QR" onload="window.print();" />
+            <div class="codigo">${ejemplarCodigo}</div>
+            <div class="titulo">${libroTitulo}</div>
+            <div class="ubicacion">${ubicacion}</div>
+          </div>
+        </body>
+      </html>
+    `);
+    w.document.close();
   }
 }
