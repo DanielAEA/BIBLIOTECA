@@ -21,6 +21,7 @@ export class RegisterComponent implements AfterViewInit {
   error: string | null = null;
   success: boolean = false;
   showPassword: boolean = false;
+  isPrestamoRedirect: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +34,9 @@ export class RegisterComponent implements AfterViewInit {
       correo: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    const redirectUrl = localStorage.getItem('redirectUrl');
+    this.isPrestamoRedirect = !!(redirectUrl && redirectUrl.includes('solicitar-ejemplar'));
   }
 
   ngAfterViewInit(): void {
@@ -54,13 +58,37 @@ export class RegisterComponent implements AfterViewInit {
     this.loading = true;
     this.error = null;
 
+    const correo = this.registerForm.value.correo;
+    const password = this.registerForm.value.password;
+
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
         this.success = true;
         this.loading = false;
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2500);
+        
+        // Si viene desde un préstamo QR, auto-iniciar sesión y volver directamente al libro
+        if (this.isPrestamoRedirect) {
+          this.authService.login(correo, password).subscribe({
+            next: () => {
+              const redirectUrl = localStorage.getItem('redirectUrl');
+              if (redirectUrl) {
+                localStorage.removeItem('redirectUrl');
+                this.router.navigateByUrl(redirectUrl);
+              } else {
+                this.router.navigate(['/cliente/prestamos']);
+              }
+            },
+            error: () => {
+              setTimeout(() => {
+                this.router.navigate(['/login']);
+              }, 1800);
+            }
+          });
+        } else {
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 2000);
+        }
       },
       error: (err: any) => {
         this.error = err.error?.error || 'Error al registrar usuario. Inténtalo de nuevo.';

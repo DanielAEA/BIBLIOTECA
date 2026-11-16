@@ -21,6 +21,8 @@ export class SolicitarEjemplarComponent implements OnInit {
   submitting = false;
   success = false;
   portadaUrl = 'assets/default-cover.svg';
+  currentUserEmail = '';
+  isUserLoggedIn = false;
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -32,18 +34,42 @@ export class SolicitarEjemplarComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-    
-    if (!this.authService.isLoggedIn()) {
-      localStorage.setItem('redirectUrl', this.router.url);
-      this.router.navigate(['/login']);
-      return;
-    }
+    this.checkUserSession();
 
     if (this.id) {
       this.loadEjemplar();
     } else {
       this.loading = false;
     }
+  }
+
+  checkUserSession() {
+    this.isUserLoggedIn = this.authService.isLoggedIn();
+    if (this.isUserLoggedIn) {
+      const payload = this.authService.getPayload();
+      this.currentUserEmail = payload?.sub || payload?.correo || payload?.username || 'Usuario';
+    } else {
+      this.currentUserEmail = '';
+    }
+  }
+
+  getUserInitial(): string {
+    return this.currentUserEmail ? this.currentUserEmail.charAt(0).toUpperCase() : 'U';
+  }
+
+  cambiarUsuario() {
+    localStorage.setItem('redirectUrl', this.router.url);
+    this.authService.logout();
+  }
+
+  irALogin() {
+    localStorage.setItem('redirectUrl', this.router.url);
+    this.router.navigate(['/login']);
+  }
+
+  irARegistro() {
+    localStorage.setItem('redirectUrl', this.router.url);
+    this.router.navigate(['/register']);
   }
 
   loadEjemplar() {
@@ -122,15 +148,19 @@ export class SolicitarEjemplarComponent implements OnInit {
   }
 
   cancelar() {
-    this.router.navigate(['/']);
+    if (this.isUserLoggedIn) {
+      const rol = this.authService.getRol();
+      if (rol === 'ADMIN') {
+        this.router.navigate(['/admin/libros']);
+      } else {
+        this.router.navigate(['/cliente/catalogo']);
+      }
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   cerrar() {
-    // Intentar cerrar la pestaña (funciona si se abrió mediante script o en ciertos navegadores móviles)
-    window.close();
-    // Fallback por si window.close() es bloqueado
-    setTimeout(() => {
-      this.router.navigate(['/cliente/prestamos']);
-    }, 500);
+    this.router.navigate(['/cliente/prestamos']);
   }
 }
