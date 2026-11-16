@@ -49,7 +49,9 @@ export class ReservarSalasComponent implements OnInit {
         this.loading = true;
         this.salaService.getActivas().subscribe({
             next: (salas) => {
-                this.salas = (salas || []).filter(s => s.activa !== false);
+                this.salas = (salas || [])
+                    .filter(s => s.activa !== false)
+                    .sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', undefined, { numeric: true, sensitivity: 'base' }));
                 this.loading = false;
             },
             error: (err) => {

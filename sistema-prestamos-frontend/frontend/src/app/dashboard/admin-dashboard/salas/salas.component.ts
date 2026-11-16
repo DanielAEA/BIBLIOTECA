@@ -148,9 +148,9 @@ export class SalasComponent implements OnInit, OnDestroy {
                 } else if (this.sortOrder === 'cap_asc') {
                     list = list.sort((a, b) => (a.capacidad || 0) - (b.capacidad || 0));
                 } else if (this.sortOrder === 'desc') {
-                    list = list.sort((a, b) => (b.nombre || '').localeCompare(a.nombre || ''));
+                    list = list.sort((a, b) => (b.nombre || '').localeCompare(a.nombre || '', undefined, { numeric: true, sensitivity: 'base' }));
                 } else {
-                    list = list.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || ''));
+                    list = list.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', undefined, { numeric: true, sensitivity: 'base' }));
                 }
                 this.salas = list;
                 this.page = response.page;
