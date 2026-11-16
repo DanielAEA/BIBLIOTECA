@@ -39,9 +39,12 @@
       <div style="padding:24px;">
         <h1 style="font-size:22px;font-weight:800;color:#0f172a;margin:0 0 6px;line-height:1.2;text-align:center;">{{
           ejemplar.libro?.titulo }}</h1>
+        <p *ngIf="getAutorNombre()" style="text-align:center;color:#475569;font-size:14px;font-weight:600;margin:0 0 8px;">
+          {{ getAutorNombre() }}
+        </p>
         <p
           style="text-align:center;color:#64748b;font-size:13px;font-weight:500;margin:0 0 20px;font-family:monospace;">
-          {{ ejemplar.codigo }}</p>
+          Código: {{ ejemplar.codigo }}</p>
 
         <div
           style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:24px;display:flex;align-items:center;gap:10px;">
@@ -50,7 +53,9 @@
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
             <circle cx="12" cy="10" r="3" />
           </svg>
-          <span style="color:#374151;font-size:13px;font-weight:600;">Biblioteca Central</span>
+          <span style="color:#374151;font-size:13px;font-weight:600;">
+            {{ ejemplar.bloque ? (ejemplar.bloque + (ejemplar.estante ? ' • ' + ejemplar.estante : '')) : 'Biblioteca Central' }}
+          </span>
         </div>
 
         <!-- Botones -->
@@ -88,8 +93,9 @@
       </div>
       <h1 style="font-size:24px;font-weight:800;color:#0f172a;margin:0 0 8px;">Préstamo confirmado</h1>
       <p style="color:#2563eb;font-weight:700;font-size:15px;margin:0 0 16px;">{{ ejemplar?.libro?.titulo }}</p>
-      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0 0 32px;">Ya puedes retirar el libro en el
-        mostrador de la biblioteca.</p>
+      <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0 0 32px;">
+        {{ ejemplar?.bloque ? ('Préstamo registrado con éxito en ' + ejemplar.bloque + '. ¡Gracias por visitarnos!') : 'Ya puedes retirar el libro en el mostrador de la biblioteca.' }}
+      </p>
       <button (click)="cerrar()"
         style="width:100%;padding:16px;background:#0f172a;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;">
         Cerrar

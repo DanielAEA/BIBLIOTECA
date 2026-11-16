@@ -16,10 +16,11 @@ import Swal from 'sweetalert2';
 export class SolicitarEjemplarComponent implements OnInit {
   id: string | null = null;
   ejemplar: any = null;
+  libroCompleto: any = null;
   loading = true;
   submitting = false;
   success = false;
-  portadaUrl = 'assets/img/no-cover.png';
+  portadaUrl = 'assets/default-cover.svg';
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -65,10 +66,13 @@ export class SolicitarEjemplarComponent implements OnInit {
   loadLibroDetails(libroId: string) {
     this.http.get(`${this.apiUrl}/api/libros/${libroId}`).subscribe({
       next: (libro: any) => {
+        this.libroCompleto = libro;
         if (libro.urlPortada) {
-          this.portadaUrl = libro.urlPortada.startsWith('http') 
-            ? libro.urlPortada 
-            : `${this.apiUrl}${libro.urlPortada}`;
+          if (libro.urlPortada.startsWith('http') || libro.urlPortada.startsWith('assets/') || libro.urlPortada.startsWith('/assets/')) {
+            this.portadaUrl = libro.urlPortada;
+          } else {
+            this.portadaUrl = `${this.apiUrl}${libro.urlPortada.startsWith('/') ? '' : '/'}${libro.urlPortada}`;
+          }
         }
         this.loading = false;
       },
@@ -76,8 +80,13 @@ export class SolicitarEjemplarComponent implements OnInit {
     });
   }
 
+  getAutorNombre(): string {
+    if (!this.libroCompleto?.autores || !Array.isArray(this.libroCompleto.autores) || this.libroCompleto.autores.length === 0) return '';
+    return this.libroCompleto.autores.map((a: any) => a.nombre || a.nombreCompleto || a).filter(Boolean).join(', ');
+  }
+
   onImgError(event: any) {
-    event.target.src = 'https://via.placeholder.com/300x450?text=CiberBook';
+    event.target.src = 'assets/default-cover.svg';
   }
 
   confirmar() {

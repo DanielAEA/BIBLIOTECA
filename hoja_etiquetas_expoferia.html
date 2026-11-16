@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Etiquetas QR - Expoferia CiberBook</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      padding: 20px;
+    }
+    .no-print-bar {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      background: #1e3a8a;
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-print {
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn-print:hover {
+      background: #2563eb;
+    }
+    .grid {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .card {
+      background: #ffffff;
+      border: 2px dashed #94a3b8;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      page-break-inside: avoid;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .brand {
+      font-weight: 800;
+      font-size: 15px;
+      color: #1e3a8a;
+      letter-spacing: -0.5px;
+    }
+    .badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .content {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .qr-box {
+      flex: 0 0 135px;
+      text-align: center;
+    }
+    .qr-img {
+      width: 130px;
+      height: 130px;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      padding: 4px;
+      background: #fff;
+    }
+    .qr-scan-text {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 600;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+    .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .cover-thumb {
+      width: 44px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      float: right;
+      margin-left: 8px;
+      margin-bottom: 4px;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+    .author {
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 8px;
+    }
+    .copy-code {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 6px;
+      width: fit-content;
+    }
+    .location {
+      font-size: 11px;
+      color: #059669;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .footer {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .scissors {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .no-print-bar {
+        display: none;
+      }
+      .grid {
+        gap: 12px;
+      }
+      .card {
+        border: 1.5px dashed #94a3b8;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print-bar">
+    <div>
+      <h2 style="font-size: 17px; margin-bottom: 2px;">🏷️ Etiquetas QR para Libros Físicos (Stand Expoferia)</h2>
+      <p style="font-size: 12px; opacity: 0.85;">Imprime esta hoja o guárdala como PDF. Recorta por las líneas punteadas y pégalas en tus libros.</p>
+    </div>
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+  </div>
+
+  <div class="grid">
+
+    <!-- Libro 1 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000001-0000-4000-a000-000000000001" alt="QR EXPO-001">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/jovenes-preguntan.jpg" alt="Portada">
+          <div class="title">Lo que los jóvenes preguntan (Volumen 1)</div>
+          <div class="author">Watch Tower</div>
+          <div class="copy-code">CÓDIGO: EXPO-001</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #1</span>
+      </div>
+    </div>
+
+    <!-- Libro 2 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000002-0000-4000-a000-000000000002" alt="QR EXPO-002">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/pepita-jimenez.jpg" alt="Portada">
+          <div class="title">Pepita Jiménez</div>
+          <div class="author">Juan Valera</div>
+          <div class="copy-code">CÓDIGO: EXPO-002</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #2</span>
+      </div>
+    </div>
+
+    <!-- Libro 3 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000003-0000-4000-a000-000000000003" alt="QR EXPO-003">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/hamlet.jpg" alt="Portada">
+          <div class="title">Hamlet, El Príncipe de Dinamarca</div>
+          <div class="author">William Shakespeare</div>
+          <div class="copy-code">CÓDIGO: EXPO-003</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #3</span>
+      </div>
+    </div>
+
+    <!-- Libro 4 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000004-0000-4000-a000-000000000004" alt="QR EXPO-004">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/liderazgo-101.jpg" alt="Portada">
+          <div class="title">Liderazgo 101: Compresión del Liderazgo</div>
+          <div class="author">Edmund Sackey-Brown</div>
+          <div class="copy-code">CÓDIGO: EXPO-004</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #4</span>
+      </div>
+    </div>
+
+    <!-- Libro 5 -->
+    <div class="card" style="grid-column: span 2; max-width: 440px; margin: 0 auto; width: 100%;">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000005-0000-4000-a000-000000000005" alt="QR EXPO-005">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/dr-jekyll-mr-hyde.jpg" alt="Portada">
+          <div class="title">El extraño caso del Dr. Jekyll y Mr. Hyde</div>
+          <div class="author">Robert Louis Stevenson</div>
+          <div class="copy-code">CÓDIGO: EXPO-005</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #5</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
