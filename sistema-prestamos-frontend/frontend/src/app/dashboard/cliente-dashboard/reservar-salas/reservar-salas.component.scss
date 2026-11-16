@@ -32,15 +32,43 @@
 
     .sala-info {
         flex: 1;
-        h3 { margin: 0 0 0.5rem 0; font-size: 1.35rem; color: var(--text-dark); }
-        .capacidad { font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; font-weight: 600; }
-        .descripcion { font-size: 0.9rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.5; }
+        display: flex;
+        flex-direction: column;
+
+        h3 { 
+            margin: 0 0 0.5rem 0; 
+            font-size: 1.35rem; 
+            color: var(--text-dark); 
+        }
+
+        .capacidad { 
+            font-size: 0.95rem; 
+            color: var(--text-muted); 
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            margin-bottom: 0.75rem; 
+            font-weight: 600; 
+        }
+
+        .descripcion { 
+            font-size: 0.9rem; 
+            color: var(--text-main); 
+            margin-bottom: 1rem; 
+            line-height: 1.5; 
+            min-height: 2.7rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
         
         .sala-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
+            margin-top: auto;
             
             .tag {
                 background: var(--bg-alt, #f1f5f9);
@@ -55,6 +83,7 @@
 
     .premium-button {
         width: 100%;
+        margin-top: auto;
     }
 }
 
@@ -87,7 +116,6 @@
         flex-direction: column;
     }
 }
-
 
 .alert-no-slots {
     display: flex;
