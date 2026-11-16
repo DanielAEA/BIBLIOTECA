@@ -6,7 +6,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 12mm;
+      margin: 10mm;
     }
     * {
       box-sizing: border-box;
@@ -17,7 +17,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #f8fafc;
       color: #1e293b;
-      padding: 20px;
+      padding: 16px;
     }
     .no-print-bar {
       max-width: 900px;
@@ -50,13 +50,13 @@
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 14px;
     }
     .card {
       background: #ffffff;
       border: 2px dashed #94a3b8;
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       position: relative;
@@ -67,47 +67,47 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
     }
     .brand {
       font-weight: 800;
-      font-size: 15px;
+      font-size: 14px;
       color: #1e3a8a;
       letter-spacing: -0.5px;
     }
     .badge {
       background: #dbeafe;
       color: #1d4ed8;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .content {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
     }
     .qr-box {
-      flex: 0 0 135px;
+      flex: 0 0 120px;
       text-align: center;
     }
     .qr-img {
-      width: 130px;
-      height: 130px;
+      width: 115px;
+      height: 115px;
       display: block;
       border-radius: 8px;
       border: 1px solid #cbd5e1;
-      padding: 4px;
+      padding: 3px;
       background: #fff;
     }
     .qr-scan-text {
-      font-size: 10px;
+      font-size: 9px;
       color: #64748b;
-      font-weight: 600;
+      font-weight: 700;
       margin-top: 4px;
       text-transform: uppercase;
     }
@@ -117,43 +117,43 @@
       flex-direction: column;
     }
     .cover-thumb {
-      width: 44px;
-      height: 60px;
+      width: 42px;
+      height: 58px;
       object-fit: cover;
       border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.15);
       float: right;
-      margin-left: 8px;
-      margin-bottom: 4px;
+      margin-left: 6px;
+      margin-bottom: 2px;
     }
     .title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: #0f172a;
       line-height: 1.25;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .author {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: #475569;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .copy-code {
       display: inline-block;
       font-family: monospace;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       background: #f1f5f9;
       color: #0f172a;
-      padding: 3px 6px;
+      padding: 2px 5px;
       border-radius: 4px;
       border: 1px solid #cbd5e1;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       width: fit-content;
     }
     .location {
-      font-size: 11px;
+      font-size: 10px;
       color: #059669;
       font-weight: 600;
       display: flex;
@@ -161,17 +161,17 @@
       gap: 4px;
     }
     .footer {
-      margin-top: 10px;
-      padding-top: 8px;
+      margin-top: 8px;
+      padding-top: 6px;
       border-top: 1px solid #f1f5f9;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 10px;
+      font-size: 9px;
       color: #94a3b8;
     }
     .scissors {
-      font-size: 11px;
+      font-size: 10px;
       color: #94a3b8;
     }
 
@@ -184,11 +184,12 @@
         display: none;
       }
       .grid {
-        gap: 12px;
+        gap: 10px;
       }
       .card {
         border: 1.5px dashed #94a3b8;
         box-shadow: none;
+        padding: 10px;
       }
     }
   </style>
@@ -197,10 +198,10 @@
 
   <div class="no-print-bar">
     <div>
-      <h2 style="font-size: 17px; margin-bottom: 2px;">🏷️ Etiquetas QR para Libros Físicos (Stand Expoferia)</h2>
+      <h2 style="font-size: 17px; margin-bottom: 2px;">🏷️ Etiquetas QR para 9 Libros Físicos (Stand Expoferia)</h2>
       <p style="font-size: 12px; opacity: 0.85;">Imprime esta hoja o guárdala como PDF. Recorta por las líneas punteadas y pégalas en tus libros.</p>
     </div>
-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimir Todas las Etiquetas</button>
   </div>
 
   <div class="grid">
@@ -218,7 +219,7 @@
         </div>
         <div class="info">
           <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/jovenes-preguntan.jpg" alt="Portada">
-          <div class="title">Lo que los jóvenes preguntan (Volumen 1)</div>
+          <div class="title">Lo que los jóvenes preguntan (Vol. 1)</div>
           <div class="author">Watch Tower</div>
           <div class="copy-code">CÓDIGO: EXPO-001</div>
           <div class="location">📍 Stand Expoferia • Mesa 1</div>
@@ -306,7 +307,7 @@
     </div>
 
     <!-- Libro 5 -->
-    <div class="card" style="grid-column: span 2; max-width: 440px; margin: 0 auto; width: 100%;">
+    <div class="card">
       <div class="header">
         <span class="brand">📖 CIBERBOOK</span>
         <span class="badge">Stand Expoferia</span>
@@ -327,6 +328,106 @@
       <div class="footer">
         <span class="scissors">✂️ Recortar para etiqueta</span>
         <span>Ejemplar Físico #5</span>
+      </div>
+    </div>
+
+    <!-- Libro 6 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000006-0000-4000-a000-000000000006" alt="QR EXPO-006">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/mensaje-jesucristo.jpg" alt="Portada">
+          <div class="title">El Verdadero Mensaje de Jesucristo</div>
+          <div class="author">Dr. Bilal Philips</div>
+          <div class="copy-code">CÓDIGO: EXPO-006</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #6</span>
+      </div>
+    </div>
+
+    <!-- Libro 7 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000007-0000-4000-a000-000000000007" alt="QR EXPO-007">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/jardin-italiano.jpg" alt="Portada">
+          <div class="title">El jardín italiano</div>
+          <div class="author">Alyson Richman</div>
+          <div class="copy-code">CÓDIGO: EXPO-007</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #7</span>
+      </div>
+    </div>
+
+    <!-- Libro 8 -->
+    <div class="card">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000008-0000-4000-a000-000000000008" alt="QR EXPO-008">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/gramatica-portuguesa.jpg" alt="Portada">
+          <div class="title">Gramática Abreviada: Lengua Portuguesa</div>
+          <div class="author">Gracineia Araújo</div>
+          <div class="copy-code">CÓDIGO: EXPO-008</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #8</span>
+      </div>
+    </div>
+
+    <!-- Libro 9 -->
+    <div class="card" style="grid-column: span 2; max-width: 440px; margin: 0 auto; width: 100%;">
+      <div class="header">
+        <span class="brand">📖 CIBERBOOK</span>
+        <span class="badge">Stand Expoferia</span>
+      </div>
+      <div class="content">
+        <div class="qr-box">
+          <img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https%3A%2F%2Fciberbook-frontend-production.up.railway.app%2Fsolicitar-ejemplar%2Fe1000009-0000-4000-a000-000000000009" alt="QR EXPO-009">
+          <div class="qr-scan-text">📱 Escanea para prestar</div>
+        </div>
+        <div class="info">
+          <img class="cover-thumb" src="sistema-prestamos-frontend/frontend/src/assets/libros-expofair/power-of-now.jpg" alt="Portada">
+          <div class="title">The Power of Now: A Guide to Spiritual Enlightenment</div>
+          <div class="author">Eckhart Tolle</div>
+          <div class="copy-code">CÓDIGO: EXPO-009</div>
+          <div class="location">📍 Stand Expoferia • Mesa 1</div>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="scissors">✂️ Recortar para etiqueta</span>
+        <span>Ejemplar Físico #9</span>
       </div>
     </div>
 
