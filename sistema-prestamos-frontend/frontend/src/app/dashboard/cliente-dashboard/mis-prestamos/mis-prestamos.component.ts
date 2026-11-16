@@ -109,6 +109,7 @@ export class MisPrestamosComponent implements OnInit {
     }
 
     getFine(p: Prestamo): number {
+        if (p.estado === 'SOLICITADO' || p.estado === 'RECHAZADO') return 0;
         if (p.multa) {
             return p.multa.pagada ? 0 : p.multa.total;
         }
@@ -120,7 +121,7 @@ export class MisPrestamosComponent implements OnInit {
     }
 
     hasOverdue(p: Prestamo): boolean {
-        return !p.devuelto && this.calculateDaysRemaining(p.fechaDevolucion) < 0;
+        return !p.devuelto && p.estado !== 'SOLICITADO' && p.estado !== 'RECHAZADO' && this.calculateDaysRemaining(p.fechaDevolucion) < 0;
     }
 
     getLibroTitulo(p: Prestamo): string {
@@ -132,7 +133,7 @@ export class MisPrestamosComponent implements OnInit {
     }
 
     getActiveLoans(): Prestamo[] {
-        return this.prestamos.filter(p => !p.devuelto);
+        return this.prestamos.filter(p => !p.devuelto && p.estado !== 'RECHAZADO');
     }
 
     getReturnedLoans(): Prestamo[] {

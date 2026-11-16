@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService, Libro, EjemplarDTO } from '../../services/book.service';
 import { ResenaService, Resena } from '../../services/resena.service';
@@ -8,6 +9,7 @@ import { LoanService } from '../../services/loan.service';
 import { AuthService } from '../../services/auth.service';
 import { StatsService } from '../../services/stats.service';
 import { ConfigService } from '../../core/services/config.service';
+import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -48,7 +50,8 @@ export class LibroDetalleComponent implements OnInit {
     private loanService: LoanService,
     private authService: AuthService,
     private statsService: StatsService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -291,40 +294,78 @@ export class LibroDetalleComponent implements OnInit {
 
   reservarLibro() {
     if (this.getStockDisponible() <= 0) {
-      Swal.fire('No disponible', 'No hay ejemplares disponibles.', 'info');
+      Swal.fire('No disponible', 'No hay ejemplares disponibles en este momento.', 'info');
       return;
     }
 
     const userPayload = this.authService.getPayload();
-    if (!userPayload) return;
+    if (!userPayload) {
+      Swal.fire('Inicia sesión', 'Debes iniciar sesión para solicitar un préstamo.', 'warning')
+        .then(() => this.router.navigate(['/login']));
+      return;
+    }
 
-    
     const ejemplar = this.libro?.ejemplares?.find(e => e.disponible);
     if (!ejemplar) return;
 
     Swal.fire({
-      title: '¿Reservar préstamo?',
-      text: `${this.libro?.titulo} (${ejemplar.codigo})`,
-      icon: 'question',
-      showCancelButton: true
+      title: 'Solicitar Préstamo',
+      html: `
+        <div style="text-align: left; font-size: 14px; color: #334155; line-height: 1.5;">
+          <p style="margin-bottom: 12px;">
+            Libro: <strong>${this.libro?.titulo}</strong><br>
+            Ejemplar asignado: <code style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">${ejemplar.codigo}</code>
+          </p>
+          <div style="margin-bottom: 16px;">
+            <label style="display:block; font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
+              ⏱️ ¿Cuántos días requieres el préstamo?
+            </label>
+            <select id="swal-dias-select" class="swal2-select" style="display: flex; width: 100%; margin: 0; padding: 10px; font-size: 14px; border-radius: 8px;">
+              <option value="3">3 días (Lectura rápida)</option>
+              <option value="7" selected>7 días (1 semana)</option>
+              <option value="14">14 días (2 semanas)</option>
+              <option value="30">30 días (1 mes)</option>
+            </select>
+          </div>
+          <p style="font-size: 12px; color: #64748b; margin: 0;">
+            ℹ️ Tu solicitud quedará en estado <strong>SOLICITADO</strong> a la espera de la aprobación del administrador.
+          </p>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Confirmar Solicitud',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#2563eb',
+      preConfirm: () => {
+        const select = document.getElementById('swal-dias-select') as HTMLSelectElement;
+        return select ? parseInt(select.value, 10) : 7;
+      }
     }).then(result => {
       if (result.isConfirmed) {
-        const today = new Date();
+        const dias = result.value || 7;
+        const apiUrl = this.configService.apiUrl || environment.apiUrl || 'http://localhost:8080';
+        const cleanApiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
+        
+        const username = userPayload.correo || userPayload.sub || userPayload.username;
         const body = {
-          usuarioId: userPayload.id || userPayload.sub,
-          libroId: this.libro!.id,
-          ejemplarCodigo: ejemplar.codigo,
-          fechaPrestamo: today.toISOString(),
-          fechaDevolucion: new Date(today.getTime() + 15*24*60*60*1000).toISOString(),
-          devuelto: false
+          ejemplarId: ejemplar.id,
+          usuarioUsername: username,
+          diasPrestamo: dias
         };
 
-        this.loanService.create(body).subscribe({
+        this.http.post(`${cleanApiUrl}/api/solicitudes/nueva`, body).subscribe({
           next: () => {
             this.loadLibro();
-            Swal.fire('¡Reservado!', 'Tu solicitud está pendiente de aprobación.', 'success');
+            Swal.fire({
+              title: '¡Solicitud Registrada!',
+              text: `Tu solicitud por ${dias} días fue enviada. El administrador revisará y aceptará el préstamo.`,
+              icon: 'success',
+              confirmButtonColor: '#2563eb'
+            });
           },
-          error: (err) => Swal.fire('Error', err.error?.error || 'No se pudo reservar.', 'error')
+          error: (err) => {
+            Swal.fire('Error', err.error?.message || err.error?.error || 'No se pudo registrar la solicitud.', 'error');
+          }
         });
       }
     });

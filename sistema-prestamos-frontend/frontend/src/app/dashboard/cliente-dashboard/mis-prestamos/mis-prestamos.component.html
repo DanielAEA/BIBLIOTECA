@@ -36,7 +36,11 @@
                         <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
                         <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>
                         <td>
-                            <span class="premium-badge"
+                            <span *ngIf="p.estado === 'SOLICITADO'" class="premium-badge"
+                                style="background: #dbeafe; color: #1e40af; font-size: 11.5px; font-weight: 700;">
+                                ⏳ Pendiente de Aprobación
+                            </span>
+                            <span *ngIf="p.estado !== 'SOLICITADO'" class="premium-badge"
                                 [ngClass]="getDaysRemaining(p) <= 3 ? 'badge-danger' : 'badge-warning'">
                                 {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' días' : hasOverdue(p) ? 'Vencido' :
                                 'Vence hoy' }}

@@ -118,6 +118,7 @@ public class SolicitudServiceImpl implements SolicitudService {
 
         prestamoService.crear(prestamoNuevo);
 
+        solicitud.setDiasPrestamo(dias);
         solicitud.setLibroId(libro.getId());
         solicitud.setTituloLibro(libro.getTitulo());
         solicitud.setNombreCliente(usuario.getNombre());
@@ -144,6 +145,33 @@ public class SolicitudServiceImpl implements SolicitudService {
         SolicitudPrestamo solicitud = solicitudRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
         solicitud.setEstado(estado);
+
+        try {
+            if ("APROBADO".equalsIgnoreCase(estado) || "ACEPTADO".equalsIgnoreCase(estado)) {
+                List<Prestamo> prestamos = prestamoService.listar();
+                for (Prestamo p : prestamos) {
+                    if ("SOLICITADO".equalsIgnoreCase(p.getEstado()) &&
+                        solicitud.getCodigoEjemplar() != null &&
+                        solicitud.getCodigoEjemplar().equalsIgnoreCase(p.getEjemplarCodigo())) {
+                        prestamoService.aceptarSolicitud(p.getId());
+                        break;
+                    }
+                }
+            } else if ("RECHAZADO".equalsIgnoreCase(estado)) {
+                List<Prestamo> prestamos = prestamoService.listar();
+                for (Prestamo p : prestamos) {
+                    if ("SOLICITADO".equalsIgnoreCase(p.getEstado()) &&
+                        solicitud.getCodigoEjemplar() != null &&
+                        solicitud.getCodigoEjemplar().equalsIgnoreCase(p.getEjemplarCodigo())) {
+                        prestamoService.rechazarSolicitud(p.getId());
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            // Log warning
+        }
+
         return solicitudRepository.save(solicitud);
     }
 }

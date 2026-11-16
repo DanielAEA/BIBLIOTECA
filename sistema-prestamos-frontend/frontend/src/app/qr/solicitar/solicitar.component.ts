@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -9,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-solicitar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './solicitar.component.html',
   styleUrls: ['./solicitar.component.scss']
 })
@@ -21,6 +22,8 @@ export class SolicitarComponent implements OnInit {
   success = false;
   hasStock = false;
   portadaUrl = 'assets/img/no-cover.png';
+  diasPrestamo: number = 7;
+  opcionesDias: number[] = [3, 7, 14, 30];
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -69,6 +72,16 @@ export class SolicitarComponent implements OnInit {
     event.target.src = 'https://via.placeholder.com/300x450?text=CiberBook';
   }
 
+  seleccionarDias(dias: number) {
+    this.diasPrestamo = dias;
+  }
+
+  getFechaDevolucionEstimada(): Date {
+    const d = new Date();
+    d.setDate(d.getDate() + (this.diasPrestamo || 7));
+    return d;
+  }
+
   confirmar() {
     const payload = this.authService.getPayload();
     const username = payload?.sub;
@@ -81,7 +94,8 @@ export class SolicitarComponent implements OnInit {
     this.submitting = true;
     const body = {
       libroId: this.id,
-      usuarioUsername: username
+      usuarioUsername: username,
+      diasPrestamo: this.diasPrestamo || 7
     };
 
     this.http.post(`${this.apiUrl}/api/solicitudes/nueva`, body).subscribe({

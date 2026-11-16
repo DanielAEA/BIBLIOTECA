@@ -133,7 +133,12 @@ public class PrestamoRepositoryImpl implements PrestamoRepositoryCustom {
             if ("devuelto".equals(est)) {
                 criteriaList.add(Criteria.where("devuelto").is(true));
             } else if ("activo".equals(est)) {
-                criteriaList.add(Criteria.where("devuelto").is(false));
+                criteriaList.add(new Criteria().andOperator(
+                        Criteria.where("devuelto").is(false),
+                        Criteria.where("estado").is("ACTIVO")
+                ));
+            } else if ("solicitado".equals(est) || "pendiente".equals(est)) {
+                criteriaList.add(Criteria.where("estado").is("SOLICITADO"));
             } else {
                 criteriaList.add(Criteria.where("estado").regex(est, "i"));
             }

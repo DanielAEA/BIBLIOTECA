@@ -33,6 +33,7 @@ export class PrestamosComponent implements OnInit, OnDestroy {
   selectedUserId: string | null = null;
   selectedEjemplarId: string | null = null;
   loanDays = 15;
+  solicitudesPendientesCount = 0;
 
   page: number = 0;
   size: number = 10;
@@ -147,6 +148,7 @@ export class PrestamosComponent implements OnInit, OnDestroy {
         this.size = response.size;
         this.totalElements = response.totalElements;
         this.loadingLoans = false;
+        this.checkPendingSolicitudes();
       },
       error: (err) => {
         console.error('Error al cargar préstamos:', err);
@@ -154,6 +156,20 @@ export class PrestamosComponent implements OnInit, OnDestroy {
         this.loadingLoans = false;
       }
     });
+  }
+
+  checkPendingSolicitudes() {
+    this.loanService.getLoansPaginated(0, 100, { estado: 'SOLICITADO' }).subscribe({
+      next: (res) => {
+        this.solicitudesPendientesCount = res.totalElements || 0;
+      },
+      error: () => {}
+    });
+  }
+
+  filterBySolicitados() {
+    this.loanFilters.estado = 'SOLICITADO';
+    this.onFilterChange();
   }
 
   private loadUsers() {
@@ -321,23 +337,37 @@ export class PrestamosComponent implements OnInit, OnDestroy {
   }
 
   acceptLoan(prestamo: Prestamo) {
+    const usuarioNombre = prestamo.usuario?.nombre || prestamo.usuario?.correo || 'Usuario';
+    const libroTitulo = prestamo.libro?.titulo || 'Libro';
+
     Swal.fire({
-      title: '¿Aceptar solicitud?',
-      text: '¿Deseas aceptar esta solicitud de préstamo?',
+      title: '¿Aceptar préstamo?',
+      html: `
+        <div style="text-align: left; font-size: 13.5px; line-height: 1.5; color: #334155;">
+          <p style="margin: 0 0 6px;">📖 <strong>Libro:</strong> ${libroTitulo}</p>
+          <p style="margin: 0 0 6px;">👤 <strong>Usuario:</strong> ${usuarioNombre}</p>
+          <p style="margin: 0 0 10px;">🏷️ <strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
+          <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 10px; color: #15803d; font-size: 12px; font-weight: 600;">
+            ✓ Al aceptar, el préstamo pasará a estado <strong>ACTIVO</strong> y comenzará a contar el plazo de devolución.
+          </div>
+        </div>
+      `,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Sí, aceptar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Sí, aceptar préstamo',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#10b981'
     }).then((result) => {
       if (result.isConfirmed) {
         this.loanService.acceptLoan(prestamo.id).subscribe({
           next: () => {
             this.fetchLoans();
-            Swal.fire('¡Aceptado!', 'La solicitud ha sido aceptada.', 'success');
+            this.loadEjemplares();
+            Swal.fire('¡Aceptado!', 'La solicitud ha sido aprobada y el préstamo está activo.', 'success');
           },
           error: (err) => {
             console.error('Error al aceptar solicitud:', err);
-            Swal.fire('Error', 'No se pudo aceptar la solicitud.', 'error');
+            Swal.fire('Error', err.error?.message || 'No se pudo aceptar la solicitud.', 'error');
           }
         });
       }
@@ -345,12 +375,24 @@ export class PrestamosComponent implements OnInit, OnDestroy {
   }
 
   rejectLoan(prestamo: Prestamo) {
+    const usuarioNombre = prestamo.usuario?.nombre || prestamo.usuario?.correo || 'Usuario';
+    const libroTitulo = prestamo.libro?.titulo || 'Libro';
+
     Swal.fire({
       title: '¿Rechazar solicitud?',
-      text: '¿Deseas rechazar esta solicitud de préstamo?',
+      html: `
+        <div style="text-align: left; font-size: 13.5px; line-height: 1.5; color: #334155;">
+          <p style="margin: 0 0 6px;">📖 <strong>Libro:</strong> ${libroTitulo}</p>
+          <p style="margin: 0 0 6px;">👤 <strong>Usuario:</strong> ${usuarioNombre}</p>
+          <p style="margin: 0 0 10px;">🏷️ <strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
+          <div style="background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 10px; color: #b91c1c; font-size: 12px; font-weight: 600;">
+            ⚠️ La solicitud se marcará como <strong>RECHAZADA</strong> y el ejemplar quedará liberado inmediatamente para otros usuarios.
+          </div>
+        </div>
+      `,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, rechazar',
+      confirmButtonText: 'Sí, rechazar solicitud',
       cancelButtonText: 'Cancelar',
       confirmButtonColor: '#ef4444'
     }).then((result) => {
@@ -358,11 +400,12 @@ export class PrestamosComponent implements OnInit, OnDestroy {
         this.loanService.rejectLoan(prestamo.id).subscribe({
           next: () => {
             this.fetchLoans();
-            Swal.fire('Rechazado', 'La solicitud ha sido rechazada.', 'success');
+            this.loadEjemplares();
+            Swal.fire('Rechazado', 'La solicitud ha sido rechazada y el ejemplar ha sido liberado.', 'success');
           },
           error: (err) => {
             console.error('Error al rechazar solicitud:', err);
-            Swal.fire('Error', 'No se pudo rechazar la solicitud.', 'error');
+            Swal.fire('Error', err.error?.message || 'No se pudo rechazar la solicitud.', 'error');
           }
         });
       }

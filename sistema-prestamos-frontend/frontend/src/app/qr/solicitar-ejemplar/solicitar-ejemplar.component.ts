@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -9,7 +10,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-solicitar-ejemplar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './solicitar-ejemplar.component.html',
   styleUrls: ['./solicitar-ejemplar.component.scss']
 })
@@ -23,6 +24,8 @@ export class SolicitarEjemplarComponent implements OnInit {
   portadaUrl = 'assets/default-cover.svg';
   currentUserEmail = '';
   isUserLoggedIn = false;
+  diasPrestamo: number = 7;
+  opcionesDias: number[] = [3, 7, 14, 30];
   private apiUrl = environment.apiUrl;
 
   constructor(
@@ -115,6 +118,16 @@ export class SolicitarEjemplarComponent implements OnInit {
     event.target.src = 'assets/default-cover.svg';
   }
 
+  seleccionarDias(dias: number) {
+    this.diasPrestamo = dias;
+  }
+
+  getFechaDevolucionEstimada(): Date {
+    const d = new Date();
+    d.setDate(d.getDate() + (this.diasPrestamo || 7));
+    return d;
+  }
+
   confirmar() {
     const payload = this.authService.getPayload();
     const username = payload?.sub;
@@ -127,7 +140,8 @@ export class SolicitarEjemplarComponent implements OnInit {
     this.submitting = true;
     const body = {
       ejemplarId: this.id,
-      usuarioUsername: username
+      usuarioUsername: username,
+      diasPrestamo: this.diasPrestamo || 7
     };
 
     this.http.post(`${this.apiUrl}/api/solicitudes/nueva`, body).subscribe({

@@ -5,9 +5,11 @@ import com.biblioteca.entity.Usuario;
 import com.biblioteca.entity.Libro;
 import com.biblioteca.entity.Ejemplar;
 import com.biblioteca.entity.Multa;
+import com.biblioteca.entity.SolicitudPrestamo;
 import com.biblioteca.repository.PrestamoRepository;
 import com.biblioteca.repository.UsuarioRepository;
 import com.biblioteca.repository.LibroRepository;
+import com.biblioteca.repository.SolicitudRepository;
 import com.biblioteca.service.PrestamoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +37,24 @@ public class PrestamoServiceImpl implements PrestamoService {
     private final PrestamoRepository prestamoRepository;
     private final UsuarioRepository usuarioRepository;
     private final LibroRepository libroRepository;
+    private final SolicitudRepository solicitudRepository;
     private static final Double VALOR_MULTA_DIARIA = 2000.0;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public PrestamoServiceImpl(PrestamoRepository prestamoRepository,
+            UsuarioRepository usuarioRepository,
+            LibroRepository libroRepository,
+            SolicitudRepository solicitudRepository) {
+        this.prestamoRepository = prestamoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.libroRepository = libroRepository;
+        this.solicitudRepository = solicitudRepository;
+    }
 
     public PrestamoServiceImpl(PrestamoRepository prestamoRepository,
             UsuarioRepository usuarioRepository,
             LibroRepository libroRepository) {
-        this.prestamoRepository = prestamoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.libroRepository = libroRepository;
+        this(prestamoRepository, usuarioRepository, libroRepository, null);
     }
 
     @SuppressWarnings("null")
@@ -103,8 +115,11 @@ public class PrestamoServiceImpl implements PrestamoService {
     @SuppressWarnings("null")
     @Override
     public Prestamo aceptarSolicitud(@NonNull String idPrestamo) {
-        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo)).orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
-        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo))
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) {
+            throw new RuntimeException("Estado inválido. El préstamo no está en estado SOLICITADO");
+        }
         
         long durationDias = ChronoUnit.DAYS.between(p.getFechaPrestamo(), p.getFechaDevolucion());
         if (durationDias < 1) durationDias = 15; 
@@ -113,17 +128,51 @@ public class PrestamoServiceImpl implements PrestamoService {
         p.setFechaDevolucion(LocalDateTime.now().plusDays(durationDias));
         p.setEstado("ACTIVO");
         
+        // Sincronizar estado en solicitudes de MongoDB
+        try {
+            if (p.getEjemplarCodigo() != null) {
+                List<SolicitudPrestamo> solicitudes = solicitudRepository.findByEstado("PENDIENTE");
+                for (SolicitudPrestamo s : solicitudes) {
+                    if (p.getEjemplarCodigo().equalsIgnoreCase(s.getCodigoEjemplar())) {
+                        s.setEstado("APROBADO");
+                        solicitudRepository.save(s);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            logger.warn("No se pudo sincronizar SolicitudPrestamo al aceptar: {}", ex.getMessage());
+        }
+        
         return prestamoRepository.save(p);
     }
 
     @SuppressWarnings("null")
     @Override
     public Prestamo rechazarSolicitud(@NonNull String idPrestamo) {
-        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo)).orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
-        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) throw new RuntimeException("Estado inválido");
+        Prestamo p = prestamoRepository.findById(Objects.requireNonNull(idPrestamo))
+                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+        if (!"SOLICITADO".equalsIgnoreCase(p.getEstado())) {
+            throw new RuntimeException("Estado inválido. El préstamo no está en estado SOLICITADO");
+        }
         p.setEstado("RECHAZADO");
         p.setDevuelto(true);
         liberarEjemplar(p); 
+
+        // Sincronizar estado en solicitudes de MongoDB
+        try {
+            if (p.getEjemplarCodigo() != null) {
+                List<SolicitudPrestamo> solicitudes = solicitudRepository.findByEstado("PENDIENTE");
+                for (SolicitudPrestamo s : solicitudes) {
+                    if (p.getEjemplarCodigo().equalsIgnoreCase(s.getCodigoEjemplar())) {
+                        s.setEstado("RECHAZADO");
+                        solicitudRepository.save(s);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            logger.warn("No se pudo sincronizar SolicitudPrestamo al rechazar: {}", ex.getMessage());
+        }
+
         return prestamoRepository.save(p);
     }
 
