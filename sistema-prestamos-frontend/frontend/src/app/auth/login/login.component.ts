@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -12,7 +12,7 @@ import { ThemeService } from '../../services/theme.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent implements OnInit, AfterViewInit {
 
   @ViewChild('emailInput') emailInput?: ElementRef<HTMLInputElement>;
 
@@ -21,6 +21,7 @@ export class LoginComponent implements AfterViewInit {
   showError: boolean = false;
   loading: boolean = false;
   showPassword: boolean = false;
+  isPrestamoRedirect: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +33,11 @@ export class LoginComponent implements AfterViewInit {
       username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    const redirectUrl = localStorage.getItem('redirectUrl');
+    this.isPrestamoRedirect = !!(redirectUrl && redirectUrl.includes('solicitar-ejemplar'));
   }
 
   ngAfterViewInit(): void {
