@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     const redirectUrl = localStorage.getItem('redirectUrl');
-    this.isPrestamoRedirect = !!(redirectUrl && redirectUrl.includes('solicitar-ejemplar'));
+    this.isPrestamoRedirect = !!(redirectUrl && (redirectUrl.includes('solicitar-ejemplar') || redirectUrl.includes('solicitar')));
   }
 
   ngAfterViewInit(): void {

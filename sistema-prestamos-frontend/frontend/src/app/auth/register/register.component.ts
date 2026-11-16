@@ -36,7 +36,7 @@ export class RegisterComponent implements AfterViewInit {
     });
 
     const redirectUrl = localStorage.getItem('redirectUrl');
-    this.isPrestamoRedirect = !!(redirectUrl && redirectUrl.includes('solicitar-ejemplar'));
+    this.isPrestamoRedirect = !!(redirectUrl && (redirectUrl.includes('solicitar-ejemplar') || redirectUrl.includes('solicitar')));
   }
 
   ngAfterViewInit(): void {

@@ -6,20 +6,19 @@
 
   <!-- Banner de Solicitudes Pendientes -->
   <div *ngIf="solicitudesPendientesCount > 0 && loanFilters.estado !== 'SOLICITADO'"
-       style="background: #eff6ff; border: 1.5px solid #93c5fd; border-radius: 14px; padding: 14px 18px; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 4px 12px rgba(37,99,235,0.08);">
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <i class='bx bx-bell' style="font-size: 24px; color: #2563eb;"></i>
-      <div>
-        <strong style="color: #1e40af; font-size: 14.5px;">
+       class="pending-loans-banner">
+    <div class="banner-content">
+      <i class='bx bx-bell banner-icon'></i>
+      <div class="banner-text">
+        <strong class="banner-title">
           {{ solicitudesPendientesCount }} solicitud{{ solicitudesPendientesCount === 1 ? '' : 'es' }} de préstamo por aprobar
         </strong>
-        <p style="margin: 2px 0 0; color: #3b82f6; font-size: 12.5px;">
+        <p class="banner-subtitle">
           Hay solicitudes enviadas por usuarios que requieren tu aceptación o rechazo.
         </p>
       </div>
     </div>
-    <button (click)="filterBySolicitados()"
-            style="background: #2563eb; color: #fff; border: none; border-radius: 10px; padding: 9px 18px; font-weight: 700; font-size: 13.5px; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 8px rgba(37,99,235,0.3); transition: all 0.2s;">
+    <button (click)="filterBySolicitados()" class="btn-banner-action">
       Ver Solicitudes
     </button>
   </div>

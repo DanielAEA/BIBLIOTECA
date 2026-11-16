@@ -37,6 +37,13 @@ export class SolicitarEjemplarComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+
+    if (!this.authService.isLoggedIn()) {
+      localStorage.setItem('redirectUrl', this.router.url);
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.checkUserSession();
 
     if (this.id) {

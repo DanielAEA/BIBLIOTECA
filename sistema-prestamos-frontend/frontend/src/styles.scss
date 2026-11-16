@@ -367,7 +367,34 @@ body {
         width: 100%;
         margin-bottom: 2.5rem;
 
-        .form-group {
+        .pending-loans-banner {
+        background: #0f172a !important;
+        border: 1.5px solid #1e3a8a !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+
+        .banner-icon {
+            color: #38bdf8 !important;
+        }
+
+        .banner-title, strong {
+            color: #f1f5f9 !important;
+        }
+
+        .banner-subtitle, p {
+            color: #94a3b8 !important;
+        }
+
+        .btn-banner-action {
+            background: #2563eb !important;
+            color: #ffffff !important;
+
+            &:hover {
+                background: #3b82f6 !important;
+            }
+        }
+    }
+
+    .form-group {
             flex: 1;
             margin-bottom: 0;
             
@@ -575,6 +602,33 @@ body.dark-theme {
 
             &:hover td {
                 background-color: rgba(239, 68, 68, 0.2) !important;
+            }
+        }
+    }
+
+    .pending-loans-banner {
+        background: #0f172a !important;
+        border: 1.5px solid #1e3a8a !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+
+        .banner-icon {
+            color: #38bdf8 !important;
+        }
+
+        .banner-title, strong {
+            color: #f1f5f9 !important;
+        }
+
+        .banner-subtitle, p {
+            color: #94a3b8 !important;
+        }
+
+        .btn-banner-action {
+            background: #2563eb !important;
+            color: #ffffff !important;
+
+            &:hover {
+                background: #3b82f6 !important;
             }
         }
     }
@@ -838,6 +892,33 @@ body.dark-theme {
 }
 
 .premium-form {
+    .pending-loans-banner {
+        background: #0f172a !important;
+        border: 1.5px solid #1e3a8a !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+
+        .banner-icon {
+            color: #38bdf8 !important;
+        }
+
+        .banner-title, strong {
+            color: #f1f5f9 !important;
+        }
+
+        .banner-subtitle, p {
+            color: #94a3b8 !important;
+        }
+
+        .btn-banner-action {
+            background: #2563eb !important;
+            color: #ffffff !important;
+
+            &:hover {
+                background: #3b82f6 !important;
+            }
+        }
+    }
+
     .form-group {
         margin-bottom: 1.5rem;
 
