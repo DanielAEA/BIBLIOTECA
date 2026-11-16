@@ -25,6 +25,7 @@ export interface Prestamo {
   devuelto: boolean;
   estado?: string;
   multa?: Multa;
+  diasPrestamo?: number;
 }
 
 export interface PrestamoPayload {

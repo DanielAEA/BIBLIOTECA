@@ -128,37 +128,55 @@
       <table class="premium-table">
         <thead>
           <tr>
-            <th style="width: 44px; text-align: center;">
+            <th class="col-check">
               <input type="checkbox" class="table-checkbox" (change)="toggleAll($event)" [checked]="isAllSelected()" aria-label="Seleccionar todos los préstamos">
             </th>
-            <th>Usuario</th>
-            <th>Libro</th>
-            <th>Ejemplar</th>
-            <th>Fecha Préstamo</th>
-            <th>Fecha Devolución</th>
-            <th>Devolución Real</th>
-            <th>Días Restantes</th>
-            <th>Multa</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th class="col-user">Usuario</th>
+            <th class="col-book">Libro</th>
+            <th class="col-copy">Ejemplar</th>
+            <th class="col-date">F. Préstamo</th>
+            <th class="col-date">Vencimiento</th>
+            <th class="col-date">Dev. Real</th>
+            <th class="col-days">Restante</th>
+            <th class="col-fine">Multa</th>
+            <th class="col-status">Estado</th>
+            <th class="col-actions">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let p of prestamos" [class.overdue]="hasOverdue(p) && !p.devuelto" [class.row-selected]="selectedLoanIds.has(p.id)">
-            <td style="width: 44px; text-align: center;">
+            <td class="col-check">
               <input type="checkbox" class="table-checkbox" [checked]="selectedLoanIds.has(p.id)" (change)="toggleSelection(p.id)" aria-label="Seleccionar préstamo">
             </td>
-            <td>{{ p.usuario?.nombre || p.usuario?.correo || '-' }}</td>
-            <td>{{ p.libro?.titulo || '-' }}</td>
-            <td><strong>{{ p.ejemplarCodigo }}</strong></td>
-            <td>{{ p.fechaPrestamo | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>{{ p.fechaDevolucion | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>{{ (p.fechaDevolucionReal | date:'dd/MM/yyyy HH:mm') || '-' }}</td>
-            <td>
-              <span *ngIf="p.estado === 'SOLICITADO'" class="premium-badge" style="background: #dbeafe; color: #1e40af; font-size: 11px;">
-                Por Aprobar
+            <td class="col-user" [title]="p.usuario?.nombre || p.usuario?.correo || ''">
+              <span class="user-text">{{ p.usuario?.nombre || p.usuario?.correo || '-' }}</span>
+            </td>
+            <td class="col-book" [title]="p.libro?.titulo || ''">
+              <span class="book-title">{{ p.libro?.titulo || '-' }}</span>
+            </td>
+            <td class="col-copy">
+              <strong>{{ p.ejemplarCodigo }}</strong>
+            </td>
+            <td class="col-date">
+              <div>{{ p.fechaPrestamo | date:'dd/MM/yyyy' }}</div>
+              <small>{{ p.fechaPrestamo | date:'HH:mm' }}</small>
+            </td>
+            <td class="col-date">
+              <div>{{ p.fechaDevolucion | date:'dd/MM/yyyy' }}</div>
+              <small>{{ p.fechaDevolucion | date:'HH:mm' }}</small>
+            </td>
+            <td class="col-date">
+              <ng-container *ngIf="p.fechaDevolucionReal">
+                <div>{{ p.fechaDevolucionReal | date:'dd/MM/yyyy' }}</div>
+                <small>{{ p.fechaDevolucionReal | date:'HH:mm' }}</small>
+              </ng-container>
+              <span *ngIf="!p.fechaDevolucionReal" style="color: var(--text-muted);">-</span>
+            </td>
+            <td class="col-days">
+              <span *ngIf="p.estado === 'SOLICITADO'" class="premium-badge badge-info" style="font-size: 10.5px; padding: 2px 7px;">
+                {{ p.diasPrestamo || 7 }} d
               </span>
-              <span *ngIf="p.estado === 'RECHAZADO'" class="premium-badge badge-danger" style="font-size: 11px;">
+              <span *ngIf="p.estado === 'RECHAZADO'" class="premium-badge badge-danger" style="font-size: 10.5px; padding: 2px 7px;">
                 Rechazado
               </span>
               <span *ngIf="!p.devuelto && p.estado !== 'SOLICITADO' && p.estado !== 'RECHAZADO'" [class.days-warning]="getDaysRemaining(p) <= 3 && getDaysRemaining(p) >= 0"
@@ -166,10 +184,10 @@
                 {{ getDaysRemaining(p) > 0 ? getDaysRemaining(p) + ' d' : hasOverdue(p) ?
                 Math.abs(getDaysRemaining(p)) + ' d venc.' : 'Vence hoy' }}
               </span>
-              <span *ngIf="p.devuelto">-</span>
+              <span *ngIf="p.devuelto" style="color: var(--text-muted);">-</span>
             </td>
-            <td>
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <td class="col-fine">
+              <div style="display: flex; align-items: center; gap: 0.35rem;">
                 <input type="checkbox" *ngIf="getFine(p) > 0" 
                        [checked]="p.multa?.pagada || false" 
                        (change)="payFine(p)" 
@@ -184,30 +202,29 @@
                 <span *ngIf="p.multa?.pagada" class="premium-badge badge-success" style="font-size: 0.65rem; padding: 2px 6px;">PAGADO</span>
               </div>
             </td>
-            <td>
+            <td class="col-status">
               <span class="premium-badge" [ngClass]="{
                 'badge-success': p.devuelto && p.estado !== 'RECHAZADO',
                 'badge-danger': p.estado === 'RECHAZADO',
                 'badge-warning': !p.devuelto && p.estado !== 'SOLICITADO' && p.estado !== 'RECHAZADO',
                 'badge-info': p.estado === 'SOLICITADO'
-              }" [style.background-color]="p.estado === 'SOLICITADO' ? '#2563eb' : (p.estado === 'RECHAZADO' ? '#ef4444' : null)"
-                 [style.color]="p.estado === 'SOLICITADO' || p.estado === 'RECHAZADO' ? '#ffffff' : null">
+              }">
                 {{ p.estado === 'SOLICITADO' ? 'SOLICITADO' : (p.estado === 'RECHAZADO' ? 'RECHAZADO' : (p.devuelto ? 'DEVUELTO' : 'ACTIVO')) }}
               </span>
             </td>
-            <td>
-              <div style="display: flex; gap: 6px; align-items: center;">
+            <td class="col-actions">
+              <div class="actions-wrapper">
                 <ng-container *ngIf="p.estado === 'SOLICITADO'">
-                  <button class="btn-view-premium sm" style="background-color: #10b981; color: white; font-weight: 700; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer;" (click)="acceptLoan(p)" title="Aceptar solicitud de préstamo">
+                  <button class="btn-action-accept" (click)="acceptLoan(p)" title="Aceptar solicitud de préstamo">
                     Aceptar
                   </button>
-                  <button class="btn-delete-premium sm" style="font-weight: 700; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer;" (click)="rejectLoan(p)" title="Rechazar solicitud">
+                  <button class="btn-action-reject" (click)="rejectLoan(p)" title="Rechazar solicitud">
                     Rechazar
                   </button>
                 </ng-container>
                 
-                <button *ngIf="!p.devuelto && p.estado !== 'SOLICITADO' && p.estado !== 'RECHAZADO'" class="btn-view-premium sm" (click)="markAsReturned(p)">Devolver</button>
-                <button *ngIf="p.estado !== 'SOLICITADO'" class="btn-delete-premium sm" (click)="deleteLoan(p)">Eliminar</button>
+                <button *ngIf="!p.devuelto && p.estado !== 'SOLICITADO' && p.estado !== 'RECHAZADO'" class="btn-action-return" (click)="markAsReturned(p)">Devolver</button>
+                <button *ngIf="p.estado !== 'SOLICITADO'" class="btn-action-delete" (click)="deleteLoan(p)">Eliminar</button>
               </div>
             </td>
           </tr>
