@@ -96,7 +96,7 @@
           <!-- Selector de días de préstamo -->
           <div *ngIf="ejemplar.disponible" style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:16px;">
             <label style="display:block;font-size:12.5px;font-weight:700;color:#1e293b;margin-bottom:8px;">
-              ⏱️ ¿Por cuántos días requieres el libro?
+              ¿Por cuántos días requieres el libro?
             </label>
             
             <!-- Botones de selección rápida -->
@@ -149,7 +149,7 @@
           <!-- Aviso de ejemplar no disponible -->
           <div *ngIf="!ejemplar.disponible"
             style="text-align:center;color:#dc2626;font-size:12.5px;font-weight:600;background:#fee2e2;padding:12px;border-radius:12px;border:1px solid #fca5a5;margin-bottom:12px;">
-            ⚠️ Este ejemplar físico ya se encuentra actualmente prestado a otro usuario.
+            Este ejemplar físico ya se encuentra actualmente prestado a otro usuario.
           </div>
         </div>
 
@@ -221,24 +221,24 @@
       
       <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;margin-bottom:18px;text-align:left;font-size:13px;line-height:1.5;color:#334155;">
         <p style="margin:0 0 6px;">
-          👤 Solicitante: <strong>{{ currentUserEmail }}</strong>
+          Solicitante: <strong>{{ currentUserEmail }}</strong>
         </p>
         <p style="margin:0 0 6px;">
-          ⏱️ Duración solicitada: <strong>{{ diasPrestamo }} días</strong>
+          Duración solicitada: <strong>{{ diasPrestamo }} días</strong>
         </p>
         <p style="margin:0 0 6px;">
-          📅 Devolución estimada: <strong>{{ getFechaDevolucionEstimada() | date:'dd/MM/yyyy' }}</strong>
+          Devolución estimada: <strong>{{ getFechaDevolucionEstimada() | date:'dd/MM/yyyy' }}</strong>
         </p>
         <p style="margin:0 0 6px;">
-          🏷️ Código de ejemplar: <strong>{{ ejemplar?.codigo }}</strong>
+          Código de ejemplar: <strong>{{ ejemplar?.codigo }}</strong>
         </p>
         <p style="margin:0;">
-          📍 {{ ejemplar?.bloque ? ('Ubicación: ' + ejemplar.bloque + (ejemplar.estante ? ' • ' + ejemplar.estante : '')) : 'Retirar en mostrador.' }}
+          {{ ejemplar?.bloque ? ('Ubicación: ' + ejemplar.bloque + (ejemplar.estante ? ' • ' + ejemplar.estante : '')) : 'Retirar en mostrador.' }}
         </p>
       </div>
 
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;margin-bottom:20px;font-size:12px;color:#1e40af;line-height:1.45;">
-        ℹ️ Tu solicitud está en espera de aprobación por parte del administrador. Podrás seguir el estado en <strong>Mis Préstamos</strong>.
+        Tu solicitud está en espera de aprobación por parte del administrador. Podrás seguir el estado en <strong>Mis Préstamos</strong>.
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px;">

@@ -36,7 +36,7 @@
 
         <!-- Selector de Días -->
         <div *ngIf="hasStock" class="mb-6 text-left bg-slate-50 p-4 rounded-xl border border-slate-200">
-          <label class="block text-xs font-bold text-slate-700 mb-2">⏱️ ¿Cuántos días necesitas el libro?</label>
+          <label class="block text-xs font-bold text-slate-700 mb-2">¿Cuántos días necesitas el libro?</label>
           <div class="flex gap-1.5 mb-2">
             <button *ngFor="let d of opcionesDias" type="button" (click)="seleccionarDias(d)"
                     [class.bg-black]="diasPrestamo === d" [class.text-white]="diasPrestamo === d"
@@ -71,8 +71,8 @@
       <h1 class="text-2xl font-black text-slate-800 mb-2">¡Solicitud Enviada!</h1>
       <p class="text-black font-bold mb-4">{{ libro.titulo }}</p>
       <div class="bg-slate-50 p-4 rounded-xl mb-6 text-sm text-slate-600 text-left">
-        <p class="mb-1">⏱️ Duración solicitada: <strong>{{ diasPrestamo }} días</strong></p>
-        <p class="mb-1">📅 Devolución: <strong>{{ getFechaDevolucionEstimada() | date:'dd/MM/yyyy' }}</strong></p>
+        <p class="mb-1">Duración solicitada: <strong>{{ diasPrestamo }} días</strong></p>
+        <p class="mb-1">Devolución: <strong>{{ getFechaDevolucionEstimada() | date:'dd/MM/yyyy' }}</strong></p>
         <p class="mt-2 text-xs text-blue-600">Tu solicitud está pendiente de aprobación por el bibliotecario/administrador.</p>
       </div>
       <button (click)="cerrar()" class="w-full py-4 bg-black hover:bg-slate-800 text-white rounded-xl font-bold shadow-lg transition-all active:scale-95">Ver Mis Préstamos</button>

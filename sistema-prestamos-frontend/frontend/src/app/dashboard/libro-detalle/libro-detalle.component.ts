@@ -318,7 +318,7 @@ export class LibroDetalleComponent implements OnInit {
           </p>
           <div style="margin-bottom: 16px;">
             <label style="display:block; font-size: 12px; font-weight: 700; color: #1e293b; margin-bottom: 6px;">
-              ⏱️ ¿Cuántos días requieres el préstamo?
+              ¿Cuántos días requieres el préstamo?
             </label>
             <select id="swal-dias-select" class="swal2-select" style="display: flex; width: 100%; margin: 0; padding: 10px; font-size: 14px; border-radius: 8px;">
               <option value="3">3 días (Lectura rápida)</option>
@@ -328,7 +328,7 @@ export class LibroDetalleComponent implements OnInit {
             </select>
           </div>
           <p style="font-size: 12px; color: #64748b; margin: 0;">
-            ℹ️ Tu solicitud quedará en estado <strong>SOLICITADO</strong> a la espera de la aprobación del administrador.
+            Tu solicitud quedará en estado <strong>SOLICITADO</strong> a la espera de la aprobación del administrador.
           </p>
         </div>
       `,

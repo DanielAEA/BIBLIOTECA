@@ -344,11 +344,11 @@ export class PrestamosComponent implements OnInit, OnDestroy {
       title: '¿Aceptar préstamo?',
       html: `
         <div style="text-align: left; font-size: 13.5px; line-height: 1.5; color: #334155;">
-          <p style="margin: 0 0 6px;">📖 <strong>Libro:</strong> ${libroTitulo}</p>
-          <p style="margin: 0 0 6px;">👤 <strong>Usuario:</strong> ${usuarioNombre}</p>
-          <p style="margin: 0 0 10px;">🏷️ <strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
+          <p style="margin: 0 0 6px;"><strong>Libro:</strong> ${libroTitulo}</p>
+          <p style="margin: 0 0 6px;"><strong>Usuario:</strong> ${usuarioNombre}</p>
+          <p style="margin: 0 0 10px;"><strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
           <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 10px; color: #15803d; font-size: 12px; font-weight: 600;">
-            ✓ Al aceptar, el préstamo pasará a estado <strong>ACTIVO</strong> y comenzará a contar el plazo de devolución.
+            Al aceptar, el préstamo pasará a estado <strong>ACTIVO</strong> y comenzará a contar el plazo de devolución.
           </div>
         </div>
       `,
@@ -382,11 +382,11 @@ export class PrestamosComponent implements OnInit, OnDestroy {
       title: '¿Rechazar solicitud?',
       html: `
         <div style="text-align: left; font-size: 13.5px; line-height: 1.5; color: #334155;">
-          <p style="margin: 0 0 6px;">📖 <strong>Libro:</strong> ${libroTitulo}</p>
-          <p style="margin: 0 0 6px;">👤 <strong>Usuario:</strong> ${usuarioNombre}</p>
-          <p style="margin: 0 0 10px;">🏷️ <strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
+          <p style="margin: 0 0 6px;"><strong>Libro:</strong> ${libroTitulo}</p>
+          <p style="margin: 0 0 6px;"><strong>Usuario:</strong> ${usuarioNombre}</p>
+          <p style="margin: 0 0 10px;"><strong>Ejemplar:</strong> ${prestamo.ejemplarCodigo}</p>
           <div style="background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 10px; color: #b91c1c; font-size: 12px; font-weight: 600;">
-            ⚠️ La solicitud se marcará como <strong>RECHAZADA</strong> y el ejemplar quedará liberado inmediatamente para otros usuarios.
+            La solicitud se marcará como <strong>RECHAZADA</strong> y el ejemplar quedará liberado inmediatamente para otros usuarios.
           </div>
         </div>
       `,
