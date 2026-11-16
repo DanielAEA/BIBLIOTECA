@@ -33,14 +33,16 @@ public class EjemplarController {
         for (Libro libro : libros) {
             if (libro.getEjemplares() != null) {
                 for (Ejemplar e : libro.getEjemplares()) {
+                    if (e == null) continue;
+                    String effectiveId = e.getId() != null ? e.getId() : (e.getCodigo() != null ? e.getCodigo() : "sin-id");
                     Map<String, Object> ejMap = new HashMap<>();
-                    ejMap.put("id", e.getId());
+                    ejMap.put("id", effectiveId);
                     ejMap.put("codigo", e.getCodigo());
-                    ejMap.put("disponible", e.getDisponible());
-                    ejMap.put("estado", e.getEstado());
+                    ejMap.put("disponible", e.getDisponible() != null ? e.getDisponible() : true);
+                    ejMap.put("estado", e.getEstado() != null ? e.getEstado() : "DISPONIBLE");
                     ejMap.put("bloque", e.getBloque());
                     ejMap.put("estante", e.getEstante());
-                    ejMap.put("urlQr", "/api/ejemplares/" + e.getId() + "/qr");
+                    ejMap.put("urlQr", "/api/ejemplares/" + effectiveId + "/qr");
                     
                     Map<String, Object> libMap = new HashMap<>();
                     libMap.put("id", libro.getId());
@@ -56,19 +58,27 @@ public class EjemplarController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> obtenerPorId(@PathVariable String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        String searchId = id.trim();
         List<Libro> libros = libroRepository.findAll();
         for (Libro libro : libros) {
             if (libro.getEjemplares() != null) {
                 for (Ejemplar e : libro.getEjemplares()) {
-                    if (e.getId().equals(id)) {
+                    if (e == null) continue;
+                    String ejId = e.getId();
+                    String ejCodigo = e.getCodigo();
+                    if (searchId.equals(ejId) || (ejCodigo != null && searchId.equalsIgnoreCase(ejCodigo))) {
+                        String effectiveId = ejId != null ? ejId : ejCodigo;
                         Map<String, Object> ejMap = new HashMap<>();
-                        ejMap.put("id", e.getId());
-                        ejMap.put("codigo", e.getCodigo());
-                        ejMap.put("disponible", e.getDisponible());
-                        ejMap.put("estado", e.getEstado());
+                        ejMap.put("id", effectiveId);
+                        ejMap.put("codigo", ejCodigo);
+                        ejMap.put("disponible", e.getDisponible() != null ? e.getDisponible() : true);
+                        ejMap.put("estado", e.getEstado() != null ? e.getEstado() : "DISPONIBLE");
                         ejMap.put("bloque", e.getBloque());
                         ejMap.put("estante", e.getEstante());
-                        ejMap.put("urlQr", "/api/ejemplares/" + e.getId() + "/qr");
+                        ejMap.put("urlQr", "/api/ejemplares/" + effectiveId + "/qr");
                         
                         Map<String, Object> libMap = new HashMap<>();
                         libMap.put("id", libro.getId());
@@ -134,11 +144,13 @@ public class EjemplarController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> actualizar(@PathVariable String id, @RequestBody Map<String, Object> payload) {
+        if (id == null) return ResponseEntity.notFound().build();
         List<Libro> libros = libroRepository.findAll();
         for (Libro libro : libros) {
             if (libro.getEjemplares() != null) {
                 for (Ejemplar e : libro.getEjemplares()) {
-                    if (e.getId().equals(id)) {
+                    if (e == null) continue;
+                    if (id.equals(e.getId()) || (e.getCodigo() != null && id.equalsIgnoreCase(e.getCodigo()))) {
                         e.setCodigo(((String) payload.get("codigo")).toUpperCase());
                         e.setDisponible((Boolean) payload.get("disponible"));
                         e.setBloque((String) payload.get("bloque"));
@@ -165,10 +177,11 @@ public class EjemplarController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable String id) {
+        if (id == null) return ResponseEntity.notFound().build();
         List<Libro> libros = libroRepository.findAll();
         for (Libro libro : libros) {
             if (libro.getEjemplares() != null) {
-                boolean removed = libro.getEjemplares().removeIf(e -> e.getId().equals(id));
+                boolean removed = libro.getEjemplares().removeIf(e -> e != null && (id.equals(e.getId()) || (e.getCodigo() != null && id.equalsIgnoreCase(e.getCodigo()))));
                 if (removed) {
                     libroRepository.save(libro);
                     return ResponseEntity.ok().build();

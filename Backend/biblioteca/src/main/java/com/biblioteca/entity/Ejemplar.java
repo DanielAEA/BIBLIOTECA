@@ -1,6 +1,11 @@
 package com.biblioteca.entity;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 public class Ejemplar {
+    @Id
+    @Field("_id")
     private String id;
     private String codigo;
     private Boolean disponible = true;
@@ -19,7 +24,9 @@ public class Ejemplar {
         this.estante = estante;
     }
 
-    public String getId() { return id; }
+    public String getId() { 
+        return id != null ? id : codigo; 
+    }
     public void setId(String id) { this.id = id; }
 
     public String getCodigo() { return codigo; }
