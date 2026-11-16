@@ -20,6 +20,9 @@ public class SalaServiceImpl implements SalaService {
     @Override
     public Sala crear(@NonNull Sala sala) {
         sala.setId(null);
+        if (sala.getActiva() == null) {
+            sala.setActiva(true);
+        }
         return salaRepository.save(sala);
     }
 
@@ -39,7 +42,8 @@ public class SalaServiceImpl implements SalaService {
     }
 
     @Override
-    public org.springframework.data.domain.Page<Sala> listarPaginado(org.springframework.data.domain.Pageable pageable, String search, Boolean activa) {
+    public org.springframework.data.domain.Page<Sala> listarPaginado(org.springframework.data.domain.Pageable pageable,
+            String search, Boolean activa) {
         boolean hasSearch = search != null && !search.trim().isEmpty();
         if (hasSearch && activa != null) {
             return salaRepository.findByActivaAndNombreContainingIgnoreCase(activa, search.trim(), pageable);
@@ -57,10 +61,16 @@ public class SalaServiceImpl implements SalaService {
         Sala existente = salaRepository.findById(Objects.requireNonNull(id))
                 .orElseThrow(() -> new RuntimeException("Sala no encontrada"));
         existente.setNombre(sala.getNombre());
-        existente.setDescription(sala.getDescription());
+
+        String desc = sala.getDescripcion() != null ? sala.getDescripcion() : sala.getDescription();
+        existente.setDescripcion(desc);
+        existente.setDescription(desc);
+
         existente.setCapacidad(sala.getCapacidad());
         existente.setUbicacion(sala.getUbicacion());
-        existente.setActiva(sala.getActiva());
+        if (sala.getActiva() != null) {
+            existente.setActiva(sala.getActiva());
+        }
         return salaRepository.save(existente);
     }
 

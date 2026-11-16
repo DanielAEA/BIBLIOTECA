@@ -63,7 +63,7 @@ public class SecurityConfig {
                                                                 "/solicitar/**", "/solicitar-ejemplar/**", "/qr/**",
                                                                 "/api/admin/regenerar-qr",
                                                                 "/api/libros/download-pdf/**",
-                                                                "/api/salas/**")
+                                                                "/api/salas", "/api/salas/**")
                                                 .permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/api/libros").permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/api/libros/*").permitAll()

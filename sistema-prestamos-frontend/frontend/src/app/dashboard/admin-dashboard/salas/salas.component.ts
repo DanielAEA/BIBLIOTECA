@@ -172,17 +172,19 @@ export class SalasComponent implements OnInit, OnDestroy {
         this.salaCapacidad = null;
         this.salaUbicacion = '';
         this.salaActiva = true;
+        this.submitting = false;
         this.showForm = true;
         this.showReservas = false;
     }
 
     editSala(sala: Sala) {
         this.editingSala = { ...sala };
-        this.salaNombre = sala.nombre;
-        this.salaDescripcion = sala.descripcion;
-        this.salaCapacidad = sala.capacidad;
-        this.salaUbicacion = sala.ubicacion;
-        this.salaActiva = sala.activa;
+        this.salaNombre = sala.nombre || '';
+        this.salaDescripcion = sala.descripcion || '';
+        this.salaCapacidad = sala.capacidad || null;
+        this.salaUbicacion = sala.ubicacion || '';
+        this.salaActiva = sala.activa !== false;
+        this.submitting = false;
         this.showForm = true;
         this.showReservas = false;
     }
@@ -190,32 +192,38 @@ export class SalasComponent implements OnInit, OnDestroy {
     cancelForm() {
         this.showForm = false;
         this.editingSala = null;
+        this.submitting = false;
     }
 
     saveSala() {
-        if (!this.salaNombre.trim()) {
+        const nombre = (this.salaNombre || '').trim();
+        const descripcion = (this.salaDescripcion || '').trim();
+        const ubicacion = (this.salaUbicacion || '').trim();
+        const capacidad = Number(this.salaCapacidad);
+
+        if (!nombre) {
             Swal.fire('Atención', 'Ingresa el nombre de la sala.', 'warning');
             return;
         }
-        if (!this.salaCapacidad || this.salaCapacidad <= 0) {
+        if (!capacidad || capacidad <= 0) {
             Swal.fire('Atención', 'Ingresa una capacidad válida.', 'warning');
             return;
         }
-        if (!this.salaUbicacion.trim()) {
+        if (!ubicacion) {
             Swal.fire('Atención', 'Ingresa la ubicación de la sala.', 'warning');
             return;
         }
 
         this.submitting = true;
         const payload: SalaPayload = {
-            nombre: this.salaNombre.trim(),
-            descripcion: this.salaDescripcion.trim(),
-            capacidad: this.salaCapacidad,
-            ubicacion: this.salaUbicacion.trim(),
-            activa: this.salaActiva
+            nombre,
+            descripcion,
+            capacidad,
+            ubicacion,
+            activa: this.salaActiva !== false
         };
 
-        const obs = this.editingSala
+        const obs = (this.editingSala && this.editingSala.id)
             ? this.salaService.update(this.editingSala.id, payload)
             : this.salaService.create(payload);
 
@@ -225,7 +233,7 @@ export class SalasComponent implements OnInit, OnDestroy {
                 this.cancelForm();
                 Swal.fire({
                     title: this.editingSala ? '¡Actualizada!' : '¡Creada!',
-                    text: `Sala ${this.editingSala ? 'actualizada' : 'creada'} correctamente`,
+                    text: `Sala guardada correctamente`,
                     icon: 'success',
                     timer: 2000,
                     showConfirmButton: false
@@ -233,7 +241,8 @@ export class SalasComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
                 console.error('Error al guardar sala:', err);
-                Swal.fire('Error', 'No se pudo guardar la sala', 'error');
+                const msg = err.error?.error || err.error?.message || err.message || 'No se pudo guardar la sala';
+                Swal.fire('Error', msg, 'error');
             }
         });
     }
